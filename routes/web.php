@@ -81,6 +81,9 @@ Route::middleware(['auth', 'verified', 'workspace'])->group(function () {
         Route::post('/cancel', [BillingController::class, 'cancel'])
             ->middleware('workspace.owner')
             ->name('cancel');
+        Route::post('/resume', [BillingController::class, 'resume'])
+            ->middleware('workspace.owner')
+            ->name('resume');
         Route::get('/portal', [BillingController::class, 'portal'])
             ->middleware('workspace.owner')
             ->name('portal');

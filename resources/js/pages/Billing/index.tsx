@@ -1,12 +1,33 @@
 import Heading from '@/components/heading';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 import { Spinner } from '@/components/ui/spinner';
+import { useToast } from '@/components/ui/toast';
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem, type Invoice, type Plan, type Workspace, type WorkspaceRole } from '@/types';
+import {
+    type BreadcrumbItem,
+    type Invoice,
+    type Plan,
+    type Workspace,
+    type WorkspaceRole,
+} from '@/types';
 import { Head, Link } from '@inertiajs/react';
-import { AlertCircle, CheckCircle, CreditCard, Download, ExternalLink, Receipt, Sparkles } from 'lucide-react';
+import {
+    AlertCircle,
+    CheckCircle,
+    CreditCard,
+    Download,
+    ExternalLink,
+    Receipt,
+    Sparkles,
+} from 'lucide-react';
 import { useState } from 'react';
 
 interface Subscription {
@@ -29,9 +50,7 @@ interface BillingIndexProps {
     userRole: WorkspaceRole;
 }
 
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Billing', href: '/billing' },
-];
+const breadcrumbs: BreadcrumbItem[] = [{ title: 'Billing', href: '/billing' }];
 
 export default function BillingIndex({
     workspace,
@@ -43,6 +62,37 @@ export default function BillingIndex({
     const isOwner = userRole === 'owner';
     const currentPlan = plans.find((p) => p.name === workspace.plan);
     const [portalLoading, setPortalLoading] = useState(false);
+    const [resumeLoading, setResumeLoading] = useState(false);
+    const { addToast } = useToast();
+
+    const handleResumeSubscription = async () => {
+        setResumeLoading(true);
+        try {
+            const response = await fetch('/billing/resume', {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'X-CSRF-TOKEN':
+                        document
+                            .querySelector('meta[name="csrf-token"]')
+                            ?.getAttribute('content') || '',
+                },
+            });
+            const data = await response.json();
+            if (data.success) {
+                window.location.reload();
+            } else {
+                addToast(
+                    data.error || 'Failed to resume subscription',
+                    'error',
+                );
+                setResumeLoading(false);
+            }
+        } catch (error) {
+            console.error('Resume error:', error);
+            setResumeLoading(false);
+        }
+    };
 
     const handlePortalRedirect = async () => {
         setPortalLoading(true);
@@ -50,8 +100,11 @@ export default function BillingIndex({
             const response = await fetch('/billing/portal', {
                 method: 'GET',
                 headers: {
-                    'Accept': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
+                    Accept: 'application/json',
+                    'X-CSRF-TOKEN':
+                        document
+                            .querySelector('meta[name="csrf-token"]')
+                            ?.getAttribute('content') || '',
                 },
             });
             const data = await response.json();
@@ -104,7 +157,8 @@ export default function BillingIndex({
                                     Current Plan
                                 </CardTitle>
                                 <CardDescription>
-                                    Your workspace is on the {workspace.plan} plan
+                                    Your workspace is on the {workspace.plan}{' '}
+                                    plan
                                 </CardDescription>
                             </div>
                             {getStatusBadge()}
@@ -113,7 +167,9 @@ export default function BillingIndex({
                     <CardContent>
                         <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
                             <div className="space-y-1">
-                                <p className="text-3xl font-bold">{workspace.plan}</p>
+                                <p className="text-3xl font-bold">
+                                    {workspace.plan}
+                                </p>
                                 {currentPlan && (
                                     <p className="text-muted-foreground">
                                         {currentPlan.price.monthly > 0
@@ -121,25 +177,51 @@ export default function BillingIndex({
                                             : 'Free forever'}
                                     </p>
                                 )}
-                                {workspace.on_trial && workspace.trial_ends_at && (
-                                    <p className="text-sm text-yellow-600 dark:text-yellow-400">
-                                        Trial ends on{' '}
-                                        {new Date(workspace.trial_ends_at).toLocaleDateString()}
-                                    </p>
-                                )}
-                                {subscription?.cancelled && subscription.ends_at && (
-                                    <p className="text-sm text-destructive">
-                                        Your subscription will end on{' '}
-                                        {new Date(subscription.ends_at).toLocaleDateString()}
-                                    </p>
-                                )}
+                                {workspace.on_trial &&
+                                    workspace.trial_ends_at && (
+                                        <p className="text-sm text-yellow-600 dark:text-yellow-400">
+                                            Trial ends on{' '}
+                                            {new Date(
+                                                workspace.trial_ends_at,
+                                            ).toLocaleDateString()}
+                                        </p>
+                                    )}
+                                {subscription?.cancelled &&
+                                    subscription.ends_at && (
+                                        <div className="space-y-2">
+                                            <p className="text-sm text-destructive">
+                                                Your subscription will end on{' '}
+                                                {new Date(
+                                                    subscription.ends_at,
+                                                ).toLocaleDateString()}
+                                            </p>
+                                            {subscription.on_grace_period &&
+                                                isOwner && (
+                                                    <Button
+                                                        variant="outline"
+                                                        size="sm"
+                                                        onClick={
+                                                            handleResumeSubscription
+                                                        }
+                                                        disabled={resumeLoading}
+                                                    >
+                                                        {resumeLoading && (
+                                                            <Spinner className="mr-2" />
+                                                        )}
+                                                        Resume Subscription
+                                                    </Button>
+                                                )}
+                                        </div>
+                                    )}
                             </div>
                             <div className="flex gap-2">
                                 {isOwner && (
                                     <>
                                         <Button asChild>
                                             <Link href="/billing/plans">
-                                                {workspace.plan === 'Free' ? 'Upgrade' : 'Change Plan'}
+                                                {workspace.plan === 'Free'
+                                                    ? 'Upgrade'
+                                                    : 'Change Plan'}
                                             </Link>
                                         </Button>
                                         {subscription && (
@@ -164,14 +246,21 @@ export default function BillingIndex({
                         {/* Plan Features */}
                         {currentPlan && (
                             <div className="mt-6 border-t pt-6">
-                                <h4 className="mb-3 text-sm font-medium">Plan Features</h4>
+                                <h4 className="mb-3 text-sm font-medium">
+                                    Plan Features
+                                </h4>
                                 <ul className="grid gap-2 md:grid-cols-2">
-                                    {currentPlan.features.map((feature, index) => (
-                                        <li key={index} className="flex items-center gap-2 text-sm">
-                                            <CheckCircle className="h-4 w-4 text-green-500" />
-                                            {feature}
-                                        </li>
-                                    ))}
+                                    {currentPlan.features.map(
+                                        (feature, index) => (
+                                            <li
+                                                key={index}
+                                                className="flex items-center gap-2 text-sm"
+                                            >
+                                                <CheckCircle className="h-4 w-4 text-green-500" />
+                                                {feature}
+                                            </li>
+                                        ),
+                                    )}
                                 </ul>
                             </div>
                         )}
@@ -187,7 +276,8 @@ export default function BillingIndex({
                                 Payment Method
                             </CardTitle>
                             <CardDescription>
-                                Manage your payment method through the billing portal.
+                                Manage your payment method through the billing
+                                portal.
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
@@ -227,12 +317,18 @@ export default function BillingIndex({
                                         className="flex items-center justify-between rounded-lg border p-4"
                                     >
                                         <div>
-                                            <p className="font-medium">{invoice.date}</p>
+                                            <p className="font-medium">
+                                                {invoice.date}
+                                            </p>
                                             <p className="text-sm text-muted-foreground">
                                                 {invoice.total}
                                             </p>
                                         </div>
-                                        <Button variant="ghost" size="sm" asChild>
+                                        <Button
+                                            variant="ghost"
+                                            size="sm"
+                                            asChild
+                                        >
                                             <a
                                                 href={invoice.pdf_url}
                                                 target="_blank"
@@ -254,13 +350,18 @@ export default function BillingIndex({
                     <Card className="border-dashed">
                         <CardContent className="flex flex-col items-center justify-center py-12">
                             <AlertCircle className="mb-4 h-12 w-12 text-muted-foreground" />
-                            <h3 className="mb-2 text-lg font-medium">No Active Subscription</h3>
+                            <h3 className="mb-2 text-lg font-medium">
+                                No Active Subscription
+                            </h3>
                             <p className="mb-4 text-center text-muted-foreground">
-                                Upgrade to a paid plan to unlock more features and team members.
+                                Upgrade to a paid plan to unlock more features
+                                and team members.
                             </p>
                             {isOwner && (
                                 <Button asChild>
-                                    <Link href="/billing/plans">View Plans</Link>
+                                    <Link href="/billing/plans">
+                                        View Plans
+                                    </Link>
                                 </Button>
                             )}
                         </CardContent>
@@ -270,4 +371,3 @@ export default function BillingIndex({
         </AppLayout>
     );
 }
-

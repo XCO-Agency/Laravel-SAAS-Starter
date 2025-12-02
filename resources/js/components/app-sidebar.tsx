@@ -11,7 +11,13 @@ import {
 } from '@/components/ui/sidebar';
 import { WorkspaceSwitcher } from '@/components/workspace-switcher';
 import { type NavItem } from '@/types';
-import { BookOpen, CreditCard, Folder, LayoutGrid, Settings, Users } from 'lucide-react';
+import {
+    BookOpen,
+    CreditCard,
+    LayoutGrid,
+    Settings,
+    Users,
+} from 'lucide-react';
 
 const mainNavItems: NavItem[] = [
     {
@@ -38,14 +44,10 @@ const mainNavItems: NavItem[] = [
 
 const footerNavItems: NavItem[] = [
     {
-        title: 'Repository',
-        href: 'https://github.com/laravel/react-starter-kit',
-        icon: Folder,
-    },
-    {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits#react',
+        title: 'Help Center',
+        href: '/help',
         icon: BookOpen,
+        external: false,
     },
 ];
 

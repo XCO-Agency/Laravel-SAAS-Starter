@@ -193,6 +193,36 @@ class BillingController extends Controller
     }
 
     /**
+     * Resume a cancelled subscription during grace period.
+     */
+    public function resume(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $workspace = $request->user()->currentWorkspace;
+        $subscription = $workspace->subscription('default');
+
+        if (! $subscription || ! $subscription->onGracePeriod()) {
+            return response()->json([
+                'success' => false,
+                'error' => 'No subscription to resume.',
+            ], 400);
+        }
+
+        try {
+            $subscription->resume();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Your subscription has been resumed.',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'error' => 'Failed to resume subscription: '.$e->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
      * Handle Stripe webhooks.
      */
     public function webhook(Request $request): SymfonyResponse

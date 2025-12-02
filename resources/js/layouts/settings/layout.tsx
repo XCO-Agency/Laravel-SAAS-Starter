@@ -83,7 +83,7 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
                     <nav className="flex flex-col space-y-6">
                         {navSections.map((section) => (
                             <div key={section.title}>
-                                <h4 className="mb-2 px-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                                <h4 className="mb-2 px-2 text-xs font-semibold tracking-wider text-muted-foreground uppercase">
                                     {section.title}
                                 </h4>
                                 <div className="flex flex-col space-y-1">
@@ -93,12 +93,15 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
                                             size="sm"
                                             variant="ghost"
                                             asChild
-                                            className={cn('w-full justify-start', {
-                                                'bg-muted': isSameUrl(
-                                                    currentPath,
-                                                    item.href,
-                                                ),
-                                            })}
+                                            className={cn(
+                                                'w-full justify-start',
+                                                {
+                                                    'bg-muted': isSameUrl(
+                                                        currentPath,
+                                                        item.href,
+                                                    ),
+                                                },
+                                            )}
                                         >
                                             <Link href={item.href}>
                                                 {item.icon && (

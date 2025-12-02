@@ -1,6 +1,12 @@
 import Heading from '@/components/heading';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem, type Workspace } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
@@ -54,14 +60,18 @@ export default function WorkspacesIndex({
                     )}
                 </div>
 
-                <p className="text-sm text-muted-foreground">{workspaceLimitMessage}</p>
+                <p className="text-sm text-muted-foreground">
+                    {workspaceLimitMessage}
+                </p>
 
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                     {workspaces.map((workspace) => (
                         <Card
                             key={workspace.id}
                             className={`cursor-pointer transition-all hover:shadow-md ${
-                                workspace.is_current ? 'ring-2 ring-primary' : ''
+                                workspace.is_current
+                                    ? 'ring-2 ring-primary'
+                                    : ''
                             }`}
                             onClick={() => switchWorkspace(workspace)}
                         >
@@ -116,7 +126,9 @@ export default function WorkspacesIndex({
                                                 Admin
                                             </>
                                         )}
-                                        {workspace.role === 'member' && <>Member</>}
+                                        {workspace.role === 'member' && (
+                                            <>Member</>
+                                        )}
                                     </span>
                                 </CardDescription>
                                 <div className="mt-3 flex items-center justify-between">
@@ -133,7 +145,9 @@ export default function WorkspacesIndex({
                     <Card>
                         <CardContent className="flex flex-col items-center justify-center py-12">
                             <Building2 className="mb-4 h-12 w-12 text-muted-foreground" />
-                            <h3 className="mb-2 text-lg font-medium">No workspaces yet</h3>
+                            <h3 className="mb-2 text-lg font-medium">
+                                No workspaces yet
+                            </h3>
                             <p className="mb-4 text-center text-muted-foreground">
                                 Create your first workspace to get started.
                             </p>
@@ -152,4 +166,3 @@ export default function WorkspacesIndex({
         </AppLayout>
     );
 }
-

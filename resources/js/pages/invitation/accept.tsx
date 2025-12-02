@@ -1,6 +1,12 @@
 import AppLogoIcon from '@/components/app-logo-icon';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 import { Spinner } from '@/components/ui/spinner';
 import { useTranslations } from '@/hooks/use-translations';
 import { type SharedData } from '@/types';
@@ -24,7 +30,9 @@ interface InvitationAcceptProps {
     invitation: InvitationData;
 }
 
-export default function InvitationAccept({ invitation }: InvitationAcceptProps) {
+export default function InvitationAccept({
+    invitation,
+}: InvitationAcceptProps) {
     const { auth } = usePage<SharedData>().props;
     const { t } = useTranslations();
     const [processing, setProcessing] = useState(false);
@@ -34,12 +42,17 @@ export default function InvitationAccept({ invitation }: InvitationAcceptProps) 
 
     const handleAccept = () => {
         setProcessing(true);
-        router.post(`/invitations/${invitation.token}/accept`, {}, {
-            onFinish: () => setProcessing(false),
-        });
+        router.post(
+            `/invitations/${invitation.token}/accept`,
+            {},
+            {
+                onFinish: () => setProcessing(false),
+            },
+        );
     };
 
-    const formatRole = (role: string) => role.charAt(0).toUpperCase() + role.slice(1);
+    const formatRole = (role: string) =>
+        role.charAt(0).toUpperCase() + role.slice(1);
 
     return (
         <>
@@ -67,7 +80,10 @@ export default function InvitationAccept({ invitation }: InvitationAcceptProps) 
                             {t('invitation.title', "You're Invited!")}
                         </CardTitle>
                         <CardDescription>
-                            {t('invitation.description', "You've been invited to join")}{' '}
+                            {t(
+                                'invitation.description',
+                                "You've been invited to join",
+                            )}{' '}
                             <strong>{invitation.workspace.name}</strong>
                         </CardDescription>
                     </CardHeader>
@@ -75,16 +91,25 @@ export default function InvitationAccept({ invitation }: InvitationAcceptProps) 
                         <div className="space-y-3 rounded-lg bg-muted/50 p-4">
                             <div className="flex items-center gap-3 text-sm">
                                 <Mail className="h-4 w-4 text-muted-foreground" />
-                                <span>{t('invitation.invited_email', 'Invited')}: {invitation.email}</span>
+                                <span>
+                                    {t('invitation.invited_email', 'Invited')}:{' '}
+                                    {invitation.email}
+                                </span>
                             </div>
                             <div className="flex items-center gap-3 text-sm">
                                 <UserCheck className="h-4 w-4 text-muted-foreground" />
-                                <span>{t('invitation.role', 'Role')}: {formatRole(invitation.role)}</span>
+                                <span>
+                                    {t('invitation.role', 'Role')}:{' '}
+                                    {formatRole(invitation.role)}
+                                </span>
                             </div>
                             <div className="flex items-center gap-3 text-sm">
                                 <Calendar className="h-4 w-4 text-muted-foreground" />
                                 <span>
-                                    {t('invitation.expires', 'Expires')}: {new Date(invitation.expires_at).toLocaleDateString()}
+                                    {t('invitation.expires', 'Expires')}:{' '}
+                                    {new Date(
+                                        invitation.expires_at,
+                                    ).toLocaleDateString()}
                                 </span>
                             </div>
                         </div>
@@ -98,23 +123,43 @@ export default function InvitationAccept({ invitation }: InvitationAcceptProps) 
                                     disabled={processing}
                                 >
                                     {processing && <Spinner className="mr-2" />}
-                                    {t('invitation.accept_button', 'Accept Invitation')}
+                                    {t(
+                                        'invitation.accept_button',
+                                        'Accept Invitation',
+                                    )}
                                 </Button>
                             ) : (
                                 <div className="space-y-4">
                                     <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-4 text-sm text-yellow-800 dark:border-yellow-800 dark:bg-yellow-950/50 dark:text-yellow-200">
                                         <p>
-                                            {t('invitation.wrong_account', "You're signed in as")}{' '}
+                                            {t(
+                                                'invitation.wrong_account',
+                                                "You're signed in as",
+                                            )}{' '}
                                             <strong>{auth.user.email}</strong>,{' '}
-                                            {t('invitation.but_sent_to', 'but this invitation was sent to')}{' '}
+                                            {t(
+                                                'invitation.but_sent_to',
+                                                'but this invitation was sent to',
+                                            )}{' '}
                                             <strong>{invitation.email}</strong>.
                                         </p>
                                         <p className="mt-2">
-                                            {t('invitation.sign_out_message', 'Please sign out and sign in with the correct account, or create a new account with that email.')}
+                                            {t(
+                                                'invitation.sign_out_message',
+                                                'Please sign out and sign in with the correct account, or create a new account with that email.',
+                                            )}
                                         </p>
                                     </div>
-                                    <Button variant="outline" className="w-full" asChild>
-                                        <Link href="/logout" method="post" as="button">
+                                    <Button
+                                        variant="outline"
+                                        className="w-full"
+                                        asChild
+                                    >
+                                        <Link
+                                            href="/logout"
+                                            method="post"
+                                            as="button"
+                                        >
                                             {t('auth.sign_out', 'Sign Out')}
                                         </Link>
                                     </Button>
@@ -123,17 +168,31 @@ export default function InvitationAccept({ invitation }: InvitationAcceptProps) 
                         ) : (
                             <div className="space-y-4">
                                 <p className="text-center text-sm text-muted-foreground">
-                                    {t('invitation.auth_required', 'Sign in or create an account to accept this invitation.')}
+                                    {t(
+                                        'invitation.auth_required',
+                                        'Sign in or create an account to accept this invitation.',
+                                    )}
                                 </p>
                                 <div className="grid gap-2">
                                     <Button className="w-full" asChild>
-                                        <Link href={`/login?email=${encodeURIComponent(invitation.email)}&redirect=/invitations/${invitation.token}`}>
+                                        <Link
+                                            href={`/login?email=${encodeURIComponent(invitation.email)}&redirect=/invitations/${invitation.token}`}
+                                        >
                                             {t('auth.sign_in', 'Sign In')}
                                         </Link>
                                     </Button>
-                                    <Button variant="outline" className="w-full" asChild>
-                                        <Link href={`/register?email=${encodeURIComponent(invitation.email)}&redirect=/invitations/${invitation.token}`}>
-                                            {t('auth.create_account', 'Create Account')}
+                                    <Button
+                                        variant="outline"
+                                        className="w-full"
+                                        asChild
+                                    >
+                                        <Link
+                                            href={`/register?email=${encodeURIComponent(invitation.email)}&redirect=/invitations/${invitation.token}`}
+                                        >
+                                            {t(
+                                                'auth.create_account',
+                                                'Create Account',
+                                            )}
                                         </Link>
                                     </Button>
                                 </div>
@@ -143,10 +202,12 @@ export default function InvitationAccept({ invitation }: InvitationAcceptProps) 
                 </Card>
 
                 <p className="mt-8 text-center text-sm text-muted-foreground">
-                    {t('invitation.ignore_message', "If you weren't expecting this invitation, you can safely ignore it.")}
+                    {t(
+                        'invitation.ignore_message',
+                        "If you weren't expecting this invitation, you can safely ignore it.",
+                    )}
                 </p>
             </div>
         </>
     );
 }
-

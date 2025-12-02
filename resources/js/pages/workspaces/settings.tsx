@@ -1,13 +1,23 @@
 import HeadingSmall from '@/components/heading-small';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
-import { type BreadcrumbItem, type Workspace, type WorkspaceRole } from '@/types';
+import {
+    type BreadcrumbItem,
+    type Workspace,
+    type WorkspaceRole,
+} from '@/types';
 import { Head, router, useForm } from '@inertiajs/react';
 import { AlertTriangle, Building2, Upload, X } from 'lucide-react';
 import { type ChangeEvent, useRef, useState } from 'react';
@@ -21,7 +31,10 @@ const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Workspace Settings', href: '/workspaces/settings' },
 ];
 
-export default function WorkspaceSettings({ workspace, userRole }: WorkspaceSettingsProps) {
+export default function WorkspaceSettings({
+    workspace,
+    userRole,
+}: WorkspaceSettingsProps) {
     const { data, setData, errors, processing, isDirty } = useForm({
         name: workspace.name,
         slug: workspace.slug,
@@ -29,7 +42,9 @@ export default function WorkspaceSettings({ workspace, userRole }: WorkspaceSett
         remove_logo: false,
     });
 
-    const [logoPreview, setLogoPreview] = useState<string | null>(workspace.logo_url);
+    const [logoPreview, setLogoPreview] = useState<string | null>(
+        workspace.logo_url,
+    );
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [deleteConfirm, setDeleteConfirm] = useState('');
 
@@ -109,7 +124,7 @@ export default function WorkspaceSettings({ workspace, userRole }: WorkspaceSett
                                                     <button
                                                         type="button"
                                                         onClick={removeLogo}
-                                                        className="absolute -right-2 -top-2 rounded-full bg-destructive p-1 text-destructive-foreground"
+                                                        className="absolute -top-2 -right-2 rounded-full bg-destructive p-1 text-destructive-foreground"
                                                     >
                                                         <X className="h-4 w-4" />
                                                     </button>
@@ -133,7 +148,9 @@ export default function WorkspaceSettings({ workspace, userRole }: WorkspaceSett
                                                 <Button
                                                     type="button"
                                                     variant="outline"
-                                                    onClick={() => fileInputRef.current?.click()}
+                                                    onClick={() =>
+                                                        fileInputRef.current?.click()
+                                                    }
                                                 >
                                                     <Upload className="mr-2 h-4 w-4" />
                                                     Upload Logo
@@ -153,7 +170,9 @@ export default function WorkspaceSettings({ workspace, userRole }: WorkspaceSett
                                     <Input
                                         id="name"
                                         value={data.name}
-                                        onChange={(e) => setData('name', e.target.value)}
+                                        onChange={(e) =>
+                                            setData('name', e.target.value)
+                                        }
                                         placeholder="My Awesome Workspace"
                                         required
                                         disabled={!isAdmin}
@@ -171,7 +190,9 @@ export default function WorkspaceSettings({ workspace, userRole }: WorkspaceSett
                                         <Input
                                             id="slug"
                                             value={data.slug}
-                                            onChange={(e) => setData('slug', e.target.value)}
+                                            onChange={(e) =>
+                                                setData('slug', e.target.value)
+                                            }
                                             placeholder="my-awesome-workspace"
                                             className="rounded-l-none"
                                             disabled={!isAdmin}
@@ -181,8 +202,13 @@ export default function WorkspaceSettings({ workspace, userRole }: WorkspaceSett
                                 </div>
 
                                 {isAdmin && (
-                                    <Button type="submit" disabled={processing || !isDirty}>
-                                        {processing && <Spinner className="mr-2" />}
+                                    <Button
+                                        type="submit"
+                                        disabled={processing || !isDirty}
+                                    >
+                                        {processing && (
+                                            <Spinner className="mr-2" />
+                                        )}
                                         Save Changes
                                     </Button>
                                 )}
@@ -201,7 +227,9 @@ export default function WorkspaceSettings({ workspace, userRole }: WorkspaceSett
                         <CardContent>
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <p className="text-2xl font-bold">{workspace.plan}</p>
+                                    <p className="text-2xl font-bold">
+                                        {workspace.plan}
+                                    </p>
                                     <p className="text-sm text-muted-foreground">
                                         {workspace.plan === 'Free'
                                             ? 'Upgrade to unlock more features'
@@ -224,30 +252,38 @@ export default function WorkspaceSettings({ workspace, userRole }: WorkspaceSett
                                     Danger Zone
                                 </CardTitle>
                                 <CardDescription>
-                                    Permanently delete this workspace and all of its data.
+                                    Permanently delete this workspace and all of
+                                    its data.
                                 </CardDescription>
                             </CardHeader>
                             <CardContent>
                                 <p className="mb-4 text-sm text-muted-foreground">
-                                    Once you delete a workspace, there is no going back. All data,
-                                    team members, and configurations will be permanently removed.
+                                    Once you delete a workspace, there is no
+                                    going back. All data, team members, and
+                                    configurations will be permanently removed.
                                 </p>
                                 <div className="space-y-4">
                                     <div className="space-y-2">
                                         <Label htmlFor="delete-confirm">
-                                            Type <strong>{workspace.name}</strong> to confirm
+                                            Type{' '}
+                                            <strong>{workspace.name}</strong> to
+                                            confirm
                                         </Label>
                                         <Input
                                             id="delete-confirm"
                                             value={deleteConfirm}
-                                            onChange={(e) => setDeleteConfirm(e.target.value)}
+                                            onChange={(e) =>
+                                                setDeleteConfirm(e.target.value)
+                                            }
                                             placeholder={workspace.name}
                                         />
                                     </div>
                                     <Button
                                         variant="destructive"
                                         onClick={handleDelete}
-                                        disabled={deleteConfirm !== workspace.name}
+                                        disabled={
+                                            deleteConfirm !== workspace.name
+                                        }
                                     >
                                         Delete Workspace
                                     </Button>
@@ -260,7 +296,8 @@ export default function WorkspaceSettings({ workspace, userRole }: WorkspaceSett
                         <Card className="border-muted">
                             <CardContent className="py-6">
                                 <p className="text-sm text-muted-foreground">
-                                    This is your personal workspace and cannot be deleted.
+                                    This is your personal workspace and cannot
+                                    be deleted.
                                 </p>
                             </CardContent>
                         </Card>
@@ -270,4 +307,3 @@ export default function WorkspaceSettings({ workspace, userRole }: WorkspaceSett
         </AppLayout>
     );
 }
-

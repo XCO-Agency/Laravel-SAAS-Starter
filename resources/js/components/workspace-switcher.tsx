@@ -6,7 +6,12 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/components/ui/sidebar';
+import {
+    SidebarMenu,
+    SidebarMenuButton,
+    SidebarMenuItem,
+    useSidebar,
+} from '@/components/ui/sidebar';
 import { type SharedData } from '@/types';
 import { router, usePage } from '@inertiajs/react';
 import { Building2, Check, ChevronsUpDown, Plus, Settings } from 'lucide-react';
@@ -80,11 +85,17 @@ export function WorkspaceSwitcher() {
                                         <Building2 className="size-4" />
                                     )}
                                 </div>
-                                <span className="flex-1 truncate">{workspace.name}</span>
+                                <span className="flex-1 truncate">
+                                    {workspace.name}
+                                </span>
                                 {workspace.personal_workspace && (
-                                    <span className="text-xs text-muted-foreground">Personal</span>
+                                    <span className="text-xs text-muted-foreground">
+                                        Personal
+                                    </span>
                                 )}
-                                {workspace.is_current && <Check className="ml-auto size-4" />}
+                                {workspace.is_current && (
+                                    <Check className="ml-auto size-4" />
+                                )}
                             </DropdownMenuItem>
                         ))}
                         <DropdownMenuSeparator />
@@ -95,7 +106,9 @@ export function WorkspaceSwitcher() {
                             <div className="flex size-6 items-center justify-center rounded-md border bg-background">
                                 <Settings className="size-4" />
                             </div>
-                            <span className="text-muted-foreground">Workspace Settings</span>
+                            <span className="text-muted-foreground">
+                                Workspace Settings
+                            </span>
                         </DropdownMenuItem>
                         <DropdownMenuItem
                             className="cursor-pointer gap-2 p-2"
@@ -104,7 +117,9 @@ export function WorkspaceSwitcher() {
                             <div className="flex size-6 items-center justify-center rounded-md border bg-background">
                                 <Plus className="size-4" />
                             </div>
-                            <span className="text-muted-foreground">Create Workspace</span>
+                            <span className="text-muted-foreground">
+                                Create Workspace
+                            </span>
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
@@ -112,4 +127,3 @@ export function WorkspaceSwitcher() {
         </SidebarMenu>
     );
 }
-

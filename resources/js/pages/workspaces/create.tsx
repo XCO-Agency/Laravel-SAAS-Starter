@@ -1,7 +1,13 @@
 import Heading from '@/components/heading';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
@@ -113,7 +119,7 @@ export default function CreateWorkspace() {
                                             <button
                                                 type="button"
                                                 onClick={removeLogo}
-                                                className="absolute -right-2 -top-2 rounded-full bg-destructive p-1 text-destructive-foreground"
+                                                className="absolute -top-2 -right-2 rounded-full bg-destructive p-1 text-destructive-foreground"
                                             >
                                                 <X className="h-4 w-4" />
                                             </button>
@@ -135,7 +141,9 @@ export default function CreateWorkspace() {
                                         <Button
                                             type="button"
                                             variant="outline"
-                                            onClick={() => fileInputRef.current?.click()}
+                                            onClick={() =>
+                                                fileInputRef.current?.click()
+                                            }
                                         >
                                             <Upload className="mr-2 h-4 w-4" />
                                             Upload Logo
@@ -171,14 +179,16 @@ export default function CreateWorkspace() {
                                     <Input
                                         id="slug"
                                         value={data.slug}
-                                        onChange={(e) => setData('slug', e.target.value)}
+                                        onChange={(e) =>
+                                            setData('slug', e.target.value)
+                                        }
                                         placeholder="my-awesome-workspace"
                                         className="rounded-l-none"
                                     />
                                 </div>
                                 <p className="text-xs text-muted-foreground">
-                                    This will be used in URLs. Only lowercase letters, numbers, and
-                                    hyphens are allowed.
+                                    This will be used in URLs. Only lowercase
+                                    letters, numbers, and hyphens are allowed.
                                 </p>
                                 <InputError message={errors.slug} />
                             </div>
@@ -204,4 +214,3 @@ export default function CreateWorkspace() {
         </AppLayout>
     );
 }
-

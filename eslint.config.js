@@ -8,7 +8,13 @@ import typescript from 'typescript-eslint';
 /** @type {import('eslint').Linter.Config[]} */
 export default [
     js.configs.recommended,
-    reactHooks.configs.flat.recommended,
+    {
+        ...reactHooks.configs.flat.recommended,
+        rules: {
+            ...reactHooks.configs.flat.recommended.rules,
+            'react-hooks/immutability': 'off', // Allow window.location.href for external redirects
+        },
+    },
     ...typescript.configs.recommended,
     {
         ...react.configs.flat.recommended,

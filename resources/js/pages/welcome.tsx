@@ -1,7 +1,14 @@
 import AppLogoIcon from '@/components/app-logo-icon';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 import { type SharedData } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
 import {
@@ -10,7 +17,6 @@ import {
     Check,
     CreditCard,
     Globe,
-    Layers,
     Lock,
     Sparkles,
     Users,
@@ -21,32 +27,38 @@ const features = [
     {
         icon: Building2,
         title: 'Multi-Workspace',
-        description: 'Organize your work across multiple projects and clients with dedicated workspaces.',
+        description:
+            'Organize your work across multiple projects and clients with dedicated workspaces.',
     },
     {
         icon: Users,
         title: 'Team Collaboration',
-        description: 'Invite team members, assign roles, and collaborate seamlessly on shared projects.',
+        description:
+            'Invite team members, assign roles, and collaborate seamlessly on shared projects.',
     },
     {
         icon: CreditCard,
         title: 'Flexible Billing',
-        description: 'Per-workspace billing with flexible plans. Scale each workspace independently.',
+        description:
+            'Per-workspace billing with flexible plans. Scale each workspace independently.',
     },
     {
         icon: Lock,
         title: 'Enterprise Security',
-        description: 'Two-factor authentication, secure sessions, and granular access controls.',
+        description:
+            'Two-factor authentication, secure sessions, and granular access controls.',
     },
     {
         icon: Zap,
         title: 'Lightning Fast',
-        description: 'Built on modern technologies for exceptional performance and reliability.',
+        description:
+            'Built on modern technologies for exceptional performance and reliability.',
     },
     {
         icon: Globe,
         title: 'API Ready',
-        description: 'Full API access to integrate with your existing tools and workflows.',
+        description:
+            'Full API access to integrate with your existing tools and workflows.',
     },
 ];
 
@@ -56,7 +68,12 @@ const plans = [
         name: 'Free',
         description: 'Perfect for getting started',
         price: { monthly: 0, yearly: 0 },
-        features: ['1 workspace', '1 team member', 'Basic features', 'Community support'],
+        features: [
+            '1 workspace',
+            '1 team member',
+            'Basic features',
+            'Community support',
+        ],
         popular: false,
     },
     {
@@ -90,7 +107,11 @@ const plans = [
     },
 ];
 
-export default function Welcome({ canRegister = true }: { canRegister?: boolean }) {
+export default function Welcome({
+    canRegister = true,
+}: {
+    canRegister?: boolean;
+}) {
     const { auth, name } = usePage<SharedData>().props;
 
     return (
@@ -109,7 +130,13 @@ export default function Welcome({ canRegister = true }: { canRegister?: boolean 
                     <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
                         <Link href="/" className="flex items-center gap-2">
                             <AppLogoIcon className="h-8 w-8" />
-                            <span className="text-xl font-bold" style={{ fontFamily: 'Bricolage Grotesque, sans-serif' }}>
+                            <span
+                                className="text-xl font-bold"
+                                style={{
+                                    fontFamily:
+                                        'Bricolage Grotesque, sans-serif',
+                                }}
+                            >
                                 {name}
                             </span>
                         </Link>
@@ -126,7 +153,9 @@ export default function Welcome({ canRegister = true }: { canRegister?: boolean 
                                     </Button>
                                     {canRegister && (
                                         <Button asChild>
-                                            <Link href="/register">Get Started</Link>
+                                            <Link href="/register">
+                                                Get Started
+                                            </Link>
                                         </Button>
                                     )}
                                 </>
@@ -139,7 +168,10 @@ export default function Welcome({ canRegister = true }: { canRegister?: boolean 
                 <section className="relative overflow-hidden pt-32 pb-20 sm:pt-40 sm:pb-32">
                     <div className="absolute inset-0 -z-10">
                         <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]" />
-                        <div className="absolute left-1/2 top-0 -z-10 -translate-x-1/2 blur-3xl" aria-hidden="true">
+                        <div
+                            className="absolute top-0 left-1/2 -z-10 -translate-x-1/2 blur-3xl"
+                            aria-hidden="true"
+                        >
                             <div
                                 className="aspect-[1155/678] w-[72.1875rem] bg-gradient-to-tr from-primary/30 to-secondary/30 opacity-30"
                                 style={{
@@ -158,17 +190,23 @@ export default function Welcome({ canRegister = true }: { canRegister?: boolean 
                             </Badge>
                             <h1
                                 className="text-4xl font-bold tracking-tight sm:text-6xl lg:text-7xl"
-                                style={{ fontFamily: 'Bricolage Grotesque, sans-serif' }}
+                                style={{
+                                    fontFamily:
+                                        'Bricolage Grotesque, sans-serif',
+                                }}
                             >
                                 Build your SaaS
                                 <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-                                    {' '}faster{' '}
+                                    {' '}
+                                    faster{' '}
                                 </span>
                                 than ever
                             </h1>
                             <p className="mt-6 text-lg text-muted-foreground sm:text-xl">
-                                The complete foundation for your next SaaS application. Multi-tenancy,
-                                team management, billing, and authentication — all out of the box.
+                                The complete foundation for your next SaaS
+                                application. Multi-tenancy, team management,
+                                billing, and authentication — all out of the
+                                box.
                             </p>
                             <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
                                 {auth.user ? (
@@ -186,7 +224,11 @@ export default function Welcome({ canRegister = true }: { canRegister?: boolean 
                                                 <ArrowRight className="ml-2 h-4 w-4" />
                                             </Link>
                                         </Button>
-                                        <Button size="lg" variant="outline" asChild>
+                                        <Button
+                                            size="lg"
+                                            variant="outline"
+                                            asChild
+                                        >
                                             <a href="#pricing">View Pricing</a>
                                         </Button>
                                     </>
@@ -194,27 +236,31 @@ export default function Welcome({ canRegister = true }: { canRegister?: boolean 
                             </div>
                         </div>
 
-                        {/* Dashboard Preview */}
-                        <div className="mt-16 sm:mt-24">
-                            <div className="relative mx-auto max-w-5xl">
-                                <div className="absolute -inset-4 rounded-xl bg-gradient-to-r from-primary/20 via-secondary/20 to-primary/20 opacity-50 blur-xl" />
-                                <div className="relative overflow-hidden rounded-xl border bg-card shadow-2xl">
-                                    <div className="flex items-center gap-2 border-b bg-muted/50 px-4 py-3">
-                                        <div className="h-3 w-3 rounded-full bg-red-500" />
-                                        <div className="h-3 w-3 rounded-full bg-yellow-500" />
-                                        <div className="h-3 w-3 rounded-full bg-green-500" />
-                                    </div>
-                                    <div className="aspect-[16/9] bg-gradient-to-br from-muted/50 to-muted p-8">
-                                        <div className="flex h-full items-center justify-center">
-                                            <div className="text-center">
-                                                <Layers className="mx-auto h-16 w-16 text-muted-foreground/50" />
-                                                <p className="mt-4 text-muted-foreground">
-                                                    Your dashboard preview would appear here
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                        {/* Stats Section */}
+                        <div className="mt-16 grid gap-4 sm:mt-24 sm:grid-cols-3">
+                            <div className="rounded-xl border bg-card p-6 text-center">
+                                <p className="text-4xl font-bold text-primary">
+                                    10k+
+                                </p>
+                                <p className="mt-1 text-sm text-muted-foreground">
+                                    Active Users
+                                </p>
+                            </div>
+                            <div className="rounded-xl border bg-card p-6 text-center">
+                                <p className="text-4xl font-bold text-primary">
+                                    99.9%
+                                </p>
+                                <p className="mt-1 text-sm text-muted-foreground">
+                                    Uptime
+                                </p>
+                            </div>
+                            <div className="rounded-xl border bg-card p-6 text-center">
+                                <p className="text-4xl font-bold text-primary">
+                                    24/7
+                                </p>
+                                <p className="mt-1 text-sm text-muted-foreground">
+                                    Support
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -226,23 +272,32 @@ export default function Welcome({ canRegister = true }: { canRegister?: boolean 
                         <div className="mx-auto max-w-2xl text-center">
                             <h2
                                 className="text-3xl font-bold tracking-tight sm:text-4xl"
-                                style={{ fontFamily: 'Bricolage Grotesque, sans-serif' }}
+                                style={{
+                                    fontFamily:
+                                        'Bricolage Grotesque, sans-serif',
+                                }}
                             >
                                 Everything you need to build
                             </h2>
                             <p className="mt-4 text-lg text-muted-foreground">
-                                A complete foundation with all the features your SaaS needs from day one.
+                                A complete foundation with all the features your
+                                SaaS needs from day one.
                             </p>
                         </div>
 
                         <div className="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
                             {features.map((feature) => (
-                                <Card key={feature.title} className="relative overflow-hidden">
+                                <Card
+                                    key={feature.title}
+                                    className="relative overflow-hidden"
+                                >
                                     <CardHeader>
                                         <div className="mb-2 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
                                             <feature.icon className="h-6 w-6 text-primary" />
                                         </div>
-                                        <CardTitle className="text-xl">{feature.title}</CardTitle>
+                                        <CardTitle className="text-xl">
+                                            {feature.title}
+                                        </CardTitle>
                                     </CardHeader>
                                     <CardContent>
                                         <CardDescription className="text-base">
@@ -261,12 +316,16 @@ export default function Welcome({ canRegister = true }: { canRegister?: boolean 
                         <div className="mx-auto max-w-2xl text-center">
                             <h2
                                 className="text-3xl font-bold tracking-tight sm:text-4xl"
-                                style={{ fontFamily: 'Bricolage Grotesque, sans-serif' }}
+                                style={{
+                                    fontFamily:
+                                        'Bricolage Grotesque, sans-serif',
+                                }}
                             >
                                 Simple, transparent pricing
                             </h2>
                             <p className="mt-4 text-lg text-muted-foreground">
-                                Choose the plan that&apos;s right for you. Upgrade or downgrade at any time.
+                                Choose the plan that&apos;s right for you.
+                                Upgrade or downgrade at any time.
                             </p>
                         </div>
 
@@ -275,7 +334,9 @@ export default function Welcome({ canRegister = true }: { canRegister?: boolean 
                                 <Card
                                     key={plan.id}
                                     className={`relative flex flex-col ${
-                                        plan.popular ? 'border-primary shadow-lg' : ''
+                                        plan.popular
+                                            ? 'border-primary shadow-lg'
+                                            : ''
                                     }`}
                                 >
                                     {plan.popular && (
@@ -287,17 +348,28 @@ export default function Welcome({ canRegister = true }: { canRegister?: boolean 
                                         </div>
                                     )}
                                     <CardHeader className="text-center">
-                                        <CardTitle className="text-xl">{plan.name}</CardTitle>
-                                        <CardDescription>{plan.description}</CardDescription>
+                                        <CardTitle className="text-xl">
+                                            {plan.name}
+                                        </CardTitle>
+                                        <CardDescription>
+                                            {plan.description}
+                                        </CardDescription>
                                         <div className="mt-4">
-                                            <span className="text-4xl font-bold">${plan.price.monthly}</span>
-                                            <span className="text-muted-foreground">/month</span>
+                                            <span className="text-4xl font-bold">
+                                                ${plan.price.monthly}
+                                            </span>
+                                            <span className="text-muted-foreground">
+                                                /month
+                                            </span>
                                         </div>
                                     </CardHeader>
                                     <CardContent className="flex-1">
                                         <ul className="space-y-3">
                                             {plan.features.map((feature) => (
-                                                <li key={feature} className="flex items-start gap-2 text-sm">
+                                                <li
+                                                    key={feature}
+                                                    className="flex items-start gap-2 text-sm"
+                                                >
                                                     <Check className="mt-0.5 h-4 w-4 shrink-0 text-green-500" />
                                                     {feature}
                                                 </li>
@@ -306,11 +378,17 @@ export default function Welcome({ canRegister = true }: { canRegister?: boolean 
                                     </CardContent>
                                     <CardFooter>
                                         <Button
-                                            variant={plan.popular ? 'default' : 'outline'}
+                                            variant={
+                                                plan.popular
+                                                    ? 'default'
+                                                    : 'outline'
+                                            }
                                             className="w-full"
                                             asChild
                                         >
-                                            <Link href="/register">Get Started</Link>
+                                            <Link href="/register">
+                                                Get Started
+                                            </Link>
                                         </Button>
                                     </CardFooter>
                                 </Card>
@@ -323,20 +401,28 @@ export default function Welcome({ canRegister = true }: { canRegister?: boolean 
                 <section className="py-20 sm:py-32">
                     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                         <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary to-primary/80 px-6 py-20 sm:px-12 sm:py-28">
-                            <div className="absolute inset-0 bg-grid-white/10 [mask-image:radial-gradient(white,transparent_70%)]" />
+                            <div className="bg-grid-white/10 absolute inset-0 [mask-image:radial-gradient(white,transparent_70%)]" />
                             <div className="relative mx-auto max-w-2xl text-center">
                                 <h2
                                     className="text-3xl font-bold tracking-tight text-primary-foreground sm:text-4xl"
-                                    style={{ fontFamily: 'Bricolage Grotesque, sans-serif' }}
+                                    style={{
+                                        fontFamily:
+                                            'Bricolage Grotesque, sans-serif',
+                                    }}
                                 >
                                     Ready to get started?
                                 </h2>
                                 <p className="mt-4 text-lg text-primary-foreground/80">
-                                    Start building your SaaS today with our complete foundation.
-                                    No credit card required.
+                                    Start building your SaaS today with our
+                                    complete foundation. No credit card
+                                    required.
                                 </p>
                                 <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-                                    <Button size="lg" variant="secondary" asChild>
+                                    <Button
+                                        size="lg"
+                                        variant="secondary"
+                                        asChild
+                                    >
                                         <Link href="/register">
                                             Start Free Trial
                                             <ArrowRight className="ml-2 h-4 w-4" />
@@ -357,7 +443,8 @@ export default function Welcome({ canRegister = true }: { canRegister?: boolean 
                                 <span className="font-semibold">{name}</span>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                © {new Date().getFullYear()} {name}. All rights reserved.
+                                © {new Date().getFullYear()} {name}. All rights
+                                reserved.
                             </p>
                         </div>
                     </div>

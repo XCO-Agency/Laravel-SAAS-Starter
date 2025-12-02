@@ -1,6 +1,12 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
@@ -15,7 +21,6 @@ import {
     Users,
     Zap,
 } from 'lucide-react';
-
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -68,8 +73,12 @@ export default function Dashboard() {
                 <Head title="Dashboard" />
                 <div className="flex h-full flex-1 flex-col items-center justify-center gap-4 p-4">
                     <Building2 className="h-16 w-16 text-muted-foreground" />
-                    <h2 className="text-2xl font-semibold">No Workspace Selected</h2>
-                    <p className="text-muted-foreground">Create or select a workspace to get started.</p>
+                    <h2 className="text-2xl font-semibold">
+                        No Workspace Selected
+                    </h2>
+                    <p className="text-muted-foreground">
+                        Create or select a workspace to get started.
+                    </p>
                     <Button asChild>
                         <Link href="/workspaces/create">
                             <Plus className="mr-2 h-4 w-4" />
@@ -93,7 +102,8 @@ export default function Dashboard() {
                             Welcome back, {auth.user?.name?.split(' ')[0]}!
                         </h1>
                         <p className="text-muted-foreground">
-                            Here&apos;s what&apos;s happening in {workspace.name}.
+                            Here&apos;s what&apos;s happening in{' '}
+                            {workspace.name}.
                         </p>
                     </div>
                     {workspace.plan === 'Free' && (
@@ -111,7 +121,9 @@ export default function Dashboard() {
                     {/* Workspace Card */}
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Current Workspace</CardTitle>
+                            <CardTitle className="text-sm font-medium">
+                                Current Workspace
+                            </CardTitle>
                             <Building2 className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
@@ -127,10 +139,14 @@ export default function Dashboard() {
                                         <Building2 className="h-4 w-4 text-primary" />
                                     </div>
                                 )}
-                                <div className="truncate font-semibold">{workspace.name}</div>
+                                <div className="truncate font-semibold">
+                                    {workspace.name}
+                                </div>
                             </div>
                             {workspace.personal_workspace && (
-                                <p className="mt-1 text-xs text-muted-foreground">Personal workspace</p>
+                                <p className="mt-1 text-xs text-muted-foreground">
+                                    Personal workspace
+                                </p>
                             )}
                         </CardContent>
                     </Card>
@@ -138,12 +154,16 @@ export default function Dashboard() {
                     {/* Plan Card */}
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Current Plan</CardTitle>
+                            <CardTitle className="text-sm font-medium">
+                                Current Plan
+                            </CardTitle>
                             <Zap className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
                             <div className="flex items-center gap-2">
-                                <span className="text-2xl font-bold">{workspace.plan}</span>
+                                <span className="text-2xl font-bold">
+                                    {workspace.plan}
+                                </span>
                                 {workspace.plan !== 'Free' && (
                                     <Badge variant="secondary">Active</Badge>
                                 )}
@@ -161,11 +181,15 @@ export default function Dashboard() {
                     {/* Team Members Card */}
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Team Members</CardTitle>
+                            <CardTitle className="text-sm font-medium">
+                                Team Members
+                            </CardTitle>
                             <Users className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">{membersCount}</div>
+                            <div className="text-2xl font-bold">
+                                {membersCount}
+                            </div>
                             <Link
                                 href="/team"
                                 className="mt-1 flex items-center text-xs text-muted-foreground hover:text-primary"
@@ -179,20 +203,27 @@ export default function Dashboard() {
                     {/* Role Card */}
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Your Role</CardTitle>
+                            <CardTitle className="text-sm font-medium">
+                                Your Role
+                            </CardTitle>
                             <Crown className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
                             <div className="flex items-center gap-2">
-                                <span className="text-2xl font-bold capitalize">{workspace.role}</span>
+                                <span className="text-2xl font-bold capitalize">
+                                    {workspace.role}
+                                </span>
                                 {workspace.role === 'owner' && (
                                     <Crown className="h-5 w-5 text-yellow-500" />
                                 )}
                             </div>
                             <p className="mt-1 text-xs text-muted-foreground">
-                                {workspace.role === 'owner' && 'Full workspace control'}
-                                {workspace.role === 'admin' && 'Can manage team & settings'}
-                                {workspace.role === 'member' && 'Standard access'}
+                                {workspace.role === 'owner' &&
+                                    'Full workspace control'}
+                                {workspace.role === 'admin' &&
+                                    'Can manage team & settings'}
+                                {workspace.role === 'member' &&
+                                    'Standard access'}
                             </p>
                         </CardContent>
                     </Card>
@@ -202,7 +233,9 @@ export default function Dashboard() {
                 <Card>
                     <CardHeader>
                         <CardTitle>Quick Actions</CardTitle>
-                        <CardDescription>Common tasks to help you get things done faster.</CardDescription>
+                        <CardDescription>
+                            Common tasks to help you get things done faster.
+                        </CardDescription>
                     </CardHeader>
                     <CardContent>
                         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -218,7 +251,9 @@ export default function Dashboard() {
                                         <action.icon className="h-5 w-5" />
                                     </div>
                                     <div className="min-w-0 flex-1">
-                                        <p className="font-medium">{action.title}</p>
+                                        <p className="font-medium">
+                                            {action.title}
+                                        </p>
                                         <p className="truncate text-sm text-muted-foreground">
                                             {action.description}
                                         </p>
@@ -239,9 +274,12 @@ export default function Dashboard() {
                                     <Sparkles className="h-6 w-6 text-primary" />
                                 </div>
                                 <div>
-                                    <h3 className="font-semibold">Upgrade to Pro</h3>
+                                    <h3 className="font-semibold">
+                                        Upgrade to Pro
+                                    </h3>
                                     <p className="text-sm text-muted-foreground">
-                                        Unlock more workspaces, team members, and advanced features.
+                                        Unlock more workspaces, team members,
+                                        and advanced features.
                                     </p>
                                 </div>
                             </div>

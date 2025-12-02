@@ -11,4 +11,3 @@ export function useTranslations() {
 
     return { t };
 }
-

@@ -3,7 +3,13 @@ import InputError from '@/components/input-error';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 import {
     Dialog,
     DialogContent,
@@ -22,12 +28,33 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
 import { Spinner } from '@/components/ui/spinner';
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem, type TeamMember, type Workspace, type WorkspaceInvitation, type WorkspaceRole } from '@/types';
+import {
+    type BreadcrumbItem,
+    type TeamMember,
+    type Workspace,
+    type WorkspaceInvitation,
+    type WorkspaceRole,
+} from '@/types';
 import { Head, router, useForm } from '@inertiajs/react';
-import { Clock, Crown, Mail, MoreHorizontal, Settings, Trash2, UserPlus, Users } from 'lucide-react';
+import {
+    Clock,
+    Crown,
+    Mail,
+    MoreHorizontal,
+    Settings,
+    Trash2,
+    UserPlus,
+    Users,
+} from 'lucide-react';
 import { useState } from 'react';
 
 interface TeamIndexProps {
@@ -39,9 +66,7 @@ interface TeamIndexProps {
     memberLimitMessage: string;
 }
 
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Team', href: '/team' },
-];
+const breadcrumbs: BreadcrumbItem[] = [{ title: 'Team', href: '/team' }];
 
 export default function TeamIndex({
     workspace,
@@ -78,13 +103,21 @@ export default function TeamIndex({
     };
 
     const updateRole = (member: TeamMember, role: 'admin' | 'member') => {
-        router.put(`/team/members/${member.id}/role`, { role }, {
-            preserveScroll: true,
-        });
+        router.put(
+            `/team/members/${member.id}/role`,
+            { role },
+            {
+                preserveScroll: true,
+            },
+        );
     };
 
     const removeMember = (member: TeamMember) => {
-        if (confirm(`Are you sure you want to remove ${member.name} from this workspace?`)) {
+        if (
+            confirm(
+                `Are you sure you want to remove ${member.name} from this workspace?`,
+            )
+        ) {
             router.delete(`/team/members/${member.id}`, {
                 preserveScroll: true,
             });
@@ -92,10 +125,18 @@ export default function TeamIndex({
     };
 
     const transferOwnership = (member: TeamMember) => {
-        if (confirm(`Are you sure you want to transfer ownership to ${member.name}? You will become an admin.`)) {
-            router.post(`/team/transfer-ownership/${member.id}`, {}, {
-                preserveScroll: true,
-            });
+        if (
+            confirm(
+                `Are you sure you want to transfer ownership to ${member.name}? You will become an admin.`,
+            )
+        ) {
+            router.post(
+                `/team/transfer-ownership/${member.id}`,
+                {},
+                {
+                    preserveScroll: true,
+                },
+            );
         }
     };
 
@@ -146,29 +187,43 @@ export default function TeamIndex({
                             <DialogContent>
                                 <form onSubmit={handleInvite}>
                                     <DialogHeader>
-                                        <DialogTitle>Invite Team Member</DialogTitle>
+                                        <DialogTitle>
+                                            Invite Team Member
+                                        </DialogTitle>
                                         <DialogDescription>
-                                            Send an invitation to join your workspace.
+                                            Send an invitation to join your
+                                            workspace.
                                         </DialogDescription>
                                     </DialogHeader>
                                     <div className="space-y-4 py-4">
                                         <div className="space-y-2">
-                                            <Label htmlFor="email">Email Address</Label>
+                                            <Label htmlFor="email">
+                                                Email Address
+                                            </Label>
                                             <Input
                                                 id="email"
                                                 type="email"
                                                 placeholder="colleague@example.com"
                                                 value={inviteData.email}
-                                                onChange={(e) => setInviteData('email', e.target.value)}
+                                                onChange={(e) =>
+                                                    setInviteData(
+                                                        'email',
+                                                        e.target.value,
+                                                    )
+                                                }
                                                 required
                                             />
-                                            <InputError message={inviteErrors.email} />
+                                            <InputError
+                                                message={inviteErrors.email}
+                                            />
                                         </div>
                                         <div className="space-y-2">
                                             <Label htmlFor="role">Role</Label>
                                             <Select
                                                 value={inviteData.role}
-                                                onValueChange={(value: 'admin' | 'member') =>
+                                                onValueChange={(
+                                                    value: 'admin' | 'member',
+                                                ) =>
                                                     setInviteData('role', value)
                                                 }
                                             >
@@ -176,14 +231,21 @@ export default function TeamIndex({
                                                     <SelectValue placeholder="Select a role" />
                                                 </SelectTrigger>
                                                 <SelectContent>
-                                                    <SelectItem value="member">Member</SelectItem>
-                                                    <SelectItem value="admin">Admin</SelectItem>
+                                                    <SelectItem value="member">
+                                                        Member
+                                                    </SelectItem>
+                                                    <SelectItem value="admin">
+                                                        Admin
+                                                    </SelectItem>
                                                 </SelectContent>
                                             </Select>
                                             <p className="text-xs text-muted-foreground">
-                                                Admins can manage team members and workspace settings.
+                                                Admins can manage team members
+                                                and workspace settings.
                                             </p>
-                                            <InputError message={inviteErrors.role} />
+                                            <InputError
+                                                message={inviteErrors.role}
+                                            />
                                         </div>
                                     </div>
                                     <DialogFooter>
@@ -194,8 +256,13 @@ export default function TeamIndex({
                                         >
                                             Cancel
                                         </Button>
-                                        <Button type="submit" disabled={inviteProcessing}>
-                                            {inviteProcessing && <Spinner className="mr-2" />}
+                                        <Button
+                                            type="submit"
+                                            disabled={inviteProcessing}
+                                        >
+                                            {inviteProcessing && (
+                                                <Spinner className="mr-2" />
+                                            )}
                                             Send Invitation
                                         </Button>
                                     </DialogFooter>
@@ -205,7 +272,9 @@ export default function TeamIndex({
                     )}
                 </div>
 
-                <p className="text-sm text-muted-foreground">{memberLimitMessage}</p>
+                <p className="text-sm text-muted-foreground">
+                    {memberLimitMessage}
+                </p>
 
                 {/* Team Members */}
                 <Card>
@@ -215,7 +284,8 @@ export default function TeamIndex({
                             Team Members
                         </CardTitle>
                         <CardDescription>
-                            {members.length} member{members.length !== 1 ? 's' : ''} in this workspace
+                            {members.length} member
+                            {members.length !== 1 ? 's' : ''} in this workspace
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
@@ -227,11 +297,15 @@ export default function TeamIndex({
                                 >
                                     <div className="flex items-center gap-4">
                                         <Avatar>
-                                            <AvatarFallback>{getInitials(member.name)}</AvatarFallback>
+                                            <AvatarFallback>
+                                                {getInitials(member.name)}
+                                            </AvatarFallback>
                                         </Avatar>
                                         <div>
                                             <div className="flex items-center gap-2">
-                                                <p className="font-medium">{member.name}</p>
+                                                <p className="font-medium">
+                                                    {member.name}
+                                                </p>
                                                 {member.is_current_user && (
                                                     <span className="text-xs text-muted-foreground">
                                                         (you)
@@ -244,55 +318,84 @@ export default function TeamIndex({
                                         </div>
                                     </div>
                                     <div className="flex items-center gap-4">
-                                        <Badge variant={getRoleBadgeVariant(member.role)}>
+                                        <Badge
+                                            variant={getRoleBadgeVariant(
+                                                member.role,
+                                            )}
+                                        >
                                             {member.role === 'owner' && (
                                                 <Crown className="mr-1 h-3 w-3" />
                                             )}
                                             {member.role === 'admin' && (
                                                 <Settings className="mr-1 h-3 w-3" />
                                             )}
-                                            {member.role.charAt(0).toUpperCase() + member.role.slice(1)}
+                                            {member.role
+                                                .charAt(0)
+                                                .toUpperCase() +
+                                                member.role.slice(1)}
                                         </Badge>
-                                        {isAdmin && !member.is_current_user && member.role !== 'owner' && (
-                                            <DropdownMenu>
-                                                <DropdownMenuTrigger asChild>
-                                                    <Button variant="ghost" size="icon">
-                                                        <MoreHorizontal className="h-4 w-4" />
-                                                    </Button>
-                                                </DropdownMenuTrigger>
-                                                <DropdownMenuContent align="end">
-                                                    <DropdownMenuItem
-                                                        onClick={() =>
-                                                            updateRole(
-                                                                member,
-                                                                member.role === 'admin' ? 'member' : 'admin'
-                                                            )
-                                                        }
+                                        {isAdmin &&
+                                            !member.is_current_user &&
+                                            member.role !== 'owner' && (
+                                                <DropdownMenu>
+                                                    <DropdownMenuTrigger
+                                                        asChild
                                                     >
-                                                        <Settings className="mr-2 h-4 w-4" />
-                                                        {member.role === 'admin'
-                                                            ? 'Change to Member'
-                                                            : 'Make Admin'}
-                                                    </DropdownMenuItem>
-                                                    {isOwner && member.role === 'admin' && (
-                                                        <DropdownMenuItem
-                                                            onClick={() => transferOwnership(member)}
+                                                        <Button
+                                                            variant="ghost"
+                                                            size="icon"
                                                         >
-                                                            <Crown className="mr-2 h-4 w-4" />
-                                                            Transfer Ownership
+                                                            <MoreHorizontal className="h-4 w-4" />
+                                                        </Button>
+                                                    </DropdownMenuTrigger>
+                                                    <DropdownMenuContent align="end">
+                                                        <DropdownMenuItem
+                                                            onClick={() =>
+                                                                updateRole(
+                                                                    member,
+                                                                    member.role ===
+                                                                        'admin'
+                                                                        ? 'member'
+                                                                        : 'admin',
+                                                                )
+                                                            }
+                                                        >
+                                                            <Settings className="mr-2 h-4 w-4" />
+                                                            {member.role ===
+                                                            'admin'
+                                                                ? 'Change to Member'
+                                                                : 'Make Admin'}
                                                         </DropdownMenuItem>
-                                                    )}
-                                                    <DropdownMenuSeparator />
-                                                    <DropdownMenuItem
-                                                        className="text-destructive"
-                                                        onClick={() => removeMember(member)}
-                                                    >
-                                                        <Trash2 className="mr-2 h-4 w-4" />
-                                                        Remove
-                                                    </DropdownMenuItem>
-                                                </DropdownMenuContent>
-                                            </DropdownMenu>
-                                        )}
+                                                        {isOwner &&
+                                                            member.role ===
+                                                                'admin' && (
+                                                                <DropdownMenuItem
+                                                                    onClick={() =>
+                                                                        transferOwnership(
+                                                                            member,
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    <Crown className="mr-2 h-4 w-4" />
+                                                                    Transfer
+                                                                    Ownership
+                                                                </DropdownMenuItem>
+                                                            )}
+                                                        <DropdownMenuSeparator />
+                                                        <DropdownMenuItem
+                                                            className="text-destructive"
+                                                            onClick={() =>
+                                                                removeMember(
+                                                                    member,
+                                                                )
+                                                            }
+                                                        >
+                                                            <Trash2 className="mr-2 h-4 w-4" />
+                                                            Remove
+                                                        </DropdownMenuItem>
+                                                    </DropdownMenuContent>
+                                                </DropdownMenu>
+                                            )}
                                     </div>
                                 </div>
                             ))}
@@ -327,23 +430,31 @@ export default function TeamIndex({
                                                 </AvatarFallback>
                                             </Avatar>
                                             <div>
-                                                <p className="font-medium">{invitation.email}</p>
+                                                <p className="font-medium">
+                                                    {invitation.email}
+                                                </p>
                                                 <p className="flex items-center gap-1 text-sm text-muted-foreground">
                                                     <Clock className="h-3 w-3" />
                                                     Expires{' '}
-                                                    {new Date(invitation.expires_at).toLocaleDateString()}
+                                                    {new Date(
+                                                        invitation.expires_at,
+                                                    ).toLocaleDateString()}
                                                 </p>
                                             </div>
                                         </div>
                                         <div className="flex items-center gap-4">
                                             <Badge variant="outline">
-                                                {invitation.role.charAt(0).toUpperCase() +
+                                                {invitation.role
+                                                    .charAt(0)
+                                                    .toUpperCase() +
                                                     invitation.role.slice(1)}
                                             </Badge>
                                             <Button
                                                 variant="ghost"
                                                 size="icon"
-                                                onClick={() => cancelInvitation(invitation)}
+                                                onClick={() =>
+                                                    cancelInvitation(invitation)
+                                                }
                                             >
                                                 <Trash2 className="h-4 w-4 text-destructive" />
                                             </Button>
@@ -358,4 +469,3 @@ export default function TeamIndex({
         </AppLayout>
     );
 }
-

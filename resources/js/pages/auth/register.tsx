@@ -8,8 +8,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
-import AuthLayout from '@/layouts/auth-layout';
 import { useTranslations } from '@/hooks/use-translations';
+import AuthLayout from '@/layouts/auth-layout';
 
 interface RegisterProps {
     email?: string;
@@ -31,7 +31,10 @@ export default function Register({ email, redirect }: RegisterProps) {
     return (
         <AuthLayout
             title={t('auth.register.title', 'Create an account')}
-            description={t('auth.register.description', 'Enter your details below to create your account')}
+            description={t(
+                'auth.register.description',
+                'Enter your details below to create your account',
+            )}
         >
             <Head title={t('auth.register.page_title', 'Register')} />
             <Form
@@ -44,7 +47,9 @@ export default function Register({ email, redirect }: RegisterProps) {
                     <>
                         <div className="grid gap-6">
                             <div className="grid gap-2">
-                                <Label htmlFor="name">{t('auth.name', 'Name')}</Label>
+                                <Label htmlFor="name">
+                                    {t('auth.name', 'Name')}
+                                </Label>
                                 <Input
                                     id="name"
                                     type="text"
@@ -53,7 +58,10 @@ export default function Register({ email, redirect }: RegisterProps) {
                                     tabIndex={1}
                                     autoComplete="name"
                                     name="name"
-                                    placeholder={t('auth.name_placeholder', 'Full name')}
+                                    placeholder={t(
+                                        'auth.name_placeholder',
+                                        'Full name',
+                                    )}
                                 />
                                 <InputError
                                     message={errors.name}
@@ -62,7 +70,9 @@ export default function Register({ email, redirect }: RegisterProps) {
                             </div>
 
                             <div className="grid gap-2">
-                                <Label htmlFor="email">{t('auth.email', 'Email address')}</Label>
+                                <Label htmlFor="email">
+                                    {t('auth.email', 'Email address')}
+                                </Label>
                                 <Input
                                     id="email"
                                     type="email"
@@ -78,13 +88,18 @@ export default function Register({ email, redirect }: RegisterProps) {
                                 <InputError message={errors.email} />
                                 {email && (
                                     <p className="text-xs text-muted-foreground">
-                                        {t('auth.register.email_from_invitation', 'This email is from your invitation and cannot be changed.')}
+                                        {t(
+                                            'auth.register.email_from_invitation',
+                                            'This email is from your invitation and cannot be changed.',
+                                        )}
                                     </p>
                                 )}
                             </div>
 
                             <div className="grid gap-2">
-                                <Label htmlFor="password">{t('auth.password', 'Password')}</Label>
+                                <Label htmlFor="password">
+                                    {t('auth.password', 'Password')}
+                                </Label>
                                 <Input
                                     id="password"
                                     type="password"
@@ -99,7 +114,10 @@ export default function Register({ email, redirect }: RegisterProps) {
 
                             <div className="grid gap-2">
                                 <Label htmlFor="password_confirmation">
-                                    {t('auth.confirm_password', 'Confirm password')}
+                                    {t(
+                                        'auth.confirm_password',
+                                        'Confirm password',
+                                    )}
                                 </Label>
                                 <Input
                                     id="password_confirmation"
@@ -108,7 +126,10 @@ export default function Register({ email, redirect }: RegisterProps) {
                                     tabIndex={4}
                                     autoComplete="new-password"
                                     name="password_confirmation"
-                                    placeholder={t('auth.confirm_password', 'Confirm password')}
+                                    placeholder={t(
+                                        'auth.confirm_password',
+                                        'Confirm password',
+                                    )}
                                 />
                                 <InputError
                                     message={errors.password_confirmation}
