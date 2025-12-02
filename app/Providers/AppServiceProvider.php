@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\Workspace;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Cashier\Cashier;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +21,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Tell Cashier to use Workspace as the billable model instead of User
+        Cashier::useCustomerModel(Workspace::class);
     }
 }

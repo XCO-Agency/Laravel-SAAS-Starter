@@ -6,21 +6,33 @@ import {
     SidebarContent,
     SidebarFooter,
     SidebarHeader,
-    SidebarMenu,
-    SidebarMenuButton,
-    SidebarMenuItem,
+    SidebarRail,
+    SidebarSeparator,
 } from '@/components/ui/sidebar';
-import { dashboard } from '@/routes';
+import { WorkspaceSwitcher } from '@/components/workspace-switcher';
 import { type NavItem } from '@/types';
-import { Link } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid } from 'lucide-react';
-import AppLogo from './app-logo';
+import { BookOpen, CreditCard, Folder, LayoutGrid, Settings, Users } from 'lucide-react';
 
 const mainNavItems: NavItem[] = [
     {
         title: 'Dashboard',
-        href: dashboard(),
+        href: '/dashboard',
         icon: LayoutGrid,
+    },
+    {
+        title: 'Team',
+        href: '/team',
+        icon: Users,
+    },
+    {
+        title: 'Billing',
+        href: '/billing',
+        icon: CreditCard,
+    },
+    {
+        title: 'Settings',
+        href: '/workspaces/settings',
+        icon: Settings,
     },
 ];
 
@@ -41,16 +53,9 @@ export function AppSidebar() {
     return (
         <Sidebar collapsible="icon" variant="inset">
             <SidebarHeader>
-                <SidebarMenu>
-                    <SidebarMenuItem>
-                        <SidebarMenuButton size="lg" asChild>
-                            <Link href={dashboard()} prefetch>
-                                <AppLogo />
-                            </Link>
-                        </SidebarMenuButton>
-                    </SidebarMenuItem>
-                </SidebarMenu>
+                <WorkspaceSwitcher />
             </SidebarHeader>
+            <SidebarSeparator />
 
             <SidebarContent>
                 <NavMain items={mainNavItems} />
@@ -60,6 +65,7 @@ export function AppSidebar() {
                 <NavFooter items={footerNavItems} className="mt-auto" />
                 <NavUser />
             </SidebarFooter>
+            <SidebarRail />
         </Sidebar>
     );
 }

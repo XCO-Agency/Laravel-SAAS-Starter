@@ -9,14 +9,31 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import AuthLayout from '@/layouts/auth-layout';
+import { useTranslations } from '@/hooks/use-translations';
 
-export default function Register() {
+interface RegisterProps {
+    email?: string;
+    redirect?: string;
+}
+
+export default function Register({ email, redirect }: RegisterProps) {
+    const { t } = useTranslations();
+
+    // Build login URL with email and redirect params if present
+    const loginUrl = () => {
+        const baseUrl = login();
+        const params = new URLSearchParams();
+        if (email) params.set('email', email);
+        if (redirect) params.set('redirect', redirect);
+        return params.toString() ? `${baseUrl}?${params.toString()}` : baseUrl;
+    };
+
     return (
         <AuthLayout
-            title="Create an account"
-            description="Enter your details below to create your account"
+            title={t('auth.register.title', 'Create an account')}
+            description={t('auth.register.description', 'Enter your details below to create your account')}
         >
-            <Head title="Register" />
+            <Head title={t('auth.register.page_title', 'Register')} />
             <Form
                 {...store.form()}
                 resetOnSuccess={['password', 'password_confirmation']}
@@ -27,7 +44,7 @@ export default function Register() {
                     <>
                         <div className="grid gap-6">
                             <div className="grid gap-2">
-                                <Label htmlFor="name">Name</Label>
+                                <Label htmlFor="name">{t('auth.name', 'Name')}</Label>
                                 <Input
                                     id="name"
                                     type="text"
@@ -36,7 +53,7 @@ export default function Register() {
                                     tabIndex={1}
                                     autoComplete="name"
                                     name="name"
-                                    placeholder="Full name"
+                                    placeholder={t('auth.name_placeholder', 'Full name')}
                                 />
                                 <InputError
                                     message={errors.name}
@@ -45,7 +62,7 @@ export default function Register() {
                             </div>
 
                             <div className="grid gap-2">
-                                <Label htmlFor="email">Email address</Label>
+                                <Label htmlFor="email">{t('auth.email', 'Email address')}</Label>
                                 <Input
                                     id="email"
                                     type="email"
@@ -54,12 +71,20 @@ export default function Register() {
                                     autoComplete="email"
                                     name="email"
                                     placeholder="email@example.com"
+                                    defaultValue={email}
+                                    readOnly={!!email}
+                                    className={email ? 'bg-muted' : ''}
                                 />
                                 <InputError message={errors.email} />
+                                {email && (
+                                    <p className="text-xs text-muted-foreground">
+                                        {t('auth.register.email_from_invitation', 'This email is from your invitation and cannot be changed.')}
+                                    </p>
+                                )}
                             </div>
 
                             <div className="grid gap-2">
-                                <Label htmlFor="password">Password</Label>
+                                <Label htmlFor="password">{t('auth.password', 'Password')}</Label>
                                 <Input
                                     id="password"
                                     type="password"
@@ -67,14 +92,14 @@ export default function Register() {
                                     tabIndex={3}
                                     autoComplete="new-password"
                                     name="password"
-                                    placeholder="Password"
+                                    placeholder={t('auth.password', 'Password')}
                                 />
                                 <InputError message={errors.password} />
                             </div>
 
                             <div className="grid gap-2">
                                 <Label htmlFor="password_confirmation">
-                                    Confirm password
+                                    {t('auth.confirm_password', 'Confirm password')}
                                 </Label>
                                 <Input
                                     id="password_confirmation"
@@ -83,7 +108,7 @@ export default function Register() {
                                     tabIndex={4}
                                     autoComplete="new-password"
                                     name="password_confirmation"
-                                    placeholder="Confirm password"
+                                    placeholder={t('auth.confirm_password', 'Confirm password')}
                                 />
                                 <InputError
                                     message={errors.password_confirmation}
@@ -97,14 +122,14 @@ export default function Register() {
                                 data-test="register-user-button"
                             >
                                 {processing && <Spinner />}
-                                Create account
+                                {t('auth.register.button', 'Create account')}
                             </Button>
                         </div>
 
                         <div className="text-center text-sm text-muted-foreground">
-                            Already have an account?{' '}
-                            <TextLink href={login()} tabIndex={6}>
-                                Log in
+                            {t('auth.have_account', 'Already have an account?')}{' '}
+                            <TextLink href={loginUrl()} tabIndex={6}>
+                                {t('auth.log_in', 'Log in')}
                             </TextLink>
                         </div>
                     </>
