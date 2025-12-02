@@ -1,4 +1,4 @@
-import Heading from '@/components/heading';
+import HeadingSmall from '@/components/heading-small';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -11,6 +11,7 @@ import {
 import { Spinner } from '@/components/ui/spinner';
 import { useToast } from '@/components/ui/toast';
 import AppLayout from '@/layouts/app-layout';
+import SettingsLayout from '@/layouts/settings/layout';
 import {
     type BreadcrumbItem,
     type Invoice,
@@ -141,11 +142,12 @@ export default function BillingIndex({
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Billing" />
 
-            <div className="space-y-6">
-                <Heading
-                    title="Billing"
-                    description="Manage your subscription and billing information."
-                />
+            <SettingsLayout>
+                <div className="space-y-6">
+                    <HeadingSmall
+                        title="Billing"
+                        description="Manage your subscription and billing information."
+                    />
 
                 {/* Current Plan */}
                 <Card>
@@ -367,7 +369,8 @@ export default function BillingIndex({
                         </CardContent>
                     </Card>
                 )}
-            </div>
+                </div>
+            </SettingsLayout>
         </AppLayout>
     );
 }

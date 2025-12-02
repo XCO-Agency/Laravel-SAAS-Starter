@@ -11,34 +11,13 @@ import {
 } from '@/components/ui/sidebar';
 import { WorkspaceSwitcher } from '@/components/workspace-switcher';
 import { type NavItem } from '@/types';
-import {
-    BookOpen,
-    CreditCard,
-    LayoutGrid,
-    Settings,
-    Users,
-} from 'lucide-react';
+import { BookOpen, LayoutGrid } from 'lucide-react';
 
 const mainNavItems: NavItem[] = [
     {
         title: 'Dashboard',
         href: '/dashboard',
         icon: LayoutGrid,
-    },
-    {
-        title: 'Team',
-        href: '/team',
-        icon: Users,
-    },
-    {
-        title: 'Billing',
-        href: '/billing',
-        icon: CreditCard,
-    },
-    {
-        title: 'Settings',
-        href: '/workspaces/settings',
-        icon: Settings,
     },
 ];
 

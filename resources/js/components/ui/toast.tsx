@@ -24,18 +24,39 @@ export function ToastProvider({ children }: { children: ReactNode }) {
         
         // Auto remove after 5 seconds
         setTimeout(() => {
-            setToasts((prev) => prev.filter((t) => t.id !== id));
+            setToasts((prev) => prev.filter(t => t.id !== id));
         }, 5000);
     }, []);
 
     const removeToast = useCallback((id: string) => {
-        setToasts((prev) => prev.filter((t) => t.id !== id));
+        setToasts((prev) => prev.filter(t => t.id !== id));
     }, []);
 
     return (
         <ToastContext.Provider value={{ toasts, addToast, removeToast }}>
             {children}
-            <ToastContainer toasts={toasts} onRemove={removeToast} />
+            <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-2">
+                {toasts.map((toast) => (
+                    <div
+                        key={toast.id}
+                        className={`
+                            relative flex items-center justify-between min-w-[300px] rounded-lg px-4 py-3 shadow-lg
+                            animate-in slide-in-from-bottom-2 duration-300
+                            ${toast.type === 'success' ? 'bg-green-50 text-green-900 border border-green-200' : ''}
+                            ${toast.type === 'error' ? 'bg-red-50 text-red-900 border border-red-200' : ''}
+                            ${toast.type === 'info' ? 'bg-blue-50 text-blue-900 border border-blue-200' : ''}
+                        `}
+                    >
+                        <span className="text-sm">{toast.message}</span>
+                        <button
+                            onClick={() => removeToast(toast.id)}
+                            className="ml-4 text-current hover:opacity-70"
+                        >
+                            <X className="h-4 w-4" />
+                        </button>
+                    </div>
+                ))}
+            </div>
         </ToastContext.Provider>
     );
 }
@@ -47,33 +68,3 @@ export function useToast() {
     }
     return context;
 }
-
-function ToastContainer({ toasts, onRemove }: { toasts: Toast[]; onRemove: (id: string) => void }) {
-    if (toasts.length === 0) return null;
-
-    return (
-        <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-2">
-            {toasts.map((toast) => (
-                <div
-                    key={toast.id}
-                    className={`flex items-center gap-3 rounded-lg border px-4 py-3 shadow-lg transition-all animate-in slide-in-from-right-full ${
-                        toast.type === 'success'
-                            ? 'border-green-200 bg-green-50 text-green-800 dark:border-green-800 dark:bg-green-950 dark:text-green-200'
-                            : toast.type === 'error'
-                              ? 'border-red-200 bg-red-50 text-red-800 dark:border-red-800 dark:bg-red-950 dark:text-red-200'
-                              : 'border-blue-200 bg-blue-50 text-blue-800 dark:border-blue-800 dark:bg-blue-950 dark:text-blue-200'
-                    }`}
-                >
-                    <p className="text-sm font-medium">{toast.message}</p>
-                    <button
-                        onClick={() => onRemove(toast.id)}
-                        className="rounded-full p-1 opacity-70 transition-opacity hover:opacity-100"
-                    >
-                        <X className="h-4 w-4" />
-                    </button>
-                </div>
-            ))}
-        </div>
-    );
-}
-

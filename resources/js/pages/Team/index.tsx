@@ -1,4 +1,4 @@
-import Heading from '@/components/heading';
+import HeadingSmall from '@/components/heading-small';
 import InputError from '@/components/input-error';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -37,6 +37,7 @@ import {
 } from '@/components/ui/select';
 import { Spinner } from '@/components/ui/spinner';
 import AppLayout from '@/layouts/app-layout';
+import SettingsLayout from '@/layouts/settings/layout';
 import {
     type BreadcrumbItem,
     type TeamMember,
@@ -170,13 +171,14 @@ export default function TeamIndex({
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Team" />
 
-            <div className="space-y-6">
-                <div className="flex items-center justify-between">
-                    <Heading
-                        title="Team"
-                        description={`Manage team members in ${workspace.name}.`}
-                    />
-                    {isAdmin && (
+            <SettingsLayout>
+                <div className="space-y-6">
+                    <div className="flex items-center justify-between">
+                        <HeadingSmall
+                            title="Team"
+                            description={`Manage team members in ${workspace.name}.`}
+                        />
+                        {isAdmin && (
                         <Dialog open={inviteOpen} onOpenChange={setInviteOpen}>
                             <DialogTrigger asChild>
                                 <Button disabled={!canInvite}>
@@ -465,7 +467,8 @@ export default function TeamIndex({
                         </CardContent>
                     </Card>
                 )}
-            </div>
+                </div>
+            </SettingsLayout>
         </AppLayout>
     );
 }

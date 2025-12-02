@@ -1,4 +1,4 @@
-import Heading from '@/components/heading';
+import HeadingSmall from '@/components/heading-small';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -13,6 +13,7 @@ import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import { useToast } from '@/components/ui/toast';
 import AppLayout from '@/layouts/app-layout';
+import SettingsLayout from '@/layouts/settings/layout';
 import { type BreadcrumbItem, type Plan, type WorkspaceRole } from '@/types';
 import { Head, router } from '@inertiajs/react';
 import { Check, Sparkles } from 'lucide-react';
@@ -178,11 +179,12 @@ export default function PlansPage({
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Pricing Plans" />
 
-            <div className="space-y-6">
-                <Heading
-                    title="Pricing Plans"
-                    description="Choose the plan that best fits your needs."
-                />
+            <SettingsLayout>
+                <div className="space-y-6">
+                    <HeadingSmall
+                        title="Pricing Plans"
+                        description="Choose the plan that best fits your needs."
+                    />
 
                 {/* Billing Period Toggle */}
                 <div className="flex items-center justify-center gap-4">
@@ -391,7 +393,8 @@ export default function PlansPage({
                         </CardContent>
                     </Card>
                 )}
-            </div>
+                </div>
+            </SettingsLayout>
         </AppLayout>
     );
 }

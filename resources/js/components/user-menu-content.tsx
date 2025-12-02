@@ -10,7 +10,7 @@ import { logout } from '@/routes';
 import { edit } from '@/routes/profile';
 import { type User } from '@/types';
 import { Link, router } from '@inertiajs/react';
-import { LogOut, Settings } from 'lucide-react';
+import { CreditCard, LogOut, Settings, Users } from 'lucide-react';
 
 interface UserMenuContentProps {
     user: User;
@@ -43,6 +43,30 @@ export function UserMenuContent({ user }: UserMenuContentProps) {
                     >
                         <Settings className="mr-2" />
                         Settings
+                    </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                    <Link
+                        className="block w-full"
+                        href="/team"
+                        as="button"
+                        prefetch
+                        onClick={cleanup}
+                    >
+                        <Users className="mr-2" />
+                        Team
+                    </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                    <Link
+                        className="block w-full"
+                        href="/billing"
+                        as="button"
+                        prefetch
+                        onClick={cleanup}
+                    >
+                        <CreditCard className="mr-2" />
+                        Billing
                     </Link>
                 </DropdownMenuItem>
             </DropdownMenuGroup>

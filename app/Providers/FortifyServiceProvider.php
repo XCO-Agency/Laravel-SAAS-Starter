@@ -47,20 +47,13 @@ class FortifyServiceProvider extends ServiceProvider
      */
     private function configureViews(): void
     {
-        Fortify::loginView(function (Request $request) {
-            // Store redirect URL in session for after login
-            if ($redirect = $request->query('redirect')) {
-                $request->session()->put('url.intended', url($redirect));
-            }
-
-            return Inertia::render('auth/login', [
-                'canResetPassword' => Features::enabled(Features::resetPasswords()),
-                'canRegister' => Features::enabled(Features::registration()),
-                'status' => $request->session()->get('status'),
-                'email' => $request->query('email'),
-                'redirect' => $request->query('redirect'),
-            ]);
-        });
+        Fortify::loginView(fn (Request $request) => Inertia::render('auth/login', [
+            'canResetPassword' => Features::enabled(Features::resetPasswords()),
+            'canRegister' => Features::enabled(Features::registration()),
+            'status' => $request->session()->get('status'),
+            'email' => $request->query('email'),
+            'redirect' => $request->query('redirect'),
+        ]));
 
         Fortify::resetPasswordView(fn (Request $request) => Inertia::render('auth/reset-password', [
             'email' => $request->email,
@@ -75,17 +68,10 @@ class FortifyServiceProvider extends ServiceProvider
             'status' => $request->session()->get('status'),
         ]));
 
-        Fortify::registerView(function (Request $request) {
-            // Store redirect URL in session for after registration
-            if ($redirect = $request->query('redirect')) {
-                $request->session()->put('url.intended', url($redirect));
-            }
-
-            return Inertia::render('auth/register', [
-                'email' => $request->query('email'),
-                'redirect' => $request->query('redirect'),
-            ]);
-        });
+        Fortify::registerView(fn (Request $request) => Inertia::render('auth/register', [
+            'email' => $request->query('email'),
+            'redirect' => $request->query('redirect'),
+        ]));
 
         Fortify::twoFactorChallengeView(fn () => Inertia::render('auth/two-factor-challenge'));
 
