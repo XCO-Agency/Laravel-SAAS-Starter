@@ -1,14 +1,11 @@
+import { useTranslation } from 'react-i18next';
+
 /**
- * Simple translations hook for the application.
- * Returns the fallback value for now - can be extended to support full i18n later.
+ * Translations hook for the application using react-i18next.
  */
 export function useTranslations() {
-    const t = (key: string, fallback: string): string => {
-        // For now, just return the fallback value
-        // This can be extended to support actual translations later
-        return fallback;
-    };
+    const { t, i18n } = useTranslation();
 
-    return { t };
+    return { t, i18n };
 }
 

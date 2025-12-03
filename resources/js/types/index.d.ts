@@ -91,6 +91,7 @@ export interface SharedData {
     workspaces: Workspace[];
     sidebarOpen: boolean;
     flash: Flash;
+    locale?: string;
     [key: string]: unknown;
 }
 
@@ -104,5 +105,6 @@ export interface User {
     created_at: string;
     updated_at: string;
     current_workspace_id?: number;
+    locale?: string;
     [key: string]: unknown;
 }

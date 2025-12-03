@@ -1,0 +1,272 @@
+{
+  "auth": {
+    "login": {
+      "title": "Inicia sesión en tu cuenta",
+      "description": "Ingresa tu correo electrónico y contraseña a continuación para iniciar sesión",
+      "page_title": "Iniciar sesión",
+      "button": "Iniciar sesión"
+    },
+    "register": {
+      "title": "Crear una cuenta",
+      "description": "Ingresa tu información a continuación para crear una cuenta",
+      "page_title": "Registrarse",
+      "button": "Registrarse"
+    },
+    "forgot_password": {
+      "title": "¿Olvidaste tu contraseña?",
+      "description": "No hay problema. Simplemente indícanos tu dirección de correo electrónico y te enviaremos un enlace para restablecer tu contraseña.",
+      "page_title": "Olvidé mi contraseña",
+      "button": "Enviar enlace de restablecimiento"
+    },
+    "reset_password": {
+      "title": "Restablecer contraseña",
+      "page_title": "Restablecer contraseña",
+      "button": "Restablecer contraseña"
+    },
+    "email": "Dirección de correo electrónico",
+    "password": "Contraseña",
+    "name": "Nombre",
+    "remember_me": "Recordarme",
+    "forgot_password": "¿Olvidaste tu contraseña?",
+    "no_account": "¿No tienes una cuenta?",
+    "sign_up": "Registrarse",
+    "already_registered": "¿Ya estás registrado?",
+    "confirm_password": "Confirmar contraseña",
+    "verify_email": {
+      "title": "Verifica tu dirección de correo electrónico",
+      "description": "¡Gracias por registrarte! Antes de comenzar, ¿podrías verificar tu dirección de correo electrónico haciendo clic en el enlace que acabamos de enviarte? Si no recibiste el correo, te enviaremos otro con gusto.",
+      "button": "Reenviar correo de verificación"
+    }
+  },
+  "dashboard": {
+    "title": "Panel de control",
+    "welcome_back": "¡Bienvenido de nuevo, {{name}}!",
+    "whats_happening": "Esto es lo que está pasando en {{workspace}}.",
+    "upgrade_to_pro": "Actualizar a Pro",
+    "current_workspace": "Espacio de trabajo actual",
+    "current_plan": "Plan actual",
+    "team_members": "Miembros del equipo",
+    "your_role": "Tu rol",
+    "personal_workspace": "Espacio de trabajo personal",
+    "active": "Activo",
+    "manage_billing": "Gestionar facturación",
+    "manage_team": "Gestionar equipo",
+    "full_workspace_control": "Control total del espacio de trabajo",
+    "can_manage_team_settings": "Puede gestionar el equipo y la configuración",
+    "standard_access": "Acceso estándar",
+    "quick_actions": "Acciones rápidas",
+    "quick_actions_description": "Tareas comunes para ayudarte a hacer las cosas más rápido.",
+    "invite_team_member": "Invitar miembro del equipo",
+    "invite_team_member_desc": "Agregar un colega a tu espacio de trabajo",
+    "manage_billing_title": "Gestionar facturación",
+    "manage_billing_desc": "Ver planes y facturas",
+    "workspace_settings": "Configuración del espacio de trabajo",
+    "workspace_settings_desc": "Configurar tu espacio de trabajo",
+    "create_workspace": "Crear espacio de trabajo",
+    "create_workspace_desc": "Iniciar un nuevo proyecto",
+    "no_workspace_selected": "Ningún espacio de trabajo seleccionado",
+    "create_or_select": "Crea o selecciona un espacio de trabajo para comenzar.",
+    "unlock_features": "Desbloquea más espacios de trabajo, miembros del equipo y funciones avanzadas.",
+    "view_plans": "Ver planes"
+  },
+  "settings": {
+    "title": "Configuración",
+    "description": "Gestiona la configuración de tu espacio de trabajo y cuenta",
+    "profile": {
+      "title": "Información del perfil",
+      "description": "Actualiza tu nombre y dirección de correo electrónico",
+      "name": "Nombre",
+      "email": "Dirección de correo electrónico",
+      "email_unverified": "Tu dirección de correo electrónico no está verificada.",
+      "resend_verification": "Haz clic aquí para reenviar el correo de verificación.",
+      "verification_sent": "Se ha enviado un nuevo enlace de verificación a tu dirección de correo electrónico.",
+      "save": "Guardar",
+      "saved": "Guardado"
+    },
+    "password": {
+      "title": "Actualizar contraseña",
+      "description": "Asegúrate de que tu cuenta use una contraseña larga y aleatoria para mantenerte seguro",
+      "current_password": "Contraseña actual",
+      "new_password": "Nueva contraseña",
+      "confirm_password": "Confirmar contraseña",
+      "save_password": "Guardar contraseña"
+    },
+    "two_factor": {
+      "title": "Autenticación de dos factores",
+      "description": "Gestiona la configuración de autenticación de dos factores",
+      "enabled": "Habilitado",
+      "disabled": "Deshabilitado",
+      "enabled_description": "Con la autenticación de dos factores habilitada, se te pedirá un PIN seguro y aleatorio durante el inicio de sesión, que puedes recuperar de la aplicación compatible con TOTP en tu teléfono.",
+      "disabled_description": "Cuando habilites la autenticación de dos factores, se te pedirá un PIN seguro durante el inicio de sesión. Este PIN se puede recuperar de una aplicación compatible con TOTP en tu teléfono.",
+      "enable_2fa": "Habilitar 2FA",
+      "disable_2fa": "Deshabilitar 2FA",
+      "continue_setup": "Continuar configuración"
+    },
+    "appearance": {
+      "title": "Configuración de apariencia",
+      "description": "Actualiza la configuración de apariencia de tu cuenta"
+    },
+    "language": {
+      "title": "Idioma",
+      "description": "Selecciona tu idioma preferido",
+      "english": "Inglés",
+      "french": "Francés",
+      "spanish": "Español",
+      "arabic": "Árabe"
+    }
+  },
+  "workspace": {
+    "settings": {
+      "title": "Configuración del espacio de trabajo",
+      "description": "Gestiona la configuración y configuración de tu espacio de trabajo",
+      "name": "Nombre del espacio de trabajo",
+      "slug": "Identificador del espacio de trabajo",
+      "logo": "Logo",
+      "upload_logo": "Subir logo",
+      "remove_logo": "Eliminar logo",
+      "save": "Guardar cambios",
+      "danger_zone": "Zona de peligro",
+      "delete_workspace": "Eliminar espacio de trabajo",
+      "delete_description": "Una vez que elimines un espacio de trabajo, no hay vuelta atrás. Por favor, ten certeza.",
+      "delete_confirm": "Escribe el nombre del espacio de trabajo para confirmar la eliminación",
+      "delete_button": "Eliminar espacio de trabajo"
+    },
+    "create": {
+      "title": "Crear espacio de trabajo",
+      "description": "Crea un nuevo espacio de trabajo para organizar tus proyectos",
+      "name": "Nombre del espacio de trabajo",
+      "create": "Crear espacio de trabajo"
+    },
+    "list": {
+      "title": "Espacios de trabajo",
+      "description": "Gestiona tus espacios de trabajo",
+      "create_new": "Crear nuevo espacio de trabajo",
+      "no_workspaces": "Aún no tienes espacios de trabajo.",
+      "get_started": "Comienza creando tu primer espacio de trabajo."
+    }
+  },
+  "team": {
+    "title": "Equipo",
+    "description": "Gestiona los miembros del equipo en {{workspace}}",
+    "invite_member": "Invitar miembro",
+    "team_members": "Miembros del equipo",
+    "team_members_desc": "Todos los miembros actualmente en tu espacio de trabajo.",
+    "pending_invitations": "Invitaciones pendientes",
+    "pending_invitations_desc": "Invitaciones que han sido enviadas pero aún no aceptadas.",
+    "invite_new_member": "Invitar nuevo miembro",
+    "invite_description": "Ingresa la dirección de correo electrónico y el rol del nuevo miembro del equipo.",
+    "email_address": "Dirección de correo electrónico",
+    "role": "Rol",
+    "member": "Miembro",
+    "admin": "Administrador",
+    "owner": "Propietario",
+    "role_description": "Los administradores pueden gestionar los miembros del equipo y la configuración del espacio de trabajo.",
+    "send_invitation": "Enviar invitación",
+    "cancel": "Cancelar",
+    "invited_as": "Invitado como",
+    "expires": "Expira",
+    "remove": "Eliminar",
+    "promote_to_admin": "Promover a administrador",
+    "demote_to_member": "Degradar a miembro",
+    "transfer_ownership": "Transferir propiedad",
+    "transfer_description": "Transfiere la propiedad de este espacio de trabajo a otro miembro. Esta acción no se puede deshacer.",
+    "new_owner": "Nuevo propietario",
+    "select_new_owner": "Seleccionar un nuevo propietario",
+    "transfer_button": "Transferir propiedad",
+    "no_members": "Aún no hay miembros en este espacio de trabajo."
+  },
+  "billing": {
+    "title": "Facturación",
+    "description": "Gestiona tu suscripción e información de facturación",
+    "current_plan": "Plan actual",
+    "your_workspace_on": "Tu espacio de trabajo está en el plan {{plan}}",
+    "free_forever": "Gratis para siempre",
+    "trial_ends": "La prueba termina el {{date}}",
+    "subscription_ends": "Tu suscripción terminará el {{date}}",
+    "resume_subscription": "Reanudar suscripción",
+    "change_plan": "Cambiar plan",
+    "upgrade": "Actualizar",
+    "manage_subscription": "Gestionar suscripción",
+    "plan_features": "Características del plan",
+    "payment_method": "Método de pago",
+    "payment_method_desc": "Gestiona tu método de pago a través del portal de facturación.",
+    "update_payment_method": "Actualizar método de pago",
+    "invoices": "Facturas",
+    "invoices_desc": "Descarga tus facturas anteriores para tus registros.",
+    "download": "Descargar",
+    "no_subscription": "Sin suscripción activa",
+    "no_subscription_desc": "Actualiza a un plan de pago para desbloquear más funciones y miembros del equipo.",
+    "view_plans": "Ver planes",
+    "plans": {
+      "title": "Planes de precios",
+      "description": "Elige el plan que mejor se adapte a tus necesidades",
+      "monthly": "Mensual",
+      "yearly": "Anual",
+      "save_17": "Ahorra 17%",
+      "your_plan": "Tu plan",
+      "most_popular": "Más popular",
+      "current_plan": "Plan actual",
+      "upgrade": "Actualizar",
+      "downgrade_to_free": "Degradar a gratis",
+      "switch_to_yearly": "Cambiar a anual",
+      "switch_to_monthly": "Cambiar a mensual",
+      "change_billing_period": "Cambiar período de facturación",
+      "view_plan": "Ver plan",
+      "cancel_subscription": "Cancelar suscripción",
+      "cancel_description": "Degrada al plan gratuito y cancela tu suscripción actual. Conservarás el acceso hasta el final de tu período de facturación actual.",
+      "faq": {
+        "title": "Preguntas frecuentes",
+        "change_plans": "¿Puedo cambiar de plan más tarde?",
+        "change_plans_answer": "Sí, puedes actualizar o degradar tu plan en cualquier momento. Los cambios surten efecto inmediatamente y se prorratean.",
+        "payment_methods": "¿Qué métodos de pago aceptan?",
+        "payment_methods_answer": "Aceptamos todas las principales tarjetas de crédito (Visa, MasterCard, American Express) a través de nuestro procesador de pagos seguro, Stripe.",
+        "cancel": "¿Puedo cancelar mi suscripción?",
+        "cancel_answer": "Sí, puedes cancelar tu suscripción en cualquier momento. Continuarás teniendo acceso a las funciones de pago hasta el final de tu período de facturación."
+      },
+      "only_owner": "Solo el propietario del espacio de trabajo puede gestionar la facturación y las suscripciones."
+    }
+  },
+  "navigation": {
+    "dashboard": "Panel de control",
+    "settings": "Configuración",
+    "team": "Equipo",
+    "billing": "Facturación",
+    "help_center": "Centro de ayuda",
+    "log_out": "Cerrar sesión",
+    "general": "General",
+    "profile": "Perfil",
+    "password": "Contraseña",
+    "two_factor_auth": "Autenticación de dos factores",
+    "appearance": "Apariencia"
+  },
+  "common": {
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "create": "Crear",
+    "update": "Actualizar",
+    "remove": "Eliminar",
+    "close": "Cerrar",
+    "confirm": "Confirmar",
+    "loading": "Cargando...",
+    "saved": "Guardado",
+    "error": "Error",
+    "success": "Éxito"
+  },
+  "invitation": {
+    "accept": {
+      "title": "Invitación al equipo",
+      "description": "Has sido invitado a unirte a {{workspace}} como {{role}}.",
+      "accept": "Aceptar invitación",
+      "decline": "Rechazar",
+      "sign_in": "Iniciar sesión",
+      "sign_up": "Registrarse",
+      "existing_account": "Ya tienes una cuenta. Por favor, inicia sesión para aceptar esta invitación.",
+      "new_account": "Crea una cuenta para aceptar esta invitación.",
+      "email_match": "La invitación fue enviada a {{email}}. Por favor, inicia sesión con este correo para aceptar.",
+      "email_mismatch": "La invitación fue enviada a {{email}}. Por favor, inicia sesión con este correo o crea una nueva cuenta con esta dirección de correo electrónico."
+    }
+  }
+}
+

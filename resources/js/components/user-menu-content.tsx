@@ -6,6 +6,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { UserInfo } from '@/components/user-info';
 import { useMobileNavigation } from '@/hooks/use-mobile-navigation';
+import { useTranslations } from '@/hooks/use-translations';
 import { logout } from '@/routes';
 import { edit } from '@/routes/profile';
 import { type User } from '@/types';
@@ -18,6 +19,7 @@ interface UserMenuContentProps {
 
 export function UserMenuContent({ user }: UserMenuContentProps) {
     const cleanup = useMobileNavigation();
+    const { t } = useTranslations();
 
     const handleLogout = () => {
         cleanup();
@@ -42,7 +44,7 @@ export function UserMenuContent({ user }: UserMenuContentProps) {
                         onClick={cleanup}
                     >
                         <Settings className="mr-2" />
-                        Settings
+                        {t('navigation.settings', 'Settings')}
                     </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
@@ -54,7 +56,7 @@ export function UserMenuContent({ user }: UserMenuContentProps) {
                         onClick={cleanup}
                     >
                         <Users className="mr-2" />
-                        Team
+                        {t('navigation.team', 'Team')}
                     </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
@@ -66,7 +68,7 @@ export function UserMenuContent({ user }: UserMenuContentProps) {
                         onClick={cleanup}
                     >
                         <CreditCard className="mr-2" />
-                        Billing
+                        {t('navigation.billing', 'Billing')}
                     </Link>
                 </DropdownMenuItem>
             </DropdownMenuGroup>
@@ -80,7 +82,7 @@ export function UserMenuContent({ user }: UserMenuContentProps) {
                     data-test="logout-button"
                 >
                     <LogOut className="mr-2" />
-                    Log out
+                    {t('navigation.log_out', 'Log out')}
                 </Link>
             </DropdownMenuItem>
         </>

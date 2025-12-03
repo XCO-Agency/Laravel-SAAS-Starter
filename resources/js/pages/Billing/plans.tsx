@@ -11,6 +11,7 @@ import {
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import { useToast } from '@/components/ui/toast';
+import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
 import { type BreadcrumbItem, type Plan, type WorkspaceRole } from '@/types';
@@ -25,23 +26,24 @@ interface PlansPageProps {
     userRole: WorkspaceRole;
 }
 
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Billing', href: '/billing' },
-    { title: 'Plans', href: '/billing/plans' },
-];
-
 export default function PlansPage({
     plans,
     currentPlan,
     currentBillingPeriod,
     userRole,
 }: PlansPageProps) {
+    const { t } = useTranslations();
     const [billingPeriod, setBillingPeriod] = useState<'monthly' | 'yearly'>(
         currentBillingPeriod || 'monthly',
     );
     const [processing, setProcessing] = useState<string | null>(null);
     const { addToast } = useToast();
     const isOwner = userRole === 'owner';
+
+    const breadcrumbs: BreadcrumbItem[] = [
+        { title: t('billing.title', 'Billing'), href: '/billing' },
+        { title: t('billing.plans.title', 'Plans'), href: '/billing/plans' },
+    ];
 
     // Check if this is the exact current plan (same plan AND same billing period)
     const isExactCurrentPlan = (plan: Plan) => {
@@ -144,43 +146,43 @@ export default function PlansPage({
     const getButtonText = (plan: Plan) => {
         if (plan.id === 'free') {
             return currentPlan === 'free'
-                ? 'Current Plan'
-                : 'Downgrade to Free';
+                ? t('billing.plans.current_plan', 'Current Plan')
+                : t('billing.plans.downgrade_to_free', 'Downgrade to Free');
         }
         
         // Exact match: same plan AND same billing period
         if (isExactCurrentPlan(plan)) {
-            return 'Current Plan';
+            return t('billing.plans.current_plan', 'Current Plan');
         }
         
         // Same plan but different billing period
         if (isOnThisPlan(plan)) {
             return billingPeriod === 'yearly'
-                ? 'Switch to Yearly'
-                : 'Switch to Monthly';
+                ? t('billing.plans.switch_to_yearly', 'Switch to Yearly')
+                : t('billing.plans.switch_to_monthly', 'Switch to Monthly');
         }
         
         // Different plan
         if (currentPlan === 'free') {
-            return 'Upgrade';
+            return t('billing.upgrade', 'Upgrade');
         }
         if (currentPlan === 'pro' && plan.id === 'business') {
-            return 'Upgrade';
+            return t('billing.upgrade', 'Upgrade');
         }
         if (currentPlan === 'business' && plan.id === 'pro') {
-            return 'Downgrade';
+            return t('billing.downgrade', 'Downgrade');
         }
         
-        return 'Switch Plan';
+        return t('billing.plans.change_billing_period', 'Switch Plan');
     };
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Pricing Plans" />
+            <Head title={t('billing.plans.title', 'Pricing Plans')} />
 
             <SettingsLayout
-                title="Pricing Plans"
-                description="Choose the plan that best fits your needs."
+                title={t('billing.plans.title', 'Pricing Plans')}
+                description={t('billing.plans.description', 'Choose the plan that best fits your needs.')}
                 fullWidth
             >
                 <div className="space-y-6">
@@ -191,7 +193,7 @@ export default function PlansPage({
                         htmlFor="billing-monthly"
                         className={`cursor-pointer ${billingPeriod === 'monthly' ? 'font-medium' : 'text-muted-foreground'}`}
                     >
-                        Monthly
+                        {t('billing.plans.monthly', 'Monthly')}
                     </Label>
                     <button
                         type="button"
@@ -249,7 +251,7 @@ export default function PlansPage({
                                         className="gap-1 bg-green-600"
                                     >
                                         <Check className="h-3 w-3" />
-                                        Your Plan
+                                        {t('billing.plans.your_plan', 'Your Plan')}
                                     </Badge>
                                 </div>
                             ) : (
@@ -257,7 +259,7 @@ export default function PlansPage({
                                 <div className="absolute -top-3 left-1/2 -translate-x-1/2">
                                     <Badge className="gap-1">
                                         <Sparkles className="h-3 w-3" />
-                                        Most Popular
+                                        {t('billing.plans.most_popular', 'Most Popular')}
                                     </Badge>
                                 </div>
                                 )
@@ -279,8 +281,8 @@ export default function PlansPage({
                                     <span className="text-muted-foreground">
                                         /
                                         {billingPeriod === 'monthly'
-                                            ? 'mo'
-                                            : 'yr'}
+                                            ? t('common.mo', 'mo')
+                                            : t('common.yr', 'yr')}
                                     </span>
                                 </div>
                             </CardHeader>
@@ -345,38 +347,31 @@ export default function PlansPage({
                 {/* FAQ or Additional Info */}
                 <Card className="mt-8">
                     <CardHeader>
-                        <CardTitle>Frequently Asked Questions</CardTitle>
+                        <CardTitle>{t('billing.plans.faq.title', 'Frequently Asked Questions')}</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
                         <div>
                             <h4 className="font-medium">
-                                Can I change plans later?
+                                {t('billing.plans.faq.change_plans', 'Can I change plans later?')}
                             </h4>
                             <p className="text-sm text-muted-foreground">
-                                Yes, you can upgrade or downgrade your plan at
-                                any time. Changes take effect immediately and
-                                are prorated.
+                                {t('billing.plans.faq.change_plans_answer', 'Yes, you can upgrade or downgrade your plan at any time. Changes take effect immediately and are prorated.')}
                             </p>
                         </div>
                         <div>
                             <h4 className="font-medium">
-                                What payment methods do you accept?
+                                {t('billing.plans.faq.payment_methods', 'What payment methods do you accept?')}
                             </h4>
                             <p className="text-sm text-muted-foreground">
-                                We accept all major credit cards (Visa,
-                                MasterCard, American Express) through our secure
-                                payment processor, Stripe.
+                                {t('billing.plans.faq.payment_methods_answer', 'We accept all major credit cards (Visa, MasterCard, American Express) through our secure payment processor, Stripe.')}
                             </p>
                         </div>
                         <div>
                             <h4 className="font-medium">
-                                Can I cancel my subscription?
+                                {t('billing.plans.faq.cancel', 'Can I cancel my subscription?')}
                             </h4>
                             <p className="text-sm text-muted-foreground">
-                                Yes, you can cancel your subscription at any
-                                time. You&apos;ll continue to have access to
-                                paid features until the end of your billing
-                                period.
+                                {t('billing.plans.faq.cancel_answer', "Yes, you can cancel your subscription at any time. You'll continue to have access to paid features until the end of your billing period.")}
                             </p>
                         </div>
                     </CardContent>
@@ -386,8 +381,7 @@ export default function PlansPage({
                     <Card className="border-yellow-200 bg-yellow-50 dark:border-yellow-800 dark:bg-yellow-950/50">
                         <CardContent className="py-4">
                             <p className="text-sm text-yellow-800 dark:text-yellow-200">
-                                Only the workspace owner can manage billing and
-                                subscriptions.
+                                {t('billing.plans.only_owner', 'Only the workspace owner can manage billing and subscriptions.')}
                             </p>
                         </CardContent>
                     </Card>

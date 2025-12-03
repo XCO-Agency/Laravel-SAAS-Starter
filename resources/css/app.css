@@ -12,6 +12,9 @@
         'Instrument Sans', ui-sans-serif, system-ui, sans-serif,
         'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
         'Noto Color Emoji';
+    
+    --font-display:
+        'Bricolage Grotesque', 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
 
     --radius-lg: var(--radius);
     --radius-md: calc(var(--radius) - 2px);
@@ -62,39 +65,44 @@
 }
 
 :root {
-    --background: oklch(1 0 0);
-    --foreground: oklch(0.145 0 0);
+    /* Marvel-inspired vibrant color palette */
+    --background: oklch(0.99 0.01 0);
+    --foreground: oklch(0.15 0.05 250);
     --card: oklch(1 0 0);
-    --card-foreground: oklch(0.145 0 0);
+    --card-foreground: oklch(0.15 0.05 250);
     --popover: oklch(1 0 0);
-    --popover-foreground: oklch(0.145 0 0);
-    --primary: oklch(0.205 0 0);
-    --primary-foreground: oklch(0.985 0 0);
-    --secondary: oklch(0.97 0 0);
-    --secondary-foreground: oklch(0.205 0 0);
-    --muted: oklch(0.97 0 0);
-    --muted-foreground: oklch(0.556 0 0);
-    --accent: oklch(0.97 0 0);
-    --accent-foreground: oklch(0.205 0 0);
-    --destructive: oklch(0.577 0.245 27.325);
-    --destructive-foreground: oklch(0.577 0.245 27.325);
-    --border: oklch(0.922 0 0);
-    --input: oklch(0.922 0 0);
-    --ring: oklch(0.87 0 0);
-    --chart-1: oklch(0.646 0.222 41.116);
-    --chart-2: oklch(0.6 0.118 184.704);
-    --chart-3: oklch(0.398 0.07 227.392);
-    --chart-4: oklch(0.828 0.189 84.429);
-    --chart-5: oklch(0.769 0.188 70.08);
-    --radius: 0.625rem;
-    --sidebar: oklch(0.985 0 0);
-    --sidebar-foreground: oklch(0.145 0 0);
-    --sidebar-primary: oklch(0.205 0 0);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.97 0 0);
-    --sidebar-accent-foreground: oklch(0.205 0 0);
-    --sidebar-border: oklch(0.922 0 0);
-    --sidebar-ring: oklch(0.87 0 0);
+    --popover-foreground: oklch(0.15 0.05 250);
+    /* Primary: Vibrant blue (like Captain America/Iron Man) */
+    --primary: oklch(0.55 0.25 250);
+    --primary-foreground: oklch(0.99 0.01 0);
+    /* Secondary: Bright yellow/gold (like Iron Man) */
+    --secondary: oklch(0.85 0.15 85);
+    --secondary-foreground: oklch(0.15 0.05 250);
+    --muted: oklch(0.96 0.02 0);
+    --muted-foreground: oklch(0.5 0.05 250);
+    /* Accent: Vibrant red (like Spider-Man) */
+    --accent: oklch(0.6 0.25 15);
+    --accent-foreground: oklch(0.99 0.01 0);
+    --destructive: oklch(0.55 0.25 15);
+    --destructive-foreground: oklch(0.99 0.01 0);
+    --border: oklch(0.9 0.02 0);
+    --input: oklch(0.95 0.02 0);
+    --ring: oklch(0.55 0.25 250);
+    /* Chart colors: Marvel-inspired vibrant palette */
+    --chart-1: oklch(0.55 0.25 250); /* Blue */
+    --chart-2: oklch(0.6 0.25 15); /* Red */
+    --chart-3: oklch(0.85 0.15 85); /* Yellow/Gold */
+    --chart-4: oklch(0.65 0.2 300); /* Purple */
+    --chart-5: oklch(0.7 0.2 150); /* Green */
+    --radius: 0.75rem;
+    --sidebar: oklch(0.99 0.01 0);
+    --sidebar-foreground: oklch(0.15 0.05 250);
+    --sidebar-primary: oklch(0.55 0.25 250);
+    --sidebar-primary-foreground: oklch(0.99 0.01 0);
+    --sidebar-accent: oklch(0.96 0.02 0);
+    --sidebar-accent-foreground: oklch(0.15 0.05 250);
+    --sidebar-border: oklch(0.9 0.02 0);
+    --sidebar-ring: oklch(0.55 0.25 250);
 }
 
 .dark {
@@ -140,4 +148,63 @@
     body {
         @apply bg-background text-foreground;
     }
+    
+    /* Comic book style text effects */
+    .comic-text {
+        text-shadow: 
+            2px 2px 0px oklch(0.15 0.05 250),
+            4px 4px 0px oklch(0.55 0.25 250 / 0.3);
+        letter-spacing: -0.02em;
+        font-weight: 800;
+    }
+    
+    .comic-panel {
+        background: linear-gradient(135deg, 
+            oklch(0.99 0.01 0) 0%, 
+            oklch(0.98 0.02 250) 50%, 
+            oklch(0.99 0.01 0) 100%);
+        border: 3px solid oklch(0.15 0.05 250);
+        box-shadow: 
+            0 8px 16px oklch(0.15 0.05 250 / 0.2),
+            inset 0 1px 0 oklch(1 0 0);
+    }
+    
+    /* Vibrant gradient backgrounds */
+    .gradient-marvel-blue {
+        background: linear-gradient(135deg, 
+            oklch(0.55 0.25 250) 0%, 
+            oklch(0.65 0.2 280) 100%);
+    }
+    
+    .gradient-marvel-red {
+        background: linear-gradient(135deg, 
+            oklch(0.6 0.25 15) 0%, 
+            oklch(0.7 0.2 30) 100%);
+    }
+    
+    .gradient-marvel-yellow {
+        background: linear-gradient(135deg, 
+            oklch(0.85 0.15 85) 0%, 
+            oklch(0.9 0.12 90) 100%);
+    }
+    
+    .gradient-marvel-purple {
+        background: linear-gradient(135deg, 
+            oklch(0.65 0.2 300) 0%, 
+            oklch(0.7 0.18 320) 100%);
+    }
+}
+
+/* RTL Support - Tailwind v4 handles RTL automatically when dir="rtl" is set */
+[dir='rtl'] {
+    direction: rtl;
+}
+
+[dir='ltr'] {
+    direction: ltr;
+}
+
+/* Ensure body inherits direction */
+body {
+    direction: inherit;
 }

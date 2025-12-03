@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" @class(['dark' => ($appearance ?? 'system') == 'dark'])>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="ltr" @class(['dark' => ($appearance ?? 'system') == 'dark'])>
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -16,6 +16,17 @@
                     if (prefersDark) {
                         document.documentElement.classList.add('dark');
                     }
+                }
+                
+                // Set initial direction from user locale if available
+                const userLocale = '{{ auth()->user()?->locale ?? "en" }}';
+                const rtlLanguages = ['ar', 'he', 'fa', 'ur'];
+                const isRTL = rtlLanguages.includes(userLocale);
+                const direction = isRTL ? 'rtl' : 'ltr';
+                document.documentElement.setAttribute('dir', direction);
+                document.documentElement.setAttribute('lang', userLocale);
+                if (document.body) {
+                    document.body.setAttribute('dir', direction);
                 }
             })();
         </script>

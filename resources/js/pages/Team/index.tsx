@@ -1,4 +1,5 @@
 import InputError from '@/components/input-error';
+import { useTranslations } from '@/hooks/use-translations';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -77,6 +78,7 @@ export default function TeamIndex({
     memberLimitMessage,
 }: TeamIndexProps) {
     const [inviteOpen, setInviteOpen] = useState(false);
+    const { t } = useTranslations();
     const isAdmin = userRole === 'owner' || userRole === 'admin';
     const isOwner = userRole === 'owner';
 
@@ -168,11 +170,11 @@ export default function TeamIndex({
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Team" />
+            <Head title={t('team.title', 'Team')} />
 
             <SettingsLayout
-                title="Team"
-                description={`Manage team members in ${workspace.name}.`}
+                title={t('team.title', 'Team')}
+                description={t('team.description', 'Manage team members in {{workspace}}.', { workspace: workspace.name })}
                 fullWidth
             >
                 <div className="space-y-6">
@@ -182,24 +184,23 @@ export default function TeamIndex({
                             <DialogTrigger asChild>
                                 <Button disabled={!canInvite}>
                                     <UserPlus className="mr-2 h-4 w-4" />
-                                    Invite Member
+                                    {t('team.invite_member', 'Invite Member')}
                                 </Button>
                             </DialogTrigger>
                             <DialogContent>
                                 <form onSubmit={handleInvite}>
                                     <DialogHeader>
                                         <DialogTitle>
-                                            Invite Team Member
+                                            {t('team.invite_new_member', 'Invite New Member')}
                                         </DialogTitle>
                                         <DialogDescription>
-                                            Send an invitation to join your
-                                            workspace.
+                                            {t('team.invite_description', 'Enter the email address and role for the new team member.')}
                                         </DialogDescription>
                                     </DialogHeader>
                                     <div className="space-y-4 py-4">
                                         <div className="space-y-2">
                                             <Label htmlFor="email">
-                                                Email Address
+                                                {t('team.email_address', 'Email Address')}
                                             </Label>
                                             <Input
                                                 id="email"
@@ -219,7 +220,7 @@ export default function TeamIndex({
                                             />
                                         </div>
                                         <div className="space-y-2">
-                                            <Label htmlFor="role">Role</Label>
+                                            <Label htmlFor="role">{t('team.role', 'Role')}</Label>
                                             <Select
                                                 value={inviteData.role}
                                                 onValueChange={(
@@ -229,20 +230,19 @@ export default function TeamIndex({
                                                 }
                                             >
                                                 <SelectTrigger>
-                                                    <SelectValue placeholder="Select a role" />
+                                                    <SelectValue placeholder={t('team.role', 'Role')} />
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     <SelectItem value="member">
-                                                        Member
+                                                        {t('team.member', 'Member')}
                                                     </SelectItem>
                                                     <SelectItem value="admin">
-                                                        Admin
+                                                        {t('team.admin', 'Admin')}
                                                     </SelectItem>
                                                 </SelectContent>
                                             </Select>
                                             <p className="text-xs text-muted-foreground">
-                                                Admins can manage team members
-                                                and workspace settings.
+                                                {t('team.role_description', 'Admins can manage team members and workspace settings.')}
                                             </p>
                                             <InputError
                                                 message={inviteErrors.role}
@@ -255,7 +255,7 @@ export default function TeamIndex({
                                             variant="outline"
                                             onClick={() => setInviteOpen(false)}
                                         >
-                                            Cancel
+                                            {t('common.cancel', 'Cancel')}
                                         </Button>
                                         <Button
                                             type="submit"
@@ -264,14 +264,14 @@ export default function TeamIndex({
                                             {inviteProcessing && (
                                                 <Spinner className="mr-2" />
                                             )}
-                                            Send Invitation
+                                            {t('team.send_invitation', 'Send Invitation')}
                                         </Button>
                                     </DialogFooter>
                                 </form>
                             </DialogContent>
                         </Dialog>
-                    )}
-                </div>
+                        )}
+                    </div>
 
                 <p className="text-sm text-muted-foreground">
                     {memberLimitMessage}
@@ -282,11 +282,10 @@ export default function TeamIndex({
                     <CardHeader>
                         <CardTitle className="flex items-center gap-2">
                             <Users className="h-5 w-5" />
-                            Team Members
+                            {t('team.team_members', 'Team Members')}
                         </CardTitle>
                         <CardDescription>
-                            {members.length} member
-                            {members.length !== 1 ? 's' : ''} in this workspace
+                            {t('team.team_members_desc', 'All members currently in your workspace.')}
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
@@ -364,8 +363,8 @@ export default function TeamIndex({
                                                             <Settings className="mr-2 h-4 w-4" />
                                                             {member.role ===
                                                             'admin'
-                                                                ? 'Change to Member'
-                                                                : 'Make Admin'}
+                                                                ? t('team.demote_to_member', 'Demote to Member')
+                                                                : t('team.promote_to_admin', 'Promote to Admin')}
                                                         </DropdownMenuItem>
                                                         {isOwner &&
                                                             member.role ===
@@ -378,8 +377,7 @@ export default function TeamIndex({
                                                                     }
                                                                 >
                                                                     <Crown className="mr-2 h-4 w-4" />
-                                                                    Transfer
-                                                                    Ownership
+                                                                    {t('team.transfer_ownership', 'Transfer Ownership')}
                                                                 </DropdownMenuItem>
                                                             )}
                                                         <DropdownMenuSeparator />
@@ -392,7 +390,7 @@ export default function TeamIndex({
                                                             }
                                                         >
                                                             <Trash2 className="mr-2 h-4 w-4" />
-                                                            Remove
+                                                            {t('team.remove', 'Remove')}
                                                         </DropdownMenuItem>
                                                     </DropdownMenuContent>
                                                 </DropdownMenu>
@@ -410,11 +408,10 @@ export default function TeamIndex({
                         <CardHeader>
                             <CardTitle className="flex items-center gap-2">
                                 <Mail className="h-5 w-5" />
-                                Pending Invitations
+                                {t('team.pending_invitations', 'Pending Invitations')}
                             </CardTitle>
                             <CardDescription>
-                                {pendingInvitations.length} pending invitation
-                                {pendingInvitations.length !== 1 ? 's' : ''}
+                                {t('team.pending_invitations_desc', 'Invitations that have been sent but not yet accepted.')}
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
@@ -436,7 +433,7 @@ export default function TeamIndex({
                                                 </p>
                                                 <p className="flex items-center gap-1 text-sm text-muted-foreground">
                                                     <Clock className="h-3 w-3" />
-                                                    Expires{' '}
+                                                    {t('team.expires', 'Expires')}{' '}
                                                     {new Date(
                                                         invitation.expires_at,
                                                     ).toLocaleDateString()}

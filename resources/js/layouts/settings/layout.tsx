@@ -1,6 +1,7 @@
 import Heading from '@/components/heading';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import { useTranslations } from '@/hooks/use-translations';
 import { cn, isSameUrl, resolveUrl } from '@/lib/utils';
 import { edit as editAppearance } from '@/routes/appearance';
 import { edit } from '@/routes/profile';
@@ -8,29 +9,29 @@ import { show } from '@/routes/two-factor';
 import { edit as editPassword } from '@/routes/user-password';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { type PropsWithChildren } from 'react';
+import { type PropsWithChildren, useMemo } from 'react';
 
 interface NavSection {
     title: string;
     items: NavItem[];
 }
 
-const navSections: NavSection[] = [
+const getNavSections = (t: (key: string, fallback: string) => string): NavSection[] => [
     {
-        title: 'Workspace',
+        title: t('navigation.general', 'General'),
         items: [
             {
-                title: 'General',
+                title: t('navigation.general', 'General'),
                 href: '/workspaces/settings',
                 icon: null,
             },
             {
-                title: 'Team',
+                title: t('navigation.team', 'Team'),
                 href: '/team',
                 icon: null,
             },
             {
-                title: 'Billing',
+                title: t('navigation.billing', 'Billing'),
                 href: '/billing',
                 icon: null,
             },
@@ -40,22 +41,22 @@ const navSections: NavSection[] = [
         title: 'Account',
         items: [
             {
-                title: 'Profile',
+                title: t('navigation.profile', 'Profile'),
                 href: edit(),
                 icon: null,
             },
             {
-                title: 'Password',
+                title: t('navigation.password', 'Password'),
                 href: editPassword(),
                 icon: null,
             },
             {
-                title: 'Two-Factor Auth',
+                title: t('navigation.two_factor_auth', 'Two-Factor Auth'),
                 href: show(),
                 icon: null,
             },
             {
-                title: 'Appearance',
+                title: t('navigation.appearance', 'Appearance'),
                 href: editAppearance(),
                 icon: null,
             },
@@ -75,6 +76,9 @@ export default function SettingsLayout({
     description = 'Manage your workspace and account settings',
     fullWidth = false,
 }: SettingsLayoutProps) {
+    const { t } = useTranslations();
+    const navSections = useMemo(() => getNavSections(t), [t]);
+
     // When server-side rendering, we only render the layout on the client...
     if (typeof window === 'undefined') {
         return null;

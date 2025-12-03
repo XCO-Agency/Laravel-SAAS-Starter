@@ -1,4 +1,5 @@
 import InputError from '@/components/input-error';
+import { useTranslations } from '@/hooks/use-translations';
 import { Button } from '@/components/ui/button';
 import {
     Card,
@@ -34,6 +35,7 @@ export default function WorkspaceSettings({
     workspace,
     userRole,
 }: WorkspaceSettingsProps) {
+    const { t } = useTranslations();
     const { data, setData, errors, processing, isDirty } = useForm({
         name: workspace.name,
         slug: workspace.slug,
@@ -89,11 +91,11 @@ export default function WorkspaceSettings({
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Workspace Settings" />
+            <Head title={t('workspace.settings.title', 'Workspace Settings')} />
 
             <SettingsLayout
-                title="Workspace Settings"
-                description="Manage your workspace settings and configuration."
+                title={t('workspace.settings.title', 'Workspace Settings')}
+                description={t('workspace.settings.description', 'Manage your workspace settings and configuration.')}
                 fullWidth
             >
                 <div className="space-y-6">
@@ -101,16 +103,16 @@ export default function WorkspaceSettings({
                     {/* General Settings */}
                     <Card>
                         <CardHeader>
-                            <CardTitle>General</CardTitle>
+                            <CardTitle>{t('navigation.general', 'General')}</CardTitle>
                             <CardDescription>
-                                Basic information about your workspace.
+                                {t('workspace.settings.description', 'Manage your workspace settings and configuration.')}
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
                             <form onSubmit={handleSubmit} className="space-y-6">
                                 {/* Logo Upload */}
                                 <div className="space-y-2">
-                                    <Label>Workspace Logo</Label>
+                                    <Label>{t('workspace.settings.logo', 'Logo')}</Label>
                                     <div className="flex items-center gap-4">
                                         {logoPreview ? (
                                             <div className="relative">
@@ -152,7 +154,7 @@ export default function WorkspaceSettings({
                                                     }
                                                 >
                                                     <Upload className="mr-2 h-4 w-4" />
-                                                    Upload Logo
+                                                    {t('workspace.settings.upload_logo', 'Upload Logo')}
                                                 </Button>
                                                 <p className="mt-1 text-xs text-muted-foreground">
                                                     PNG, JPG, GIF up to 2MB
@@ -165,14 +167,14 @@ export default function WorkspaceSettings({
 
                                 {/* Name */}
                                 <div className="space-y-2">
-                                    <Label htmlFor="name">Workspace Name</Label>
+                                    <Label htmlFor="name">{t('workspace.settings.name', 'Workspace Name')}</Label>
                                     <Input
                                         id="name"
                                         value={data.name}
                                         onChange={(e) =>
                                             setData('name', e.target.value)
                                         }
-                                        placeholder="My Awesome Workspace"
+                                        placeholder={t('workspace.settings.name', 'Workspace Name')}
                                         required
                                         disabled={!isAdmin}
                                     />
@@ -181,7 +183,7 @@ export default function WorkspaceSettings({
 
                                 {/* Slug */}
                                 <div className="space-y-2">
-                                    <Label htmlFor="slug">URL Slug</Label>
+                                    <Label htmlFor="slug">{t('workspace.settings.slug', 'Workspace Slug')}</Label>
                                     <div className="flex items-center">
                                         <span className="rounded-l-md border border-r-0 bg-muted px-3 py-2 text-sm text-muted-foreground">
                                             /
@@ -208,7 +210,7 @@ export default function WorkspaceSettings({
                                         {processing && (
                                             <Spinner className="mr-2" />
                                         )}
-                                        Save Changes
+                                        {t('workspace.settings.save', 'Save Changes')}
                                     </Button>
                                 )}
                             </form>
@@ -218,9 +220,9 @@ export default function WorkspaceSettings({
                     {/* Plan Information */}
                     <Card>
                         <CardHeader>
-                            <CardTitle>Current Plan</CardTitle>
+                            <CardTitle>{t('billing.current_plan', 'Current Plan')}</CardTitle>
                             <CardDescription>
-                                Your workspace is on the {workspace.plan} plan.
+                                {t('billing.your_workspace_on', 'Your workspace is on the {{plan}} plan.', { plan: workspace.plan })}
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
@@ -231,12 +233,12 @@ export default function WorkspaceSettings({
                                     </p>
                                     <p className="text-sm text-muted-foreground">
                                         {workspace.plan === 'Free'
-                                            ? 'Upgrade to unlock more features'
-                                            : 'Thank you for being a subscriber!'}
+                                            ? t('billing.no_subscription_desc', 'Upgrade to a paid plan to unlock more features and team members.')
+                                            : t('billing.thank_you', 'Thank you for being a subscriber!')}
                                     </p>
                                 </div>
                                 <Button variant="outline" asChild>
-                                    <a href="/billing">Manage Billing</a>
+                                    <a href="/billing">{t('billing.manage_subscription', 'Manage Subscription')}</a>
                                 </Button>
                             </div>
                         </CardContent>
@@ -248,25 +250,20 @@ export default function WorkspaceSettings({
                             <CardHeader>
                                 <CardTitle className="flex items-center gap-2 text-destructive">
                                     <AlertTriangle className="h-5 w-5" />
-                                    Danger Zone
+                                    {t('workspace.settings.danger_zone', 'Danger Zone')}
                                 </CardTitle>
                                 <CardDescription>
-                                    Permanently delete this workspace and all of
-                                    its data.
+                                    {t('workspace.settings.delete_description', 'Once you delete a workspace, there is no going back. Please be certain.')}
                                 </CardDescription>
                             </CardHeader>
                             <CardContent>
                                 <p className="mb-4 text-sm text-muted-foreground">
-                                    Once you delete a workspace, there is no
-                                    going back. All data, team members, and
-                                    configurations will be permanently removed.
+                                    {t('workspace.settings.delete_description', 'Once you delete a workspace, there is no going back. Please be certain.')}
                                 </p>
                                 <div className="space-y-4">
                                     <div className="space-y-2">
                                         <Label htmlFor="delete-confirm">
-                                            Type{' '}
-                                            <strong>{workspace.name}</strong> to
-                                            confirm
+                                            {t('workspace.settings.delete_confirm', 'Type the workspace name to confirm deletion')}
                                         </Label>
                                         <Input
                                             id="delete-confirm"
@@ -284,7 +281,7 @@ export default function WorkspaceSettings({
                                             deleteConfirm !== workspace.name
                                         }
                                     >
-                                        Delete Workspace
+                                        {t('workspace.settings.delete_button', 'Delete Workspace')}
                                     </Button>
                                 </div>
                             </CardContent>
@@ -295,8 +292,7 @@ export default function WorkspaceSettings({
                         <Card className="border-muted">
                             <CardContent className="py-6">
                                 <p className="text-sm text-muted-foreground">
-                                    This is your personal workspace and cannot
-                                    be deleted.
+                                    {t('workspace.settings.personal_workspace', 'This is your personal workspace and cannot be deleted.')}
                                 </p>
                             </CardContent>
                         </Card>

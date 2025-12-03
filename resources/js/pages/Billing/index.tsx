@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/card';
 import { Spinner } from '@/components/ui/spinner';
 import { useToast } from '@/components/ui/toast';
+import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
 import {
@@ -59,6 +60,7 @@ export default function BillingIndex({
     plans,
     userRole,
 }: BillingIndexProps) {
+    const { t } = useTranslations();
     const isOwner = userRole === 'owner';
     const currentPlan = plans.find((p) => p.name === workspace.plan);
     const [portalLoading, setPortalLoading] = useState(false);
@@ -119,19 +121,19 @@ export default function BillingIndex({
 
     const getStatusBadge = () => {
         if (!subscription) {
-            return <Badge variant="secondary">Free</Badge>;
+            return <Badge variant="secondary">{t('billing.free', 'Free')}</Badge>;
         }
 
         if (subscription.cancelled && subscription.on_grace_period) {
-            return <Badge variant="destructive">Cancelling</Badge>;
+            return <Badge variant="destructive">{t('billing.cancelling', 'Cancelling')}</Badge>;
         }
 
         if (subscription.status === 'trialing') {
-            return <Badge variant="outline">Trial</Badge>;
+            return <Badge variant="outline">{t('billing.trial', 'Trial')}</Badge>;
         }
 
         if (subscription.status === 'active') {
-            return <Badge variant="default">Active</Badge>;
+            return <Badge variant="default">{t('billing.active', 'Active')}</Badge>;
         }
 
         return <Badge variant="destructive">{subscription.status}</Badge>;
@@ -139,11 +141,11 @@ export default function BillingIndex({
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Billing" />
+            <Head title={t('billing.title', 'Billing')} />
 
             <SettingsLayout
-                title="Billing"
-                description="Manage your subscription and billing information."
+                title={t('billing.title', 'Billing')}
+                description={t('billing.description', 'Manage your subscription and billing information')}
                 fullWidth
             >
                 <div className="space-y-6">
@@ -155,11 +157,10 @@ export default function BillingIndex({
                             <div>
                                 <CardTitle className="flex items-center gap-2">
                                     <Sparkles className="h-5 w-5 text-primary" />
-                                    Current Plan
+                                    {t('billing.current_plan', 'Current Plan')}
                                 </CardTitle>
                                 <CardDescription>
-                                    Your workspace is on the {workspace.plan}{' '}
-                                    plan
+                                    {t('billing.your_workspace_on', 'Your workspace is on the {{plan}} plan.', { plan: workspace.plan })}
                                 </CardDescription>
                             </div>
                             {getStatusBadge()}
@@ -175,26 +176,20 @@ export default function BillingIndex({
                                     <p className="text-muted-foreground">
                                         {currentPlan.price.monthly > 0
                                             ? `$${currentPlan.price.monthly}/month`
-                                            : 'Free forever'}
+                                            : t('billing.free_forever', 'Free forever')}
                                     </p>
                                 )}
                                 {workspace.on_trial &&
                                     workspace.trial_ends_at && (
                                     <p className="text-sm text-yellow-600 dark:text-yellow-400">
-                                        Trial ends on{' '}
-                                            {new Date(
-                                                workspace.trial_ends_at,
-                                            ).toLocaleDateString()}
+                                        {t('billing.trial_ends', 'Trial ends on {{date}}', { date: new Date(workspace.trial_ends_at).toLocaleDateString() })}
                                     </p>
                                 )}
                                 {subscription?.cancelled &&
                                     subscription.ends_at && (
                                         <div className="space-y-2">
                                     <p className="text-sm text-destructive">
-                                        Your subscription will end on{' '}
-                                                {new Date(
-                                                    subscription.ends_at,
-                                                ).toLocaleDateString()}
+                                        {t('billing.subscription_ends', 'Your subscription will end on {{date}}', { date: new Date(subscription.ends_at).toLocaleDateString() })}
                                     </p>
                                             {subscription.on_grace_period &&
                                                 isOwner && (
@@ -209,7 +204,7 @@ export default function BillingIndex({
                                                         {resumeLoading && (
                                                             <Spinner className="mr-2" />
                                                         )}
-                                                        Resume Subscription
+                                                        {t('billing.resume_subscription', 'Resume Subscription')}
                                                     </Button>
                                                 )}
                                         </div>
@@ -221,8 +216,8 @@ export default function BillingIndex({
                                         <Button asChild>
                                             <Link href="/billing/plans">
                                                 {workspace.plan === 'Free'
-                                                    ? 'Upgrade'
-                                                    : 'Change Plan'}
+                                                    ? t('billing.upgrade', 'Upgrade')
+                                                    : t('billing.change_plan', 'Change Plan')}
                                             </Link>
                                         </Button>
                                         {subscription && (
@@ -236,7 +231,7 @@ export default function BillingIndex({
                                                 ) : (
                                                     <ExternalLink className="mr-2 h-4 w-4" />
                                                 )}
-                                                Manage Subscription
+                                                {t('billing.manage_subscription', 'Manage Subscription')}
                                             </Button>
                                         )}
                                     </>
@@ -248,7 +243,7 @@ export default function BillingIndex({
                         {currentPlan && (
                             <div className="mt-6 border-t pt-6">
                                 <h4 className="mb-3 text-sm font-medium">
-                                    Plan Features
+                                    {t('billing.plan_features', 'Plan Features')}
                                 </h4>
                                 <ul className="grid gap-2 md:grid-cols-2">
                                     {currentPlan.features.map(
@@ -274,11 +269,10 @@ export default function BillingIndex({
                         <CardHeader>
                             <CardTitle className="flex items-center gap-2">
                                 <CreditCard className="h-5 w-5" />
-                                Payment Method
+                                {t('billing.payment_method', 'Payment Method')}
                             </CardTitle>
                             <CardDescription>
-                                Manage your payment method through the billing
-                                portal.
+                                {t('billing.payment_method_desc', 'Manage your payment method through the billing portal.')}
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
@@ -292,7 +286,7 @@ export default function BillingIndex({
                                 ) : (
                                     <CreditCard className="mr-2 h-4 w-4" />
                                 )}
-                                Update Payment Method
+                                {t('billing.update_payment_method', 'Update Payment Method')}
                             </Button>
                         </CardContent>
                     </Card>
@@ -304,10 +298,10 @@ export default function BillingIndex({
                         <CardHeader>
                             <CardTitle className="flex items-center gap-2">
                                 <Receipt className="h-5 w-5" />
-                                Invoices
+                                {t('billing.invoices', 'Invoices')}
                             </CardTitle>
                             <CardDescription>
-                                Download your past invoices for your records.
+                                {t('billing.invoices_desc', 'Download your past invoices for your records.')}
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
@@ -336,7 +330,7 @@ export default function BillingIndex({
                                                 rel="noopener noreferrer"
                                             >
                                                 <Download className="mr-2 h-4 w-4" />
-                                                Download
+                                                {t('billing.download', 'Download')}
                                             </a>
                                         </Button>
                                     </div>
@@ -352,16 +346,15 @@ export default function BillingIndex({
                         <CardContent className="flex flex-col items-center justify-center py-12">
                             <AlertCircle className="mb-4 h-12 w-12 text-muted-foreground" />
                             <h3 className="mb-2 text-lg font-medium">
-                                No Active Subscription
+                                {t('billing.no_subscription', 'No Active Subscription')}
                             </h3>
                             <p className="mb-4 text-center text-muted-foreground">
-                                Upgrade to a paid plan to unlock more features
-                                and team members.
+                                {t('billing.no_subscription_desc', 'Upgrade to a paid plan to unlock more features and team members.')}
                             </p>
                             {isOwner && (
                                 <Button asChild>
                                     <Link href="/billing/plans">
-                                        View Plans
+                                        {t('billing.view_plans', 'View Plans')}
                                     </Link>
                                 </Button>
                             )}

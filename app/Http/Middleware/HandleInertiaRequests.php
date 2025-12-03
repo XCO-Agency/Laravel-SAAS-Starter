@@ -42,6 +42,7 @@ class HandleInertiaRequests extends Middleware
         $user = $request->user();
         $currentWorkspace = $user?->currentWorkspace;
         $workspaces = [];
+        $locale = $user?->locale ?? 'en';
 
         if ($user) {
             $workspaces = $user->workspaces()
@@ -66,6 +67,7 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $user,
             ],
+            'locale' => $locale,
             'currentWorkspace' => $currentWorkspace ? [
                 'id' => $currentWorkspace->id,
                 'name' => $currentWorkspace->name,
