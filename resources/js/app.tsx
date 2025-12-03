@@ -22,7 +22,7 @@ createInertiaApp({
         root.render(
             <StrictMode>
                 <ToastProvider>
-                    <App {...props} />
+                <App {...props} />
                 </ToastProvider>
             </StrictMode>,
         );

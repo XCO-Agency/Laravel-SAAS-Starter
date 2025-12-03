@@ -5,7 +5,6 @@ import { Transition } from '@headlessui/react';
 import { Form, Head, Link, usePage } from '@inertiajs/react';
 
 import DeleteUser from '@/components/delete-user';
-import HeadingSmall from '@/components/heading-small';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -34,12 +33,12 @@ export default function Profile({
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Profile settings" />
 
-            <SettingsLayout>
+            <SettingsLayout
+                title="Profile information"
+                description="Update your name and email address"
+                fullWidth
+            >
                 <div className="space-y-6">
-                    <HeadingSmall
-                        title="Profile information"
-                        description="Update your name and email address"
-                    />
 
                     <Form
                         {...ProfileController.update.form()}

@@ -1,4 +1,3 @@
-import HeadingSmall from '@/components/heading-small';
 import TwoFactorRecoveryCodes from '@/components/two-factor-recovery-codes';
 import TwoFactorSetupModal from '@/components/two-factor-setup-modal';
 import { Badge } from '@/components/ui/badge';
@@ -43,12 +42,12 @@ export default function TwoFactor({
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Two-Factor Authentication" />
-            <SettingsLayout>
+            <SettingsLayout
+                title="Two-Factor Authentication"
+                description="Manage your two-factor authentication settings"
+                fullWidth
+            >
                 <div className="space-y-6">
-                    <HeadingSmall
-                        title="Two-Factor Authentication"
-                        description="Manage your two-factor authentication settings"
-                    />
                     {twoFactorEnabled ? (
                         <div className="flex flex-col items-start justify-start space-y-4">
                             <Badge variant="default">Enabled</Badge>

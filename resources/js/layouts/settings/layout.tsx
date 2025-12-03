@@ -63,7 +63,18 @@ const navSections: NavSection[] = [
     },
 ];
 
-export default function SettingsLayout({ children }: PropsWithChildren) {
+interface SettingsLayoutProps extends PropsWithChildren {
+    title?: string;
+    description?: string;
+    fullWidth?: boolean;
+}
+
+export default function SettingsLayout({
+    children,
+    title = 'Settings',
+    description = 'Manage your workspace and account settings',
+    fullWidth = false,
+}: SettingsLayoutProps) {
     // When server-side rendering, we only render the layout on the client...
     if (typeof window === 'undefined') {
         return null;
@@ -73,10 +84,7 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
 
     return (
         <div className="px-4 py-6">
-            <Heading
-                title="Settings"
-                description="Manage your workspace and account settings"
-            />
+            <Heading title={title} description={description} />
 
             <div className="flex flex-col lg:flex-row lg:space-x-12">
                 <aside className="w-full max-w-xl lg:w-48">
@@ -119,8 +127,13 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
 
                 <Separator className="my-6 lg:hidden" />
 
-                <div className="flex-1 md:max-w-2xl">
-                    <section className="max-w-xl space-y-12">
+                <div className={cn('flex-1', {
+                    'md:max-w-2xl': !fullWidth,
+                })}>
+                    <section className={cn('space-y-12', {
+                        'max-w-xl': !fullWidth,
+                        'w-full': fullWidth,
+                    })}>
                         {children}
                     </section>
                 </div>

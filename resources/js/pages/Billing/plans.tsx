@@ -1,4 +1,3 @@
-import HeadingSmall from '@/components/heading-small';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -148,19 +147,19 @@ export default function PlansPage({
                 ? 'Current Plan'
                 : 'Downgrade to Free';
         }
-
+        
         // Exact match: same plan AND same billing period
         if (isExactCurrentPlan(plan)) {
             return 'Current Plan';
         }
-
+        
         // Same plan but different billing period
         if (isOnThisPlan(plan)) {
             return billingPeriod === 'yearly'
                 ? 'Switch to Yearly'
                 : 'Switch to Monthly';
         }
-
+        
         // Different plan
         if (currentPlan === 'free') {
             return 'Upgrade';
@@ -171,7 +170,7 @@ export default function PlansPage({
         if (currentPlan === 'business' && plan.id === 'pro') {
             return 'Downgrade';
         }
-
+        
         return 'Switch Plan';
     };
 
@@ -179,12 +178,12 @@ export default function PlansPage({
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Pricing Plans" />
 
-            <SettingsLayout>
+            <SettingsLayout
+                title="Pricing Plans"
+                description="Choose the plan that best fits your needs."
+                fullWidth
+            >
                 <div className="space-y-6">
-                    <HeadingSmall
-                        title="Pricing Plans"
-                        description="Choose the plan that best fits your needs."
-                    />
 
                 {/* Billing Period Toggle */}
                 <div className="flex items-center justify-center gap-4">
@@ -231,7 +230,7 @@ export default function PlansPage({
                 </div>
 
                 {/* Plans Grid */}
-                <div className="grid gap-6 md:grid-cols-3">
+                <div className="grid gap-8 md:grid-cols-3 max-w-7xl mx-auto">
                     {plans.map((plan) => (
                         <Card
                             key={plan.id}
@@ -239,8 +238,8 @@ export default function PlansPage({
                                 isExactCurrentPlan(plan)
                                     ? 'border-primary shadow-lg ring-2 ring-primary'
                                     : plan.popular
-                                      ? 'border-primary shadow-lg'
-                                      : ''
+                                    ? 'border-primary shadow-lg'
+                                    : ''
                             }`}
                         >
                             {isExactCurrentPlan(plan) ? (
@@ -255,12 +254,12 @@ export default function PlansPage({
                                 </div>
                             ) : (
                                 plan.popular && (
-                                    <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                                        <Badge className="gap-1">
-                                            <Sparkles className="h-3 w-3" />
-                                            Most Popular
-                                        </Badge>
-                                    </div>
+                                <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                                    <Badge className="gap-1">
+                                        <Sparkles className="h-3 w-3" />
+                                        Most Popular
+                                    </Badge>
+                                </div>
                                 )
                             )}
                             <CardHeader className="text-center">

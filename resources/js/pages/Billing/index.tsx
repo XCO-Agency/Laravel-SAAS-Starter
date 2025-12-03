@@ -1,4 +1,3 @@
-import HeadingSmall from '@/components/heading-small';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -142,12 +141,12 @@ export default function BillingIndex({
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Billing" />
 
-            <SettingsLayout>
+            <SettingsLayout
+                title="Billing"
+                description="Manage your subscription and billing information."
+                fullWidth
+            >
                 <div className="space-y-6">
-                    <HeadingSmall
-                        title="Billing"
-                        description="Manage your subscription and billing information."
-                    />
 
                 {/* Current Plan */}
                 <Card>
@@ -181,22 +180,22 @@ export default function BillingIndex({
                                 )}
                                 {workspace.on_trial &&
                                     workspace.trial_ends_at && (
-                                        <p className="text-sm text-yellow-600 dark:text-yellow-400">
-                                            Trial ends on{' '}
+                                    <p className="text-sm text-yellow-600 dark:text-yellow-400">
+                                        Trial ends on{' '}
                                             {new Date(
                                                 workspace.trial_ends_at,
                                             ).toLocaleDateString()}
-                                        </p>
-                                    )}
+                                    </p>
+                                )}
                                 {subscription?.cancelled &&
                                     subscription.ends_at && (
                                         <div className="space-y-2">
-                                            <p className="text-sm text-destructive">
-                                                Your subscription will end on{' '}
+                                    <p className="text-sm text-destructive">
+                                        Your subscription will end on{' '}
                                                 {new Date(
                                                     subscription.ends_at,
                                                 ).toLocaleDateString()}
-                                            </p>
+                                    </p>
                                             {subscription.on_grace_period &&
                                                 isOwner && (
                                                     <Button
@@ -214,7 +213,7 @@ export default function BillingIndex({
                                                     </Button>
                                                 )}
                                         </div>
-                                    )}
+                                )}
                             </div>
                             <div className="flex gap-2">
                                 {isOwner && (
@@ -258,9 +257,9 @@ export default function BillingIndex({
                                                 key={index}
                                                 className="flex items-center gap-2 text-sm"
                                             >
-                                                <CheckCircle className="h-4 w-4 text-green-500" />
-                                                {feature}
-                                            </li>
+                                            <CheckCircle className="h-4 w-4 text-green-500" />
+                                            {feature}
+                                        </li>
                                         ),
                                     )}
                                 </ul>

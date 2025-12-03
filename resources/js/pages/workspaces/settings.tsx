@@ -1,4 +1,3 @@
-import HeadingSmall from '@/components/heading-small';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import {
@@ -92,12 +91,12 @@ export default function WorkspaceSettings({
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Workspace Settings" />
 
-            <SettingsLayout>
+            <SettingsLayout
+                title="Workspace Settings"
+                description="Manage your workspace settings and configuration."
+                fullWidth
+            >
                 <div className="space-y-6">
-                    <HeadingSmall
-                        title="Workspace Settings"
-                        description="Manage your workspace settings and configuration."
-                    />
 
                     {/* General Settings */}
                     <Card>

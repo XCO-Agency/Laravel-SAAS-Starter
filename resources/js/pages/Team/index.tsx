@@ -1,4 +1,3 @@
-import HeadingSmall from '@/components/heading-small';
 import InputError from '@/components/input-error';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -171,13 +170,13 @@ export default function TeamIndex({
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Team" />
 
-            <SettingsLayout>
+            <SettingsLayout
+                title="Team"
+                description={`Manage team members in ${workspace.name}.`}
+                fullWidth
+            >
                 <div className="space-y-6">
-                    <div className="flex items-center justify-between">
-                        <HeadingSmall
-                            title="Team"
-                            description={`Manage team members in ${workspace.name}.`}
-                        />
+                    <div className="flex items-center justify-end">
                         {isAdmin && (
                         <Dialog open={inviteOpen} onOpenChange={setInviteOpen}>
                             <DialogTrigger asChild>

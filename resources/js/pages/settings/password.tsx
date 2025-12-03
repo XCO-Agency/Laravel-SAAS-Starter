@@ -7,7 +7,6 @@ import { Transition } from '@headlessui/react';
 import { Form, Head } from '@inertiajs/react';
 import { useRef } from 'react';
 
-import HeadingSmall from '@/components/heading-small';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -28,12 +27,12 @@ export default function Password() {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Password settings" />
 
-            <SettingsLayout>
+            <SettingsLayout
+                title="Update password"
+                description="Ensure your account is using a long, random password to stay secure"
+                fullWidth
+            >
                 <div className="space-y-6">
-                    <HeadingSmall
-                        title="Update password"
-                        description="Ensure your account is using a long, random password to stay secure"
-                    />
 
                     <Form
                         {...PasswordController.update.form()}
