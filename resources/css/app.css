@@ -221,14 +221,42 @@ body {
 }
 
 /* RTL settings layout - force sidebar to right */
-[dir='rtl'] .settings-layout-container {
-    flex-direction: row-reverse;
+[dir='rtl'] .settings-layout-container,
+.settings-layout-container[data-rtl='true'] {
+    flex-direction: row-reverse !important;
 }
 
-[dir='rtl'] .settings-layout-sidebar {
-    order: 2;
+[dir='rtl'] .settings-layout-sidebar,
+.settings-layout-sidebar[data-rtl='true'] {
+    order: 2 !important;
 }
 
-[dir='rtl'] .settings-layout-content {
-    order: 1;
+[dir='rtl'] .settings-layout-content,
+.settings-layout-content[data-rtl='true'] {
+    order: 1 !important;
+}
+
+/* Additional RTL support for settings layout */
+@media (min-width: 1024px) {
+    [dir='rtl'] .settings-layout-container,
+    .settings-layout-container[data-rtl='true'] {
+        flex-direction: row-reverse !important;
+    }
+    
+    [dir='rtl'] .settings-layout-sidebar,
+    .settings-layout-sidebar[data-rtl='true'] {
+        order: 2 !important;
+    }
+    
+    [dir='rtl'] .settings-layout-content,
+    .settings-layout-content[data-rtl='true'] {
+        order: 1 !important;
+    }
+}
+
+/* Additional RTL support for settings layout */
+@media (min-width: 1024px) {
+    [dir='rtl'] .settings-layout-container {
+        flex-direction: row-reverse !important;
+    }
 }

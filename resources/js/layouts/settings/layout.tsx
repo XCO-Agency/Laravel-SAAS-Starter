@@ -94,15 +94,15 @@ export default function SettingsLayout({
     const isRTL = RTL_LANGUAGES.includes(i18n.language);
     
     return (
-        <div className="px-4 py-6">
+        <div className="px-4 py-6" dir={isRTL ? 'rtl' : 'ltr'}>
             <Heading title={defaultTitle} description={defaultDescription} />
 
             <div className={cn('flex flex-col lg:flex-row lg:gap-12 settings-layout-container', {
                 'lg:flex-row-reverse': isRTL,
-            })}>
+            })} data-rtl={isRTL}>
                 <aside className={cn('w-full max-w-xl lg:w-48 settings-layout-sidebar', {
                     'lg:order-2': isRTL,
-                })}>
+                })} data-rtl={isRTL}>
                     <nav className="flex flex-col space-y-6">
                         {navSections.map((section) => (
                             <div key={section.title}>
@@ -145,7 +145,7 @@ export default function SettingsLayout({
                 <div className={cn('flex-1 settings-layout-content', {
                     'md:max-w-2xl': !fullWidth,
                     'lg:order-1': isRTL,
-                })}>
+                })} data-rtl={isRTL}>
                     <section className={cn('space-y-12', {
                         'max-w-xl': !fullWidth,
                         'w-full': fullWidth,
