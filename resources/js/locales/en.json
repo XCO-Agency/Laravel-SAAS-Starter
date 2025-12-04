@@ -21,7 +21,12 @@
     "reset_password": {
       "title": "Reset Password",
       "page_title": "Reset Password",
-      "button": "Reset Password"
+      "button": "Reset Password",
+      "description": "Please enter your new password below",
+      "email": "Email",
+      "password": "Password",
+      "confirm_password": "Confirm password",
+      "or_return": "Or, return to"
     },
     "email": "Email address",
     "password": "Password",
@@ -42,7 +47,31 @@
     "verify_email": {
       "title": "Verify Your Email Address",
       "description": "Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn't receive the email, we will gladly send you another.",
-      "button": "Resend Verification Email"
+      "button": "Resend Verification Email",
+      "page_title": "Email verification",
+      "link_sent": "A new verification link has been sent to the email address you provided during registration."
+    },
+    "confirm_password_page": {
+      "title": "Confirm your password",
+      "description": "This is a secure area of the application. Please confirm your password before continuing.",
+      "page_title": "Confirm password",
+      "button": "Confirm password"
+    },
+    "two_factor_challenge": {
+      "page_title": "Two-Factor Authentication",
+      "recovery_code": {
+        "title": "Recovery Code",
+        "description": "Please confirm access to your account by entering one of your emergency recovery codes.",
+        "placeholder": "Enter recovery code",
+        "toggle_text": "login using an authentication code"
+      },
+      "authentication_code": {
+        "title": "Authentication Code",
+        "description": "Enter the authentication code provided by your authenticator application.",
+        "toggle_text": "login using a recovery code"
+      },
+      "continue": "Continue",
+      "or_you_can": "or you can"
     }
   },
   "dashboard": {
@@ -107,7 +136,28 @@
       "disabled_description": "When you enable two-factor authentication, you will be prompted for a secure pin during login. This pin can be retrieved from a TOTP-supported application on your phone.",
       "enable_2fa": "Enable 2FA",
       "disable_2fa": "Disable 2FA",
-      "continue_setup": "Continue Setup"
+      "continue_setup": "Continue Setup",
+      "setup_modal": {
+        "enabled_title": "Two-Factor Authentication Enabled",
+        "enabled_description": "Two-factor authentication is now enabled. Scan the QR code or enter the setup key in your authenticator app.",
+        "verify_title": "Verify Authentication Code",
+        "verify_description": "Enter the 6-digit code from your authenticator app",
+        "enable_title": "Enable Two-Factor Authentication",
+        "enable_description": "To finish enabling two-factor authentication, scan the QR code or enter the setup key in your authenticator app",
+        "continue": "Continue",
+        "close": "Close",
+        "or_enter_manually": "or, enter the code manually",
+        "back": "Back",
+        "confirm": "Confirm"
+      },
+      "recovery_codes": {
+        "title": "2FA Recovery Codes",
+        "description": "Recovery codes let you regain access if you lose your 2FA device. Store them in a secure password manager.",
+        "view": "View Recovery Codes",
+        "hide": "Hide Recovery Codes",
+        "regenerate": "Regenerate Codes",
+        "warning": "Each recovery code can be used once to access your account and will be removed after use. If you need more, click Regenerate Codes above."
+      }
     },
     "appearance": {
       "title": "Appearance settings",
@@ -120,6 +170,18 @@
       "french": "French",
       "spanish": "Spanish",
       "arabic": "Arabic"
+    },
+    "delete_account": {
+      "title": "Delete account",
+      "description": "Delete your account and all of its resources",
+      "warning": "Warning",
+      "warning_message": "Please proceed with caution, this cannot be undone.",
+      "button": "Delete account",
+      "confirm_title": "Are you sure you want to delete your account?",
+      "confirm_description": "Once your account is deleted, all of its resources and data will also be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.",
+      "password_label": "Password",
+      "cancel": "Cancel",
+      "confirm_button": "Delete account"
     }
   },
   "workspace": {
@@ -137,12 +199,6 @@
       "delete_description": "Once you delete a workspace, there is no going back. Please be certain.",
       "delete_confirm": "Type the workspace name to confirm deletion",
       "delete_button": "Delete Workspace"
-    },
-    "create": {
-      "title": "Create Workspace",
-      "description": "Create a new workspace to organize your projects",
-      "name": "Workspace Name",
-      "create": "Create Workspace"
     },
     "list": {
       "title": "Workspaces",
@@ -163,13 +219,16 @@
       "details_title": "Workspace Details",
       "details_description": "Enter the details for your new workspace.",
       "logo": "Workspace Logo",
+      "logo_preview": "Logo preview",
       "upload_logo": "Upload Logo",
+      "logo_format_size": "PNG, JPG, GIF up to 2MB",
       "name": "Workspace Name",
       "name_placeholder": "My Awesome Workspace",
       "slug": "URL Slug",
       "slug_placeholder": "my-awesome-workspace",
-      "slug_description": "This will be used in URLs. Only lowercase letters, numbers, and hyphens are allowed.",
-      "create_button": "Create Workspace"
+      "slug_hint": "This will be used in URLs. Only lowercase letters, numbers, and hyphens are allowed.",
+      "create_button": "Create Workspace",
+      "cancel_button": "Cancel"
     }
   },
   "team": {
@@ -228,6 +287,9 @@
     "no_subscription": "No Active Subscription",
     "no_subscription_desc": "Upgrade to a paid plan to unlock more features and team members.",
     "view_plans": "View Plans",
+    "mo": "mo",
+    "yr": "yr",
+    "downgrade": "Downgrade",
     "plans": {
       "title": "Pricing Plans",
       "description": "Choose the plan that best fits your needs",
@@ -265,6 +327,7 @@
     "help_center": "Help Center",
     "log_out": "Log out",
     "general": "General",
+    "account": "Account",
     "profile": "Profile",
     "password": "Password",
     "two_factor_auth": "Two-Factor Auth",
@@ -474,4 +537,3 @@
     }
   }
 }
-

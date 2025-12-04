@@ -2,23 +2,25 @@
 import TextLink from '@/components/text-link';
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
+import { useTranslations } from '@/hooks/use-translations';
 import AuthLayout from '@/layouts/auth-layout';
 import { logout } from '@/routes';
 import { send } from '@/routes/verification';
 import { Form, Head } from '@inertiajs/react';
 
 export default function VerifyEmail({ status }: { status?: string }) {
+    const { t } = useTranslations();
+
     return (
         <AuthLayout
-            title="Verify email"
-            description="Please verify your email address by clicking on the link we just emailed to you."
+            title={t('auth.verify_email.title', 'Verify Your Email Address')}
+            description={t('auth.verify_email.description', 'Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.')}
         >
-            <Head title="Email verification" />
+            <Head title={t('auth.verify_email.page_title', 'Email verification')} />
 
             {status === 'verification-link-sent' && (
                 <div className="mb-4 text-center text-sm font-medium text-green-600">
-                    A new verification link has been sent to the email address
-                    you provided during registration.
+                    {t('auth.verify_email.link_sent', 'A new verification link has been sent to the email address you provided during registration.')}
                 </div>
             )}
 
@@ -27,14 +29,14 @@ export default function VerifyEmail({ status }: { status?: string }) {
                     <>
                         <Button disabled={processing} variant="secondary">
                             {processing && <Spinner />}
-                            Resend verification email
+                            {t('auth.verify_email.button', 'Resend Verification Email')}
                         </Button>
 
                         <TextLink
                             href={logout()}
                             className="mx-auto block text-sm"
                         >
-                            Log out
+                            {t('auth.sign_out', 'Sign Out')}
                         </TextLink>
                     </>
                 )}

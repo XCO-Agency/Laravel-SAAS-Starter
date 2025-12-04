@@ -33,12 +33,17 @@ const getFooterNavItems = (t: (key: string, fallback: string) => string): NavIte
 ];
 
 export function AppSidebar() {
-    const { t } = useTranslations();
+    const { t, i18n } = useTranslations();
     const mainNavItems = useMemo(() => getMainNavItems(t), [t]);
     const footerNavItems = useMemo(() => getFooterNavItems(t), [t]);
+    
+    // Set sidebar to right side for RTL languages
+    const RTL_LANGUAGES = ['ar', 'he', 'fa', 'ur'];
+    const isRTL = RTL_LANGUAGES.includes(i18n.language);
+    const sidebarSide = isRTL ? 'right' : 'left';
 
     return (
-        <Sidebar collapsible="icon" variant="inset">
+        <Sidebar collapsible="icon" variant="inset" side={sidebarSide}>
             <SidebarHeader>
                 <WorkspaceSwitcher />
             </SidebarHeader>

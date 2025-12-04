@@ -115,7 +115,7 @@ export default function CreateWorkspace() {
                                         <div className="relative">
                                             <img
                                                 src={logoPreview}
-                                                alt="Logo preview"
+                                                alt={t('workspace.create.logo_preview', 'Logo preview')}
                                                 className="h-20 w-20 rounded-lg object-cover"
                                             />
                                             <button

@@ -12,30 +12,60 @@
       "page_title": "Inscription",
       "button": "S'inscrire"
     },
-    "forgot_password": {
-      "title": "Mot de passe oublié ?",
-      "description": "Aucun problème. Indiquez-nous simplement votre adresse e-mail et nous vous enverrons un lien de réinitialisation du mot de passe.",
-      "page_title": "Mot de passe oublié",
-      "button": "Envoyer le lien de réinitialisation"
-    },
+    "forgot_password": "Mot de passe oublié ?",
     "reset_password": {
       "title": "Réinitialiser le mot de passe",
       "page_title": "Réinitialiser le mot de passe",
-      "button": "Réinitialiser le mot de passe"
+      "button": "Réinitialiser le mot de passe",
+      "description": "Please enter your new password below",
+      "email": "Email",
+      "password": "Password",
+      "confirm_password": "Confirm password",
+      "or_return": "Or, return to"
     },
     "email": "Adresse e-mail",
     "password": "Mot de passe",
     "name": "Nom",
     "remember_me": "Se souvenir de moi",
-    "forgot_password": "Mot de passe oublié ?",
     "no_account": "Vous n'avez pas de compte ?",
     "sign_up": "S'inscrire",
     "already_registered": "Déjà inscrit ?",
+    "have_account": "Already have an account?",
+    "log_in": "Log in",
+    "sign_in": "Sign in",
+    "sign_out": "Sign Out",
+    "create_account": "Create Account",
+    "name_placeholder": "Full name",
+    "email_from_invitation": "This email is from your invitation and cannot be changed.",
     "confirm_password": "Confirmer le mot de passe",
     "verify_email": {
       "title": "Vérifiez votre adresse e-mail",
       "description": "Merci de vous être inscrit ! Avant de commencer, pourriez-vous vérifier votre adresse e-mail en cliquant sur le lien que nous venons de vous envoyer ? Si vous n'avez pas reçu l'e-mail, nous vous en enverrons volontiers un autre.",
-      "button": "Renvoyer l'e-mail de vérification"
+      "button": "Renvoyer l'e-mail de vérification",
+      "page_title": "Email verification",
+      "link_sent": "A new verification link has been sent to the email address you provided during registration."
+    },
+    "confirm_password_page": {
+      "title": "Confirm your password",
+      "description": "This is a secure area of the application. Please confirm your password before continuing.",
+      "page_title": "Confirm password",
+      "button": "Confirm password"
+    },
+    "two_factor_challenge": {
+      "page_title": "Two-Factor Authentication",
+      "recovery_code": {
+        "title": "Recovery Code",
+        "description": "Please confirm access to your account by entering one of your emergency recovery codes.",
+        "placeholder": "Enter recovery code",
+        "toggle_text": "login using an authentication code"
+      },
+      "authentication_code": {
+        "title": "Authentication Code",
+        "description": "Enter the authentication code provided by your authenticator application.",
+        "toggle_text": "login using a recovery code"
+      },
+      "continue": "Continue",
+      "or_you_can": "or you can"
     }
   },
   "dashboard": {
@@ -100,7 +130,28 @@
       "disabled_description": "Lorsque vous activez l'authentification à deux facteurs, vous serez invité à saisir un code PIN sécurisé lors de la connexion. Ce code PIN peut être récupéré depuis une application TOTP sur votre téléphone.",
       "enable_2fa": "Activer 2FA",
       "disable_2fa": "Désactiver 2FA",
-      "continue_setup": "Continuer la configuration"
+      "continue_setup": "Continuer la configuration",
+      "setup_modal": {
+        "enabled_title": "Two-Factor Authentication Enabled",
+        "enabled_description": "Two-factor authentication is now enabled. Scan the QR code or enter the setup key in your authenticator app.",
+        "verify_title": "Verify Authentication Code",
+        "verify_description": "Enter the 6-digit code from your authenticator app",
+        "enable_title": "Enable Two-Factor Authentication",
+        "enable_description": "To finish enabling two-factor authentication, scan the QR code or enter the setup key in your authenticator app",
+        "continue": "Continue",
+        "close": "Close",
+        "or_enter_manually": "or, enter the code manually",
+        "back": "Back",
+        "confirm": "Confirm"
+      },
+      "recovery_codes": {
+        "title": "2FA Recovery Codes",
+        "description": "Recovery codes let you regain access if you lose your 2FA device. Store them in a secure password manager.",
+        "view": "View Recovery Codes",
+        "hide": "Hide Recovery Codes",
+        "regenerate": "Regenerate Codes",
+        "warning": "Each recovery code can be used once to access your account and will be removed after use. If you need more, click Regenerate Codes above."
+      }
     },
     "appearance": {
       "title": "Paramètres d'apparence",
@@ -113,6 +164,18 @@
       "french": "Français",
       "spanish": "Espagnol",
       "arabic": "Arabe"
+    },
+    "delete_account": {
+      "title": "Delete account",
+      "description": "Delete your account and all of its resources",
+      "warning": "Warning",
+      "warning_message": "Please proceed with caution, this cannot be undone.",
+      "button": "Delete account",
+      "confirm_title": "Are you sure you want to delete your account?",
+      "confirm_description": "Once your account is deleted, all of its resources and data will also be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.",
+      "password_label": "Password",
+      "cancel": "Cancel",
+      "confirm_button": "Delete account"
     }
   },
   "workspace": {
@@ -131,18 +194,36 @@
       "delete_confirm": "Tapez le nom de l'espace de travail pour confirmer la suppression",
       "delete_button": "Supprimer l'espace de travail"
     },
-    "create": {
-      "title": "Créer un espace de travail",
-      "description": "Créez un nouvel espace de travail pour organiser vos projets",
-      "name": "Nom de l'espace de travail",
-      "create": "Créer l'espace de travail"
-    },
     "list": {
       "title": "Espaces de travail",
       "description": "Gérez vos espaces de travail",
       "create_new": "Créer un nouvel espace de travail",
+      "new_workspace": "New Workspace",
       "no_workspaces": "Vous n'avez pas encore d'espaces de travail.",
-      "get_started": "Commencez par créer votre premier espace de travail."
+      "get_started": "Commencez par créer votre premier espace de travail.",
+      "current": "Current",
+      "personal": "Personal",
+      "members": "members",
+      "plan": "Plan"
+    },
+    "create": {
+      "title": "Créer un espace de travail",
+      "page_title": "Create Workspace",
+      "description": "Créez un nouvel espace de travail pour organiser vos projets",
+      "details_title": "Workspace Details",
+      "details_description": "Enter the details for your new workspace.",
+      "logo": "Workspace Logo",
+      "logo_preview": "Logo preview",
+      "upload_logo": "Upload Logo",
+      "logo_format_size": "PNG, JPG, GIF up to 2MB",
+      "name": "Nom de l'espace de travail",
+      "name_placeholder": "My Awesome Workspace",
+      "slug": "URL Slug",
+      "slug_placeholder": "my-awesome-workspace",
+      "slug_hint": "This will be used in URLs. Only lowercase letters, numbers, and hyphens are allowed.",
+      "create_button": "Create Workspace",
+      "cancel_button": "Cancel",
+      "create": "Créer l'espace de travail"
     }
   },
   "team": {
@@ -181,6 +262,10 @@
     "current_plan": "Plan actuel",
     "your_workspace_on": "Votre espace de travail est sur le plan {{plan}}",
     "free_forever": "Gratuit pour toujours",
+    "free": "Free",
+    "cancelling": "Cancelling",
+    "trial": "Trial",
+    "active": "Active",
     "trial_ends": "L'essai se termine le {{date}}",
     "subscription_ends": "Votre abonnement se terminera le {{date}}",
     "resume_subscription": "Reprendre l'abonnement",
@@ -197,6 +282,9 @@
     "no_subscription": "Aucun abonnement actif",
     "no_subscription_desc": "Passez à un plan payant pour débloquer plus de fonctionnalités et de membres d'équipe.",
     "view_plans": "Voir les plans",
+    "mo": "mo",
+    "yr": "yr",
+    "downgrade": "Downgrade",
     "plans": {
       "title": "Plans tarifaires",
       "description": "Choisissez le plan qui correspond le mieux à vos besoins",
@@ -234,6 +322,7 @@
     "help_center": "Centre d'aide",
     "log_out": "Se déconnecter",
     "general": "Général",
+    "account": "Account",
     "profile": "Profil",
     "password": "Mot de passe",
     "two_factor_auth": "Authentification à deux facteurs",
@@ -252,9 +341,22 @@
     "loading": "Chargement...",
     "saved": "Enregistré",
     "error": "Erreur",
-    "success": "Succès"
+    "success": "Succès",
+    "png_jpg_gif_2mb": "PNG, JPG, GIF up to 2MB"
   },
   "invitation": {
+    "page_title": "Join Workspace",
+    "title": "You're Invited!",
+    "description": "You've been invited to join",
+    "invited_email": "Invited",
+    "role": "Role",
+    "expires": "Expires",
+    "accept_button": "Accept Invitation",
+    "wrong_account": "You're signed in as",
+    "but_sent_to": "but this invitation was sent to",
+    "sign_out_message": "Please sign out and sign in with the correct account, or create a new account with that email.",
+    "auth_required": "Sign in or create an account to accept this invitation.",
+    "ignore_message": "If you weren't expecting this invitation, you can safely ignore it.",
     "accept": {
       "title": "Invitation d'équipe",
       "description": "Vous avez été invité à rejoindre {{workspace}} en tant que {{role}}.",
@@ -267,6 +369,166 @@
       "email_match": "L'invitation a été envoyée à {{email}}. Veuillez vous connecter avec cet e-mail pour accepter.",
       "email_mismatch": "L'invitation a été envoyée à {{email}}. Veuillez vous connecter avec cet e-mail ou créer un nouveau compte avec cette adresse e-mail."
     }
+  },
+  "welcome": {
+    "title": "Build your SaaS faster than ever",
+    "subtitle": "The complete foundation for your next SaaS application. Multi-tenancy, team management, billing, and authentication — all out of the box.",
+    "beta_badge": "Now in Beta",
+    "go_to_dashboard": "Go to Dashboard",
+    "start_free_trial": "Start Free Trial",
+    "view_pricing": "View Pricing",
+    "ready_to_get_started": "Ready to get started?",
+    "ready_description": "Start building your SaaS today with our complete foundation. No credit card required.",
+    "active_users": "Active Users",
+    "uptime": "Uptime",
+    "support": "Support",
+    "features_title": "Everything you need to build",
+    "features_description": "A complete foundation with all the features your SaaS needs from day one.",
+    "pricing_title": "Simple, transparent pricing",
+    "pricing_description": "Choose the plan that's right for you. Upgrade or downgrade at any time.",
+    "features": {
+      "multi_workspace": {
+        "title": "Multi-Workspace",
+        "description": "Organize your work across multiple projects and clients with dedicated workspaces."
+      },
+      "team_collaboration": {
+        "title": "Team Collaboration",
+        "description": "Invite team members, assign roles, and collaborate seamlessly on shared projects."
+      },
+      "flexible_billing": {
+        "title": "Flexible Billing",
+        "description": "Per-workspace billing with flexible plans. Scale each workspace independently."
+      },
+      "enterprise_security": {
+        "title": "Enterprise Security",
+        "description": "Two-factor authentication, secure sessions, and granular access controls."
+      },
+      "lightning_fast": {
+        "title": "Lightning Fast",
+        "description": "Built on modern technologies for exceptional performance and reliability."
+      },
+      "api_ready": {
+        "title": "API Ready",
+        "description": "Full API access to integrate with your existing tools and workflows."
+      }
+    },
+    "plans": {
+      "free": {
+        "name": "Free",
+        "description": "Perfect for getting started",
+        "features": {
+          "workspace": "1 workspace",
+          "member": "1 team member",
+          "features": "Basic features",
+          "support": "Community support"
+        }
+      },
+      "pro": {
+        "name": "Pro",
+        "description": "For growing teams",
+        "features": {
+          "workspaces": "5 workspaces",
+          "members": "5 team members per workspace",
+          "features": "All features",
+          "support": "Priority support",
+          "analytics": "Advanced analytics"
+        }
+      },
+      "business": {
+        "name": "Business",
+        "description": "For larger organizations",
+        "features": {
+          "workspaces": "Unlimited workspaces",
+          "members": "Unlimited team members",
+          "features": "All features",
+          "support": "Dedicated support",
+          "integrations": "Custom integrations",
+          "sla": "SLA guarantee"
+        }
+      },
+      "per_month": "/month",
+      "get_started": "Get Started",
+      "most_popular": "Most Popular"
+    },
+    "copyright": "All rights reserved.",
+    "no_credit_card": "* no credit card required.",
+    "how_it_works": {
+      "title": "How it works",
+      "description": "Can't get any easier",
+      "step1": {
+        "number": "one",
+        "title": "Sign Up",
+        "description": "Create your account in seconds. No credit card required."
+      },
+      "step2": {
+        "number": "two",
+        "title": "Create Workspace",
+        "description": "Set up your workspace and invite your team members."
+      },
+      "step3": {
+        "number": "three",
+        "title": "Start Building",
+        "description": "Begin building your SaaS with all the features you need."
+      }
+    },
+    "testimonials": {
+      "title": "Customers love it",
+      "testimonial1": {
+        "quote": "This platform has transformed how we manage our projects. The multi-workspace feature is a game-changer.",
+        "author": "Sarah Johnson",
+        "role": "Product Manager"
+      },
+      "testimonial2": {
+        "quote": "The team collaboration features are outstanding. We can now work seamlessly across multiple projects.",
+        "author": "Michael Chen",
+        "role": "CTO"
+      },
+      "testimonial3": {
+        "quote": "Best decision we made. The billing system is flexible and the security features give us peace of mind.",
+        "author": "Emily Rodriguez",
+        "role": "Founder"
+      }
+    },
+    "faq": {
+      "title": "Got a Question?",
+      "description": "Here is a list of the most common questions to help you with your decision.",
+      "question1": "What features are included?",
+      "answer1": "All plans include multi-workspace support, team collaboration, flexible billing, enterprise security, and API access. Premium plans unlock additional features like advanced analytics and custom integrations.",
+      "question2": "Can I change plans later?",
+      "answer2": "Yes, you can upgrade or downgrade your plan at any time. Changes take effect immediately and are prorated.",
+      "question3": "What payment methods do you accept?",
+      "answer3": "We accept all major credit cards (Visa, MasterCard, American Express) through our secure payment processor, Stripe.",
+      "question4": "Can I cancel my subscription?",
+      "answer4": "Yes, you can cancel your subscription at any time. You will continue to have access to paid features until the end of your billing period.",
+      "question5": "Is there a free trial?",
+      "answer5": "Yes! We offer a free plan that includes 1 workspace and 1 team member. You can upgrade at any time to unlock more features."
+    },
+    "try_before": {
+      "title": "Try Before You Subscribe",
+      "description": "Get started with our free plan and upgrade when you are ready. No credit card required."
+    },
+    "your_day": {
+      "title": "WELCOME TO YOUR NEW LIFE",
+      "morning": {
+        "time": "7:00 AM",
+        "title": "Your workspace is ready",
+        "description": "The day begins. You open your dashboard, ready for the usual chaos. But it's organized. Your workspace is already set up, teams are configured, and everything is ready to go. The chaos is gone before you even take your first sip."
+      },
+      "noon": {
+        "time": "11:00 AM",
+        "title": "Team collaboration in full swing",
+        "description": "Your team is collaborating seamlessly. Invitations are sent, roles are assigned, and projects are moving forward. All you do is approve and move on."
+      },
+      "afternoon": {
+        "time": "2:00 PM",
+        "title": "Billing handled automatically",
+        "description": "While you're focused on building, billing is handled automatically. Subscriptions are managed, invoices are generated, and payments are processed seamlessly."
+      },
+      "evening": {
+        "time": "5:00 PM",
+        "title": "Security never sleeps",
+        "description": "Your security is always on. Two-factor authentication, secure sessions, and granular access controls keep your data safe while you focus on what matters."
+      }
+    }
   }
 }
-

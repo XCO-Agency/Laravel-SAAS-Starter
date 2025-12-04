@@ -208,3 +208,27 @@
 body {
     direction: inherit;
 }
+
+/* RTL layout adjustments for sidebar positioning */
+[dir='rtl'] [data-side='right'] {
+    right: 0;
+    left: auto;
+}
+
+[dir='rtl'] [data-side='left'] {
+    left: auto;
+    right: 0;
+}
+
+/* RTL settings layout - force sidebar to right */
+[dir='rtl'] .settings-layout-container {
+    flex-direction: row-reverse;
+}
+
+[dir='rtl'] .settings-layout-sidebar {
+    order: 2;
+}
+
+[dir='rtl'] .settings-layout-content {
+    order: 1;
+}

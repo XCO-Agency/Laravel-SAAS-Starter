@@ -38,7 +38,7 @@ const getNavSections = (t: (key: string, fallback: string) => string): NavSectio
         ],
     },
     {
-        title: 'Account',
+        title: t('navigation.account', 'Account'),
         items: [
             {
                 title: t('navigation.profile', 'Profile'),
@@ -72,12 +72,15 @@ interface SettingsLayoutProps extends PropsWithChildren {
 
 export default function SettingsLayout({
     children,
-    title = 'Settings',
-    description = 'Manage your workspace and account settings',
+    title,
+    description,
     fullWidth = false,
 }: SettingsLayoutProps) {
-    const { t } = useTranslations();
+    const { t, i18n } = useTranslations();
     const navSections = useMemo(() => getNavSections(t), [t]);
+    
+    const defaultTitle = title ?? t('settings.title', 'Settings');
+    const defaultDescription = description ?? t('settings.description', 'Manage your workspace and account settings');
 
     // When server-side rendering, we only render the layout on the client...
     if (typeof window === 'undefined') {
@@ -86,12 +89,20 @@ export default function SettingsLayout({
 
     const currentPath = window.location.pathname;
 
+    // Detect RTL for layout adjustments
+    const RTL_LANGUAGES = ['ar', 'he', 'fa', 'ur'];
+    const isRTL = RTL_LANGUAGES.includes(i18n.language);
+    
     return (
         <div className="px-4 py-6">
-            <Heading title={title} description={description} />
+            <Heading title={defaultTitle} description={defaultDescription} />
 
-            <div className="flex flex-col lg:flex-row lg:space-x-12">
-                <aside className="w-full max-w-xl lg:w-48">
+            <div className={cn('flex flex-col lg:flex-row lg:gap-12 settings-layout-container', {
+                'lg:flex-row-reverse': isRTL,
+            })}>
+                <aside className={cn('w-full max-w-xl lg:w-48 settings-layout-sidebar', {
+                    'lg:order-2': isRTL,
+                })}>
                     <nav className="flex flex-col space-y-6">
                         {navSections.map((section) => (
                             <div key={section.title}>
@@ -131,8 +142,9 @@ export default function SettingsLayout({
 
                 <Separator className="my-6 lg:hidden" />
 
-                <div className={cn('flex-1', {
+                <div className={cn('flex-1 settings-layout-content', {
                     'md:max-w-2xl': !fullWidth,
+                    'lg:order-1': isRTL,
                 })}>
                     <section className={cn('space-y-12', {
                         'max-w-xl': !fullWidth,
