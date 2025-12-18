@@ -78,3 +78,8 @@ class WorkspaceInvitation extends Model
         return ! $this->hasExpired();
     }
 }
+
+
+
+
+

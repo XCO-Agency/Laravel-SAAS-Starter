@@ -82,7 +82,7 @@ export default function Login({
                                     {canResetPassword && (
                                         <TextLink
                                             href={request()}
-                                            className="ml-auto text-sm"
+                                            className="ml-auto text-sm font-semibold"
                                             tabIndex={5}
                                         >
                                             {t(
@@ -111,27 +111,28 @@ export default function Login({
                                     name="remember"
                                     tabIndex={3}
                                 />
-                                <Label htmlFor="remember">
+                                <Label htmlFor="remember" className="cursor-pointer text-sm font-normal">
                                     {t('auth.remember_me', 'Remember me')}
                                 </Label>
                             </div>
 
                             <Button
                                 type="submit"
-                                className="mt-4 w-full"
+                                className="w-full"
+                                size="lg"
                                 tabIndex={4}
                                 disabled={processing}
                                 data-test="login-button"
                             >
                                 {processing && <Spinner />}
-                                {t('auth.login.button', 'Log in')}
+                                {t('auth.login.button', 'Sign in')}
                             </Button>
                         </div>
 
                         {canRegister && (
                             <div className="text-center text-sm text-muted-foreground">
                                 {t('auth.no_account', "Don't have an account?")}{' '}
-                                <TextLink href={registerUrl()} tabIndex={5}>
+                                <TextLink href={registerUrl()} tabIndex={5} className="font-semibold">
                                     {t('auth.sign_up', 'Sign up')}
                                 </TextLink>
                             </div>

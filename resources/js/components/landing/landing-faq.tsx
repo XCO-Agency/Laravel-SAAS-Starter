@@ -1,0 +1,87 @@
+import { useState } from 'react';
+import { ChevronDown } from 'lucide-react';
+
+const faqs = [
+    {
+        question: 'What is Farouq?',
+        answer: 'Farouq is a production-ready Laravel SaaS starter kit that includes authentication, multi-tenant workspaces, team management, Stripe billing, and more. It helps you launch your SaaS product 10x faster by providing all the essential features out of the box.',
+    },
+    {
+        question: 'What tech stack does Farouq use?',
+        answer: 'Farouq is built with Laravel 12, Inertia.js v2, React 19, and Tailwind CSS v4. It uses Laravel Fortify for authentication, Laravel Cashier for Stripe billing, and shadcn/ui-inspired components for the UI.',
+    },
+    {
+        question: 'Can I use Farouq for multiple projects?',
+        answer: 'Yes! Once you have access to Farouq, you can use it for unlimited personal and commercial projects. There are no per-project fees or royalties.',
+    },
+    {
+        question: 'Is Farouq suitable for production?',
+        answer: 'Absolutely. Farouq is built with production in mind, following Laravel best practices, security guidelines, and performance optimizations. Many successful SaaS products are already running on Farouq.',
+    },
+    {
+        question: 'How do I customize the design?',
+        answer: 'Farouq uses Tailwind CSS v4 with a well-organized theme system. You can easily customize colors, fonts, and spacing through the CSS variables. All components are built with shadcn/ui patterns, making them easy to modify.',
+    },
+    {
+        question: 'Do you offer support?',
+        answer: 'Yes! Free tier users get community support through our Discord and GitHub. Pro and Business plans include priority email support and dedicated assistance for complex issues.',
+    },
+    {
+        question: 'Can I cancel my subscription anytime?',
+        answer: "Yes, you can cancel your subscription at any time. You'll continue to have access to your paid features until the end of your billing period. There are no cancellation fees.",
+    },
+];
+
+export function LandingFaq() {
+    const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+    return (
+        <section id="faq" className="py-20 sm:py-32 bg-muted/30">
+            <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+                {/* Section Header */}
+                <div className="text-center">
+                    <h2 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
+                        Frequently Asked{' '}
+                        <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                            Questions
+                        </span>
+                    </h2>
+                    <p className="mt-4 text-lg text-muted-foreground">
+                        Everything you need to know about Farouq. Can't find the answer you're looking for? Contact our support team.
+                    </p>
+                </div>
+
+                {/* FAQ Accordion */}
+                <div className="mt-12 space-y-4">
+                    {faqs.map((faq, index) => (
+                        <div
+                            key={index}
+                            className="overflow-hidden rounded-xl border bg-card"
+                        >
+                            <button
+                                onClick={() => setOpenIndex(openIndex === index ? null : index)}
+                                className="flex w-full items-center justify-between p-4 text-left font-medium hover:bg-muted/50 transition-colors sm:p-6"
+                            >
+                                <span>{faq.question}</span>
+                                <ChevronDown
+                                    className={`h-5 w-5 shrink-0 text-muted-foreground transition-transform ${openIndex === index ? 'rotate-180' : ''
+                                        }`}
+                                />
+                            </button>
+                            <div
+                                className={`grid transition-all duration-300 ease-in-out ${openIndex === index ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
+                                    }`}
+                            >
+                                <div className="overflow-hidden">
+                                    <p className="px-4 pb-4 text-muted-foreground sm:px-6 sm:pb-6">
+                                        {faq.answer}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </section>
+    );
+}

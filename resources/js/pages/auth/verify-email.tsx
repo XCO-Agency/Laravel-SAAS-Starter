@@ -27,14 +27,14 @@ export default function VerifyEmail({ status }: { status?: string }) {
             <Form {...send.form()} className="space-y-6 text-center">
                 {({ processing }) => (
                     <>
-                        <Button disabled={processing} variant="secondary">
+                        <Button disabled={processing} variant="default" size="lg" className="w-full">
                             {processing && <Spinner />}
                             {t('auth.verify_email.button', 'Resend Verification Email')}
                         </Button>
 
                         <TextLink
                             href={logout()}
-                            className="mx-auto block text-sm"
+                            className="mx-auto block text-sm font-semibold"
                         >
                             {t('auth.sign_out', 'Sign Out')}
                         </TextLink>

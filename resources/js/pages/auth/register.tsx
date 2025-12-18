@@ -138,7 +138,8 @@ export default function Register({ email, redirect }: RegisterProps) {
 
                             <Button
                                 type="submit"
-                                className="mt-2 w-full"
+                                className="w-full"
+                                size="lg"
                                 tabIndex={5}
                                 data-test="register-user-button"
                             >
@@ -149,8 +150,8 @@ export default function Register({ email, redirect }: RegisterProps) {
 
                         <div className="text-center text-sm text-muted-foreground">
                             {t('auth.have_account', 'Already have an account?')}{' '}
-                            <TextLink href={loginUrl()} tabIndex={6}>
-                                {t('auth.log_in', 'Log in')}
+                            <TextLink href={loginUrl()} tabIndex={6} className="font-semibold">
+                                {t('auth.log_in', 'Sign in')}
                             </TextLink>
                         </div>
                     </>

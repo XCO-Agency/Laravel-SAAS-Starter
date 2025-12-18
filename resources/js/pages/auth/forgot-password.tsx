@@ -49,13 +49,14 @@ export default function ForgotPassword({ status }: { status?: string }) {
                             <div className="my-6 flex items-center justify-start">
                                 <Button
                                     className="w-full"
+                                    size="lg"
                                     disabled={processing}
                                     data-test="email-password-reset-link-button"
                                 >
                                     {processing && (
                                         <LoaderCircle className="h-4 w-4 animate-spin" />
                                     )}
-                                    {t('auth.forgot_password.button', 'Email Password Reset Link')}
+                                    {t('auth.forgot_password.button', 'Send Reset Link')}
                                 </Button>
                             </div>
                         </>
@@ -64,7 +65,7 @@ export default function ForgotPassword({ status }: { status?: string }) {
 
                 <div className="space-x-1 text-center text-sm text-muted-foreground">
                     <span>{t('auth.reset_password.or_return', 'Or, return to')}</span>
-                    <TextLink href={login()}>{t('auth.log_in', 'Log in')}</TextLink>
+                    <TextLink href={login()} className="font-semibold">{t('auth.log_in', 'Sign in')}</TextLink>
                 </div>
             </div>
         </AuthLayout>
