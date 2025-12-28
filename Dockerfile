@@ -19,8 +19,8 @@ RUN composer install --optimize-autoloader --ignore-platform-reqs --no-scripts -
 ENV CI=true
 RUN pnpm install && pnpm run build
 
-# Remove dev dependencies after build
-RUN composer install --no-dev --optimize-autoloader --no-scripts --no-interaction
+# # Remove dev dependencies after build
+# RUN composer install --no-dev --optimize-autoloader --no-scripts --no-interaction
 
 # Add entrypoint script
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
