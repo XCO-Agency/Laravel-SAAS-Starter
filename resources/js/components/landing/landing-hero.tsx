@@ -8,7 +8,7 @@ export function LandingHero() {
     const { auth } = usePage<SharedData>().props;
 
     const stats = [
-        { icon: Users, value: '10,000+', label: 'Developers' },
+        { icon: Users, value: '1,000+', label: 'Developers' },
         { icon: Zap, value: '50+', label: 'Features' },
         { icon: Github, value: '100%', label: 'Open Source' },
     ];
@@ -47,7 +47,7 @@ export function LandingHero() {
 
                     {/* Subheadline */}
                     <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground sm:text-xl">
-                        Stop reinventing the wheel. Laravel SAAS Starter is a production-ready Laravel SaaS starter kit with authentication, billing, teams, and everything you need to launch faster. Built by XCO Agency.
+                        Production-ready Laravel SaaS starter kit with authentication, billing, teams, and everything you need. Launch your SaaS 10x faster. <span className="font-semibold text-foreground">100% Open Source.</span>
                     </p>
 
                     {/* CTA Buttons */}
@@ -59,7 +59,24 @@ export function LandingHero() {
                             </Link>
                         </Button>
                         <Button size="lg" variant="outline" asChild className="h-12 px-8 text-base">
-                            <a href="#features">
+                            <a
+                                href="https://github.com/xco-agency/laravel-saas-starter"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                <Github className="mr-2 h-4 w-4" />
+                                View on GitHub
+                            </a>
+                        </Button>
+                        <Button size="lg" variant="ghost" asChild className="h-12 px-8 text-base">
+                            <a
+                                href="#features"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    const element = document.querySelector('#features');
+                                    element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                }}
+                            >
                                 <Play className="mr-2 h-4 w-4" />
                                 See Features
                             </a>
@@ -92,26 +109,34 @@ export function LandingHero() {
 
                 {/* Hero Image/Preview */}
                 <div className="relative mx-auto mt-16 max-w-5xl">
-                    <div className="aspect-video overflow-hidden rounded-xl border bg-gradient-to-br from-muted/50 to-muted shadow-2xl">
-                        <div className="flex h-full items-center justify-center">
+                    <div className="group relative aspect-video overflow-hidden rounded-xl border bg-gradient-to-br from-muted/50 to-muted shadow-2xl transition-all hover:shadow-primary/20">
+                        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5" />
+                        <div className="relative flex h-full items-center justify-center p-8">
                             <div className="text-center">
                                 <div className="mb-4 flex justify-center">
-                                    <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10">
+                                    <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10 transition-transform group-hover:scale-110">
                                         <Sparkles className="h-8 w-8 text-primary" />
                                     </div>
                                 </div>
-                                <p className="text-lg font-medium text-muted-foreground">
-                                    Dashboard Preview
+                                <p className="text-lg font-semibold text-foreground">
+                                    Production-Ready Dashboard
                                 </p>
-                                <p className="mt-1 text-sm text-muted-foreground/70">
-                                    Beautiful UI with dark mode support
+                                <p className="mt-2 text-sm text-muted-foreground">
+                                    Beautiful UI with dark mode, workspaces, and team management
                                 </p>
+                                <div className="mt-4 flex flex-wrap justify-center gap-2">
+                                    {['Multi-tenant', 'Stripe Billing', 'Team Roles', '2FA'].map((tag) => (
+                                        <span key={tag} className="rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
+                                            {tag}
+                                        </span>
+                                    ))}
+                                </div>
                             </div>
                         </div>
                     </div>
                     {/* Decorative elements */}
-                    <div className="absolute -left-4 -top-4 h-24 w-24 rounded-lg border bg-background shadow-lg" />
-                    <div className="absolute -bottom-4 -right-4 h-24 w-24 rounded-lg border bg-background shadow-lg" />
+                    <div className="absolute -left-4 -top-4 hidden h-24 w-24 rounded-lg border bg-background shadow-lg lg:block" />
+                    <div className="absolute -bottom-4 -right-4 hidden h-24 w-24 rounded-lg border bg-background shadow-lg lg:block" />
                 </div>
             </div>
         </section>

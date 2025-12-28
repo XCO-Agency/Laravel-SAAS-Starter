@@ -24,11 +24,11 @@ const faqs = [
     },
     {
         question: 'Do you offer support?',
-        answer: 'Yes! Free tier users get community support through our Discord and GitHub. Pro and Business plans include priority email support and dedicated assistance for complex issues.',
+        answer: 'Yes! We provide community support through GitHub Discussions and Issues. You can ask questions, report bugs, or request features. The community is very active and helpful.',
     },
     {
-        question: 'Can I cancel my subscription anytime?',
-        answer: "Yes, you can cancel your subscription at any time. You'll continue to have access to your paid features until the end of your billing period. There are no cancellation fees.",
+        question: 'How do I get started?',
+        answer: 'Getting started is easy! Clone the repository, follow the installation instructions in the README, and you\'ll have a fully functional SaaS application running in minutes. No complex setup required.',
     },
 ];
 

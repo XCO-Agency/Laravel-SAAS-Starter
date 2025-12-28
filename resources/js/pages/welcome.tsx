@@ -29,7 +29,7 @@ export default function Welcome({
                 <meta property="og:title" content="Laravel SAAS Starter - Launch Your SaaS 10x Faster" />
                 <meta
                     property="og:description"
-                    content="Stop reinventing the wheel. Build your SaaS with authentication, billing, teams, and more out of the box."
+                    content="Production-ready Laravel SaaS starter kit. 100% free and open source. Launch your SaaS 10x faster with authentication, billing, teams, and more."
                 />
                 <meta property="og:type" content="website" />
                 <meta name="twitter:card" content="summary_large_image" />

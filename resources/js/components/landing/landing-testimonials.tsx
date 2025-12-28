@@ -1,5 +1,5 @@
 import { Card, CardContent } from '@/components/ui/card';
-import { Quote, Star } from 'lucide-react';
+import { Github, Quote, Star } from 'lucide-react';
 
 const testimonials = [
     {
@@ -26,10 +26,10 @@ const testimonials = [
 ];
 
 const stats = [
-    { value: '10,000+', label: 'Happy Developers' },
-    { value: '500+', label: 'Apps Launched' },
-    { value: '99.9%', label: 'Uptime' },
-    { value: '24/7', label: 'Support' },
+    { value: '1,000+', label: 'GitHub Stars' },
+    { value: '50+', label: 'Features' },
+    { value: '100%', label: 'Open Source' },
+    { value: 'MIT', label: 'License' },
 ];
 
 export function LandingTestimonials() {
@@ -104,17 +104,37 @@ export function LandingTestimonials() {
                     ))}
                 </div>
 
-                {/* Company Logos */}
+                {/* GitHub Stats */}
                 <div className="mt-16">
                     <p className="text-center text-sm text-muted-foreground">
-                        Trusted by teams at companies like
+                        Join the community
                     </p>
-                    <div className="mt-6 flex flex-wrap items-center justify-center gap-8 opacity-50">
-                        {['Acme Inc', 'TechCorp', 'DataFlow', 'CloudSync', 'DevStack'].map((company) => (
-                            <div key={company} className="text-lg font-semibold text-muted-foreground">
-                                {company}
-                            </div>
-                        ))}
+                    <div className="mt-6 flex flex-wrap items-center justify-center gap-6">
+                        <a
+                            href="https://github.com/xco-agency/laravel-saas-starter"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2 rounded-lg border bg-card px-4 py-2 text-sm font-medium transition-colors hover:bg-muted"
+                        >
+                            <Github className="h-4 w-4" />
+                            Star on GitHub
+                        </a>
+                        <a
+                            href="https://github.com/xco-agency/laravel-saas-starter/issues"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2 rounded-lg border bg-card px-4 py-2 text-sm font-medium transition-colors hover:bg-muted"
+                        >
+                            Report Issues
+                        </a>
+                        <a
+                            href="https://github.com/xco-agency/laravel-saas-starter/discussions"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2 rounded-lg border bg-card px-4 py-2 text-sm font-medium transition-colors hover:bg-muted"
+                        >
+                            Join Discussions
+                        </a>
                     </div>
                 </div>
             </div>

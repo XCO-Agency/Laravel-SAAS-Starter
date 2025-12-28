@@ -98,7 +98,7 @@ export function LandingFeatures() {
                         </span>
                     </h2>
                     <p className="mt-4 text-lg text-muted-foreground">
-                        Stop wasting weeks on boilerplate. We've built all the essential features so you can focus on what makes your product unique.
+                        Stop wasting weeks on boilerplate. Everything you need is included and ready to use. Focus on building what makes your product unique.
                     </p>
                 </div>
 
@@ -107,10 +107,10 @@ export function LandingFeatures() {
                     {features.map((feature) => (
                         <div
                             key={feature.title}
-                            className="group relative rounded-2xl border bg-card p-6 transition-all hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5"
+                            className="group relative rounded-2xl border bg-card p-6 transition-all hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-1"
                         >
                             <div
-                                className={`inline-flex h-12 w-12 items-center justify-center rounded-xl ${feature.bgColor}`}
+                                className={`inline-flex h-12 w-12 items-center justify-center rounded-xl transition-transform group-hover:scale-110 ${feature.bgColor}`}
                             >
                                 <feature.icon className={`h-6 w-6 ${feature.color}`} />
                             </div>

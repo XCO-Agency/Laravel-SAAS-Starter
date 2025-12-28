@@ -6,42 +6,38 @@ const footerLinks = {
         title: 'Product',
         links: [
             { label: 'Features', href: '#features' },
-            { label: 'Pricing', href: '#pricing' },
             { label: 'FAQ', href: '#faq' },
-            { label: 'Roadmap', href: '#' },
+            { label: 'Contributing', href: 'https://github.com/xco-agency/laravel-saas-starter/blob/main/CONTRIBUTING.md' },
         ],
     },
     company: {
         title: 'Company',
         links: [
-            { label: 'About', href: '#' },
-            { label: 'Blog', href: '#' },
-            { label: 'Careers', href: '#' },
-            { label: 'Contact', href: '#' },
+            { label: 'About XCO Agency', href: 'https://xco.agency' },
+            { label: 'Contact', href: 'mailto:support@xco.agency' },
         ],
     },
     resources: {
         title: 'Resources',
         links: [
-            { label: 'Documentation', href: '#' },
-            { label: 'Changelog', href: '#' },
-            { label: 'Support', href: '#' },
-            { label: 'Status', href: '#' },
+            { label: 'Documentation', href: 'https://github.com/xco-agency/laravel-saas-starter#readme' },
+            { label: 'GitHub', href: 'https://github.com/xco-agency/laravel-saas-starter' },
+            { label: 'Issues', href: 'https://github.com/xco-agency/laravel-saas-starter/issues' },
+            { label: 'Discussions', href: 'https://github.com/xco-agency/laravel-saas-starter/discussions' },
         ],
     },
     legal: {
         title: 'Legal',
         links: [
+            { label: 'License', href: 'https://github.com/xco-agency/laravel-saas-starter/blob/main/LICENSE' },
             { label: 'Privacy Policy', href: '#' },
-            { label: 'Terms of Service', href: '#' },
-            { label: 'Cookie Policy', href: '#' },
         ],
     },
 };
 
 const socialLinks = [
+    { icon: Github, href: 'https://github.com/xco-agency/laravel-saas-starter', label: 'GitHub' },
     { icon: Twitter, href: '#', label: 'Twitter' },
-    { icon: Github, href: '#', label: 'GitHub' },
 ];
 
 export function LandingFooter() {
@@ -81,16 +77,18 @@ export function LandingFooter() {
                         <div key={section.title}>
                             <h3 className="font-semibold">{section.title}</h3>
                             <ul className="mt-4 space-y-3">
-                                {section.links.map((link) => (
-                                    <li key={link.label}>
-                                        <a
-                                            href={link.href}
-                                            className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-                                        >
-                                            {link.label}
-                                        </a>
-                                    </li>
-                                ))}
+                            {section.links.map((link) => (
+                                <li key={link.label}>
+                                    <a
+                                        href={link.href}
+                                        className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                                        target={link.href.startsWith('http') ? '_blank' : undefined}
+                                        rel={link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                                    >
+                                        {link.label}
+                                    </a>
+                                </li>
+                            ))}
                             </ul>
                         </div>
                     ))}

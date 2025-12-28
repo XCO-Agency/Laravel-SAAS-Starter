@@ -40,6 +40,13 @@ export function LandingHeader({ canRegister = true }: LandingHeaderProps) {
                             key={link.href}
                             href={link.href}
                             className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                            onClick={(e) => {
+                                if (link.href.startsWith('#')) {
+                                    e.preventDefault();
+                                    const element = document.querySelector(link.href);
+                                    element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                }
+                            }}
                         >
                             {link.label}
                         </a>
@@ -84,7 +91,16 @@ export function LandingHeader({ canRegister = true }: LandingHeaderProps) {
                                         <a
                                             key={link.href}
                                             href={link.href}
-                                            onClick={() => setMobileMenuOpen(false)}
+                                            onClick={(e) => {
+                                                setMobileMenuOpen(false);
+                                                if (link.href.startsWith('#')) {
+                                                    e.preventDefault();
+                                                    setTimeout(() => {
+                                                        const element = document.querySelector(link.href);
+                                                        element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                                    }, 100);
+                                                }
+                                            }}
                                             className="text-lg font-medium text-foreground"
                                         >
                                             {link.label}

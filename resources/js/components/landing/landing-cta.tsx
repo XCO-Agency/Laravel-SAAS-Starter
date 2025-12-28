@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import { register } from '@/routes';
 import { type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { ArrowRight, Sparkles } from 'lucide-react';
+import { ArrowRight, Github, Sparkles } from 'lucide-react';
 
 export function LandingCta() {
     const { auth } = usePage<SharedData>().props;
@@ -20,7 +20,7 @@ export function LandingCta() {
                     <div className="mx-auto max-w-3xl text-center">
                         <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-white/20 px-4 py-1.5 text-sm font-medium text-white">
                             <Sparkles className="h-4 w-4" />
-                            Start your 14-day free trial
+                            100% Free & Open Source
                         </div>
 
                         <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl">
@@ -29,7 +29,7 @@ export function LandingCta() {
 
                         <p className="mt-4 text-lg text-white/80 sm:text-xl">
                             Join thousands of developers who are building and shipping faster with Laravel SAAS Starter.
-                            No credit card required.
+                            No credit card required. No subscriptions. Just clone and start building.
                         </p>
 
                         <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
@@ -50,7 +50,9 @@ export function LandingCta() {
                                 asChild
                                 className="h-12 border-white/30 bg-transparent px-8 text-base text-white hover:bg-white/10 hover:text-white"
                             >
-                                <a href="#pricing">View Pricing</a>
+                                <a href="https://github.com/xco-agency/laravel-saas-starter" target="_blank" rel="noopener noreferrer">
+                                    View on GitHub
+                                </a>
                             </Button>
                         </div>
                     </div>
