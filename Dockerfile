@@ -1,38 +1,25 @@
-# Step 1: Use a Composer image to install PHP dependencies
-FROM composer:latest AS composer-build
-
-WORKDIR /app
-COPY . /app
-
-# Install PHP dependencies
-RUN composer install --optimize-autoloader --ignore-platform-reqs --no-scripts --no-interaction
-
-# Step 2: Use a Node.js image to install pnpm, install dependencies, and build
-FROM node:lts-alpine AS node-build
-
-WORKDIR /app
-COPY . /app
-
-# Copy the vendor folder from the Composer build stage
-COPY --from=composer-build /app/vendor /app/vendor
-
-# Install pnpm
-RUN npm install -g pnpm
-
-# Install Node.js dependencies and build the project
-RUN pnpm install && pnpm run build
-
-# Step 3: Use dunglas/frankenphp as the final base image
 FROM xcoagency/laravel-frankenphp-octane:latest
 
-# Copy built files from the Node.js image
-COPY --from=node-build /app /app
 WORKDIR /app
+COPY . /app
 
-# Ensure vendor directory is present in the final image
-COPY --from=composer-build /app/vendor /app/vendor
+# Install Node.js and pnpm
+RUN apt-get update && \
+    apt-get install -y curl && \
+    curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - && \
+    apt-get install -y nodejs && \
+    npm install -g pnpm && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
-# Install PHP dependencies (if needed again for safety)
+# Install PHP dependencies (with dev deps for wayfinder)
+RUN composer install --optimize-autoloader --ignore-platform-reqs --no-scripts --no-interaction
+
+# Build frontend assets
+ENV CI=true
+RUN pnpm install && pnpm run build
+
+# Remove dev dependencies after build
 RUN composer install --no-dev --optimize-autoloader --no-scripts --no-interaction
 
 # Add entrypoint script
