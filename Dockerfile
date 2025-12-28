@@ -5,7 +5,7 @@ WORKDIR /app
 COPY . /app
 
 # Install PHP dependencies
-RUN composer install --no-dev --optimize-autoloader --ignore-platform-reqs --no-scripts --no-interaction
+RUN composer install --optimize-autoloader --ignore-platform-reqs --no-scripts --no-interaction
 
 # Step 2: Use a Node.js image to install pnpm, install dependencies, and build
 FROM node:lts-alpine AS node-build
