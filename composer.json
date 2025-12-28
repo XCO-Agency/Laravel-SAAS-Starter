@@ -1,11 +1,28 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/react-starter-kit",
+    "name": "xco-agency/laravel-saas-starter",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
+    "description": "A production-ready Laravel SaaS starter kit with authentication, billing, teams, and everything you need to launch faster. Built by XCO Agency.",
     "keywords": [
         "laravel",
-        "framework"
+        "saas",
+        "starter-kit",
+        "boilerplate",
+        "authentication",
+        "stripe",
+        "billing",
+        "multi-tenant",
+        "workspace",
+        "team-management",
+        "inertia",
+        "react"
+    ],
+    "authors": [
+        {
+            "name": "XCO Agency",
+            "email": "support@xco.agency",
+            "homepage": "https://xco.agency"
+        }
     ],
     "license": "MIT",
     "require": {

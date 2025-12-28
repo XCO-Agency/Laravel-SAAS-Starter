@@ -56,10 +56,10 @@ export function LandingFooter() {
                             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary">
                                 <Sparkles className="h-5 w-5 text-primary-foreground" />
                             </div>
-                            <span className="text-xl font-bold tracking-tight">Farouq</span>
+                            <span className="text-xl font-bold tracking-tight">Laravel SAAS Starter</span>
                         </Link>
                         <p className="mt-4 max-w-xs text-sm text-muted-foreground">
-                            The ultimate Laravel SaaS starter kit. Build and launch your product 10x faster.
+                            The ultimate Laravel SaaS starter kit by XCO Agency. Build and launch your product 10x faster.
                         </p>
                         {/* Social Links */}
                         <div className="mt-6 flex gap-4">
@@ -99,7 +99,7 @@ export function LandingFooter() {
                 {/* Bottom section */}
                 <div className="mt-12 border-t pt-8">
                     <p className="text-center text-sm text-muted-foreground">
-                        © {new Date().getFullYear()} Farouq. All rights reserved.
+                        © {new Date().getFullYear()} XCO Agency. All rights reserved.
                     </p>
                 </div>
             </div>

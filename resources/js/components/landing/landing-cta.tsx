@@ -28,7 +28,7 @@ export function LandingCta() {
                         </h2>
 
                         <p className="mt-4 text-lg text-white/80 sm:text-xl">
-                            Join thousands of developers who are building and shipping faster with Farouq.
+                            Join thousands of developers who are building and shipping faster with Laravel SAAS Starter.
                             No credit card required.
                         </p>
 

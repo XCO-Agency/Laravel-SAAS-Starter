@@ -3,24 +3,24 @@ import { ChevronDown } from 'lucide-react';
 
 const faqs = [
     {
-        question: 'What is Farouq?',
-        answer: 'Farouq is a production-ready Laravel SaaS starter kit that includes authentication, multi-tenant workspaces, team management, Stripe billing, and more. It helps you launch your SaaS product 10x faster by providing all the essential features out of the box.',
+        question: 'What is Laravel SAAS Starter?',
+        answer: 'Laravel SAAS Starter is a production-ready Laravel SaaS starter kit that includes authentication, multi-tenant workspaces, team management, Stripe billing, and more. It helps you launch your SaaS product 10x faster by providing all the essential features out of the box. Built by XCO Agency.',
     },
     {
-        question: 'What tech stack does Farouq use?',
-        answer: 'Farouq is built with Laravel 12, Inertia.js v2, React 19, and Tailwind CSS v4. It uses Laravel Fortify for authentication, Laravel Cashier for Stripe billing, and shadcn/ui-inspired components for the UI.',
+        question: 'What tech stack does Laravel SAAS Starter use?',
+        answer: 'Laravel SAAS Starter is built with Laravel 12, Inertia.js v2, React 19, and Tailwind CSS v4. It uses Laravel Fortify for authentication, Laravel Cashier for Stripe billing, and shadcn/ui-inspired components for the UI.',
     },
     {
-        question: 'Can I use Farouq for multiple projects?',
-        answer: 'Yes! Once you have access to Farouq, you can use it for unlimited personal and commercial projects. There are no per-project fees or royalties.',
+        question: 'Can I use Laravel SAAS Starter for multiple projects?',
+        answer: 'Yes! Laravel SAAS Starter is open source and free to use for unlimited personal and commercial projects. There are no per-project fees or royalties.',
     },
     {
-        question: 'Is Farouq suitable for production?',
-        answer: 'Absolutely. Farouq is built with production in mind, following Laravel best practices, security guidelines, and performance optimizations. Many successful SaaS products are already running on Farouq.',
+        question: 'Is Laravel SAAS Starter suitable for production?',
+        answer: 'Absolutely. Laravel SAAS Starter is built with production in mind, following Laravel best practices, security guidelines, and performance optimizations. Many successful SaaS products are already running on Laravel SAAS Starter.',
     },
     {
         question: 'How do I customize the design?',
-        answer: 'Farouq uses Tailwind CSS v4 with a well-organized theme system. You can easily customize colors, fonts, and spacing through the CSS variables. All components are built with shadcn/ui patterns, making them easy to modify.',
+        answer: 'Laravel SAAS Starter uses Tailwind CSS v4 with a well-organized theme system. You can easily customize colors, fonts, and spacing through the CSS variables. All components are built with shadcn/ui patterns, making them easy to modify.',
     },
     {
         question: 'Do you offer support?',
@@ -47,7 +47,7 @@ export function LandingFaq() {
                         </span>
                     </h2>
                     <p className="mt-4 text-lg text-muted-foreground">
-                        Everything you need to know about Farouq. Can't find the answer you're looking for? Contact our support team.
+                        Everything you need to know about Laravel SAAS Starter. Can't find the answer you're looking for? Contact our support team.
                     </p>
                 </div>
 

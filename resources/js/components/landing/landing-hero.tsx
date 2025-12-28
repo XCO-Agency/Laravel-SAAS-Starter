@@ -47,7 +47,7 @@ export function LandingHero() {
 
                     {/* Subheadline */}
                     <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground sm:text-xl">
-                        Stop reinventing the wheel. Farouq is a production-ready Laravel SaaS starter kit with authentication, billing, teams, and everything you need to launch faster.
+                        Stop reinventing the wheel. Laravel SAAS Starter is a production-ready Laravel SaaS starter kit with authentication, billing, teams, and everything you need to launch faster. Built by XCO Agency.
                     </p>
 
                     {/* CTA Buttons */}

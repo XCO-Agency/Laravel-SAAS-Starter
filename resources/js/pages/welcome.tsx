@@ -17,26 +17,26 @@ export default function Welcome({
 }) {
     return (
         <>
-            <Head title="Farouq - Launch Your SaaS 10x Faster">
+            <Head title="Laravel SAAS Starter - Launch Your SaaS 10x Faster">
                 <meta
                     name="description"
-                    content="Farouq is a production-ready Laravel SaaS starter kit with authentication, billing, teams, and everything you need to launch faster."
+                    content="Laravel SAAS Starter is a production-ready Laravel SaaS starter kit with authentication, billing, teams, and everything you need to launch faster. Built by XCO Agency."
                 />
                 <meta
                     name="keywords"
                     content="laravel, saas, starter kit, boilerplate, authentication, stripe, billing, teams"
                 />
-                <meta property="og:title" content="Farouq - Launch Your SaaS 10x Faster" />
+                <meta property="og:title" content="Laravel SAAS Starter - Launch Your SaaS 10x Faster" />
                 <meta
                     property="og:description"
                     content="Stop reinventing the wheel. Build your SaaS with authentication, billing, teams, and more out of the box."
                 />
                 <meta property="og:type" content="website" />
                 <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content="Farouq - Launch Your SaaS 10x Faster" />
+                <meta name="twitter:title" content="Laravel SAAS Starter - Launch Your SaaS 10x Faster" />
                 <meta
                     name="twitter:description"
-                    content="Production-ready Laravel SaaS starter kit."
+                    content="Production-ready Laravel SaaS starter kit by XCO Agency."
                 />
                 <link rel="preconnect" href="https://fonts.bunny.net" />
                 <link

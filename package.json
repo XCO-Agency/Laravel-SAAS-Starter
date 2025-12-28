@@ -1,7 +1,14 @@
 {
     "$schema": "https://www.schemastore.org/package.json",
+    "name": "laravel-saas-starter",
+    "description": "A production-ready Laravel SaaS starter kit with authentication, billing, teams, and everything you need to launch faster. Built by XCO Agency.",
     "private": true,
     "type": "module",
+    "author": "XCO Agency <support@xco.agency>",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/xco-agency/laravel-saas-starter.git"
+    },
     "scripts": {
         "build": "vite build",
         "build:ssr": "vite build && vite build --ssr",

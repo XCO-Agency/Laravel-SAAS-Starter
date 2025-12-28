@@ -31,7 +31,7 @@ export default function AuthSimpleLayout({
                         <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/20">
                             <Sparkles className="h-5 w-5" />
                         </div>
-                        <span className="text-xl">Farouq</span>
+                        <span className="text-xl">Laravel SAAS Starter</span>
                     </Link>
                     <Link
                         href={home()}
@@ -51,7 +51,7 @@ export default function AuthSimpleLayout({
                             10x Faster
                         </h2>
                         <p className="text-lg text-white/80">
-                            Join thousands of developers building and shipping with Farouq.
+                            Join thousands of developers building and shipping with Laravel SAAS Starter.
                         </p>
                     </div>
 
@@ -81,7 +81,7 @@ export default function AuthSimpleLayout({
                     <div className="rounded-xl bg-white/10 p-6 backdrop-blur-sm">
                         <Quote className="mb-4 h-8 w-8 text-white/40" />
                         <p className="mb-4 text-white/90">
-                            "Farouq saved us months of development time. We launched our MVP in just 2 weeks!"
+                            "Laravel SAAS Starter saved us months of development time. We launched our MVP in just 2 weeks!"
                         </p>
                         <div className="flex items-center gap-3">
                             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/20 text-sm font-semibold">
@@ -97,7 +97,7 @@ export default function AuthSimpleLayout({
 
                 {/* Footer */}
                 <div className="text-sm text-white/60">
-                    © {new Date().getFullYear()} Farouq. All rights reserved.
+                    © {new Date().getFullYear()} XCO Agency. All rights reserved.
                 </div>
             </div>
 
@@ -109,7 +109,7 @@ export default function AuthSimpleLayout({
                         <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
                             <Sparkles className="h-4 w-4 text-primary-foreground" />
                         </div>
-                        <span className="text-lg">Farouq</span>
+                        <span className="text-lg">Laravel SAAS Starter</span>
                     </Link>
                     <AppearanceToggleDropdown />
                 </div>

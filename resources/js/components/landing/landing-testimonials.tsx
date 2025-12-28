@@ -3,7 +3,7 @@ import { Quote, Star } from 'lucide-react';
 
 const testimonials = [
     {
-        quote: "Farouq saved us months of development time. The authentication, billing, and team management were all ready to go. We launched our MVP in just 2 weeks!",
+        quote: "Laravel SAAS Starter saved us months of development time. The authentication, billing, and team management were all ready to go. We launched our MVP in just 2 weeks!",
         author: 'Sarah Chen',
         role: 'CTO at TechFlow',
         avatar: null,
@@ -46,7 +46,7 @@ export function LandingTestimonials() {
                         Worldwide
                     </h2>
                     <p className="mt-4 text-lg text-muted-foreground">
-                        Don't just take our word for it. Here's what developers are saying about Farouq.
+                        Don't just take our word for it. Here's what developers are saying about Laravel SAAS Starter.
                     </p>
                 </div>
 

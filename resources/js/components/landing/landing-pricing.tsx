@@ -11,7 +11,7 @@ const plans = [
     {
         id: 'free',
         name: 'Free',
-        description: 'Perfect for trying out Farouq',
+        description: 'Perfect for trying out Laravel SAAS Starter',
         price: { monthly: 0, yearly: 0 },
         features: [
             '1 Workspace',
