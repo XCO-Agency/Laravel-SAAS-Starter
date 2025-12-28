@@ -16,6 +16,18 @@ COPY . /app
 # Copy the vendor folder from the Composer build stage
 COPY --from=composer-build /app/vendor /app/vendor
 
+# Install PHP and required extensions for wayfinder plugin
+RUN apk add --no-cache \
+    php \
+    php-cli \
+    php-common \
+    php-json \
+    php-mbstring \
+    php-openssl \
+    php-phar \
+    php-xml \
+    php-zlib
+
 # Install pnpm
 RUN npm install -g pnpm
 
