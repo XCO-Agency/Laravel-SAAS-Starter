@@ -41,12 +41,12 @@ class DatabaseSeeder extends Seeder
                 ]
             );
 
-            // 2. Create additional users (15-18 more) with varied attributes
+            // 2. Create additional users (20+ users) for team memberships
             $users = collect([$admin, $demo]);
 
             // Create users with different locales and verification statuses
             $locales = ['en', 'fr', 'es', 'de'];
-            $additionalUsers = User::factory(16)->create([
+            $additionalUsers = User::factory(20)->create([
                 'password' => Hash::make('password'),
             ]);
 
@@ -77,56 +77,57 @@ class DatabaseSeeder extends Seeder
                 $workspaceService->createPersonalWorkspace($user);
             });
 
-            // 4. Create team workspaces with realistic names
-            $teamWorkspaceNames = [
-                'Acme Corporation',
-                'Tech Startup Inc',
-                'Digital Solutions LLC',
-                'Creative Agency',
-                'Global Enterprises',
-                'Innovation Labs',
-                'Future Systems',
+            // 4. DEMO ACCOUNT: Create multiple workspaces owned by demo user
+            $demoWorkspaceNames = [
+                'Acme Corporation', // Free plan workspace
+                'Tech Startup Inc', // Pro plan workspace (with trial)
+                'Digital Solutions LLC', // Business plan workspace
+                'Creative Agency', // Small team workspace
+                'Global Enterprises', // Large team workspace
+                'Innovation Labs', // Medium team with admins
+                'Future Systems', // Workspace with many invitations
             ];
 
-            $teamWorkspaces = collect();
-            $workspaceOwners = $users->random(min(7, $users->count()));
+            $demoWorkspaces = collect();
+            $otherUsers = $users->reject(fn ($user) => $user->id === $demo->id);
 
-            foreach ($teamWorkspaceNames as $index => $name) {
-                if ($index < $workspaceOwners->count()) {
-                    $owner = $workspaceOwners->get($index);
-                    $workspace = $workspaceService->create($owner, [
-                        'name' => $name,
-                    ]);
+            foreach ($demoWorkspaceNames as $index => $name) {
+                $workspace = $workspaceService->create($demo, [
+                    'name' => $name,
+                ]);
 
-                    // Set some workspaces with trial periods
-                    if ($index % 2 === 0) {
-                        $workspace->update(['trial_ends_at' => now()->addDays(14)]);
-                    }
-
-                    $teamWorkspaces->push($workspace);
-                }
-            }
-
-            // 5. Add members to team workspaces with different roles
-            foreach ($teamWorkspaces as $workspace) {
-                $owner = $workspace->owner;
-                $availableUsers = $users->reject(fn ($user) => $user->id === $owner->id);
-
-                // Determine team size based on workspace index
-                $teamSize = match ($teamWorkspaces->search($workspace) % 4) {
-                    0 => 1, // Just owner
-                    1 => 3, // Small team (2-3 members)
-                    2 => 6, // Medium team (5-6 members)
-                    default => 10, // Large team (9-10 members)
+                // Set different trial/plan scenarios for demo workspaces
+                match ($index) {
+                    0 => null, // Free plan - no trial
+                    1 => $workspace->update(['trial_ends_at' => now()->addDays(10)]), // Pro plan with active trial
+                    2 => $workspace->update(['trial_ends_at' => now()->addDays(5)]), // Business plan with shorter trial
+                    default => $workspace->update(['trial_ends_at' => now()->addDays(14)]), // Others with full trial
                 };
 
-                $membersToAdd = min($teamSize - 1, $availableUsers->count());
-                $selectedMembers = $availableUsers->random($membersToAdd);
+                $demoWorkspaces->push($workspace);
+            }
 
-                foreach ($selectedMembers as $index => $member) {
+            // 5. DEMO ACCOUNT: Add team members to demo workspaces with different configurations
+            foreach ($demoWorkspaces as $index => $workspace) {
+                $availableUsers = $otherUsers->shuffle();
+
+                // Different team configurations for each workspace
+                $teamConfig = match ($index) {
+                    0 => ['size' => 2, 'admins' => 0], // Free plan - just 2 members (at limit)
+                    1 => ['size' => 5, 'admins' => 1], // Pro plan - 5 members with 1 admin
+                    2 => ['size' => 12, 'admins' => 2], // Business plan - 12 members with 2 admins
+                    3 => ['size' => 3, 'admins' => 0], // Small team - 3 members
+                    4 => ['size' => 15, 'admins' => 3], // Large team - 15 members with 3 admins
+                    5 => ['size' => 8, 'admins' => 2], // Medium team - 8 members with 2 admins
+                    default => ['size' => 6, 'admins' => 1], // Default - 6 members with 1 admin
+                };
+
+                $membersToAdd = min($teamConfig['size'], $availableUsers->count());
+                $selectedMembers = $availableUsers->take($membersToAdd);
+
+                foreach ($selectedMembers as $memberIndex => $member) {
                     $role = match (true) {
-                        $index === 0 && $teamSize > 3 => 'admin', // First member in larger teams gets admin
-                        $index === 1 && $teamSize > 6 => 'admin', // Second member in large teams gets admin
+                        $memberIndex < $teamConfig['admins'] => 'admin',
                         default => 'member',
                     };
 
@@ -134,44 +135,85 @@ class DatabaseSeeder extends Seeder
                 }
             }
 
-            // 6. Create workspace invitations (mix of active and expired, different roles)
-            $invitations = collect();
-
-            foreach ($teamWorkspaces->take(5) as $workspace) {
-                // Create 2-3 invitations per workspace
-                $invitationCount = rand(2, 3);
+            // 6. DEMO ACCOUNT: Create workspace invitations for demo workspaces
+            foreach ($demoWorkspaces as $index => $workspace) {
+                // Create multiple invitations per workspace
+                $invitationCount = match ($index) {
+                    6 => 5, // Future Systems - many invitations
+                    2 => 4, // Business workspace - several invitations
+                    default => rand(2, 3), // Others - 2-3 invitations
+                };
 
                 for ($i = 0; $i < $invitationCount; $i++) {
                     // Mix of existing users and new emails
                     $email = $i % 2 === 0
-                        ? $users->random()->email
+                        ? $otherUsers->random()->email
                         : fake()->unique()->safeEmail();
 
-                    $role = $i === 0 ? 'admin' : 'member';
-                    $isExpired = $i === 1 && rand(0, 1) === 1; // Some expired invitations
+                    $role = match (true) {
+                        $i === 0 && $index > 2 => 'admin', // First invitation in larger workspaces can be admin
+                        default => 'member',
+                    };
 
-                    $invitation = WorkspaceInvitation::create([
+                    // Mix of active and expired invitations
+                    $isExpired = $i === 1 && rand(0, 1) === 1;
+
+                    WorkspaceInvitation::create([
                         'workspace_id' => $workspace->id,
                         'email' => $email,
                         'role' => $role,
                         'expires_at' => $isExpired ? now()->subDay() : now()->addDays(7),
                     ]);
-
-                    $invitations->push($invitation);
                 }
             }
 
-            // 7. Set some users' current workspace to team workspaces (for variety)
-            $usersToSwitch = $users->random(min(5, $users->count()));
+            // 7. Create additional team workspaces owned by other users (for variety)
+            $otherWorkspaceNames = [
+                'Startup Hub',
+                'Design Studio',
+                'Marketing Agency',
+                'Consulting Group',
+            ];
 
-            foreach ($usersToSwitch as $user) {
-                $availableWorkspaces = $teamWorkspaces->filter(function ($workspace) use ($user) {
-                    return $workspace->hasUser($user);
-                });
+            $otherWorkspaces = collect();
+            $otherOwners = $otherUsers->random(min(4, $otherUsers->count()));
 
-                if ($availableWorkspaces->isNotEmpty()) {
-                    $user->switchWorkspace($availableWorkspaces->random());
+            foreach ($otherWorkspaceNames as $index => $name) {
+                if ($index < $otherOwners->count()) {
+                    $owner = $otherOwners->get($index);
+                    $workspace = $workspaceService->create($owner, [
+                        'name' => $name,
+                    ]);
+
+                    // Add some members to these workspaces too
+                    $members = $users->reject(fn ($user) => $user->id === $owner->id)->random(rand(2, 5));
+                    foreach ($members as $member) {
+                        $workspace->addUser($member, 'member');
+                    }
+
+                    $otherWorkspaces->push($workspace);
                 }
+            }
+
+            // 8. DEMO ACCOUNT: Add demo user as member to some other workspaces (not owner)
+            $workspacesForDemo = $otherWorkspaces->random(min(2, $otherWorkspaces->count()));
+            foreach ($workspacesForDemo as $workspace) {
+                $workspace->addUser($demo, 'member');
+            }
+
+            // 9. DEMO ACCOUNT: Set demo user's current workspace to first team workspace
+            if ($demoWorkspaces->isNotEmpty()) {
+                $demo->switchWorkspace($demoWorkspaces->first());
+            }
+
+            // 10. Create some invitations for other workspaces too
+            foreach ($otherWorkspaces->take(2) as $workspace) {
+                WorkspaceInvitation::create([
+                    'workspace_id' => $workspace->id,
+                    'email' => fake()->unique()->safeEmail(),
+                    'role' => 'member',
+                    'expires_at' => now()->addDays(7),
+                ]);
             }
         });
     }
