@@ -84,8 +84,6 @@ class DatabaseSeeder extends Seeder
                 'Digital Solutions LLC', // Business plan workspace
                 'Creative Agency', // Small team workspace
                 'Global Enterprises', // Large team workspace
-                'Innovation Labs', // Medium team with admins
-                'Future Systems', // Workspace with many invitations
             ];
 
             $demoWorkspaces = collect();
@@ -118,7 +116,6 @@ class DatabaseSeeder extends Seeder
                     2 => ['size' => 12, 'admins' => 2], // Business plan - 12 members with 2 admins
                     3 => ['size' => 3, 'admins' => 0], // Small team - 3 members
                     4 => ['size' => 15, 'admins' => 3], // Large team - 15 members with 3 admins
-                    5 => ['size' => 8, 'admins' => 2], // Medium team - 8 members with 2 admins
                     default => ['size' => 6, 'admins' => 1], // Default - 6 members with 1 admin
                 };
 
@@ -139,7 +136,7 @@ class DatabaseSeeder extends Seeder
             foreach ($demoWorkspaces as $index => $workspace) {
                 // Create multiple invitations per workspace
                 $invitationCount = match ($index) {
-                    6 => 5, // Future Systems - many invitations
+                    4 => 5, // Global Enterprises - many invitations
                     2 => 4, // Business workspace - several invitations
                     default => rand(2, 3), // Others - 2-3 invitations
                 };
