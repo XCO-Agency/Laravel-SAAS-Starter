@@ -120,8 +120,3 @@ class PlanLimitService
         return "You can invite {$remaining} more team member(s). ({$currentMembersCount}/{$limits['team_members']} members)";
     }
 }
-
-
-
-
-

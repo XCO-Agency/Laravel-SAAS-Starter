@@ -191,8 +191,3 @@ class TeamController extends Controller
             ->with('success', 'Invitation cancelled.');
     }
 }
-
-
-
-
-

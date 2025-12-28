@@ -166,8 +166,3 @@ class WorkspaceService
         return "You have created {$ownedWorkspaces} of {$limit} workspaces on the {$currentPlan} plan.";
     }
 }
-
-
-
-
-

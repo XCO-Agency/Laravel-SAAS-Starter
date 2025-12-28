@@ -12,9 +12,3 @@ return [
         'ignore' => 'If you did not expect this invitation, you can safely ignore this email.',
     ],
 ];
-
-
-
-
-
-

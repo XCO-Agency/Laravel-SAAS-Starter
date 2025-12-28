@@ -53,8 +53,3 @@ class EnsureWorkspaceAccess
         return $next($request);
     }
 }
-
-
-
-
-

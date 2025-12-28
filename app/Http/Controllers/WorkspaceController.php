@@ -194,8 +194,3 @@ class WorkspaceController extends Controller
             ->with('success', "Switched to {$workspace->name}.");
     }
 }
-
-
-
-
-

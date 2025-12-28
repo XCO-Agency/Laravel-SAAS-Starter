@@ -47,8 +47,3 @@ class WorkspaceInvitationFactory extends Factory
         ]);
     }
 }
-
-
-
-
-

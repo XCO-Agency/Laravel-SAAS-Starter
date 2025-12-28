@@ -120,8 +120,3 @@ class CreateStripePlans extends Command
         return Command::SUCCESS;
     }
 }
-
-
-
-
-

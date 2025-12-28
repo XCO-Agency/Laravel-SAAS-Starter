@@ -3,7 +3,7 @@
         "laravel-boost": {
             "command": "/Users/anass/.config/herd-lite/bin/php",
             "args": [
-                "/Users/anass/projects/Farouq/artisan",
+                "/Users/anass/xco/Laravel-SAAS-Starter/artisan",
                 "boost:mcp"
             ]
         },
@@ -13,7 +13,7 @@
                 "/Applications/Herd.app/Contents/Resources/herd-mcp.phar"
             ],
             "env": {
-                "SITE_PATH": "/Users/anass/projects/Farouq"
+                "SITE_PATH": "/Users/anass/xco/Laravel-SAAS-Starter"
             }
         }
     }

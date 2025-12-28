@@ -31,8 +31,3 @@ class EnsureWorkspaceAdmin
         return $next($request);
     }
 }
-
-
-
-
-

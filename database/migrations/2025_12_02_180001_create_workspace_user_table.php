@@ -42,8 +42,3 @@ return new class extends Migration
         Schema::dropIfExists('workspace_user');
     }
 };
-
-
-
-
-
