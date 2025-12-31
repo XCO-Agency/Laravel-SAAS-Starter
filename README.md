@@ -168,6 +168,19 @@ Configure Stripe in your `.env` file. The application supports:
 - Billing portal access
 - Webhook handling
 
+#### Stripe Webhooks
+
+**Endpoint:** `/stripe/webhook`
+
+**Required Events:**
+- `customer.subscription.created`
+- `customer.subscription.updated`
+- `customer.subscription.deleted`
+- `invoice.payment_succeeded`
+- `invoice.payment_failed`
+- `invoice.payment_action_required`
+
+
 ### Internationalization
 
 Add new languages by:
