@@ -8,15 +8,15 @@ import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
 import { edit as editAppearance } from '@/routes/appearance';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Appearance settings',
-        href: editAppearance().url,
-    },
-];
-
 export default function Appearance() {
     const { t } = useTranslations();
+
+    const breadcrumbs: BreadcrumbItem[] = [
+        {
+            title: t('settings.appearance.title', 'Appearance settings'),
+            href: editAppearance().url,
+        },
+    ];
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>

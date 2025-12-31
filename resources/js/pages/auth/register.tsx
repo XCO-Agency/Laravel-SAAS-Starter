@@ -80,7 +80,7 @@ export default function Register({ email, redirect }: RegisterProps) {
                                     tabIndex={2}
                                     autoComplete="email"
                                     name="email"
-                                    placeholder="email@example.com"
+                                    placeholder={t('auth.email_placeholder', 'email@example.com')}
                                     defaultValue={email}
                                     readOnly={!!email}
                                     className={email ? 'bg-muted' : ''}

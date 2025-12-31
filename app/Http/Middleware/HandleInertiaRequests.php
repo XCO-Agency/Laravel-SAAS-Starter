@@ -42,7 +42,8 @@ class HandleInertiaRequests extends Middleware
         $user = $request->user();
         $currentWorkspace = $user?->currentWorkspace;
         $workspaces = [];
-        $locale = $user?->locale ?? 'en';
+        // Locale is now handled by SetLocale middleware
+        $locale = app()->getLocale();
 
         if ($user) {
             $workspaces = $user->workspaces()

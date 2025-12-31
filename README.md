@@ -4,6 +4,8 @@
 
 **Built by [XCO Agency](https://xco.agency)**
 
+[![DigitalOcean Referral Badge](https://web-platforms.sfo2.cdn.digitaloceanspaces.com/WWW/Badge%201.svg)](https://www.digitalocean.com/?refcode=9d9a85ad18a3&utm_campaign=Referral_Invite&utm_medium=Referral_Program&utm_source=badge)
+
 ## 🚀 Features
 
 - **🔐 Authentication & 2FA** - Complete auth system with login, register, password reset, email verification, and two-factor authentication

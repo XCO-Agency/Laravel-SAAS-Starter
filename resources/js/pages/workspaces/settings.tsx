@@ -194,7 +194,7 @@ export default function WorkspaceSettings({
                                             onChange={(e) =>
                                                 setData('slug', e.target.value)
                                             }
-                                            placeholder="my-awesome-workspace"
+                                            placeholder={t('workspace.create.slug_placeholder', 'my-awesome-workspace')}
                                             className="rounded-l-none"
                                             disabled={!isAdmin}
                                         />

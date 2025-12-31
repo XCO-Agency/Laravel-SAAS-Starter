@@ -68,7 +68,7 @@ export default function Login({
                                     autoFocus={!email}
                                     tabIndex={1}
                                     autoComplete="email"
-                                    placeholder="email@example.com"
+                                    placeholder={t('auth.email_placeholder', 'email@example.com')}
                                     defaultValue={email}
                                 />
                                 <InputError message={errors.email} />

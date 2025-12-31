@@ -1,5 +1,4 @@
-import { update as updateLocale } from '@/routes/profile/locale';
-import { Button } from '@/components/ui/button';
+import { update as updateLocale } from '@/routes/locale';
 import {
     Select,
     SelectContent,
@@ -31,9 +30,14 @@ export function LanguageSwitcher({ currentLocale = 'en' }: LanguageSwitcherProps
     useEffect(() => {
         if (currentLocale && i18n.language !== currentLocale) {
             i18n.changeLanguage(currentLocale);
-            setLocaleValue(currentLocale);
         }
     }, [currentLocale, i18n]);
+
+    useEffect(() => {
+        if (currentLocale) {
+            setTimeout(() => setLocaleValue(currentLocale), 0);
+        }
+    }, [currentLocale]);
 
     const handleLocaleChange = (newLocale: string) => {
         if (newLocale === localeValue || loading) {
@@ -64,14 +68,15 @@ export function LanguageSwitcher({ currentLocale = 'en' }: LanguageSwitcherProps
 
     return (
         <div className="space-y-2">
-            <div className="flex items-center gap-2">
+            {/* <div className="flex items-center gap-2">
                 <Globe className="h-4 w-4 text-muted-foreground" />
                 <label htmlFor="locale" className="text-sm font-medium">
                     {t('settings.language.title', 'Language')}
                 </label>
-            </div>
+            </div> */}
             <Select value={localeValue} onValueChange={handleLocaleChange} disabled={loading}>
-                <SelectTrigger id="locale" className="w-full">
+                <SelectTrigger id="locale" className="w-[140px] border-none bg-transparent focus:ring-0 focus:ring-offset-0">
+                    <Globe className="mr-2 h-4 w-4 text-muted-foreground" />
                     <SelectValue placeholder={t('settings.language.description', 'Select your preferred language')} />
                 </SelectTrigger>
                 <SelectContent>
@@ -82,9 +87,6 @@ export function LanguageSwitcher({ currentLocale = 'en' }: LanguageSwitcherProps
                     ))}
                 </SelectContent>
             </Select>
-            <p className="text-xs text-muted-foreground">
-                {t('settings.language.description', 'Select your preferred language')}
-            </p>
         </div>
     );
 }

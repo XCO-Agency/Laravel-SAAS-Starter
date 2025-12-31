@@ -16,13 +16,6 @@ import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
 import { edit } from '@/routes/profile';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Profile settings',
-        href: edit().url,
-    },
-];
-
 export default function Profile({
     mustVerifyEmail,
     status,
@@ -32,6 +25,13 @@ export default function Profile({
 }) {
     const { auth, locale } = usePage<SharedData>().props;
     const { t } = useTranslations();
+
+    const breadcrumbs: BreadcrumbItem[] = [
+        {
+            title: t('settings.profile.title', 'Profile settings'), // Using existing title key or similar
+            href: edit().url,
+        },
+    ];
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -108,10 +108,10 @@ export default function Profile({
 
                                             {status ===
                                                 'verification-link-sent' && (
-                                                <div className="mt-2 text-sm font-medium text-green-600">
-                                                    {t('settings.profile.verification_sent', 'A new verification link has been sent to your email address.')}
-                                                </div>
-                                            )}
+                                                    <div className="mt-2 text-sm font-medium text-green-600">
+                                                        {t('settings.profile.verification_sent', 'A new verification link has been sent to your email address.')}
+                                                    </div>
+                                                )}
                                         </div>
                                     )}
 

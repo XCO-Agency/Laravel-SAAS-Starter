@@ -180,289 +180,289 @@ export default function TeamIndex({
                 <div className="space-y-6">
                     <div className="flex items-center justify-end">
                         {isAdmin && (
-                        <Dialog open={inviteOpen} onOpenChange={setInviteOpen}>
-                            <DialogTrigger asChild>
-                                <Button disabled={!canInvite}>
-                                    <UserPlus className="mr-2 h-4 w-4" />
-                                    {t('team.invite_member', 'Invite Member')}
-                                </Button>
-                            </DialogTrigger>
-                            <DialogContent>
-                                <form onSubmit={handleInvite}>
-                                    <DialogHeader>
-                                        <DialogTitle>
-                                            {t('team.invite_new_member', 'Invite New Member')}
-                                        </DialogTitle>
-                                        <DialogDescription>
-                                            {t('team.invite_description', 'Enter the email address and role for the new team member.')}
-                                        </DialogDescription>
-                                    </DialogHeader>
-                                    <div className="space-y-4 py-4">
-                                        <div className="space-y-2">
-                                            <Label htmlFor="email">
-                                                {t('team.email_address', 'Email Address')}
-                                            </Label>
-                                            <Input
-                                                id="email"
-                                                type="email"
-                                                placeholder="colleague@example.com"
-                                                value={inviteData.email}
-                                                onChange={(e) =>
-                                                    setInviteData(
-                                                        'email',
-                                                        e.target.value,
-                                                    )
-                                                }
-                                                required
-                                            />
-                                            <InputError
-                                                message={inviteErrors.email}
-                                            />
+                            <Dialog open={inviteOpen} onOpenChange={setInviteOpen}>
+                                <DialogTrigger asChild>
+                                    <Button disabled={!canInvite}>
+                                        <UserPlus className="mr-2 h-4 w-4" />
+                                        {t('team.invite_member', 'Invite Member')}
+                                    </Button>
+                                </DialogTrigger>
+                                <DialogContent>
+                                    <form onSubmit={handleInvite}>
+                                        <DialogHeader>
+                                            <DialogTitle>
+                                                {t('team.invite_new_member', 'Invite New Member')}
+                                            </DialogTitle>
+                                            <DialogDescription>
+                                                {t('team.invite_description', 'Enter the email address and role for the new team member.')}
+                                            </DialogDescription>
+                                        </DialogHeader>
+                                        <div className="space-y-4 py-4">
+                                            <div className="space-y-2">
+                                                <Label htmlFor="email">
+                                                    {t('team.email_address', 'Email Address')}
+                                                </Label>
+                                                <Input
+                                                    id="email"
+                                                    type="email"
+                                                    placeholder={t('team.member_email_placeholder', 'colleague@example.com')}
+                                                    value={inviteData.email}
+                                                    onChange={(e) =>
+                                                        setInviteData(
+                                                            'email',
+                                                            e.target.value,
+                                                        )
+                                                    }
+                                                    required
+                                                />
+                                                <InputError
+                                                    message={inviteErrors.email}
+                                                />
+                                            </div>
+                                            <div className="space-y-2">
+                                                <Label htmlFor="role">{t('team.role', 'Role')}</Label>
+                                                <Select
+                                                    value={inviteData.role}
+                                                    onValueChange={(
+                                                        value: 'admin' | 'member',
+                                                    ) =>
+                                                        setInviteData('role', value)
+                                                    }
+                                                >
+                                                    <SelectTrigger>
+                                                        <SelectValue placeholder={t('team.role', 'Role')} />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        <SelectItem value="member">
+                                                            {t('team.member', 'Member')}
+                                                        </SelectItem>
+                                                        <SelectItem value="admin">
+                                                            {t('team.admin', 'Admin')}
+                                                        </SelectItem>
+                                                    </SelectContent>
+                                                </Select>
+                                                <p className="text-xs text-muted-foreground">
+                                                    {t('team.role_description', 'Admins can manage team members and workspace settings.')}
+                                                </p>
+                                                <InputError
+                                                    message={inviteErrors.role}
+                                                />
+                                            </div>
                                         </div>
-                                        <div className="space-y-2">
-                                            <Label htmlFor="role">{t('team.role', 'Role')}</Label>
-                                            <Select
-                                                value={inviteData.role}
-                                                onValueChange={(
-                                                    value: 'admin' | 'member',
-                                                ) =>
-                                                    setInviteData('role', value)
-                                                }
+                                        <DialogFooter>
+                                            <Button
+                                                type="button"
+                                                variant="outline"
+                                                onClick={() => setInviteOpen(false)}
                                             >
-                                                <SelectTrigger>
-                                                    <SelectValue placeholder={t('team.role', 'Role')} />
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    <SelectItem value="member">
-                                                        {t('team.member', 'Member')}
-                                                    </SelectItem>
-                                                    <SelectItem value="admin">
-                                                        {t('team.admin', 'Admin')}
-                                                    </SelectItem>
-                                                </SelectContent>
-                                            </Select>
-                                            <p className="text-xs text-muted-foreground">
-                                                {t('team.role_description', 'Admins can manage team members and workspace settings.')}
-                                            </p>
-                                            <InputError
-                                                message={inviteErrors.role}
-                                            />
-                                        </div>
-                                    </div>
-                                    <DialogFooter>
-                                        <Button
-                                            type="button"
-                                            variant="outline"
-                                            onClick={() => setInviteOpen(false)}
-                                        >
-                                            {t('common.cancel', 'Cancel')}
-                                        </Button>
-                                        <Button
-                                            type="submit"
-                                            disabled={inviteProcessing}
-                                        >
-                                            {inviteProcessing && (
-                                                <Spinner className="mr-2" />
-                                            )}
-                                            {t('team.send_invitation', 'Send Invitation')}
-                                        </Button>
-                                    </DialogFooter>
-                                </form>
-                            </DialogContent>
-                        </Dialog>
+                                                {t('common.cancel', 'Cancel')}
+                                            </Button>
+                                            <Button
+                                                type="submit"
+                                                disabled={inviteProcessing}
+                                            >
+                                                {inviteProcessing && (
+                                                    <Spinner className="mr-2" />
+                                                )}
+                                                {t('team.send_invitation', 'Send Invitation')}
+                                            </Button>
+                                        </DialogFooter>
+                                    </form>
+                                </DialogContent>
+                            </Dialog>
                         )}
                     </div>
 
-                <p className="text-sm text-muted-foreground">
-                    {memberLimitMessage}
-                </p>
+                    <p className="text-sm text-muted-foreground">
+                        {memberLimitMessage}
+                    </p>
 
-                {/* Team Members */}
-                <Card>
-                    <CardHeader>
-                        <CardTitle className="flex items-center gap-2">
-                            <Users className="h-5 w-5" />
-                            {t('team.team_members', 'Team Members')}
-                        </CardTitle>
-                        <CardDescription>
-                            {t('team.team_members_desc', 'All members currently in your workspace.')}
-                        </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="space-y-4">
-                            {members.map((member) => (
-                                <div
-                                    key={member.id}
-                                    className="flex items-center justify-between rounded-lg border p-4"
-                                >
-                                    <div className="flex items-center gap-4">
-                                        <Avatar>
-                                            <AvatarFallback>
-                                                {getInitials(member.name)}
-                                            </AvatarFallback>
-                                        </Avatar>
-                                        <div>
-                                            <div className="flex items-center gap-2">
-                                                <p className="font-medium">
-                                                    {member.name}
-                                                </p>
-                                                {member.is_current_user && (
-                                                    <span className="text-xs text-muted-foreground">
-                                                        (you)
-                                                    </span>
-                                                )}
-                                            </div>
-                                            <p className="text-sm text-muted-foreground">
-                                                {member.email}
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div className="flex items-center gap-4">
-                                        <Badge
-                                            variant={getRoleBadgeVariant(
-                                                member.role,
-                                            )}
-                                        >
-                                            {member.role === 'owner' && (
-                                                <Crown className="mr-1 h-3 w-3" />
-                                            )}
-                                            {member.role === 'admin' && (
-                                                <Settings className="mr-1 h-3 w-3" />
-                                            )}
-                                            {member.role
-                                                .charAt(0)
-                                                .toUpperCase() +
-                                                member.role.slice(1)}
-                                        </Badge>
-                                        {isAdmin &&
-                                            !member.is_current_user &&
-                                            member.role !== 'owner' && (
-                                                <DropdownMenu>
-                                                    <DropdownMenuTrigger
-                                                        asChild
-                                                    >
-                                                        <Button
-                                                            variant="ghost"
-                                                            size="icon"
-                                                        >
-                                                            <MoreHorizontal className="h-4 w-4" />
-                                                        </Button>
-                                                    </DropdownMenuTrigger>
-                                                    <DropdownMenuContent align="end">
-                                                        <DropdownMenuItem
-                                                            onClick={() =>
-                                                                updateRole(
-                                                                    member,
-                                                                    member.role ===
-                                                                        'admin'
-                                                                        ? 'member'
-                                                                        : 'admin',
-                                                                )
-                                                            }
-                                                        >
-                                                            <Settings className="mr-2 h-4 w-4" />
-                                                            {member.role ===
-                                                            'admin'
-                                                                ? t('team.demote_to_member', 'Demote to Member')
-                                                                : t('team.promote_to_admin', 'Promote to Admin')}
-                                                        </DropdownMenuItem>
-                                                        {isOwner &&
-                                                            member.role ===
-                                                                'admin' && (
-                                                                <DropdownMenuItem
-                                                                    onClick={() =>
-                                                                        transferOwnership(
-                                                                            member,
-                                                                        )
-                                                                    }
-                                                                >
-                                                                    <Crown className="mr-2 h-4 w-4" />
-                                                                    {t('team.transfer_ownership', 'Transfer Ownership')}
-                                                                </DropdownMenuItem>
-                                                            )}
-                                                        <DropdownMenuSeparator />
-                                                        <DropdownMenuItem
-                                                            className="text-destructive"
-                                                            onClick={() =>
-                                                                removeMember(
-                                                                    member,
-                                                                )
-                                                            }
-                                                        >
-                                                            <Trash2 className="mr-2 h-4 w-4" />
-                                                            {t('team.remove', 'Remove')}
-                                                        </DropdownMenuItem>
-                                                    </DropdownMenuContent>
-                                                </DropdownMenu>
-                                            )}
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </CardContent>
-                </Card>
-
-                {/* Pending Invitations */}
-                {isAdmin && pendingInvitations.length > 0 && (
+                    {/* Team Members */}
                     <Card>
                         <CardHeader>
                             <CardTitle className="flex items-center gap-2">
-                                <Mail className="h-5 w-5" />
-                                {t('team.pending_invitations', 'Pending Invitations')}
+                                <Users className="h-5 w-5" />
+                                {t('team.team_members', 'Team Members')}
                             </CardTitle>
                             <CardDescription>
-                                {t('team.pending_invitations_desc', 'Invitations that have been sent but not yet accepted.')}
+                                {t('team.team_members_desc', 'All members currently in your workspace.')}
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
                             <div className="space-y-4">
-                                {pendingInvitations.map((invitation) => (
+                                {members.map((member) => (
                                     <div
-                                        key={invitation.id}
-                                        className="flex items-center justify-between rounded-lg border border-dashed p-4"
+                                        key={member.id}
+                                        className="flex items-center justify-between rounded-lg border p-4"
                                     >
                                         <div className="flex items-center gap-4">
                                             <Avatar>
                                                 <AvatarFallback>
-                                                    <Mail className="h-4 w-4" />
+                                                    {getInitials(member.name)}
                                                 </AvatarFallback>
                                             </Avatar>
                                             <div>
-                                                <p className="font-medium">
-                                                    {invitation.email}
-                                                </p>
-                                                <p className="flex items-center gap-1 text-sm text-muted-foreground">
-                                                    <Clock className="h-3 w-3" />
-                                                    {t('team.expires', 'Expires')}{' '}
-                                                    {new Date(
-                                                        invitation.expires_at,
-                                                    ).toLocaleDateString()}
+                                                <div className="flex items-center gap-2">
+                                                    <p className="font-medium">
+                                                        {member.name}
+                                                    </p>
+                                                    {member.is_current_user && (
+                                                        <span className="text-xs text-muted-foreground">
+                                                            (you)
+                                                        </span>
+                                                    )}
+                                                </div>
+                                                <p className="text-sm text-muted-foreground">
+                                                    {member.email}
                                                 </p>
                                             </div>
                                         </div>
                                         <div className="flex items-center gap-4">
-                                            <Badge variant="outline">
-                                                {invitation.role
+                                            <Badge
+                                                variant={getRoleBadgeVariant(
+                                                    member.role,
+                                                )}
+                                            >
+                                                {member.role === 'owner' && (
+                                                    <Crown className="mr-1 h-3 w-3" />
+                                                )}
+                                                {member.role === 'admin' && (
+                                                    <Settings className="mr-1 h-3 w-3" />
+                                                )}
+                                                {member.role
                                                     .charAt(0)
                                                     .toUpperCase() +
-                                                    invitation.role.slice(1)}
+                                                    member.role.slice(1)}
                                             </Badge>
-                                            <Button
-                                                variant="ghost"
-                                                size="icon"
-                                                onClick={() =>
-                                                    cancelInvitation(invitation)
-                                                }
-                                            >
-                                                <Trash2 className="h-4 w-4 text-destructive" />
-                                            </Button>
+                                            {isAdmin &&
+                                                !member.is_current_user &&
+                                                member.role !== 'owner' && (
+                                                    <DropdownMenu>
+                                                        <DropdownMenuTrigger
+                                                            asChild
+                                                        >
+                                                            <Button
+                                                                variant="ghost"
+                                                                size="icon"
+                                                            >
+                                                                <MoreHorizontal className="h-4 w-4" />
+                                                            </Button>
+                                                        </DropdownMenuTrigger>
+                                                        <DropdownMenuContent align="end">
+                                                            <DropdownMenuItem
+                                                                onClick={() =>
+                                                                    updateRole(
+                                                                        member,
+                                                                        member.role ===
+                                                                            'admin'
+                                                                            ? 'member'
+                                                                            : 'admin',
+                                                                    )
+                                                                }
+                                                            >
+                                                                <Settings className="mr-2 h-4 w-4" />
+                                                                {member.role ===
+                                                                    'admin'
+                                                                    ? t('team.demote_to_member', 'Demote to Member')
+                                                                    : t('team.promote_to_admin', 'Promote to Admin')}
+                                                            </DropdownMenuItem>
+                                                            {isOwner &&
+                                                                member.role ===
+                                                                'admin' && (
+                                                                    <DropdownMenuItem
+                                                                        onClick={() =>
+                                                                            transferOwnership(
+                                                                                member,
+                                                                            )
+                                                                        }
+                                                                    >
+                                                                        <Crown className="mr-2 h-4 w-4" />
+                                                                        {t('team.transfer_ownership', 'Transfer Ownership')}
+                                                                    </DropdownMenuItem>
+                                                                )}
+                                                            <DropdownMenuSeparator />
+                                                            <DropdownMenuItem
+                                                                className="text-destructive"
+                                                                onClick={() =>
+                                                                    removeMember(
+                                                                        member,
+                                                                    )
+                                                                }
+                                                            >
+                                                                <Trash2 className="mr-2 h-4 w-4" />
+                                                                {t('team.remove', 'Remove')}
+                                                            </DropdownMenuItem>
+                                                        </DropdownMenuContent>
+                                                    </DropdownMenu>
+                                                )}
                                         </div>
                                     </div>
                                 ))}
                             </div>
                         </CardContent>
                     </Card>
-                )}
+
+                    {/* Pending Invitations */}
+                    {isAdmin && pendingInvitations.length > 0 && (
+                        <Card>
+                            <CardHeader>
+                                <CardTitle className="flex items-center gap-2">
+                                    <Mail className="h-5 w-5" />
+                                    {t('team.pending_invitations', 'Pending Invitations')}
+                                </CardTitle>
+                                <CardDescription>
+                                    {t('team.pending_invitations_desc', 'Invitations that have been sent but not yet accepted.')}
+                                </CardDescription>
+                            </CardHeader>
+                            <CardContent>
+                                <div className="space-y-4">
+                                    {pendingInvitations.map((invitation) => (
+                                        <div
+                                            key={invitation.id}
+                                            className="flex items-center justify-between rounded-lg border border-dashed p-4"
+                                        >
+                                            <div className="flex items-center gap-4">
+                                                <Avatar>
+                                                    <AvatarFallback>
+                                                        <Mail className="h-4 w-4" />
+                                                    </AvatarFallback>
+                                                </Avatar>
+                                                <div>
+                                                    <p className="font-medium">
+                                                        {invitation.email}
+                                                    </p>
+                                                    <p className="flex items-center gap-1 text-sm text-muted-foreground">
+                                                        <Clock className="h-3 w-3" />
+                                                        {t('team.expires', 'Expires')}{' '}
+                                                        {new Date(
+                                                            invitation.expires_at,
+                                                        ).toLocaleDateString()}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div className="flex items-center gap-4">
+                                                <Badge variant="outline">
+                                                    {invitation.role
+                                                        .charAt(0)
+                                                        .toUpperCase() +
+                                                        invitation.role.slice(1)}
+                                                </Badge>
+                                                <Button
+                                                    variant="ghost"
+                                                    size="icon"
+                                                    onClick={() =>
+                                                        cancelInvitation(invitation)
+                                                    }
+                                                >
+                                                    <Trash2 className="h-4 w-4 text-destructive" />
+                                                </Button>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </CardContent>
+                        </Card>
+                    )}
                 </div>
             </SettingsLayout>
         </AppLayout>

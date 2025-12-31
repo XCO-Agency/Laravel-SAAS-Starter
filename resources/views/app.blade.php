@@ -19,7 +19,8 @@
                 }
                 
                 // Set initial direction from user locale if available
-                const userLocale = '{{ auth()->user()?->locale ?? "en" }}';
+                // Set initial direction from user locale if available
+                const userLocale = '{{ app()->getLocale() }}';
                 const rtlLanguages = ['ar', 'he', 'fa', 'ur'];
                 const isRTL = rtlLanguages.includes(userLocale);
                 const direction = isRTL ? 'rtl' : 'ltr';

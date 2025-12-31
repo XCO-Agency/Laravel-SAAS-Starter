@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BillingController;
 use App\Http\Controllers\InvitationController;
+use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\StripeWebhookController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\WorkspaceController;
@@ -93,5 +94,9 @@ Route::middleware(['auth', 'verified', 'workspace'])->group(function () {
 // Stripe webhook (no CSRF, no auth)
 Route::post('/stripe/webhook', [StripeWebhookController::class, 'handleWebhook'])
     ->name('cashier.webhook');
+
+// Public locale switch
+Route::patch('/locale', [LocaleController::class, 'update'])->name('locale.update');
+
 
 require __DIR__.'/settings.php';

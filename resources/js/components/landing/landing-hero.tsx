@@ -1,23 +1,25 @@
 import { Button } from '@/components/ui/button';
 import { register } from '@/routes';
 import { type SharedData } from '@/types';
+import { useTranslations } from '@/hooks/use-translations';
 import { Link, usePage } from '@inertiajs/react';
 import { ArrowRight, CheckCircle, Github, Play, Sparkles, Users, Zap } from 'lucide-react';
 
 export function LandingHero() {
     const { auth } = usePage<SharedData>().props;
+    const { t } = useTranslations();
 
     const stats = [
-        { icon: Users, value: '1,000+', label: 'Developers' },
-        { icon: Zap, value: '50+', label: 'Features' },
-        { icon: Github, value: '100%', label: 'Open Source' },
+        { icon: Users, value: '1,000+', label: t('landing.hero.stats.developers', 'Developers') },
+        { icon: Zap, value: '50+', label: t('landing.hero.stats.features', 'Features') },
+        { icon: Github, value: '100%', label: t('landing.hero.stats.opensource', 'Open Source') },
     ];
 
     const features = [
-        'Authentication & 2FA',
-        'Team Management',
-        'Stripe Billing',
-        'Dark Mode',
+        t('landing.hero.features.auth', 'Authentication & 2FA'),
+        t('landing.hero.features.team', 'Team Management'),
+        t('landing.hero.features.billing', 'Stripe Billing'),
+        t('landing.hero.features.dark_mode', 'Dark Mode'),
     ];
 
     return (
@@ -34,27 +36,27 @@ export function LandingHero() {
                     {/* Badge */}
                     <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-sm font-medium text-primary">
                         <Sparkles className="h-4 w-4" />
-                        <span>The Ultimate Laravel SaaS Starter</span>
+                        <span>{t('landing.hero.badge', 'The Ultimate Laravel SaaS Starter')}</span>
                     </div>
 
                     {/* Headline */}
                     <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
-                        <span className="block">Build Your SaaS</span>
+                        <span className="block">{t('landing.hero.title.part1', 'Build Your SaaS')}</span>
                         <span className="block bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
-                            10x Faster
+                            {t('landing.hero.title.part2', '10x Faster')}
                         </span>
                     </h1>
 
                     {/* Subheadline */}
                     <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground sm:text-xl">
-                        Production-ready Laravel SaaS starter kit with authentication, billing, teams, and everything you need. Launch your SaaS 10x faster. <span className="font-semibold text-foreground">100% Open Source.</span>
+                        {t('landing.hero.description', 'Production-ready Laravel SaaS starter kit with authentication, billing, teams, and everything you need. Launch your SaaS 10x faster.')} <span className="font-semibold text-foreground">{t('landing.hero.description_highlight', '100% Open Source.')}</span>
                     </p>
 
                     {/* CTA Buttons */}
                     <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
                         <Button size="lg" asChild className="h-12 px-8 text-base">
                             <Link href={auth.user ? '/dashboard' : register()}>
-                                Get Started Free
+                                {t('landing.hero.cta.get_started', 'Get Started Free')}
                                 <ArrowRight className="ml-2 h-4 w-4" />
                             </Link>
                         </Button>
@@ -65,7 +67,7 @@ export function LandingHero() {
                                 rel="noopener noreferrer"
                             >
                                 <Github className="mr-2 h-4 w-4" />
-                                View on GitHub
+                                {t('landing.hero.cta.github', 'View on GitHub')}
                             </a>
                         </Button>
                         <Button size="lg" variant="ghost" asChild className="h-12 px-8 text-base">
@@ -78,7 +80,7 @@ export function LandingHero() {
                                 }}
                             >
                                 <Play className="mr-2 h-4 w-4" />
-                                See Features
+                                {t('landing.hero.cta.features', 'See Features')}
                             </a>
                         </Button>
                     </div>
@@ -119,13 +121,13 @@ export function LandingHero() {
                                     </div>
                                 </div>
                                 <p className="text-lg font-semibold text-foreground">
-                                    Production-Ready Dashboard
+                                    {t('landing.hero.preview.title', 'Production-Ready Dashboard')}
                                 </p>
                                 <p className="mt-2 text-sm text-muted-foreground">
-                                    Beautiful UI with dark mode, workspaces, and team management
+                                    {t('landing.hero.preview.description', 'Beautiful UI with dark mode, workspaces, and team management')}
                                 </p>
                                 <div className="mt-4 flex flex-wrap justify-center gap-2">
-                                    {['Multi-tenant', 'Stripe Billing', 'Team Roles', '2FA'].map((tag) => (
+                                    {[t('landing.hero.preview.tags.multi_tenant', 'Multi-tenant'), t('landing.hero.preview.tags.stripe_billing', 'Stripe Billing'), t('landing.hero.preview.tags.team_roles', 'Team Roles'), t('landing.hero.preview.tags.2fa', '2FA')].map((tag) => (
                                         <span key={tag} className="rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
                                             {tag}
                                         </span>

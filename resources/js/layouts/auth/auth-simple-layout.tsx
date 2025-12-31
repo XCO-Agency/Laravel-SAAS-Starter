@@ -1,9 +1,9 @@
-import AppLogoIcon from '@/components/app-logo-icon';
 import AppearanceToggleDropdown from '@/components/appearance-dropdown';
 import { home } from '@/routes';
 import { Link } from '@inertiajs/react';
 import { ArrowLeft, CheckCircle, Quote, Sparkles, Users } from 'lucide-react';
 import { type PropsWithChildren } from 'react';
+import { useTranslations } from '@/hooks/use-translations';
 
 interface AuthLayoutProps {
     title?: string;
@@ -15,6 +15,8 @@ export default function AuthSimpleLayout({
     title,
     description,
 }: PropsWithChildren<AuthLayoutProps>) {
+    const { t } = useTranslations();
+
     return (
         <div className="grid min-h-svh lg:grid-cols-2">
             {/* Left Side - Branding & Visual */}
@@ -38,7 +40,7 @@ export default function AuthSimpleLayout({
                         className="flex items-center gap-2 text-sm text-white/80 transition-colors hover:text-white"
                     >
                         <ArrowLeft className="h-4 w-4" />
-                        Back to home
+                        {t('auth.layout.back_to_home', 'Back to home')}
                     </Link>
                 </div>
 
@@ -46,12 +48,12 @@ export default function AuthSimpleLayout({
                 <div className="space-y-8">
                     <div className="space-y-4">
                         <h2 className="text-4xl font-bold leading-tight">
-                            Launch Your SaaS
+                            {t('auth.layout.hero.title_line1', 'Launch Your SaaS')}
                             <br />
-                            10x Faster
+                            {t('auth.layout.hero.title_line2', '10x Faster')}
                         </h2>
                         <p className="text-lg text-white/80">
-                            Join thousands of developers building and shipping with Laravel SAAS Starter.
+                            {t('auth.layout.hero.description', 'Join thousands of developers building and shipping with Laravel SAAS Starter.')}
                         </p>
                     </div>
 
@@ -63,7 +65,7 @@ export default function AuthSimpleLayout({
                             </div>
                             <div>
                                 <div className="text-2xl font-bold">10,000+</div>
-                                <div className="text-sm text-white/70">Developers</div>
+                                <div className="text-sm text-white/70">{t('auth.layout.stats.developers', 'Developers')}</div>
                             </div>
                         </div>
                         <div className="flex items-center gap-2">
@@ -72,7 +74,7 @@ export default function AuthSimpleLayout({
                             </div>
                             <div>
                                 <div className="text-2xl font-bold">500+</div>
-                                <div className="text-sm text-white/70">Apps Launched</div>
+                                <div className="text-sm text-white/70">{t('auth.layout.stats.apps_launched', 'Apps Launched')}</div>
                             </div>
                         </div>
                     </div>
@@ -81,15 +83,15 @@ export default function AuthSimpleLayout({
                     <div className="rounded-xl bg-white/10 p-6 backdrop-blur-sm">
                         <Quote className="mb-4 h-8 w-8 text-white/40" />
                         <p className="mb-4 text-white/90">
-                            "Laravel SAAS Starter saved us months of development time. We launched our MVP in just 2 weeks!"
+                            "{t('auth.layout.testimonial.quote', 'Laravel SAAS Starter saved us months of development time. We launched our MVP in just 2 weeks!')}"
                         </p>
                         <div className="flex items-center gap-3">
                             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/20 text-sm font-semibold">
                                 SC
                             </div>
                             <div>
-                                <div className="font-medium">Sarah Chen</div>
-                                <div className="text-sm text-white/70">CTO at TechFlow</div>
+                                <div className="font-medium">{t('auth.layout.testimonial.author', 'Sarah Chen')}</div>
+                                <div className="text-sm text-white/70">{t('auth.layout.testimonial.role', 'CTO at TechFlow')}</div>
                             </div>
                         </div>
                     </div>
@@ -97,7 +99,7 @@ export default function AuthSimpleLayout({
 
                 {/* Footer */}
                 <div className="text-sm text-white/60">
-                    © {new Date().getFullYear()} XCO Agency. All rights reserved.
+                    © {new Date().getFullYear()} {t('auth.layout.copyright', 'XCO Agency. All rights reserved.')}
                 </div>
             </div>
 
