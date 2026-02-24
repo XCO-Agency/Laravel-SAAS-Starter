@@ -25,4 +25,9 @@ Route::middleware('auth')->group(function () {
 
     Route::get('settings/two-factor', [TwoFactorAuthenticationController::class, 'show'])
         ->name('two-factor.show');
+
+    // API Tokens
+    Route::get('settings/api-tokens', [\App\Http\Controllers\Settings\ApiTokenController::class, 'index'])->name('api-tokens.index');
+    Route::post('settings/api-tokens', [\App\Http\Controllers\Settings\ApiTokenController::class, 'store'])->name('api-tokens.store');
+    Route::delete('settings/api-tokens/{tokenId}', [\App\Http\Controllers\Settings\ApiTokenController::class, 'destroy'])->name('api-tokens.destroy');
 });

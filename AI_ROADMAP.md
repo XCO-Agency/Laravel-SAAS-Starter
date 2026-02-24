@@ -30,9 +30,9 @@ Whenever you want me to resume work, just send a message like: *"continue"* or *
 - [x] **Task 2: Admin Dashboard (Superadmin)**
   - Implement a Superadmin role.
   - Build an overarching dashboard for managing all instances, users, and subscriptions.
-- [ ] **Task 3: API Token Management**
-  - Implement Sanctum API token generation and revocation for users.
-  - Add API token management UI to user settings.
+- [x] **Task 3: API Token Management**
+  - Implement Sanctum API token generation and revocation.
+  - Add simple UI for API token management. UI to user settings.
 
 ## 📋 Backlog (Future Enhancements)
 
@@ -43,6 +43,7 @@ Whenever you want me to resume work, just send a message like: *"continue"* or *
 
 ## 📝 Changelog
 
+- **2026-02-24**: Successfully integrated `laravel/sanctum` for API Token Management within the unified Settings dashboard. Task 3 completed.
 - **2026-02-24**: Built Superadmin Role, `EnsureSuperadmin` middleware, and the Admin Dashboard with full Pest testing coverage. Task 2 completed.
 
 - **2026-02-24**: Added extensive testing for `LocaleController` and `StripeWebhookController`. Task 1 completed.

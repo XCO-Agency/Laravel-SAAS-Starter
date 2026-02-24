@@ -9,6 +9,7 @@ import { show } from '@/routes/two-factor';
 import { edit as editPassword } from '@/routes/user-password';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
+import { Fingerprint, Lock, Paintbrush, ShieldCheck, User } from 'lucide-react';
 import { type PropsWithChildren, useMemo } from 'react';
 
 interface NavSection {
@@ -43,22 +44,27 @@ const getNavSections = (t: (key: string, fallback: string) => string): NavSectio
             {
                 title: t('navigation.profile', 'Profile'),
                 href: edit(),
-                icon: null,
+                icon: User,
             },
             {
                 title: t('navigation.password', 'Password'),
                 href: editPassword(),
-                icon: null,
+                icon: Lock,
             },
             {
                 title: t('navigation.two_factor_auth', 'Two-Factor Auth'),
                 href: show(),
-                icon: null,
+                icon: ShieldCheck,
             },
             {
                 title: t('navigation.appearance', 'Appearance'),
                 href: editAppearance(),
-                icon: null,
+                icon: Paintbrush,
+            },
+            {
+                title: t('navigation.api_tokens', 'API Tokens'),
+                href: '/settings/api-tokens',
+                icon: Fingerprint,
             },
         ],
     },
@@ -78,7 +84,7 @@ export default function SettingsLayout({
 }: SettingsLayoutProps) {
     const { t, i18n } = useTranslations();
     const navSections = useMemo(() => getNavSections(t), [t]);
-    
+
     const defaultTitle = title ?? t('settings.title', 'Settings');
     const defaultDescription = description ?? t('settings.description', 'Manage your workspace and account settings');
 
@@ -92,7 +98,7 @@ export default function SettingsLayout({
     // Detect RTL for layout adjustments
     const RTL_LANGUAGES = ['ar', 'he', 'fa', 'ur'];
     const isRTL = RTL_LANGUAGES.includes(i18n.language);
-    
+
     return (
         <div className="px-4 py-6" dir={isRTL ? 'rtl' : 'ltr'}>
             <Heading title={defaultTitle} description={defaultDescription} />
