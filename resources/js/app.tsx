@@ -5,11 +5,23 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { I18nextProvider } from 'react-i18next';
+import * as Sentry from '@sentry/react';
 import { ToastProvider } from './components/ui/toast';
 import { initializeTheme } from './hooks/use-appearance';
 import i18n from './lib/i18n';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+
+Sentry.init({
+    dsn: import.meta.env.VITE_SENTRY_DSN_PUBLIC,
+    integrations: [
+        Sentry.browserTracingIntegration(),
+        Sentry.replayIntegration(),
+    ],
+    tracesSampleRate: 1.0,
+    replaysSessionSampleRate: 0.1,
+    replaysOnErrorSampleRate: 1.0,
+});
 
 // RTL languages
 const RTL_LANGUAGES = ['ar', 'he', 'fa', 'ur'];
@@ -19,16 +31,16 @@ const setDocumentDirection = (language: string) => {
     const isRTL = RTL_LANGUAGES.includes(language);
     const htmlElement = document.documentElement;
     const bodyElement = document.body;
-    
+
     // Set direction on both html and body
     const direction = isRTL ? 'rtl' : 'ltr';
     htmlElement.setAttribute('dir', direction);
     htmlElement.setAttribute('lang', language);
-    
+
     if (bodyElement) {
         bodyElement.setAttribute('dir', direction);
     }
-    
+
     // Add classes for CSS targeting if needed
     if (isRTL) {
         htmlElement.classList.add('rtl');
@@ -62,10 +74,10 @@ createInertiaApp({
         if (i18n.language !== locale) {
             i18n.changeLanguage(locale);
         }
-        
+
         // Set initial document direction
         setDocumentDirection(locale);
-        
+
         // Listen for language changes
         i18n.on('languageChanged', (lng) => {
             setDocumentDirection(lng);

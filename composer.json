@@ -38,6 +38,7 @@
         "laravel/socialite": "^5.24",
         "laravel/tinker": "^2.10.1",
         "laravel/wayfinder": "^0.1.9",
+        "sentry/sentry-laravel": "^4.20",
         "spatie/laravel-activitylog": "^4.12",
         "spatie/laravel-webhook-server": "^3.10"
     },

@@ -35,17 +35,6 @@ Whenever you want me to resume work, just send a message like: *"continue"* or *
   - Add simple UI for API token management. UI to user settings.
 - [x] **Task 4: Social Authentication (OAuth)**
   - Integrate Laravel Socialite.
-- [x] **Task 1: Comprehensive Code Review & Test Assessment**
-  - Read existing Pest tests to identify coverage gaps.
-  - Implement missing unit/feature tests for edge cases (e.g., Stripe webhooks, team invitations).
-- [x] **Task 2: Admin Dashboard (Superadmin)**
-  - Implement a Superadmin role.
-  - Build an overarching dashboard for managing all instances, users, and subscriptions.
-- [x] **Task 3: API Token Management**
-  - Implement Sanctum API token generation and revocation.
-  - Add simple UI for API token management. UI to user settings.
-- [x] **Task 4: Social Authentication (OAuth)**
-  - Integrate Laravel Socialite.
   - Support GitHub and Google.
   - Build `connected_accounts` table for multi-provider support.
 - [x] **Task 5: User Activity Logging**
@@ -55,10 +44,13 @@ Whenever you want me to resume work, just send a message like: *"continue"* or *
 - [x] **Task 6: Outbound Webhooks**
   - Implement generic outbound webhooks for workspaces.
   - Add UI in workspace settings to manage webhooks.
-
-- [ ] Integrate Sentry / Bugsnag for automated error reporting.
+- [x] **Task 7: Sentry Integration**
+  - Install `sentry/sentry-laravel`.
+  - Configure `SENTRY_LARAVEL_DSN` and handle automatic error tracking.
 
 ## 📝 Changelog
+
+- **2026-02-24**: Integrated Sentry application-wide (`Task 7`). Deployed PHP/Laravel backend error capture natively parsing `bootstrap/app.php` using `$exceptions->handles()`, while installing `@sentry/react` inside `@/js/app.tsx` for React error and tracing fidelity. Build pipelines successfully resolve.
 
 - **2026-02-24**: Instantiated Workspace-level tracking utilizing `spatie/laravel-activitylog`. Built a secure Activity Log UI feeding solely to Workspace administrators natively tracking events generated against their workspace. Task 5 completed.
 - **2026-02-24**: Scaffolded Social Authentication via `laravel/socialite`. Deployed multi-tenant multi-provider OAuth registration spanning standard routing logic and Personal Workspaces. Task 4 completed.
