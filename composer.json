@@ -38,7 +38,8 @@
         "laravel/socialite": "^5.24",
         "laravel/tinker": "^2.10.1",
         "laravel/wayfinder": "^0.1.9",
-        "spatie/laravel-activitylog": "^4.12"
+        "spatie/laravel-activitylog": "^4.12",
+        "spatie/laravel-webhook-server": "^3.10"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

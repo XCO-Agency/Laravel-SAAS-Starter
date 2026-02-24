@@ -54,6 +54,15 @@ Route::middleware(['auth', 'verified', 'workspace'])->group(function () {
         Route::get('/{workspace}/activity', [\App\Http\Controllers\WorkspaceActivityController::class, 'index'])
             ->middleware('workspace.admin')
             ->name('activity');
+
+        // Webhook routes
+        Route::middleware('workspace.admin')->prefix('{workspace}/webhooks')->name('webhooks.')->group(function () {
+            Route::get('/', [\App\Http\Controllers\WebhookEndpointController::class, 'index'])->name('index');
+            Route::post('/', [\App\Http\Controllers\WebhookEndpointController::class, 'store'])->name('store');
+            Route::put('/{webhookEndpoint}', [\App\Http\Controllers\WebhookEndpointController::class, 'update'])->name('update');
+            Route::delete('/{webhookEndpoint}', [\App\Http\Controllers\WebhookEndpointController::class, 'destroy'])->name('destroy');
+            Route::post('/{webhookEndpoint}/ping', [\App\Http\Controllers\WebhookEndpointController::class, 'ping'])->name('ping');
+        });
     });
 
     // Team routes

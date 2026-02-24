@@ -122,6 +122,14 @@ class Workspace extends Model
     }
 
     /**
+     * Get the workspace's outbound webhook endpoints.
+     */
+    public function webhookEndpoints(): HasMany
+    {
+        return $this->hasMany(WebhookEndpoint::class);
+    }
+
+    /**
      * Determine if the given user belongs to the workspace.
      */
     public function hasUser(User $user): bool

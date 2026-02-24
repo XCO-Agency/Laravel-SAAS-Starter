@@ -42,6 +42,11 @@ const getNavSections = (t: (key: string, fallback: string) => string, workspace?
                 href: workspace ? `/workspaces/${workspace.id}/activity` : '#',
                 icon: null,
             },
+            {
+                title: t('navigation.webhooks', 'Webhooks'),
+                href: workspace ? `/workspaces/${workspace.id}/webhooks` : '#',
+                icon: null,
+            },
         ],
     },
     {

@@ -27,28 +27,14 @@ Whenever you want me to resume work, just send a message like: *"continue"* or *
 - [x] **Task 1: Comprehensive Code Review & Test Assessment**
   - Read existing Pest tests to identify coverage gaps.
   - Implement missing unit/feature tests for edge cases (e.g., Stripe webhooks, team invitations).
-- [x] **Task 1: Comprehensive Code Review & Test Assessment**
-  - Read existing Pest tests to identify coverage gaps.
-  - Implement missing unit/feature tests for edge cases (e.g., Stripe webhooks, team invitations).
-- [x] **Task 1: Comprehensive Code Review & Test Assessment**
-  - Read existing Pest tests to identify coverage gaps.
-  - Implement missing unit/feature tests for edge cases (e.g., Stripe webhooks, team invitations).
-- [x] **Task 1: Comprehensive Code Review & Test Assessment**
-  - Read existing Pest tests to identify coverage gaps.
-  - Implement missing unit/feature tests for edge cases (e.g., Stripe webhooks, team invitations).
 - [x] **Task 2: Admin Dashboard (Superadmin)**
   - Implement a Superadmin role.
   - Build an overarching dashboard for managing all instances, users, and subscriptions.
 - [x] **Task 3: API Token Management**
-- [x] **Task 1: Comprehensive Code Review & Test Assessment**
-  - Read existing Pest tests to identify coverage gaps.
-  - Implement missing unit/feature tests for edge cases (e.g., Stripe webhooks, team invitations).
-- [x] **Task 1: Comprehensive Code Review & Test Assessment**
-  - Read existing Pest tests to identify coverage gaps.
-  - Implement missing unit/feature tests for edge cases (e.g., Stripe webhooks, team invitations).
-- [x] **Task 1: Comprehensive Code Review & Test Assessment**
-  - Read existing Pest tests to identify coverage gaps.
-  - Implement missing unit/feature tests for edge cases (e.g., Stripe webhooks, team invitations).
+  - Implement Sanctum API token generation and revocation.
+  - Add simple UI for API token management. UI to user settings.
+- [x] **Task 4: Social Authentication (OAuth)**
+  - Integrate Laravel Socialite.
 - [x] **Task 1: Comprehensive Code Review & Test Assessment**
   - Read existing Pest tests to identify coverage gaps.
   - Implement missing unit/feature tests for edge cases (e.g., Stripe webhooks, team invitations).
@@ -66,10 +52,10 @@ Whenever you want me to resume work, just send a message like: *"continue"* or *
   - Install `spatie/laravel-activitylog`.
   - Track Workspace modifications.
   - Build Activity Dashboard for Workspace Owners.
+- [x] **Task 6: Outbound Webhooks**
+  - Implement generic outbound webhooks for workspaces.
+  - Add UI in workspace settings to manage webhooks.
 
-## 📋 Backlog (Future Enhancements)
-
-- [ ] Implement generic outbound webhooks for workspaces.
 - [ ] Integrate Sentry / Bugsnag for automated error reporting.
 
 ## 📝 Changelog
