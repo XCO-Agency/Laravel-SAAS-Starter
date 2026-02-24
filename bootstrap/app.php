@@ -31,6 +31,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         $middleware->alias([
+            'superadmin' => \App\Http\Middleware\EnsureSuperadmin::class,
             'workspace' => EnsureWorkspaceAccess::class,
             'workspace.owner' => EnsureWorkspaceOwner::class,
             'workspace.admin' => EnsureWorkspaceAdmin::class,
