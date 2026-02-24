@@ -11,17 +11,30 @@ import {
 } from '@/components/ui/sidebar';
 import { WorkspaceSwitcher } from '@/components/workspace-switcher';
 import { useTranslations } from '@/hooks/use-translations';
-import { type NavItem } from '@/types';
-import { BookOpen, LayoutGrid } from 'lucide-react';
+import { type NavItem, type SharedData } from '@/types';
+import { BookOpen, LayoutGrid, ShieldAlert } from 'lucide-react';
+import { usePage } from '@inertiajs/react';
 import { useMemo } from 'react';
 
-const getMainNavItems = (t: (key: string, fallback: string) => string): NavItem[] => [
-    {
-        title: t('navigation.dashboard', 'Dashboard'),
-        href: '/dashboard',
-        icon: LayoutGrid,
-    },
-];
+const getMainNavItems = (t: (key: string, fallback: string) => string, isSuperadmin: boolean = false): NavItem[] => {
+    const items = [
+        {
+            title: t('navigation.dashboard', 'Dashboard'),
+            href: '/dashboard',
+            icon: LayoutGrid,
+        },
+    ];
+
+    if (isSuperadmin) {
+        items.push({
+            title: t('navigation.admin', 'Superadmin Panel'),
+            href: '/admin/dashboard',
+            icon: ShieldAlert,
+        });
+    }
+
+    return items;
+};
 
 const getFooterNavItems = (t: (key: string, fallback: string) => string): NavItem[] => [
     {
@@ -34,9 +47,12 @@ const getFooterNavItems = (t: (key: string, fallback: string) => string): NavIte
 
 export function AppSidebar() {
     const { t, i18n } = useTranslations();
-    const mainNavItems = useMemo(() => getMainNavItems(t), [t]);
+    const { auth } = usePage<SharedData>().props;
+    const isSuperadmin = auth.user.is_superadmin === true;
+
+    const mainNavItems = useMemo(() => getMainNavItems(t, isSuperadmin), [t, isSuperadmin]);
     const footerNavItems = useMemo(() => getFooterNavItems(t), [t]);
-    
+
     // Set sidebar to right side for RTL languages
     const RTL_LANGUAGES = ['ar', 'he', 'fa', 'ur'];
     const isRTL = RTL_LANGUAGES.includes(i18n.language);

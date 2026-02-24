@@ -1,14 +1,22 @@
 import AppLayout from '@/layouts/app-layout';
-import { Head } from '@inertiajs/react';
+import { Head, router } from '@inertiajs/react';
+import { Button } from '@/components/ui/button';
 
 interface AdminDashboardProps {
     metrics: {
         total_users: number;
         total_workspaces: number;
     };
+    recent_users: {
+        id: number;
+        name: string;
+        email: string;
+        created_at: string;
+    }[];
 }
 
-export default function AdminDashboard({ metrics }: AdminDashboardProps) {
+export default function AdminDashboard(props: AdminDashboardProps) {
+    const { metrics } = props;
     return (
         <AppLayout>
             <Head title="Admin Dashboard" />
@@ -38,6 +46,50 @@ export default function AdminDashboard({ metrics }: AdminDashboardProps) {
                         <div className="p-6 pt-0">
                             <div className="text-2xl font-bold">{metrics.total_workspaces}</div>
                         </div>
+                    </div>
+                </div>
+
+                <div className="mt-8">
+                    <h3 className="text-xl font-bold tracking-tight mb-4">Recent Users</h3>
+                    <div className="rounded-xl border bg-card text-card-foreground shadow overflow-hidden">
+                        <table className="w-full text-sm text-left">
+                            <thead className="bg-muted/50 text-muted-foreground uppercase">
+                                <tr>
+                                    <th className="px-6 py-3 font-medium">Name</th>
+                                    <th className="px-6 py-3 font-medium">Email</th>
+                                    <th className="px-6 py-3 font-medium">Joined</th>
+                                    <th className="px-6 py-3 font-medium text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody className="divide-y divide-border">
+                                {metrics.total_users === 0 ? (
+                                    <tr>
+                                        <td colSpan={4} className="px-6 py-8 text-center text-muted-foreground">
+                                            No users found.
+                                        </td>
+                                    </tr>
+                                ) : (
+                                    props.recent_users.map((user) => (
+                                        <tr key={user.id} className="hover:bg-muted/50 transition-colors">
+                                            <td className="px-6 py-4 font-medium">{user.name}</td>
+                                            <td className="px-6 py-4">{user.email}</td>
+                                            <td className="px-6 py-4 text-muted-foreground">
+                                                {new Date(user.created_at).toLocaleDateString()}
+                                            </td>
+                                            <td className="px-6 py-4 text-right">
+                                                <Button
+                                                    size="sm"
+                                                    variant="secondary"
+                                                    onClick={() => router.post(`/admin/impersonate/${user.id}`)}
+                                                >
+                                                    Impersonate
+                                                </Button>
+                                            </td>
+                                        </tr>
+                                    ))
+                                )}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

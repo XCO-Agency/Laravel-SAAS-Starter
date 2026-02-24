@@ -6,9 +6,7 @@ use Closure;
 use Laravel\Ai\Prompts\AgentPrompt;
 use Laravel\Ai\Responses\AgentResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-// use Laravel\Ai\Prompts\AgentPrompt; // No longer needed for handle method
-// use Laravel\Ai\Responses\AgentResponse; // No longer needed for handle method
+use Symfony\Component\HttpFoundation\Response;
 
 class EnsureSuperadmin
 {

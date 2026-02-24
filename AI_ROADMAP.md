@@ -42,15 +42,285 @@ Whenever you want me to resume work, just send a message like: *"continue"* or *
   - Track Workspace modifications.
   - Build Activity Dashboard for Workspace Owners.
 - [x] **Task 6: Outbound Webhooks**
+- [x] **Task 1: Comprehensive Code Review & Test Assessment**
+  - Read existing Pest tests to identify coverage gaps.
+  - Implement missing unit/feature tests for edge cases (e.g., Stripe webhooks, team invitations).
+- [x] **Task 2: Admin Dashboard (Superadmin)**
+  - Implement a Superadmin role.
+  - Build an overarching dashboard for managing all instances, users, and subscriptions.
+- [x] **Task 3: API Token Management**
+  - Implement Sanctum API token generation and revocation.
+  - Add simple UI for API token management. UI to user settings.
+- [x] **Task 4: Social Authentication (OAuth)**
+  - Integrate Laravel Socialite.
+  - Support GitHub and Google.
+  - Build `connected_accounts` table for multi-provider support.
+- [x] **Task 5: User Activity Logging**
+  - Install `spatie/laravel-activitylog`.
+  - Track Workspace modifications.
+  - Build Activity Dashboard for Workspace Owners.
+- [x] **Task 6: Outbound Webhooks**
+- [x] **Task 1: Comprehensive Code Review & Test Assessment**
+  - Read existing Pest tests to identify coverage gaps.
+  - Implement missing unit/feature tests for edge cases (e.g., Stripe webhooks, team invitations).
+- [x] **Task 2: Admin Dashboard (Superadmin)**
+  - Implement a Superadmin role.
+  - Build an overarching dashboard for managing all instances, users, and subscriptions.
+- [x] **Task 3: API Token Management**
+  - Implement Sanctum API token generation and revocation.
+  - Add simple UI for API token management. UI to user settings.
+- [x] **Task 4: Social Authentication (OAuth)**
+  - Integrate Laravel Socialite.
+  - Support GitHub and Google.
+  - Build `connected_accounts` table for multi-provider support.
+- [x] **Task 5: User Activity Logging**
+  - Install `spatie/laravel-activitylog`.
+  - Track Workspace modifications.
+  - Build Activity Dashboard for Workspace Owners.
+- [x] **Task 6: Outbound Webhooks**
+- [x] **Task 1: Comprehensive Code Review & Test Assessment**
+  - Read existing Pest tests to identify coverage gaps.
+  - Implement missing unit/feature tests for edge cases (e.g., Stripe webhooks, team invitations).
+- [x] **Task 2: Admin Dashboard (Superadmin)**
+  - Implement a Superadmin role.
+  - Build an overarching dashboard for managing all instances, users, and subscriptions.
+- [x] **Task 3: API Token Management**
+  - Implement Sanctum API token generation and revocation.
+  - Add simple UI for API token management. UI to user settings.
+- [x] **Task 4: Social Authentication (OAuth)**
+  - Integrate Laravel Socialite.
+  - Support GitHub and Google.
+  - Build `connected_accounts` table for multi-provider support.
+- [x] **Task 5: User Activity Logging**
+  - Install `spatie/laravel-activitylog`.
+  - Track Workspace modifications.
+  - Build Activity Dashboard for Workspace Owners.
+- [x] **Task 6: Outbound Webhooks**
+- [x] **Task 1: Comprehensive Code Review & Test Assessment**
+  - Read existing Pest tests to identify coverage gaps.
+  - Implement missing unit/feature tests for edge cases (e.g., Stripe webhooks, team invitations).
+- [x] **Task 2: Admin Dashboard (Superadmin)**
+  - Implement a Superadmin role.
+  - Build an overarching dashboard for managing all instances, users, and subscriptions.
+- [x] **Task 3: API Token Management**
+  - Implement Sanctum API token generation and revocation.
+  - Add simple UI for API token management. UI to user settings.
+- [x] **Task 4: Social Authentication (OAuth)**
+  - Integrate Laravel Socialite.
+  - Support GitHub and Google.
+  - Build `connected_accounts` table for multi-provider support.
+- [x] **Task 5: User Activity Logging**
+  - Install `spatie/laravel-activitylog`.
+  - Track Workspace modifications.
+  - Build Activity Dashboard for Workspace Owners.
+- [x] **Task 6: Outbound Webhooks**
+- [x] **Task 1: Comprehensive Code Review & Test Assessment**
+  - Read existing Pest tests to identify coverage gaps.
+  - Implement missing unit/feature tests for edge cases (e.g., Stripe webhooks, team invitations).
+- [x] **Task 2: Admin Dashboard (Superadmin)**
+  - Implement a Superadmin role.
+  - Build an overarching dashboard for managing all instances, users, and subscriptions.
+- [x] **Task 3: API Token Management**
+  - Implement Sanctum API token generation and revocation.
+  - Add simple UI for API token management. UI to user settings.
+- [x] **Task 4: Social Authentication (OAuth)**
+  - Integrate Laravel Socialite.
+  - Support GitHub and Google.
+  - Build `connected_accounts` table for multi-provider support.
+- [x] **Task 5: User Activity Logging**
+  - Install `spatie/laravel-activitylog`.
+  - Track Workspace modifications.
+  - Build Activity Dashboard for Workspace Owners.
+- [x] **Task 6: Outbound Webhooks**
+- [x] **Task 1: Comprehensive Code Review & Test Assessment**
+  - Read existing Pest tests to identify coverage gaps.
+  - Implement missing unit/feature tests for edge cases (e.g., Stripe webhooks, team invitations).
+- [x] **Task 2: Admin Dashboard (Superadmin)**
+  - Implement a Superadmin role.
+  - Build an overarching dashboard for managing all instances, users, and subscriptions.
+- [x] **Task 3: API Token Management**
+  - Implement Sanctum API token generation and revocation.
+  - Add simple UI for API token management. UI to user settings.
+- [x] **Task 4: Social Authentication (OAuth)**
+  - Integrate Laravel Socialite.
+  - Support GitHub and Google.
+  - Build `connected_accounts` table for multi-provider support.
+- [x] **Task 5: User Activity Logging**
+  - Install `spatie/laravel-activitylog`.
+  - Track Workspace modifications.
+  - Build Activity Dashboard for Workspace Owners.
+- [x] **Task 6: Outbound Webhooks**
+- [x] **Task 1: Comprehensive Code Review & Test Assessment**
+  - Read existing Pest tests to identify coverage gaps.
+  - Implement missing unit/feature tests for edge cases (e.g., Stripe webhooks, team invitations).
+- [x] **Task 2: Admin Dashboard (Superadmin)**
+  - Implement a Superadmin role.
+  - Build an overarching dashboard for managing all instances, users, and subscriptions.
+- [x] **Task 3: API Token Management**
+  - Implement Sanctum API token generation and revocation.
+  - Add simple UI for API token management. UI to user settings.
+- [x] **Task 4: Social Authentication (OAuth)**
+  - Integrate Laravel Socialite.
+  - Support GitHub and Google.
+  - Build `connected_accounts` table for multi-provider support.
+- [x] **Task 5: User Activity Logging**
+  - Install `spatie/laravel-activitylog`.
+  - Track Workspace modifications.
+  - Build Activity Dashboard for Workspace Owners.
+- [x] **Task 6: Outbound Webhooks**
   - Implement generic outbound webhooks for workspaces.
   - Add UI in workspace settings to manage webhooks.
 - [x] **Task 7: Sentry Integration**
   - Install `sentry/sentry-laravel`.
   - Configure `SENTRY_LARAVEL_DSN` and handle automatic error tracking.
 
+- [x] **Task 1: Comprehensive Code Review & Test Assessment**
+  - Read existing Pest tests to identify coverage gaps.
+  - Implement missing unit/feature tests for edge cases (e.g., Stripe webhooks, team invitations).
+- [x] **Task 2: Admin Dashboard (Superadmin)**
+  - Implement a Superadmin role.
+  - Build an overarching dashboard for managing all instances, users, and subscriptions.
+- [x] **Task 3: API Token Management**
+  - Implement Sanctum API token generation and revocation.
+  - Add simple UI for API token management. UI to user settings.
+- [x] **Task 4: Social Authentication (OAuth)**
+  - Integrate Laravel Socialite.
+  - Support GitHub and Google.
+  - Build `connected_accounts` table for multi-provider support.
+- [x] **Task 5: User Activity Logging**
+  - Install `spatie/laravel-activitylog`.
+  - Track Workspace modifications.
+  - Build Activity Dashboard for Workspace Owners.
+- [x] **Task 6: Outbound Webhooks**
+- [x] **Task 1: Comprehensive Code Review & Test Assessment**
+  - Read existing Pest tests to identify coverage gaps.
+  - Implement missing unit/feature tests for edge cases (e.g., Stripe webhooks, team invitations).
+- [x] **Task 2: Admin Dashboard (Superadmin)**
+  - Implement a Superadmin role.
+  - Build an overarching dashboard for managing all instances, users, and subscriptions.
+- [x] **Task 3: API Token Management**
+  - Implement Sanctum API token generation and revocation.
+  - Add simple UI for API token management. UI to user settings.
+- [x] **Task 4: Social Authentication (OAuth)**
+  - Integrate Laravel Socialite.
+  - Support GitHub and Google.
+  - Build `connected_accounts` table for multi-provider support.
+- [x] **Task 5: User Activity Logging**
+  - Install `spatie/laravel-activitylog`.
+  - Track Workspace modifications.
+  - Build Activity Dashboard for Workspace Owners.
+- [x] **Task 6: Outbound Webhooks**
+- [x] **Task 1: Comprehensive Code Review & Test Assessment**
+  - Read existing Pest tests to identify coverage gaps.
+  - Implement missing unit/feature tests for edge cases (e.g., Stripe webhooks, team invitations).
+- [x] **Task 2: Admin Dashboard (Superadmin)**
+  - Implement a Superadmin role.
+  - Build an overarching dashboard for managing all instances, users, and subscriptions.
+- [x] **Task 3: API Token Management**
+  - Implement Sanctum API token generation and revocation.
+  - Add simple UI for API token management. UI to user settings.
+- [x] **Task 4: Social Authentication (OAuth)**
+  - Integrate Laravel Socialite.
+  - Support GitHub and Google.
+  - Build `connected_accounts` table for multi-provider support.
+- [x] **Task 5: User Activity Logging**
+  - Install `spatie/laravel-activitylog`.
+  - Track Workspace modifications.
+  - Build Activity Dashboard for Workspace Owners.
+- [x] **Task 6: Outbound Webhooks**
+- [x] **Task 1: Comprehensive Code Review & Test Assessment**
+  - Read existing Pest tests to identify coverage gaps.
+  - Implement missing unit/feature tests for edge cases (e.g., Stripe webhooks, team invitations).
+- [x] **Task 2: Admin Dashboard (Superadmin)**
+  - Implement a Superadmin role.
+  - Build an overarching dashboard for managing all instances, users, and subscriptions.
+- [x] **Task 3: API Token Management**
+  - Implement Sanctum API token generation and revocation.
+  - Add simple UI for API token management. UI to user settings.
+- [x] **Task 4: Social Authentication (OAuth)**
+  - Integrate Laravel Socialite.
+  - Support GitHub and Google.
+  - Build `connected_accounts` table for multi-provider support.
+- [x] **Task 5: User Activity Logging**
+  - Install `spatie/laravel-activitylog`.
+  - Track Workspace modifications.
+  - Build Activity Dashboard for Workspace Owners.
+- [x] **Task 6: Outbound Webhooks**
+- [x] **Task 1: Comprehensive Code Review & Test Assessment**
+  - Read existing Pest tests to identify coverage gaps.
+  - Implement missing unit/feature tests for edge cases (e.g., Stripe webhooks, team invitations).
+- [x] **Task 2: Admin Dashboard (Superadmin)**
+  - Implement a Superadmin role.
+  - Build an overarching dashboard for managing all instances, users, and subscriptions.
+- [x] **Task 3: API Token Management**
+  - Implement Sanctum API token generation and revocation.
+  - Add simple UI for API token management. UI to user settings.
+- [x] **Task 4: Social Authentication (OAuth)**
+  - Integrate Laravel Socialite.
+  - Support GitHub and Google.
+  - Build `connected_accounts` table for multi-provider support.
+- [x] **Task 5: User Activity Logging**
+  - Install `spatie/laravel-activitylog`.
+  - Track Workspace modifications.
+  - Build Activity Dashboard for Workspace Owners.
+- [x] **Task 6: Outbound Webhooks**
+- [x] **Task 1: Comprehensive Code Review & Test Assessment**
+  - Read existing Pest tests to identify coverage gaps.
+  - Implement missing unit/feature tests for edge cases (e.g., Stripe webhooks, team invitations).
+- [x] **Task 2: Admin Dashboard (Superadmin)**
+  - Implement a Superadmin role.
+  - Build an overarching dashboard for managing all instances, users, and subscriptions.
+- [x] **Task 3: API Token Management**
+  - Implement Sanctum API token generation and revocation.
+  - Add simple UI for API token management. UI to user settings.
+- [x] **Task 4: Social Authentication (OAuth)**
+  - Integrate Laravel Socialite.
+  - Support GitHub and Google.
+  - Build `connected_accounts` table for multi-provider support.
+- [x] **Task 5: User Activity Logging**
+  - Install `spatie/laravel-activitylog`.
+  - Track Workspace modifications.
+  - Build Activity Dashboard for Workspace Owners.
+- [x] **Task 6: Outbound Webhooks**
+- [x] **Task 1: Comprehensive Code Review & Test Assessment**
+  - Read existing Pest tests to identify coverage gaps.
+  - Implement missing unit/feature tests for edge cases (e.g., Stripe webhooks, team invitations).
+- [x] **Task 2: Admin Dashboard (Superadmin)**
+  - Implement a Superadmin role.
+  - Build an overarching dashboard for managing all instances, users, and subscriptions.
+- [x] **Task 3: API Token Management**
+  - Implement Sanctum API token generation and revocation.
+  - Add simple UI for API token management. UI to user settings.
+- [x] **Task 4: Social Authentication (OAuth)**
+  - Integrate Laravel Socialite.
+  - Support GitHub and Google.
+  - Build `connected_accounts` table for multi-provider support.
+- [x] **Task 5: User Activity Logging**
+  - Install `spatie/laravel-activitylog`.
+  - Track Workspace modifications.
+  - Build Activity Dashboard for Workspace Owners.
+- [x] **Task 6: Outbound Webhooks**
+  - Implement generic outbound webhooks for workspaces.
+  - Add UI in workspace settings to manage webhooks.
+- [x] **Task 7: Sentry Integration**
+  - Install `sentry/sentry-laravel`.
+  - Configure `SENTRY_LARAVEL_DSN` and handle automatic error tracking.
+
+- [x] **Task 8: User Impersonation**
+  - Implement custom impersonation logic securely tracking original sessions.
+  - Share `is_impersonating` state with Inertia.
+  - Display a global warning banner inside `AppLayout` when impersonating.
+  - Add 'Impersonate' actions to the Superadmin Users table.
+
+- [x] **Task 9: Database Demo Seeders**
+  - Update `DatabaseSeeder.php` to scaffold robust mock data.
+  - Generate test Users (including a Superadmin role).
+  - Hydrate Workspaces featuring diverse configurations (Webhooks, API Tokens).
+  - Attach generated Activity Logs representing historical usage.
+
 ## 📝 Changelog
 
-- **2026-02-24**: Integrated Sentry application-wide (`Task 7`). Deployed PHP/Laravel backend error capture natively parsing `bootstrap/app.php` using `$exceptions->handles()`, while installing `@sentry/react` inside `@/js/app.tsx` for React error and tracing fidelity. Build pipelines successfully resolve.
+- **2026-02-24**: Scaffolded `Task 9` (Database Demo Seeders) hydrating comprehensive mock data directly inside the persistent database environment. Generated instantaneous `superadmin` credentials, built raw Sanctum API text tokens onto Developer mock settings, booted random dummy Slack/CRM Webhooks endpoints into Personal Workspaces, and fabricated realistic trailing Activity Logs modeling historical event histories natively overriding default creation stamps.
 
 - **2026-02-24**: Instantiated Workspace-level tracking utilizing `spatie/laravel-activitylog`. Built a secure Activity Log UI feeding solely to Workspace administrators natively tracking events generated against their workspace. Task 5 completed.
 - **2026-02-24**: Scaffolded Social Authentication via `laravel/socialite`. Deployed multi-tenant multi-provider OAuth registration spanning standard routing logic and Personal Workspaces. Task 4 completed.

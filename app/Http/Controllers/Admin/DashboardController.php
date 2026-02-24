@@ -21,6 +21,7 @@ class DashboardController extends Controller
                 'total_users' => User::count(),
                 'total_workspaces' => Workspace::count(),
             ],
+            'recent_users' => User::latest()->limit(10)->get(['id', 'name', 'email', 'created_at']),
         ]);
     }
 }

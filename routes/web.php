@@ -104,6 +104,11 @@ Route::middleware(['auth', 'verified', 'workspace'])->group(function () {
     });
 });
 
+Route::middleware(['auth'])->group(function () {
+    // Stop impersonating outside of superadmin middleware (since active user is standard user)
+    Route::post('/admin/impersonate/leave', [\App\Http\Controllers\Admin\ImpersonationController::class, 'leave'])->name('admin.impersonate.leave');
+});
+
 // Stripe webhook (no CSRF, no auth)
 Route::post('/stripe/webhook', [StripeWebhookController::class, 'handleWebhook'])
     ->name('cashier.webhook');
@@ -126,4 +131,5 @@ require __DIR__.'/settings.php';
 // Admin routes
 Route::middleware(['auth', 'superadmin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
+    Route::post('/impersonate/{user}', [\App\Http\Controllers\Admin\ImpersonationController::class, 'impersonate'])->name('impersonate');
 });

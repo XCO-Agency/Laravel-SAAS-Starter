@@ -67,6 +67,7 @@ class HandleInertiaRequests extends Middleware
             'quote' => ['message' => trim($message), 'author' => trim($author)],
             'auth' => [
                 'user' => $user,
+                'is_impersonating' => $request->session()->has('impersonated_by'),
             ],
             'locale' => $locale,
             'currentWorkspace' => $currentWorkspace ? [

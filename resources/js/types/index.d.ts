@@ -3,6 +3,7 @@ import { LucideIcon } from 'lucide-react';
 
 export interface Auth {
     user: User;
+    is_impersonating?: boolean;
 }
 
 export interface BreadcrumbItem {
@@ -20,6 +21,7 @@ export interface NavItem {
     href: NonNullable<InertiaLinkProps['href']>;
     icon?: LucideIcon | null;
     isActive?: boolean;
+    external?: boolean;
 }
 
 export type WorkspaceRole = 'owner' | 'admin' | 'member';
@@ -106,5 +108,6 @@ export interface User {
     updated_at: string;
     current_workspace_id?: number;
     locale?: string;
+    is_superadmin?: boolean;
     [key: string]: unknown;
 }

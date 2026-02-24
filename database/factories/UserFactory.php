@@ -56,4 +56,14 @@ class UserFactory extends Factory
             'two_factor_confirmed_at' => null,
         ]);
     }
+
+    /**
+     * Indicate that the user is a superadmin.
+     */
+    public function superadmin(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'is_superadmin' => true,
+        ]);
+    }
 }
