@@ -98,5 +98,4 @@ Route::post('/stripe/webhook', [StripeWebhookController::class, 'handleWebhook']
 // Public locale switch
 Route::patch('/locale', [LocaleController::class, 'update'])->name('locale.update');
 
-
 require __DIR__.'/settings.php';

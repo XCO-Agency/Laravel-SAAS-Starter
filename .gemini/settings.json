@@ -13,7 +13,7 @@
                 "/Applications/Herd.app/Contents/Resources/herd-mcp.phar"
             ],
             "env": {
-                "SITE_PATH": "/Users/anass/xco/Laravel-SAAS-Starter"
+                "SITE_PATH": "./Laravel-SAAS-Starter"
             }
         }
     }

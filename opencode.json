@@ -16,7 +16,10 @@
             "command": [
                 "php",
                 "/Applications/Herd.app/Contents/Resources/herd-mcp.phar"
-            ]
+            ],
+            "environment": {
+                "SITE_PATH": "./Laravel-SAAS-Starter"
+            }
         }
     }
 }
