@@ -10,6 +10,7 @@ import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import { useTranslations } from '@/hooks/use-translations';
 import AuthLayout from '@/layouts/auth-layout';
+import SocialLoginButtons from '@/components/social-login-buttons';
 
 interface RegisterProps {
     email?: string;
@@ -154,6 +155,8 @@ export default function Register({ email, redirect }: RegisterProps) {
                                 {t('auth.log_in', 'Sign in')}
                             </TextLink>
                         </div>
+
+                        <SocialLoginButtons />
                     </>
                 )}
             </Form>

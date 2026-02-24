@@ -11,6 +11,7 @@ import { register } from '@/routes';
 import { store } from '@/routes/login';
 import { request } from '@/routes/password';
 import { Form, Head } from '@inertiajs/react';
+import SocialLoginButtons from '@/components/social-login-buttons';
 
 interface LoginProps {
     status?: string;
@@ -137,6 +138,8 @@ export default function Login({
                                 </TextLink>
                             </div>
                         )}
+
+                        <SocialLoginButtons />
                     </>
                 )}
             </Form>

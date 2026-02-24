@@ -9,10 +9,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 use Laravel\Cashier\Billable;
+use Laravel\Cashier\Subscription;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Workspace extends Model
 {
-    use Billable, HasFactory;
+    /** @use HasFactory<\Database\Factories\WorkspaceFactory> */
+    use Billable, HasFactory, LogsActivity;
 
     /**
      * The attributes that are mass assignable.
@@ -38,6 +42,26 @@ class Workspace extends Model
             'personal_workspace' => 'boolean',
             'trial_ends_at' => 'datetime',
         ];
+    }
+
+    /**
+     * Get the options for recording activity.
+     */
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logFillable()
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs()
+            ->useLogName('workspace');
+    }
+
+    /**
+     * Scope a query to only include personal workspaces.
+     */
+    public function scopePersonal($query)
+    {
+        return $query->where('personal_workspace', true);
     }
 
     /**

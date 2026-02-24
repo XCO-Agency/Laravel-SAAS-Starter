@@ -27,24 +27,54 @@ Whenever you want me to resume work, just send a message like: *"continue"* or *
 - [x] **Task 1: Comprehensive Code Review & Test Assessment**
   - Read existing Pest tests to identify coverage gaps.
   - Implement missing unit/feature tests for edge cases (e.g., Stripe webhooks, team invitations).
+- [x] **Task 1: Comprehensive Code Review & Test Assessment**
+  - Read existing Pest tests to identify coverage gaps.
+  - Implement missing unit/feature tests for edge cases (e.g., Stripe webhooks, team invitations).
+- [x] **Task 1: Comprehensive Code Review & Test Assessment**
+  - Read existing Pest tests to identify coverage gaps.
+  - Implement missing unit/feature tests for edge cases (e.g., Stripe webhooks, team invitations).
+- [x] **Task 1: Comprehensive Code Review & Test Assessment**
+  - Read existing Pest tests to identify coverage gaps.
+  - Implement missing unit/feature tests for edge cases (e.g., Stripe webhooks, team invitations).
+- [x] **Task 2: Admin Dashboard (Superadmin)**
+  - Implement a Superadmin role.
+  - Build an overarching dashboard for managing all instances, users, and subscriptions.
+- [x] **Task 3: API Token Management**
+- [x] **Task 1: Comprehensive Code Review & Test Assessment**
+  - Read existing Pest tests to identify coverage gaps.
+  - Implement missing unit/feature tests for edge cases (e.g., Stripe webhooks, team invitations).
+- [x] **Task 1: Comprehensive Code Review & Test Assessment**
+  - Read existing Pest tests to identify coverage gaps.
+  - Implement missing unit/feature tests for edge cases (e.g., Stripe webhooks, team invitations).
+- [x] **Task 1: Comprehensive Code Review & Test Assessment**
+  - Read existing Pest tests to identify coverage gaps.
+  - Implement missing unit/feature tests for edge cases (e.g., Stripe webhooks, team invitations).
+- [x] **Task 1: Comprehensive Code Review & Test Assessment**
+  - Read existing Pest tests to identify coverage gaps.
+  - Implement missing unit/feature tests for edge cases (e.g., Stripe webhooks, team invitations).
 - [x] **Task 2: Admin Dashboard (Superadmin)**
   - Implement a Superadmin role.
   - Build an overarching dashboard for managing all instances, users, and subscriptions.
 - [x] **Task 3: API Token Management**
   - Implement Sanctum API token generation and revocation.
   - Add simple UI for API token management. UI to user settings.
+- [x] **Task 4: Social Authentication (OAuth)**
+  - Integrate Laravel Socialite.
+  - Support GitHub and Google.
+  - Build `connected_accounts` table for multi-provider support.
+- [x] **Task 5: User Activity Logging**
+  - Install `spatie/laravel-activitylog`.
+  - Track Workspace modifications.
+  - Build Activity Dashboard for Workspace Owners.
 
 ## 📋 Backlog (Future Enhancements)
 
-- [ ] Implement social authentication (OAuth) using Laravel Socialite (GitHub, Google, etc.).
-- [ ] Add robust activity logging for user actions within workspaces.
 - [ ] Implement generic outbound webhooks for workspaces.
 - [ ] Integrate Sentry / Bugsnag for automated error reporting.
 
 ## 📝 Changelog
 
+- **2026-02-24**: Instantiated Workspace-level tracking utilizing `spatie/laravel-activitylog`. Built a secure Activity Log UI feeding solely to Workspace administrators natively tracking events generated against their workspace. Task 5 completed.
+- **2026-02-24**: Scaffolded Social Authentication via `laravel/socialite`. Deployed multi-tenant multi-provider OAuth registration spanning standard routing logic and Personal Workspaces. Task 4 completed.
 - **2026-02-24**: Successfully integrated `laravel/sanctum` for API Token Management within the unified Settings dashboard. Task 3 completed.
-- **2026-02-24**: Built Superadmin Role, `EnsureSuperadmin` middleware, and the Admin Dashboard with full Pest testing coverage. Task 2 completed.
-
-- **2026-02-24**: Added extensive testing for `LocaleController` and `StripeWebhookController`. Task 1 completed.
 - **2026-02-24**: Initial setup of the autonomous workflow system (`AI_ROADMAP.md`).

@@ -8,16 +8,17 @@ import { edit } from '@/routes/profile';
 import { show } from '@/routes/two-factor';
 import { edit as editPassword } from '@/routes/user-password';
 import { type NavItem } from '@/types';
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import { Fingerprint, Lock, Paintbrush, ShieldCheck, User } from 'lucide-react';
 import { type PropsWithChildren, useMemo } from 'react';
+import { type SharedData, type Workspace } from '@/types';
 
 interface NavSection {
     title: string;
     items: NavItem[];
 }
 
-const getNavSections = (t: (key: string, fallback: string) => string): NavSection[] => [
+const getNavSections = (t: (key: string, fallback: string) => string, workspace?: Workspace | null): NavSection[] => [
     {
         title: t('navigation.general', 'General'),
         items: [
@@ -34,6 +35,11 @@ const getNavSections = (t: (key: string, fallback: string) => string): NavSectio
             {
                 title: t('navigation.billing', 'Billing'),
                 href: '/billing',
+                icon: null,
+            },
+            {
+                title: t('navigation.activity', 'Activity'),
+                href: workspace ? `/workspaces/${workspace.id}/activity` : '#',
                 icon: null,
             },
         ],
@@ -83,7 +89,8 @@ export default function SettingsLayout({
     fullWidth = false,
 }: SettingsLayoutProps) {
     const { t, i18n } = useTranslations();
-    const navSections = useMemo(() => getNavSections(t), [t]);
+    const { currentWorkspace } = usePage<SharedData>().props;
+    const navSections = useMemo(() => getNavSections(t, currentWorkspace), [t, currentWorkspace]);
 
     const defaultTitle = title ?? t('settings.title', 'Settings');
     const defaultDescription = description ?? t('settings.description', 'Manage your workspace and account settings');

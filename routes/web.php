@@ -50,6 +50,10 @@ Route::middleware(['auth', 'verified', 'workspace'])->group(function () {
             ->middleware('workspace.owner')
             ->name('destroy');
         Route::post('/{workspace}/switch', [WorkspaceController::class, 'switch'])->name('switch');
+
+        Route::get('/{workspace}/activity', [\App\Http\Controllers\WorkspaceActivityController::class, 'index'])
+            ->middleware('workspace.admin')
+            ->name('activity');
     });
 
     // Team routes
@@ -97,6 +101,16 @@ Route::post('/stripe/webhook', [StripeWebhookController::class, 'handleWebhook']
 
 // Public locale switch
 Route::patch('/locale', [LocaleController::class, 'update'])->name('locale.update');
+
+Route::middleware('guest')->group(function () {
+    Route::get('auth/{provider}/redirect', [\App\Http\Controllers\Auth\SocialiteController::class, 'redirect'])
+        ->name('socialite.redirect')
+        ->where('provider', 'github|google');
+
+    Route::get('auth/{provider}/callback', [\App\Http\Controllers\Auth\SocialiteController::class, 'callback'])
+        ->name('socialite.callback')
+        ->where('provider', 'github|google');
+});
 
 require __DIR__.'/settings.php';
 
