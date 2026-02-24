@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Workspace;
 use App\Models\WorkspaceInvitation;
 use App\Services\WorkspaceService;
+use App\Models\WebhookEndpoint;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -41,8 +42,26 @@ class DatabaseSeeder extends Seeder
                 ]
             );
 
+            // 1.5. Create Superadmin User
+            $superadmin = User::firstOrCreate(
+                ['email' => 'superadmin@example.com'],
+                [
+                    'name' => 'Superadmin System',
+                    'password' => Hash::make('password'),
+                    'email_verified_at' => now(),
+                    'locale' => 'en',
+                    'is_superadmin' => true,
+                ]
+            );
+
+            // 1.6 Generate API Tokens for Core Users
+            $admin->createToken('Desktop App Token')->plainTextToken;
+            $demo->createToken('CLI Access Token')->plainTextToken;
+            $demo->createToken('Mobile Client', ['read'])->plainTextToken;
+            $superadmin->createToken('Integration Agent')->plainTextToken;
+
             // 2. Create additional users (20+ users) for team memberships
-            $users = collect([$admin, $demo]);
+            $users = collect([$admin, $demo, $superadmin]);
 
             // Create users with different locales and verification statuses
             $locales = ['en', 'fr', 'es', 'de'];
@@ -101,6 +120,41 @@ class DatabaseSeeder extends Seeder
                     2 => $workspace->update(['trial_ends_at' => now()->addDays(5)]), // Business plan with shorter trial
                     default => $workspace->update(['trial_ends_at' => now()->addDays(14)]), // Others with full trial
                 };
+
+                // Add sample Webhooks to some Demo Workspaces
+                if ($index % 2 === 0) {
+                    WebhookEndpoint::create([
+                        'workspace_id' => $workspace->id,
+                        'url' => 'https://webhook.site/' . fake()->uuid(),
+                        'events' => ['workspace.updated', 'member.added'],
+                        'is_active' => true,
+                        'secret' => \Illuminate\Support\Str::random(32),
+                    ]);
+                    
+                    if ($index === 2) {
+                        // Add a disabled secondary hook
+                        WebhookEndpoint::create([
+                            'workspace_id' => $workspace->id,
+                            'url' => 'https://legacy-crm.example.com/ingest',
+                            'events' => ['member.removed'],
+                            'is_active' => false,
+                            'secret' => \Illuminate\Support\Str::random(32),
+                        ]);
+                    }
+                }
+
+                // Append historical Activity Logs demonstrating tracking timeline
+                activity()
+                    ->performedOn($workspace)
+                    ->causedBy($demo)
+                    ->createdAt(now()->subDays(rand(1, 30)))
+                    ->log('created');
+
+                activity()
+                    ->performedOn($workspace)
+                    ->causedBy($demo)
+                    ->createdAt(now()->subDays(rand(1, 15)))
+                    ->log('updated');
 
                 $demoWorkspaces->push($workspace);
             }
