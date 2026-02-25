@@ -18,13 +18,21 @@ class UserController extends Controller
     {
         $search = $request->input('search', '');
 
-        $users = User::query()
+        $users = User::withTrashed()
             ->when($search, fn ($query) => $query
                 ->where('name', 'like', "%{$search}%")
                 ->orWhere('email', 'like', "%{$search}%")
             )
             ->latest()
             ->paginate(15)
+            ->through(fn ($user) => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'is_superadmin' => $user->is_superadmin,
+                'created_at' => $user->created_at,
+                'deleted_at' => $user->deleted_at,
+            ])
             ->withQueryString();
 
         return Inertia::render('admin/users', [
@@ -38,8 +46,10 @@ class UserController extends Controller
     /**
      * Toggle superadmin status for a user.
      */
-    public function update(Request $request, User $user): RedirectResponse
+    public function update(Request $request, int $id): RedirectResponse
     {
+        $user = User::withTrashed()->findOrFail($id);
+
         $validated = $request->validate([
             'is_superadmin' => ['required', 'boolean'],
         ]);
@@ -55,10 +65,12 @@ class UserController extends Controller
     }
 
     /**
-     * Delete a user from the platform.
+     * Soft-delete a user from the platform.
      */
-    public function destroy(Request $request, User $user): RedirectResponse
+    public function destroy(Request $request, int $id): RedirectResponse
     {
+        $user = User::withTrashed()->findOrFail($id);
+
         // Prevent self-deletion
         if ($user->id === $request->user()->id) {
             return back()->withErrors(['user' => 'You cannot delete your own account from here.']);
@@ -67,5 +79,17 @@ class UserController extends Controller
         $user->delete();
 
         return back()->with('success', 'User deleted successfully.');
+    }
+
+    /**
+     * Restore a soft-deleted user.
+     */
+    public function restore(Request $request, int $id): RedirectResponse
+    {
+        $user = User::onlyTrashed()->findOrFail($id);
+
+        $user->restore();
+
+        return back()->with('success', "{$user->name} has been restored.");
     }
 }

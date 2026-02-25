@@ -163,7 +163,7 @@ describe('Workspace Deletion', function () {
             ->delete('/workspaces')
             ->assertRedirect();
 
-        $this->assertDatabaseMissing('workspaces', ['id' => $workspaceToDelete->id]);
+        $this->assertSoftDeleted('workspaces', ['id' => $workspaceToDelete->id]);
     });
 
     it('prevents non-owner from deleting workspace', function () {

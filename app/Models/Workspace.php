@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 use Laravel\Cashier\Billable;
 use Laravel\Cashier\Subscription;
@@ -16,7 +17,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
 class Workspace extends Model
 {
     /** @use HasFactory<\Database\Factories\WorkspaceFactory> */
-    use Billable, HasFactory, LogsActivity;
+    use Billable, HasFactory, LogsActivity, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -172,7 +173,7 @@ class Workspace extends Model
     {
         $member = $this->users()->where('user_id', $user->id)->first();
 
-        if (!$member || empty($member->pivot->permissions)) {
+        if (! $member || empty($member->pivot->permissions)) {
             return [];
         }
 
@@ -180,7 +181,7 @@ class Workspace extends Model
     }
 
     /**
-     * Determine if a user has a specific granular capability. 
+     * Determine if a user has a specific granular capability.
      * Owners have all capabilities implicitly. Admins have most capabilities implicitly.
      */
     public function hasPermission(User $user, string $permission): bool
@@ -247,35 +248,18 @@ class Workspace extends Model
     }
 
     /**
+     * Per-instance plan resolution cache.
+     *
+     * @var array{name?: string, key?: string}|null
+     */
+    private ?array $resolvedPlan = null;
+
+    /**
      * Get the current plan name for the workspace.
      */
     public function getPlanNameAttribute(): string
     {
-        if ($this->subscribed('default')) {
-            $subscription = $this->subscription('default');
-            $priceId = $subscription->stripe_price;
-
-            // Match the price ID to our configured plans
-            $plans = config('billing.plans');
-
-            foreach ($plans as $planKey => $plan) {
-                if ($planKey === 'free') {
-                    continue;
-                }
-
-                $monthlyPriceId = $plan['stripe_price_id']['monthly'] ?? null;
-                $yearlyPriceId = $plan['stripe_price_id']['yearly'] ?? null;
-
-                if ($priceId === $monthlyPriceId || $priceId === $yearlyPriceId) {
-                    return $plan['name'];
-                }
-            }
-
-            // Fallback: any active subscription defaults to Pro
-            return 'Pro';
-        }
-
-        return 'Free';
+        return $this->getResolvedPlan()['name'];
     }
 
     /**
@@ -283,6 +267,20 @@ class Workspace extends Model
      */
     public function getPlanKeyAttribute(): string
     {
+        return $this->getResolvedPlan()['key'];
+    }
+
+    /**
+     * Resolve and cache plan name and key from Stripe subscription.
+     *
+     * @return array{name: string, key: string}
+     */
+    protected function getResolvedPlan(): array
+    {
+        if ($this->resolvedPlan !== null) {
+            return $this->resolvedPlan;
+        }
+
         if ($this->subscribed('default')) {
             $subscription = $this->subscription('default');
             $priceId = $subscription->stripe_price;
@@ -298,14 +296,14 @@ class Workspace extends Model
                 $yearlyPriceId = $plan['stripe_price_id']['yearly'] ?? null;
 
                 if ($priceId === $monthlyPriceId || $priceId === $yearlyPriceId) {
-                    return $planKey;
+                    return $this->resolvedPlan = ['name' => $plan['name'], 'key' => $planKey];
                 }
             }
 
-            return 'pro';
+            return $this->resolvedPlan = ['name' => 'Pro', 'key' => 'pro'];
         }
 
-        return 'free';
+        return $this->resolvedPlan = ['name' => 'Free', 'key' => 'free'];
     }
 
     /**

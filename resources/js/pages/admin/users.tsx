@@ -13,6 +13,7 @@ import {
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import {
     MoreHorizontal,
+    RotateCcw,
     Search,
     Shield,
     ShieldOff,
@@ -28,6 +29,7 @@ interface PaginatedUser {
     email: string;
     is_superadmin: boolean;
     created_at: string;
+    deleted_at: string | null;
 }
 
 interface PaginationLink {
@@ -67,8 +69,14 @@ export default function AdminUsers({ users, filters }: AdminUsersProps) {
     };
 
     const deleteUser = (user: PaginatedUser) => {
-        if (confirm(`Are you sure you want to permanently delete ${user.name}? This action cannot be undone.`)) {
+        if (confirm(`Are you sure you want to delete ${user.name}? The user can be restored later.`)) {
             router.delete(`/admin/users/${user.id}`, { preserveScroll: true });
+        }
+    };
+
+    const restoreUser = (user: PaginatedUser) => {
+        if (confirm(`Restore ${user.name}?`)) {
+            router.post(`/admin/users/${user.id}/restore`, {}, { preserveScroll: true });
         }
     };
 
@@ -108,7 +116,7 @@ export default function AdminUsers({ users, filters }: AdminUsersProps) {
                             <tr>
                                 <th className="px-6 py-3 font-medium">User</th>
                                 <th className="px-6 py-3 font-medium">Email</th>
-                                <th className="px-6 py-3 font-medium">Role</th>
+                                <th className="px-6 py-3 font-medium">Status</th>
                                 <th className="px-6 py-3 font-medium">Joined</th>
                                 <th className="px-6 py-3 font-medium text-right">Actions</th>
                             </tr>
@@ -122,7 +130,7 @@ export default function AdminUsers({ users, filters }: AdminUsersProps) {
                                 </tr>
                             ) : (
                                 users.data.map(user => (
-                                    <tr key={user.id} className="hover:bg-muted/50 transition-colors">
+                                    <tr key={user.id} className={`transition-colors ${user.deleted_at ? 'opacity-50 bg-destructive/5' : 'hover:bg-muted/50'}`}>
                                         <td className="px-6 py-4">
                                             <div className="flex items-center gap-3">
                                                 <Avatar className="h-8 w-8">
@@ -133,55 +141,70 @@ export default function AdminUsers({ users, filters }: AdminUsersProps) {
                                         </td>
                                         <td className="px-6 py-4 text-muted-foreground">{user.email}</td>
                                         <td className="px-6 py-4">
-                                            {user.is_superadmin ? (
-                                                <Badge variant="default">
-                                                    <Shield className="mr-1 h-3 w-3" />
-                                                    Superadmin
-                                                </Badge>
-                                            ) : (
-                                                <Badge variant="outline">User</Badge>
-                                            )}
+                                            <div className="flex items-center gap-1.5">
+                                                {user.deleted_at ? (
+                                                    <Badge variant="destructive">Deleted</Badge>
+                                                ) : user.is_superadmin ? (
+                                                    <Badge variant="default">
+                                                        <Shield className="mr-1 h-3 w-3" />
+                                                        Superadmin
+                                                    </Badge>
+                                                ) : (
+                                                    <Badge variant="outline">User</Badge>
+                                                )}
+                                            </div>
                                         </td>
                                         <td className="px-6 py-4 text-muted-foreground">
                                             {new Date(user.created_at).toLocaleDateString()}
                                         </td>
                                         <td className="px-6 py-4 text-right">
-                                            <DropdownMenu>
-                                                <DropdownMenuTrigger asChild>
-                                                    <Button variant="ghost" size="icon">
-                                                        <MoreHorizontal className="h-4 w-4" />
-                                                    </Button>
-                                                </DropdownMenuTrigger>
-                                                <DropdownMenuContent align="end">
-                                                    <DropdownMenuItem onClick={() => toggleSuperadmin(user)}>
-                                                        {user.is_superadmin ? (
-                                                            <>
-                                                                <ShieldOff className="mr-2 h-4 w-4" />
-                                                                Demote from Superadmin
-                                                            </>
-                                                        ) : (
-                                                            <>
-                                                                <Shield className="mr-2 h-4 w-4" />
-                                                                Promote to Superadmin
-                                                            </>
-                                                        )}
-                                                    </DropdownMenuItem>
-                                                    <DropdownMenuItem
-                                                        onClick={() => router.post(`/admin/impersonate/${user.id}`)}
-                                                    >
-                                                        <UserCog className="mr-2 h-4 w-4" />
-                                                        Impersonate
-                                                    </DropdownMenuItem>
-                                                    <DropdownMenuSeparator />
-                                                    <DropdownMenuItem
-                                                        className="text-destructive"
-                                                        onClick={() => deleteUser(user)}
-                                                    >
-                                                        <Trash2 className="mr-2 h-4 w-4" />
-                                                        Delete User
-                                                    </DropdownMenuItem>
-                                                </DropdownMenuContent>
-                                            </DropdownMenu>
+                                            {user.deleted_at ? (
+                                                <Button
+                                                    variant="outline"
+                                                    size="sm"
+                                                    onClick={() => restoreUser(user)}
+                                                >
+                                                    <RotateCcw className="mr-1.5 h-3.5 w-3.5" />
+                                                    Restore
+                                                </Button>
+                                            ) : (
+                                                <DropdownMenu>
+                                                    <DropdownMenuTrigger asChild>
+                                                        <Button variant="ghost" size="icon">
+                                                            <MoreHorizontal className="h-4 w-4" />
+                                                        </Button>
+                                                    </DropdownMenuTrigger>
+                                                    <DropdownMenuContent align="end">
+                                                        <DropdownMenuItem onClick={() => toggleSuperadmin(user)}>
+                                                            {user.is_superadmin ? (
+                                                                <>
+                                                                    <ShieldOff className="mr-2 h-4 w-4" />
+                                                                    Demote from Superadmin
+                                                                </>
+                                                            ) : (
+                                                                <>
+                                                                    <Shield className="mr-2 h-4 w-4" />
+                                                                    Promote to Superadmin
+                                                                </>
+                                                            )}
+                                                        </DropdownMenuItem>
+                                                        <DropdownMenuItem
+                                                            onClick={() => router.post(`/admin/impersonate/${user.id}`)}
+                                                        >
+                                                            <UserCog className="mr-2 h-4 w-4" />
+                                                            Impersonate
+                                                        </DropdownMenuItem>
+                                                        <DropdownMenuSeparator />
+                                                        <DropdownMenuItem
+                                                            className="text-destructive"
+                                                            onClick={() => deleteUser(user)}
+                                                        >
+                                                            <Trash2 className="mr-2 h-4 w-4" />
+                                                            Delete User
+                                                        </DropdownMenuItem>
+                                                    </DropdownMenuContent>
+                                                </DropdownMenu>
+                                            )}
                                         </td>
                                     </tr>
                                 ))

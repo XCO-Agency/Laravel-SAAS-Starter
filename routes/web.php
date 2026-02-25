@@ -65,7 +65,7 @@ Route::middleware(['auth', 'verified', 'onboarded', 'workspace'])->group(functio
     // Team routes
     Route::prefix('team')->name('team.')->group(function () {
         Route::get('/', [TeamController::class, 'index'])->name('index');
-        Route::post('/invite', [TeamController::class, 'invite'])->name('invite');
+        Route::post('/invite', [TeamController::class, 'invite'])->middleware('throttle:invitations')->name('invite');
         Route::delete('/members/{user}', [TeamController::class, 'removeMember'])->name('remove');
         Route::put('/members/{user}/role', [TeamController::class, 'updateRole'])->name('update-role');
         Route::put('/members/{user}/permissions', [TeamController::class, 'updatePermissions'])->name('update-permissions');
@@ -93,7 +93,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/notifications', [NotificationController::class, 'page'])->name('notifications.page');
 
         // Notifications API
-        Route::prefix('api/notifications')->name('notifications.')->group(function () {
+        Route::prefix('api/notifications')->middleware('throttle:api')->name('notifications.')->group(function () {
             Route::get('/', [NotificationController::class, 'index'])->name('index');
             Route::post('/mark-all-read', [NotificationController::class, 'markAllAsRead'])->name('mark-all-read');
             Route::patch('/{id}/read', [NotificationController::class, 'markAsRead'])->name('mark-read');
@@ -132,4 +132,5 @@ Route::middleware(['auth', 'superadmin'])->prefix('admin')->name('admin.')->grou
     Route::get('/users', [\App\Http\Controllers\Admin\UserController::class, 'index'])->name('users.index');
     Route::put('/users/{user}', [\App\Http\Controllers\Admin\UserController::class, 'update'])->name('users.update');
     Route::delete('/users/{user}', [\App\Http\Controllers\Admin\UserController::class, 'destroy'])->name('users.destroy');
+    Route::post('/users/{user}/restore', [\App\Http\Controllers\Admin\UserController::class, 'restore'])->name('users.restore');
 });

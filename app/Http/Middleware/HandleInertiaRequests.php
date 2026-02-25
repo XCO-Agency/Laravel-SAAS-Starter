@@ -57,6 +57,7 @@ class HandleInertiaRequests extends Middleware
                     'logo_url' => $workspace->logo ? Storage::url($workspace->logo) : null,
                     'personal_workspace' => $workspace->personal_workspace,
                     'role' => $workspace->pivot->role,
+                    'plan' => $workspace->plan_name,
                     'is_current' => $currentWorkspace && $workspace->id === $currentWorkspace->id,
                 ]);
         }
@@ -66,11 +67,21 @@ class HandleInertiaRequests extends Middleware
             'name' => config('app.name'),
             'quote' => ['message' => trim($message), 'author' => trim($author)],
             'auth' => [
-                'user' => $user ? array_merge($user->toArray(), [
+                'user' => $user ? [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'email_verified_at' => $user->email_verified_at,
+                    'is_superadmin' => $user->is_superadmin,
+                    'locale' => $user->locale,
+                    'onboarded_at' => $user->onboarded_at,
                     'avatar_url' => $user->avatar_url ? Storage::url($user->avatar_url) : null,
                     'bio' => $user->bio,
                     'timezone' => $user->timezone ?? 'UTC',
-                ]) : null,
+                    'notification_preferences' => $user->notification_preferences,
+                    'two_factor_confirmed_at' => $user->two_factor_confirmed_at,
+                    'created_at' => $user->created_at,
+                ] : null,
                 'is_impersonating' => $request->session()->has('admin:impersonator'),
             ],
             'locale' => $locale,
@@ -90,6 +101,7 @@ class HandleInertiaRequests extends Middleware
             'flash' => [
                 'success' => $request->session()->get('success'),
                 'error' => $request->session()->get('error'),
+                'info' => $request->session()->get('info'),
                 'token' => $request->session()->get('token'),
             ],
         ];
