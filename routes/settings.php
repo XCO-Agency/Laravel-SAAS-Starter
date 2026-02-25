@@ -36,4 +36,8 @@ Route::middleware('auth')->group(function () {
     Route::get('settings/export-data/{filename}', [\App\Http\Controllers\Settings\SecurityController::class, 'downloadExport'])
         ->name('security.export-download')
         ->middleware('signed');
+
+    // Notifications
+    Route::get('settings/notifications', [\App\Http\Controllers\Settings\NotificationPreferenceController::class, 'show'])->name('notifications.show');
+    Route::put('settings/notifications', [\App\Http\Controllers\Settings\NotificationPreferenceController::class, 'update'])->name('notifications.update');
 });

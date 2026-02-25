@@ -26,6 +26,12 @@ class DataExportCompleted extends Notification implements ShouldQueue
      */
     public function via(object $notifiable): array
     {
+        $securityEnabled = $notifiable->notification_preferences['security'] ?? true;
+
+        if (! $securityEnabled) {
+            return [];
+        }
+
         return ['mail'];
     }
 

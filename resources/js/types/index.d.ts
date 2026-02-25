@@ -56,6 +56,8 @@ export interface TeamMember {
     permissions?: string[];
     joined_at: string;
     is_current_user: boolean;
+    bio?: string | null;
+    timezone?: string;
 }
 
 export interface Plan {
@@ -111,5 +113,7 @@ export interface User {
     current_workspace_id?: number;
     locale?: string;
     is_superadmin?: boolean;
+    bio?: string | null;
+    timezone?: string;
     [key: string]: unknown;
 }

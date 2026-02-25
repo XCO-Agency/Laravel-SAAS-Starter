@@ -12,6 +12,14 @@ import { useTranslations } from '@/hooks/use-translations';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useInitials } from '@/hooks/use-initials';
@@ -167,6 +175,62 @@ export default function Profile({
                                     />
                                 </div>
 
+                                <div className="grid gap-2">
+                                    <Label htmlFor="bio">{t('settings.profile.bio', 'Bio')}</Label>
+
+                                    <Textarea
+                                        id="bio"
+                                        className="mt-1 block w-full resize-none"
+                                        defaultValue={auth.user.bio || ''}
+                                        name="bio"
+                                        rows={4}
+                                        placeholder={t('settings.profile.bio_placeholder', 'Tell us a little about yourself...')}
+                                    />
+
+                                    <InputError
+                                        className="mt-2"
+                                        message={errors.bio}
+                                    />
+                                    <p className="text-xs text-muted-foreground">
+                                        {t('settings.profile.bio_help', 'Brief description up to 1000 characters.')}
+                                    </p>
+                                </div>
+
+                                <div className="grid gap-2">
+                                    <Label htmlFor="timezone">{t('settings.profile.timezone', 'Timezone')}</Label>
+
+                                    <input type="hidden" name="timezone" id="timezone" defaultValue={auth.user.timezone || 'UTC'} />
+
+                                    <Select
+                                        defaultValue={auth.user.timezone || 'UTC'}
+                                        onValueChange={(val) => {
+                                            const el = document.getElementById('timezone') as HTMLInputElement;
+                                            if (el) el.value = val;
+                                        }}
+                                        name="timezone_select"
+                                    >
+                                        <SelectTrigger className="w-full">
+                                            <SelectValue placeholder="Select a timezone" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="UTC">UTC (Universal Coordinated Time)</SelectItem>
+                                            <SelectItem value="America/New_York">Eastern Time (US & Canada)</SelectItem>
+                                            <SelectItem value="America/Chicago">Central Time (US & Canada)</SelectItem>
+                                            <SelectItem value="America/Denver">Mountain Time (US & Canada)</SelectItem>
+                                            <SelectItem value="America/Los_Angeles">Pacific Time (US & Canada)</SelectItem>
+                                            <SelectItem value="Europe/London">London</SelectItem>
+                                            <SelectItem value="Europe/Paris">Paris</SelectItem>
+                                            <SelectItem value="Asia/Tokyo">Tokyo</SelectItem>
+                                            <SelectItem value="Australia/Sydney">Sydney</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+
+                                    <InputError
+                                        className="mt-2"
+                                        message={errors.timezone}
+                                    />
+                                </div>
+
                                 {mustVerifyEmail &&
                                     auth.user.email_verified_at === null && (
                                         <div>
@@ -199,7 +263,7 @@ export default function Profile({
                                     </Button>
 
                                     <Transition
-                                        show={recentlySuccessful}
+                                        show={!!recentlySuccessful}
                                         enter="transition ease-in-out"
                                         enterFrom="opacity-0"
                                         leave="transition ease-in-out"

@@ -33,6 +33,9 @@ class User extends Authenticatable implements MustVerifyEmail
         'locale',
         'onboarded_at',
         'avatar_url',
+        'bio',
+        'timezone',
+        'notification_preferences',
     ];
 
     /**
@@ -60,6 +63,7 @@ class User extends Authenticatable implements MustVerifyEmail
             'is_superadmin' => 'boolean',
             'two_factor_confirmed_at' => 'datetime',
             'onboarded_at' => 'datetime',
+            'notification_preferences' => 'array',
         ];
     }
 

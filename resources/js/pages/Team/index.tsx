@@ -355,9 +355,19 @@ export default function TeamIndex({
                                                         </span>
                                                     )}
                                                 </div>
-                                                <p className="text-sm text-muted-foreground">
+                                                <p className="text-sm text-muted-foreground mt-0.5">
                                                     {member.email}
                                                 </p>
+                                                {member.timezone && (
+                                                    <p className="mt-1 flex items-center gap-1 text-xs text-muted-foreground">
+                                                        <Clock className="h-3 w-3" /> {member.timezone}
+                                                    </p>
+                                                )}
+                                                {member.bio && (
+                                                    <p className="mt-2 line-clamp-2 max-w-md text-sm text-neutral-600 dark:text-neutral-400">
+                                                        {member.bio}
+                                                    </p>
+                                                )}
                                             </div>
                                         </div>
                                         <div className="flex items-center gap-4">

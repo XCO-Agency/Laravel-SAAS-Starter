@@ -30,6 +30,8 @@ class ProfileUpdateRequest extends FormRequest
 
             'avatar' => ['nullable', 'image', 'mimes:jpg,jpeg,png,gif', 'max:2048'],
             'remove_avatar' => ['nullable', 'boolean'],
+            'bio' => ['nullable', 'string', 'max:1000'],
+            'timezone' => ['required', 'string', 'timezone'],
         ];
     }
 }

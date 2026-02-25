@@ -68,8 +68,10 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $user ? array_merge($user->toArray(), [
                     'avatar_url' => $user->avatar_url ? Storage::url($user->avatar_url) : null,
+                    'bio' => $user->bio,
+                    'timezone' => $user->timezone ?? 'UTC',
                 ]) : null,
-                'is_impersonating' => $request->session()->has('impersonated_by'),
+                'is_impersonating' => $request->session()->has('admin:impersonator'),
             ],
             'locale' => $locale,
             'currentWorkspace' => $currentWorkspace ? [

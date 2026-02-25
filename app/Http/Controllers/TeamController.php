@@ -36,12 +36,14 @@ class TeamController extends Controller
                 'plan' => $workspace->plan_name,
             ],
             'members' => $workspace->users()
-                ->select('users.id', 'users.name', 'users.email')
+                ->select('users.id', 'users.name', 'users.email', 'users.bio', 'users.timezone')
                 ->get()
                 ->map(fn ($member) => [
                     'id' => $member->id,
                     'name' => $member->name,
                     'email' => $member->email,
+                    'bio' => $member->bio,
+                    'timezone' => $member->timezone,
                     'role' => $member->pivot->role,
                     'permissions' => json_decode($member->pivot->permissions, true) ?? [],
                     'joined_at' => $member->pivot->created_at,
