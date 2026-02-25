@@ -5,6 +5,7 @@ use App\Http\Middleware\EnsureWorkspaceAdmin;
 use App\Http\Middleware\EnsureWorkspaceOwner;
 use App\Http\Middleware\HandleAppearance;
 use App\Http\Middleware\HandleInertiaRequests;
+use App\Http\Middleware\RequireTwoFactor;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -37,6 +38,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'workspace.owner' => EnsureWorkspaceOwner::class,
             'workspace.admin' => EnsureWorkspaceAdmin::class,
             'onboarded' => \App\Http\Middleware\EnsureUserIsOnboarded::class,
+            'require2fa' => RequireTwoFactor::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

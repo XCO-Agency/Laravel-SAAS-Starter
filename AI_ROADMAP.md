@@ -37,6 +37,7 @@ The AI agent is now continually managing and executing the roadmap autonomously.
 - [ ] **Task 38: Custom Domain per Workspace**
   - Allow workspaces to use their own subdomain or custom domain.
 - [x] **Task 39: Data Retention Policies** — config-driven TTLs, daily `app:prune-old-records` command with `--dry-run`, admin UI with manual trigger, 6 tests.
+- [x] **Task 40: 2FA Enforcement per Workspace** — `require_two_factor` column, `RequireTwoFactor` middleware, security settings page, enforcement wall page, 7 tests.
 
 ## 🏁 Completed Sprints
 
@@ -46,6 +47,7 @@ The AI agent is now continually managing and executing the roadmap autonomously.
 
 ## 📝 Changelog
 
+- **2026-02-25**: Task 40 (2FA Enforcement). RequireTwoFactor middleware, workspace security settings toggle, enforcement wall page, 7 tests.
 - **2026-02-25**: Task 39 (Data Retention). Config-driven pruning, daily scheduler, admin trigger UI with dry-run.
 - **2026-02-25**: Task 37 (Seat-Based Billing). Workspace seat helpers, Stripe quantity sync, seat meter on billing page.
 - **2026-02-25**: Completed Sprint 11 (Tasks 29, 34, 35). Webhook delivery logs, database-driven email templates, in-app feedback widget with admin review panel.

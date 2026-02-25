@@ -38,6 +38,11 @@ const getNavSections = (t: (key: string, fallback: string) => string, workspace?
                 icon: null,
             },
             {
+                title: t('navigation.security', 'Security'),
+                href: '/settings/workspace-security',
+                icon: null,
+            },
+            {
                 title: t('navigation.activity', 'Activity'),
                 href: workspace ? `/workspaces/${workspace.id}/activity` : '#',
                 icon: null,

@@ -19,6 +19,7 @@ This repository contains comprehensive documentation for the architecture, featu
 - [Email Templates](./features/email-templates.md)
 - [User Feedback Widget](./features/feedback.md)
 - [Data Retention Policies](./features/data-retention.md)
+- [2FA Enforcement per Workspace](./features/2fa-enforcement.md)
 - [Internationalization (i18n)](./features/internationalization.md)
 - [UI & Theming](./features/ui-and-theming.md)
 - [Architecture & Security](./features/security.md)

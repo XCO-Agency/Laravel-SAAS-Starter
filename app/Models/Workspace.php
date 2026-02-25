@@ -31,6 +31,7 @@ class Workspace extends Model
         'logo',
         'owner_id',
         'personal_workspace',
+        'require_two_factor',
     ];
 
     /**
@@ -42,6 +43,7 @@ class Workspace extends Model
     {
         return [
             'personal_workspace' => 'boolean',
+            'require_two_factor' => 'boolean',
             'trial_ends_at' => 'datetime',
         ];
     }

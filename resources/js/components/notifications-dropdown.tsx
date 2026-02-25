@@ -101,7 +101,7 @@ export function NotificationsDropdown() {
 
     useEffect(() => {
         // Fetch initially
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+         
         fetchNotifications();
 
         // Poll every 30 seconds
@@ -115,7 +115,7 @@ export function NotificationsDropdown() {
     // Also fetch when we open the dropdown to ensure it's completely fresh
     useEffect(() => {
         if (open) {
-            // eslint-disable-next-line react-hooks/exhaustive-deps
+             
             fetchNotifications();
         }
     }, [open]);

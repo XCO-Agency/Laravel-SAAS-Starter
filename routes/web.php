@@ -24,7 +24,7 @@ Route::post('/invitations/{token}/accept', [InvitationController::class, 'accept
     ->middleware('auth')
     ->name('invitations.accept');
 
-Route::middleware(['auth', 'verified', 'onboarded', 'workspace'])->group(function () {
+Route::middleware(['auth', 'verified', 'onboarded', 'workspace', 'require2fa'])->group(function () {
     Route::get('dashboard', function () {
         $user = request()->user();
         $workspace = $user->currentWorkspace;
@@ -84,6 +84,14 @@ Route::middleware(['auth', 'verified', 'onboarded', 'workspace'])->group(functio
         Route::post('/resume', [BillingController::class, 'resume'])->name('resume');
         Route::get('/portal', [BillingController::class, 'portal'])->name('portal');
     });
+    // Workspace Security Settings
+    Route::get('/settings/workspace-security', [\App\Http\Controllers\Settings\WorkspaceSecurityController::class, 'index'])->name('workspace.security');
+    Route::put('/settings/workspace-security', [\App\Http\Controllers\Settings\WorkspaceSecurityController::class, 'update'])->name('workspace.security.update');
+});
+
+// 2FA Enforcement Wall (auth only, no require2fa to avoid infinite redirect)
+Route::middleware(['auth', 'verified', 'onboarded', 'workspace'])->group(function () {
+    Route::get('/workspace/2fa-required', [\App\Http\Controllers\Settings\WorkspaceSecurityController::class, 'twoFactorRequired'])->name('workspace.2fa-required');
 });
 
 Route::middleware(['auth'])->group(function () {

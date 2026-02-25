@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/sidebar';
 import { type SharedData } from '@/types';
 import { router, usePage } from '@inertiajs/react';
-import { Building2, Check, ChevronsUpDown, Plus, Settings } from 'lucide-react';
+import { Building2, Check, ChevronsUpDown, Crown, Plus, Settings } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 
 export function WorkspaceSwitcher() {
@@ -97,10 +97,8 @@ export function WorkspaceSwitcher() {
                                         {workspace.plan}
                                     </Badge>
                                 )}
-                                {workspace.personal_workspace && (
-                                    <span className="text-xs text-muted-foreground">
-                                        Personal
-                                    </span>
+                                {workspace.role === 'owner' && (
+                                    <Crown className="size-3 text-yellow-500 shrink-0" />
                                 )}
                                 {workspace.is_current && (
                                     <Check className="ml-auto size-4" />
