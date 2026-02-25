@@ -139,6 +139,53 @@ export default function Login({
                             </div>
                         )}
 
+                        {import.meta.env.DEV && (
+                            <div className="space-y-3 pt-4 border-t mt-2">
+                                <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Developer Quick Login</span>
+                                <div className="grid grid-cols-3 gap-2">
+                                    <Button
+                                        type="button"
+                                        variant="secondary"
+                                        size="sm"
+                                        className="text-xs h-8 px-2 bg-red-100 text-red-800 hover:bg-red-200 dark:bg-red-900/30 dark:text-red-400 dark:hover:bg-red-900/50"
+                                        onClick={() => {
+                                            const e = document.getElementById('email') as HTMLInputElement;
+                                            const p = document.getElementById('password') as HTMLInputElement;
+                                            if (e && p) { e.value = 'superadmin@example.com'; p.value = 'password'; e.form?.requestSubmit(); }
+                                        }}
+                                    >
+                                        Super Admin
+                                    </Button>
+                                    <Button
+                                        type="button"
+                                        variant="secondary"
+                                        size="sm"
+                                        className="text-xs h-8 px-2"
+                                        onClick={() => {
+                                            const e = document.getElementById('email') as HTMLInputElement;
+                                            const p = document.getElementById('password') as HTMLInputElement;
+                                            if (e && p) { e.value = 'admin@example.com'; p.value = 'password'; e.form?.requestSubmit(); }
+                                        }}
+                                    >
+                                        Admin
+                                    </Button>
+                                    <Button
+                                        type="button"
+                                        variant="secondary"
+                                        size="sm"
+                                        className="text-xs h-8 px-2"
+                                        onClick={() => {
+                                            const e = document.getElementById('email') as HTMLInputElement;
+                                            const p = document.getElementById('password') as HTMLInputElement;
+                                            if (e && p) { e.value = 'demo@example.com'; p.value = 'password'; e.form?.requestSubmit(); }
+                                        }}
+                                    >
+                                        Demo
+                                    </Button>
+                                </div>
+                            </div>
+                        )}
+
                         <SocialLoginButtons />
                     </>
                 )}

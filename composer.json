@@ -41,6 +41,7 @@
         "laravel/wayfinder": "^0.1.9",
         "sentry/sentry-laravel": "^4.20",
         "spatie/laravel-activitylog": "^4.12",
+        "spatie/laravel-database-mail-templates": "^3.7",
         "spatie/laravel-webhook-server": "^3.10"
     },
     "require-dev": {

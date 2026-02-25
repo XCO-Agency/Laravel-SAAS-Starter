@@ -132,6 +132,14 @@ class Workspace extends Model
     }
 
     /**
+     * Get the webhook logs associated with the workspace.
+     */
+    public function webhookLogs(): HasMany
+    {
+        return $this->hasMany(WebhookLog::class);
+    }
+
+    /**
      * Determine if the given user belongs to the workspace.
      */
     public function hasUser(User $user): bool

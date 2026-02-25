@@ -74,7 +74,11 @@ export default function WorkspaceWebhooks({ workspace, endpoints }: WebhookLogsP
                 fullWidth
             >
                 <div className="space-y-6">
-                    <div className="flex justify-end">
+                    <div className="flex justify-end gap-2">
+                        <Button variant="secondary" onClick={() => router.visit(`/workspaces/${workspace.id}/webhooks/logs`)}>
+                            <Activity className="mr-2 h-4 w-4" />
+                            {t('workspace.webhooks.view_logs', 'Delivery Logs')}
+                        </Button>
                         <Dialog open={isCreateModalOpen} onOpenChange={(open) => {
                             setIsCreateModalOpen(open);
                             if (!open) {

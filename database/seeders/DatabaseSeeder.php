@@ -195,11 +195,16 @@ class DatabaseSeeder extends Seeder
                     default => rand(2, 3), // Others - 2-3 invitations
                 };
 
+                $usedEmails = [];
+
                 for ($i = 0; $i < $invitationCount; $i++) {
-                    // Mix of existing users and new emails
-                    $email = $i % 2 === 0
-                        ? $otherUsers->random()->email
-                        : fake()->unique()->safeEmail();
+                    do {
+                        $email = $i % 2 === 0
+                            ? $otherUsers->random()->email
+                            : fake()->unique()->safeEmail();
+                    } while (in_array($email, $usedEmails));
+
+                    $usedEmails[] = $email;
 
                     $role = match (true) {
                         $i === 0 && $index > 2 => 'admin', // First invitation in larger workspaces can be admin
@@ -308,6 +313,8 @@ class DatabaseSeeder extends Seeder
                 ],
                 'read_at' => null,
             ]);
+            // Seed email templates for the admin panel
+            (new EmailTemplateSeeder())->run();
 
         });
     }

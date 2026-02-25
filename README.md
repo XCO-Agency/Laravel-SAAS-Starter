@@ -144,6 +144,7 @@ For a comprehensive review of the project's internal architecture, component str
 - [Features Index & Architectural Overviews](./docs/README.md)
 - [Authentication](./docs/features/authentication.md) | [Workspaces](./docs/features/workspaces.md) | [Team Management](./docs/features/team-management.md) | [Billing](./docs/features/billing.md)
 - [Admin Panel](./docs/features/admin-panel.md) | [Announcements](./docs/features/announcements.md) | [Feature Flags](./docs/features/feature-flags.md) | [Audit Logs](./docs/features/audit-logs.md)
+- [Webhooks & Delivery Logs](docs/features/webhooks.md)
 - [Internationalization (i18n)](./docs/features/internationalization.md) | [UI & Theming](./docs/features/ui-and-theming.md) | [Security](./docs/features/security.md)
 
 ## 🏗️ Project Structure

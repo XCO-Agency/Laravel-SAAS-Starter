@@ -14,6 +14,7 @@ This repository contains comprehensive documentation for the architecture, featu
 - [Audit Logs](./features/audit-logs.md)
 - [Announcements](./features/announcements.md)
 - [Feature Flags](./features/feature-flags.md)
+- [Webhooks & Delivery Logs](features/webhooks.md)
 - [Internationalization (i18n)](./features/internationalization.md)
 - [UI & Theming](./features/ui-and-theming.md)
 - [Architecture & Security](./features/security.md)

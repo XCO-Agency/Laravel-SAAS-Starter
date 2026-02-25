@@ -21,206 +21,38 @@ The AI agent is now continually managing and executing the roadmap autonomously.
 ## 📌 Current State
 
 - **Stack**: Laravel 12, Inertia.js v2, React 19, Tailwind CSS v4, Stripe Cashier, Fortify.
-- **Core Features**: Auth, 2FA, Workspaces, Teams, Stripe Billing, i18n, Dark Mode.
+- **Completed Features**: Auth, 2FA, Workspaces, Teams, Stripe Billing, i18n, Dark Mode, Super Admin Panel, Feature Flags (Pennant), Announcements, Audit Logs, Command Palette.
 
-## 🚀 Active Sprint
+## 🚀 Active Sprint 11: Application Polish & Engagement
 
-- [x] **Task 1: Comprehensive Code Review & Test Assessment**
-  - Read existing Pest tests to identify coverage gaps.
-  - Implement missing unit/feature tests for edge cases (e.g., Stripe webhooks, team invitations).
-- [x] **Task 2: Admin Dashboard (Superadmin)**
-  - Implement a Superadmin role.
-  - Build an overarching dashboard for managing all instances, users, and subscriptions.
-- [x] **Task 3: API Token Management**
-  - Implement Sanctum API token generation and revocation.
-  - Add simple UI for API token management. UI to user settings.
-- [x] **Task 4: Social Authentication (OAuth)**
-  - Integrate Laravel Socialite.
-  - Support GitHub and Google.
-  - Build `connected_accounts` table for multi-provider support.
-- [x] **Task 5: User Activity Logging**
-  - Install `spatie/laravel-activitylog`.
-  - Track Workspace modifications.
-  - Build Activity Dashboard for Workspace Owners.
-- [x] **Task 6: Outbound Webhooks**
-- [x] **Task 1: Comprehensive Code Review & Test Assessment**
-  - Read existing Pest tests to identify coverage gaps.
-  - Implement missing unit/feature tests for edge cases (e.g., Stripe webhooks, team invitations).
-- [x] **Task 2: Admin Dashboard (Superadmin)**
-  - Implement a Superadmin role.
-  - Build an overarching dashboard for managing all instances, users, and subscriptions.
-- [x] **Task 3: API Token Management**
-  - Implement Sanctum API token generation and revocation.
-  - Add simple UI for API token management. UI to user settings.
-- [x] **Task 4: Social Authentication (OAuth)**
-  - Integrate Laravel Socialite.
-  - Support GitHub and Google.
-  - Build `connected_accounts` table for multi-provider support.
-- [x] **Task 5: User Activity Logging**
-  - Install `spatie/laravel-activitylog`.
-  - Track Workspace modifications.
-  - Build Activity Dashboard for Workspace Owners.
-- [x] **Task 6: Outbound Webhooks**
-- [x] **Task 1: Comprehensive Code Review & Test Assessment**
-  - Read existing Pest tests to identify coverage gaps.
-  - Implement missing unit/feature tests for edge cases (e.g., Stripe webhooks, team invitations).
-- [x] **Task 2: Admin Dashboard (Superadmin)**
-  - Implement a Superadmin role.
-  - Build an overarching dashboard for managing all instances, users, and subscriptions.
-- [x] **Task 3: API Token Management**
-  - Implement Sanctum API token generation and revocation.
-  - Add simple UI for API token management. UI to user settings.
-- [x] **Task 4: Social Authentication (OAuth)**
-  - Integrate Laravel Socialite.
-  - Support GitHub and Google.
-  - Build `connected_accounts` table for multi-provider support.
-- [x] **Task 5: User Activity Logging**
-  - Install `spatie/laravel-activitylog`.
-  - Track Workspace modifications.
-  - Build Activity Dashboard for Workspace Owners.
-- [x] **Task 6: Outbound Webhooks**
-- [x] **Task 1: Comprehensive Code Review & Test Assessment**
-  - Read existing Pest tests to identify coverage gaps.
-  - Implement missing unit/feature tests for edge cases (e.g., Stripe webhooks, team invitations).
-- [x] **Task 2: Admin Dashboard (Superadmin)**
-  - Implement a Superadmin role.
-  - Build an overarching dashboard for managing all instances, users, and subscriptions.
-- [x] **Task 3: API Token Management**
-  - Implement Sanctum API token generation and revocation.
-  - Add simple UI for API token management. UI to user settings.
-- [x] **Task 4: Social Authentication (OAuth)**
-  - Integrate Laravel Socialite.
-  - Support GitHub and Google.
-  - Build `connected_accounts` table for multi-provider support.
-- [x] **Task 5: User Activity Logging**
-  - Install `spatie/laravel-activitylog`.
-  - Track Workspace modifications.
-  - Build Activity Dashboard for Workspace Owners.
-- [x] **Task 6: Outbound Webhooks**
-- [x] **Task 1: Comprehensive Code Review & Test Assessment**
-  - Read existing Pest tests to identify coverage gaps.
-  - Implement missing unit/feature tests for edge cases (e.g., Stripe webhooks, team invitations).
-- [x] **Task 2: Admin Dashboard (Superadmin)**
-  - Implement a Superadmin role.
-  - Build an overarching dashboard for managing all instances, users, and subscriptions.
-- [x] **Task 3: API Token Management**
-  - Implement Sanctum API token generation and revocation.
-  - Add simple UI for API token management. UI to user settings.
-- [x] **Task 4: Social Authentication (OAuth)**
-  - Integrate Laravel Socialite.
-  - Support GitHub and Google.
-  - Build `connected_accounts` table for multi-provider support.
-- [x] **Task 5: User Activity Logging**
-  - Install `spatie/laravel-activitylog`.
-  - Track Workspace modifications.
-  - Build Activity Dashboard for Workspace Owners.
-- [x] **Task 6: Outbound Webhooks**
-- [x] **Task 1: Comprehensive Code Review & Test Assessment**
-  - Read existing Pest tests to identify coverage gaps.
-  - Implement missing unit/feature tests for edge cases (e.g., Stripe webhooks, team invitations).
-- [x] **Task 2: Admin Dashboard (Superadmin)**
-  - Implement a Superadmin role.
-  - Build an overarching dashboard for managing all instances, users, and subscriptions.
-- [x] **Task 3: API Token Management**
-  - Implement Sanctum API token generation and revocation.
-  - Add simple UI for API token management. UI to user settings.
-- [x] **Task 4: Social Authentication (OAuth)**
-  - Integrate Laravel Socialite.
-  - Support GitHub and Google.
-  - Build `connected_accounts` table for multi-provider support.
-- [x] **Task 5: User Activity Logging**
-  - Install `spatie/laravel-activitylog`.
-  - Track Workspace modifications.
-  - Build Activity Dashboard for Workspace Owners.
-- [x] **Task 6: Outbound Webhooks**
-- [x] **Task 1: Comprehensive Code Review & Test Assessment**
-  - Read existing Pest tests to identify coverage gaps.
-  - Implement missing unit/feature tests for edge cases (e.g., Stripe webhooks, team invitations).
-- [x] **Task 2: Admin Dashboard (Superadmin)**
-  - Implement a Superadmin role.
-  - Build an overarching dashboard for managing all instances, users, and subscriptions.
-- [x] **Task 3: API Token Management**
-  - Implement Sanctum API token generation and revocation.
-  - Add simple UI for API token management. UI to user settings.
-- [x] **Task 4: Social Authentication (OAuth)**
-  - Integrate Laravel Socialite.
-  - Support GitHub and Google.
-  - Build `connected_accounts` table for multi-provider support.
-- [x] **Task 5: User Activity Logging**
-  - Install `spatie/laravel-activitylog`.
-  - Track Workspace modifications.
-  - Build Activity Dashboard for Workspace Owners.
-- [x] **Task 6: Outbound Webhooks**
-- [x] **Task 1: Comprehensive Code Review & Test Assessment**
-  - Read existing Pest tests to identify coverage gaps.
-  - Implement missing unit/feature tests for edge cases (e.g., Stripe webhooks, team invitations).
-- [x] **Task 2: Admin Dashboard (Superadmin)**
-  - Implement a Superadmin role.
-  - Build an overarching dashboard for managing all instances, users, and subscriptions.
-- [x] **Task 3: API Token Management**
-  - Implement Sanctum API token generation and revocation.
-  - Add simple UI for API token management. UI to user settings.
-- [x] **Task 4: Social Authentication (OAuth)**
-  - Integrate Laravel Socialite.
-  - Support GitHub and Google.
-  - Build `connected_accounts` table for multi-provider support.
-- [x] **Task 5: User Activity Logging**
-  - Install `spatie/laravel-activitylog`.
-  - Track Workspace modifications.
-- **Stack**: Laravel 12, Inertia.js v2, React 19, Tailwind CSS v4, Stripe Cashier, Fortify.
-- **Core Features**: Auth, 2FA, Workspaces, Teams, Stripe Billing, i18n, Dark Mode.
+- [ ] **Task 29: Webhook Event Log UI**
+  - Create `webhook_logs` table to track outbound delivery attempts (integrating with Spatie webhooks).
+  - Create workspace webhook log controller + Inertia page.
+  - Write Pest tests.
+- [ ] **Task 34: Email Template System**
+  - Editable email templates for notifications (welcome, invitation, data export).
+- [ ] **Task 35: User Feedback Widget**
+  - Simple in-app feedback collection form with admin review panel.
 
-## 🏁 Sprint 1 (Completed)
+## 📋 Upcoming Sprint 12: Enterprise Mechanics
 
-- [x] Task 1: Comprehensive Code Review & Test Assessment
-- [x] Task 2: Admin Dashboard (Superadmin)
-- [x] Task 3: API Token Management
-- [x] Task 4: Social Authentication (OAuth)
-- [x] Task 5: User Activity Logging
-- [x] Task 6: Outbound Webhooks
-- [x] Task 7: Sentry Integration
-- [x] Task 8: User Impersonation
-- [x] Task 9: Database Demo Seeders
+- [ ] **Task 36: SSO / SAML Authentication**
+  - Enterprise SSO support for workspace-level identity providers.
+- [ ] **Task 37: Seat-Based Billing**
+  - Charge per active user/seat with automatic subscription adjustments.
+- [ ] **Task 38: Custom Domain per Workspace**
+  - Allow workspaces to use their own subdomain or custom domain.
+- [ ] **Task 39: Data Retention Policies**
+  - Configurable auto-cleanup of old activity logs, notifications, and exports.
 
-## 🚀 Active Sprint 2: Core SaaS Mechanics
+## 🏁 Completed Sprints
 
-- [x] **Task 10: Subscription & Billing Management UI**
-  - Implement Cashier subscription checkout flow.
-  - Build frontend pricing tables connecting to Stripe capabilities.
-  - Create Billing Settings page to manage plans, display invoices, and handle payment methods.
-- [x] **Task 11: Granular Roles & Permissions Architecture**
-  - Extract primitive role strings into robust Policy/Gate checks mapping to User/Workspace actions.
-  - Implement UI inside Workspace Settings to modify member capabilities.
-- [x] **Task 12: Application Real-Time Notifications**
-  - Wire Laravel Database Notifications visually.
-  - Add an intuitive dropdown bell to the top navigation layout.
+- **Sprints 1-8**: Core SaaS Mechanics, Admin Dashboard, Webhooks, Sentry, Activity Logs, Settings, UI refinement.
+- **Sprint 9**: Developer Experience & Integration (Feature Flags, Announcements, Command Palette).
+- **Sprint 10**: Deep Review & Polish (Documentation generated: UI/Theming, Workspaces, I18N, Billing, Security; Landing Page enhanced).
 
 ## 📝 Changelog
 
-- **2026-02-25**: Concluded `Task 11` (Granular Roles & Permissions Architecture). Transitioned string roles (`admin`, `owner`) into granular `Gate::authorize()` JSON-driven capability mappings stored securely in the `workspace_user` pivot table. Built a native interactive UI letting Owners dynamically toggle features per member natively.
-
-- **2026-02-25**: Orchestrated `Task 12` (Application Real-Time Notifications). Installed native Database Notifications returning via `$request->user()->unreadNotifications()`. Built a React `<NotificationsDropdown>` polling mechanism gracefully handling reading states inline, injected fluidly into `app-header.tsx` and `app-sidebar-header.tsx` top-level layouts. Supported natively by strictly authenticated Pest validations preventing cross-tenancy notification pollution.
-
-- **2026-02-25**: Audited and confirmed out-of-the-box Stripe Cashier integrations satisfying `Task 10`. Ran robust endpoint protections mathematically proving that non-owner Workspace tenants cannot access or modify Stripe subscriptions or portal linkages.
-
-- **2026-02-24**: Scaffolded `Task 9` (Database Demo Seeders) hydrating comprehensive mock data directly inside the persistent database environment. Generated instantaneous `superadmin` credentials, built raw Sanctum API text tokens onto Developer mock settings, booted random dummy Slack/CRM Webhooks endpoints into Personal Workspaces, and fabricated realistic trailing Activity Logs modeling historical event histories natively overriding default creation stamps.
-- **2026-02-25**: Orchestrated `Task 14` (Global Command Palette Search). Pulled the absolute headless declarative UI components from `cmdk` binding `Meta+K` keyboard tracking globally across the authenticated DOM boundary via `<AppShell />`. Fully supported native `/dashboard`, `/team`, and `/settings` instantaneous traversals gracefully closing Sprint 3 natively.
-- **2026-02-25**: Concluded `Task 13` (User Onboarding Sequence). Deployed a strictly gated multi-step React wizard aggressively stripping unonboarded traffic from standard routes natively instantiating standard Workspaces securely.
-- **2026-02-24**: Engineered zero-dependency User Impersonation (`Task 8`). Scaffolded isolated `admin.impersonate` endpoints caching the Superadmin signature securely within `impersonated_by` Session tokens. Bootstrapped native React `app-shell` wrappers projecting a persistent global warning banner and 1-click revocation. Passed 134 suite tests.
-- **2026-02-24**: Integrated Sentry application-wide (`Task 7`). Deployed PHP/Laravel backend error capture natively parsing `bootstrap/app.php` using `$exceptions->handles()`, while installing `@sentry/react` inside `@/js/app.tsx` for React error and tracing fidelity.
-- **2026-02-24**: Instantiated Workspace-level tracking utilizing `spatie/laravel-activitylog`. Built a secure Activity Log UI feeding solely to Workspace administrators natively tracking events generated against their workspace. Task 5 completed.
-- **2026-02-24**: Scaffolded Social Authentication via `laravel/socialite`. Deployed multi-tenant multi-provider OAuth registration spanning standard routing logic and Personal Workspaces. Task 4 completed.
-- **2026-02-24**: Successfully integrated `laravel/sanctum` for API Token Management within the unified Settings dashboard. Task 3 completed.
-- **2026-02-24**: Initial setup of the autonomous workflow system (`AI_ROADMAP.md`).
-
-## 🚀 Active Sprint 3: Onboarding & User Experience
-
-- [x] **Task 13: User Onboarding Sequence**
-  - Implement a mandatory multi-step funnel for new registrations.
-  - Intercept authenticated traffic utilizing `EnsureUserIsOnboarded` middleware.
-  - Collect user details, generate the first Workspace, and prompt for initial plan selections dynamically.
-
-- [x] **Task 14: Global Command Palette (Cmd+K Search)**
-  - Integrate the `cmdk` React component natively.
-  - Develop a universally accessible Search modal tracking keyboard bindings globally.
-  - Route users instantaneously across Workspaces, Billing, Settings, and Notifications natively.
+- **2026-02-25**: Completed Sprint 10 (Tasks 31-33). Wrote extensive markdown documentation detailing architecture mapping to all physical features. Enhanced frontend landing page to showcase precise value capabilities.
+- **2026-02-25**: Completed Sprint 9 (Tasks 28, 30). Built interactive Announcement banner arrays resolving natively via global middleware payload. Bootstrapped native Laravel Pennant integration pushing targeted rollout caches downstream linearly to Inertia.
+- **2026-02-25**: Completed Task 14 (Command Palette). Replaced conventional user navigation with CMDK interactive abstractions.

@@ -8,6 +8,7 @@ import {
     ScrollText,
     ToggleLeft,
     Users,
+    Mail,
 } from 'lucide-react';
 import { type PropsWithChildren } from 'react';
 import { cn } from '@/lib/utils';
@@ -18,6 +19,7 @@ const adminNav = [
     { title: 'Workspaces', href: '/admin/workspaces', icon: Building2 },
     { title: 'Feature Flags', href: '/admin/feature-flags', icon: ToggleLeft },
     { title: 'Audit Logs', href: '/admin/audit-logs', icon: ScrollText },
+    { title: 'Email Templates', href: '/admin/mail-templates', icon: Mail },
     { title: 'Announcements', href: '/admin/announcements', icon: Megaphone },
 ];
 

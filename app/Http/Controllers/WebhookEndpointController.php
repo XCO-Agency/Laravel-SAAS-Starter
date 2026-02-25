@@ -97,6 +97,11 @@ class WebhookEndpointController extends Controller
             ->url($webhookEndpoint->url)
             ->payload(['event' => 'ping', 'message' => 'This is a test webhook from Laravel SAAS Starter.'])
             ->useSecret($webhookEndpoint->secret)
+            ->meta([
+                'workspace_id' => $workspace->id,
+                'webhook_endpoint_id' => $webhookEndpoint->id,
+                'event_type' => 'ping',
+            ])
             ->dispatch();
 
         return back()->with('success', 'Ping payload safely dispatched.');
