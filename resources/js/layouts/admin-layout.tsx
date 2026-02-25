@@ -5,6 +5,7 @@ import {
     Building2,
     LayoutDashboard,
     Megaphone,
+    MessageSquare,
     ScrollText,
     ToggleLeft,
     Users,
@@ -21,6 +22,7 @@ const adminNav = [
     { title: 'Audit Logs', href: '/admin/audit-logs', icon: ScrollText },
     { title: 'Email Templates', href: '/admin/mail-templates', icon: Mail },
     { title: 'Announcements', href: '/admin/announcements', icon: Megaphone },
+    { title: 'Feedback', href: '/admin/feedback', icon: MessageSquare },
 ];
 
 export default function AdminLayout({

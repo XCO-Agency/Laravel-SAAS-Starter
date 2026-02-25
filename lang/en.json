@@ -293,5 +293,15 @@
     "notifications.title": "Notifications",
     "notifications.mark_all_read": "Mark all as read",
     "notifications.view_all": "View all notifications",
-    "generic.back": "Back"
+    "generic.back": "Back",
+    "feedback.title": "Feedback",
+    "feedback.button": "Send Feedback",
+    "feedback.type.bug": "Bug Report",
+    "feedback.type.idea": "Feature Idea",
+    "feedback.type.general": "General",
+    "feedback.placeholder.bug": "Describe the bug and how to reproduce it…",
+    "feedback.placeholder.idea": "Describe your feature idea…",
+    "feedback.placeholder.general": "Share your thoughts…",
+    "feedback.success": "Thank you! Your feedback has been received.",
+    "feedback.submit": "Send Feedback"
 }

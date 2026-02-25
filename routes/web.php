@@ -104,6 +104,9 @@ Route::middleware(['auth'])->group(function () {
 
     // Stop impersonating outside of superadmin middleware (since active user is standard user)
     Route::post('/admin/impersonate/leave', [\App\Http\Controllers\Admin\ImpersonationController::class, 'leave'])->name('admin.impersonate.leave');
+
+    // User Feedback
+    Route::post('/feedback', [\App\Http\Controllers\FeedbackController::class, 'store'])->name('feedback.store');
 });
 
 // Stripe webhook (no CSRF, no auth)
@@ -159,4 +162,9 @@ Route::middleware(['auth', 'superadmin'])->prefix('admin')->name('admin.')->grou
     Route::get('/mail-templates', [\App\Http\Controllers\Admin\MailTemplateController::class, 'index'])->name('mail-templates.index');
     Route::get('/mail-templates/{mailTemplate}/edit', [\App\Http\Controllers\Admin\MailTemplateController::class, 'edit'])->name('mail-templates.edit');
     Route::put('/mail-templates/{mailTemplate}', [\App\Http\Controllers\Admin\MailTemplateController::class, 'update'])->name('mail-templates.update');
+
+    // User Feedback
+    Route::get('/feedback', [\App\Http\Controllers\Admin\FeedbackController::class, 'index'])->name('feedback.index');
+    Route::put('/feedback/{feedback}', [\App\Http\Controllers\Admin\FeedbackController::class, 'update'])->name('feedback.update');
+    Route::delete('/feedback/{feedback}', [\App\Http\Controllers\Admin\FeedbackController::class, 'destroy'])->name('feedback.destroy');
 });

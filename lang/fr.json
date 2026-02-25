@@ -293,5 +293,15 @@
     "notifications.title": "Notifications",
     "notifications.mark_all_read": "Tout marquer comme lu",
     "notifications.view_all": "Voir toutes les notifications",
-    "generic.back": "Retour"
+    "generic.back": "Retour",
+    "feedback.title": "Commentaires",
+    "feedback.button": "Envoyer un commentaire",
+    "feedback.type.bug": "Rapport de bug",
+    "feedback.type.idea": "Idée de fonctionnalité",
+    "feedback.type.general": "Général",
+    "feedback.placeholder.bug": "Décrivez le bug et comment le reproduire…",
+    "feedback.placeholder.idea": "Décrivez votre idée de fonctionnalité…",
+    "feedback.placeholder.general": "Partagez vos réflexions…",
+    "feedback.success": "Merci ! Votre commentaire a bien été reçu.",
+    "feedback.submit": "Envoyer"
 }

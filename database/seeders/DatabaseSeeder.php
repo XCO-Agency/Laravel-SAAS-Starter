@@ -278,7 +278,7 @@ class DatabaseSeeder extends Seeder
                 'data' => [
                     'title' => 'Welcome to the Platform',
                     'message' => 'Thanks for signing up! Your workspace is ready. Click here to invite your team members.',
-                    'action_url' => '/settings/team',
+                    'action_url' => '/team',
                 ],
                 'read_at' => null,
             ]);
@@ -314,7 +314,34 @@ class DatabaseSeeder extends Seeder
                 'read_at' => null,
             ]);
             // Seed email templates for the admin panel
-            (new EmailTemplateSeeder())->run();
+            (new EmailTemplateSeeder)->run();
+
+            // Seed demo feedback submissions
+            $feedbackSamples = [
+                ['user' => $demo,  'type' => 'bug',     'message' => 'The workspace settings page scrolls unexpectedly after saving changes on mobile.', 'status' => 'new'],
+                ['user' => $demo,  'type' => 'idea',    'message' => 'It would be helpful to have bulk actions for managing team members (e.g., bulk remove or role change).', 'status' => 'reviewed'],
+                ['user' => $demo,  'type' => 'general', 'message' => 'Overall the UI is clean and fast. Really enjoying the dark mode!', 'status' => 'reviewed'],
+                ['user' => $demo,  'type' => 'bug',     'message' => 'Notification badge count does not reset after clicking "Mark all as read".', 'status' => 'new'],
+                ['user' => $demo,  'type' => 'idea',    'message' => 'Would love a CSV export of audit log entries for compliance reporting.', 'status' => 'new'],
+                ['user' => $demo,  'type' => 'general', 'message' => 'The onboarding flow is very intuitive. Took me under 2 minutes to set up.', 'status' => 'archived'],
+                ['user' => $admin, 'type' => 'bug',     'message' => 'Email template editor loses formatting when switching between HTML and plain text tabs.', 'status' => 'new'],
+                ['user' => $admin, 'type' => 'idea',    'message' => 'Add support for Slack/Discord webhook notifications in addition to HTTP endpoints.', 'status' => 'reviewed'],
+                ['user' => $admin, 'type' => 'general', 'message' => 'Feature flags integration with Pennant is seamless. Nice work!', 'status' => 'archived'],
+                ['user' => $admin, 'type' => 'bug',     'message' => 'The impersonation banner sometimes overlaps the announcement banner on smaller screens.', 'status' => 'reviewed'],
+                ['user' => $admin, 'type' => 'idea',    'message' => 'Allow workspace admins to configure their own webhook signing secrets.', 'status' => 'new'],
+                ['user' => $admin, 'type' => 'general', 'message' => 'The command palette (⌘K) is a game changer. Very fast to navigate.', 'status' => 'reviewed'],
+            ];
+
+            foreach ($feedbackSamples as $sample) {
+                \App\Models\Feedback::create([
+                    'user_id' => $sample['user']->id,
+                    'type' => $sample['type'],
+                    'message' => $sample['message'],
+                    'status' => $sample['status'],
+                    'created_at' => now()->subDays(rand(1, 30)),
+                    'updated_at' => now()->subDays(rand(0, 5)),
+                ]);
+            }
 
         });
     }

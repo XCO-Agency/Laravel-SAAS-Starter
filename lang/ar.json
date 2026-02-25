@@ -293,5 +293,15 @@
     "notifications.title": "الإشعارات",
     "notifications.mark_all_read": "تحديد الكل كمقروء",
     "notifications.view_all": "عرض جميع الإشعارات",
-    "generic.back": "رجوع"
+    "generic.back": "رجوع",
+    "feedback.title": "ملاحظات",
+    "feedback.button": "إرسال ملاحظات",
+    "feedback.type.bug": "تقرير خطأ",
+    "feedback.type.idea": "فكرة ميزة",
+    "feedback.type.general": "عام",
+    "feedback.placeholder.bug": "صف الخطأ وكيفية إعادة إنتاجه…",
+    "feedback.placeholder.idea": "صف فكرة الميزة…",
+    "feedback.placeholder.general": "شارك أفكارك…",
+    "feedback.success": "شكراً! تم استلام ملاحظاتك.",
+    "feedback.submit": "إرسال"
 }

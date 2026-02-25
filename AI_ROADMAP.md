@@ -25,14 +25,9 @@ The AI agent is now continually managing and executing the roadmap autonomously.
 
 ## 🚀 Active Sprint 11: Application Polish & Engagement
 
-- [ ] **Task 29: Webhook Event Log UI**
-  - Create `webhook_logs` table to track outbound delivery attempts (integrating with Spatie webhooks).
-  - Create workspace webhook log controller + Inertia page.
-  - Write Pest tests.
-- [ ] **Task 34: Email Template System**
-  - Editable email templates for notifications (welcome, invitation, data export).
-- [ ] **Task 35: User Feedback Widget**
-  - Simple in-app feedback collection form with admin review panel.
+- [x] **Task 29: Webhook Event Log UI** — Completed.
+- [x] **Task 34: Email Template System** — Completed.
+- [x] **Task 35: User Feedback Widget** — Floating in-app feedback button with Bug/Idea/General types. Admin review panel with status tabs, type filtering, and actions. 14 tests.
 
 ## 📋 Upcoming Sprint 12: Enterprise Mechanics
 
@@ -53,6 +48,7 @@ The AI agent is now continually managing and executing the roadmap autonomously.
 
 ## 📝 Changelog
 
+- **2026-02-25**: Completed Sprint 11 (Tasks 29, 34, 35). Webhook delivery logs, database-driven email templates, in-app feedback widget with admin review panel.
 - **2026-02-25**: Completed Sprint 10 (Tasks 31-33). Wrote extensive markdown documentation detailing architecture mapping to all physical features. Enhanced frontend landing page to showcase precise value capabilities.
 - **2026-02-25**: Completed Sprint 9 (Tasks 28, 30). Built interactive Announcement banner arrays resolving natively via global middleware payload. Bootstrapped native Laravel Pennant integration pushing targeted rollout caches downstream linearly to Inertia.
 - **2026-02-25**: Completed Task 14 (Command Palette). Replaced conventional user navigation with CMDK interactive abstractions.
