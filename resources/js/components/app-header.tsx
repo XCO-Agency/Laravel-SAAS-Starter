@@ -196,6 +196,8 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                 variant="ghost"
                                 size="icon"
                                 className="group h-9 w-9 cursor-pointer"
+                                onClick={() => window.dispatchEvent(new Event('open-command-palette'))}
+                                title="Search (Cmd+K)"
                             >
                                 <Search className="!size-5 opacity-80 group-hover:opacity-100" />
                             </Button>

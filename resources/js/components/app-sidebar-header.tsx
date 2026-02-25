@@ -1,7 +1,9 @@
 import { Breadcrumbs } from '@/components/breadcrumbs';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { NotificationsDropdown } from '@/components/notifications-dropdown';
+import { Button } from '@/components/ui/button';
 import { type BreadcrumbItem as BreadcrumbItemType } from '@/types';
+import { Search } from 'lucide-react';
 
 export function AppSidebarHeader({
     breadcrumbs = [],
@@ -15,6 +17,15 @@ export function AppSidebarHeader({
                 <Breadcrumbs breadcrumbs={breadcrumbs} />
             </div>
             <div className="flex items-center gap-2">
+                <Button
+                    variant="ghost"
+                    size="icon"
+                    className="group h-9 w-9 cursor-pointer"
+                    onClick={() => window.dispatchEvent(new Event('open-command-palette'))}
+                    title="Search (Cmd+K)"
+                >
+                    <Search className="!size-5 opacity-80 group-hover:opacity-100" />
+                </Button>
                 <NotificationsDropdown />
             </div>
         </header>
