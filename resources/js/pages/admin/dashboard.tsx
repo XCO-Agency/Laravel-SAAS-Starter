@@ -1,5 +1,5 @@
-import AppLayout from '@/layouts/app-layout';
-import { Head, router } from '@inertiajs/react';
+import AdminLayout from '@/layouts/admin-layout';
+import { Head, router, Link } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 
 interface AdminDashboardProps {
@@ -18,9 +18,9 @@ interface AdminDashboardProps {
 export default function AdminDashboard(props: AdminDashboardProps) {
     const { metrics } = props;
     return (
-        <AppLayout>
+        <AdminLayout>
             <Head title="Admin Dashboard" />
-            <div className="flex h-full flex-1 flex-col gap-4 p-4 md:p-6 lg:p-8 rounded-xl border border-sidebar-border/70">
+            <div className="flex h-full flex-1 flex-col gap-4 p-4 md:p-6 lg:p-8">
                 <div className="flex items-center justify-between">
                     <div>
                         <h2 className="text-2xl font-bold tracking-tight">System Overview</h2>
@@ -50,7 +50,12 @@ export default function AdminDashboard(props: AdminDashboardProps) {
                 </div>
 
                 <div className="mt-8">
-                    <h3 className="text-xl font-bold tracking-tight mb-4">Recent Users</h3>
+                    <div className="flex items-center justify-between mb-4">
+                        <h3 className="text-xl font-bold tracking-tight">Recent Users</h3>
+                        <Button variant="outline" size="sm" asChild>
+                            <Link href="/admin/users">View All Users →</Link>
+                        </Button>
+                    </div>
                     <div className="rounded-xl border bg-card text-card-foreground shadow overflow-hidden">
                         <table className="w-full text-sm text-left">
                             <thead className="bg-muted/50 text-muted-foreground uppercase">
@@ -93,6 +98,6 @@ export default function AdminDashboard(props: AdminDashboardProps) {
                     </div>
                 </div>
             </div>
-        </AppLayout>
+        </AdminLayout>
     );
 }

@@ -15,6 +15,7 @@ import {
 import { type SharedData } from '@/types';
 import { router, usePage } from '@inertiajs/react';
 import { Building2, Check, ChevronsUpDown, Plus, Settings } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
 
 export function WorkspaceSwitcher() {
     const { currentWorkspace, workspaces } = usePage<SharedData>().props;
@@ -88,6 +89,14 @@ export function WorkspaceSwitcher() {
                                 <span className="flex-1 truncate">
                                     {workspace.name}
                                 </span>
+                                {workspace.plan && (
+                                    <Badge
+                                        variant={workspace.plan === 'Free' ? 'outline' : 'secondary'}
+                                        className="text-[10px] px-1.5 py-0"
+                                    >
+                                        {workspace.plan}
+                                    </Badge>
+                                )}
                                 {workspace.personal_workspace && (
                                     <span className="text-xs text-muted-foreground">
                                         Personal

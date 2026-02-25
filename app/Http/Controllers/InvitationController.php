@@ -56,11 +56,25 @@ class InvitationController extends Controller
     {
         $user = $request->user();
 
-        $invitation = WorkspaceInvitation::where('token', $token)->first();
+        $invitation = WorkspaceInvitation::where('token', $token)->with('workspace')->first();
 
         if (! $invitation) {
             return redirect()->route('home')
                 ->with('error', 'This invitation is invalid or has already been used.');
+        }
+
+        if ($invitation->hasExpired()) {
+            $invitation->delete();
+
+            return redirect()->route('home')
+                ->with('error', 'This invitation has expired and has been removed.');
+        }
+
+        if ($invitation->workspace->hasUser($user)) {
+            $invitation->delete();
+
+            return redirect()->route('dashboard')
+                ->with('info', 'You are already a member of '.$invitation->workspace->name.'.');
         }
 
         try {
