@@ -19,7 +19,9 @@ export function LandingHero() {
         t('landing.hero.features.auth', 'Authentication & 2FA'),
         t('landing.hero.features.team', 'Team Management'),
         t('landing.hero.features.billing', 'Stripe Billing'),
-        t('landing.hero.features.dark_mode', 'Dark Mode'),
+        t('landing.hero.features.admin', 'Super Admin Panel'),
+        t('landing.hero.features.flags', 'Feature Flags'),
+        t('landing.hero.features.audit', 'Audit Logging'),
     ];
 
     return (
@@ -127,7 +129,13 @@ export function LandingHero() {
                                     {t('landing.hero.preview.description', 'Beautiful UI with dark mode, workspaces, and team management')}
                                 </p>
                                 <div className="mt-4 flex flex-wrap justify-center gap-2">
-                                    {[t('landing.hero.preview.tags.multi_tenant', 'Multi-tenant'), t('landing.hero.preview.tags.stripe_billing', 'Stripe Billing'), t('landing.hero.preview.tags.team_roles', 'Team Roles'), t('landing.hero.preview.tags.2fa', '2FA')].map((tag) => (
+                                    {[
+                                        t('landing.hero.preview.tags.multi_tenant', 'Multi-tenant'),
+                                        t('landing.hero.preview.tags.stripe_billing', 'Stripe Billing'),
+                                        t('landing.hero.preview.tags.admin_panel', 'Super Admin'),
+                                        t('landing.hero.preview.tags.team_roles', 'Team Roles'),
+                                        t('landing.hero.preview.tags.feature_flags', 'Pennant Flags')
+                                    ].map((tag) => (
                                         <span key={tag} className="rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
                                             {tag}
                                         </span>

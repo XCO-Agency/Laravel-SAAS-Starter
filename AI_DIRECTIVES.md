@@ -20,6 +20,7 @@
 3. **Pest Testing:** Every feature MUST be backed by Pest feature/unit tests. Run the test suite (`php artisan test --compact`) constantly.
 4. **Wayfinder/Types:** Ensure all endpoints are mapped and TypeScript types (`index.d.ts`) reflect backend structures exactly to prevent React typing errors.
 5. **Demo Data Hydration:** ALWAYS update the `DatabaseSeeder.php` after finalizing a new feature schema to ensure the local demo data environment is fully populated and demonstrates the capabilities just added.
+6. **Documentation Requirements:** Whenever you build a new feature, you MUST create a comprehensive markdown documentation file for it in the `/docs/features/` directory and update `docs/README.md` to index it.
 
 ## Next High-Priority SaaS Features (Agent's Decision)
 

@@ -8,15 +8,16 @@
 
 ## 🚀 Features
 
-- **🔐 Authentication & 2FA** - Complete auth system with login, register, password reset, email verification, and two-factor authentication
-- **🏢 Multi-tenant Workspaces** - Built-in workspace management allowing users to create and switch between multiple organizations
-- **👥 Team Management** - Invite team members, assign roles (owner, admin, member), and manage permissions with ease
-- **💳 Stripe Billing** - Full Stripe integration with subscriptions, invoices, billing portal, and multiple pricing tiers
-- **🌍 Internationalization** - Multi-language support with RTL layouts. Easily add new languages and translations
-- **🌙 Dark Mode** - Beautiful light and dark themes with system preference detection and manual toggle
-- **🛡️ Security First** - Built with security best practices including CSRF protection, rate limiting, and secure sessions
-- **⚡ Modern Stack** - Laravel 12, Inertia.js v2, React 19, and Tailwind CSS v4 for a blazing-fast developer experience
-- **🎨 Beautiful UI** - Pre-built components with shadcn/ui design system. Fully customizable and accessible
+- **🔐 Authentication & Security** - Complete system with standard login, 2FA, password resets, profile management, and verified domains.
+- **🏢 Multi-tenant Workspaces** - Seamless workspace management allowing users to operate within parallel organizational structures.
+- **👥 Team Management** - Robust invitation system with granular workspace-level roles (Owner, Admin, Member).
+- **💳 Stripe Billing** - Integrated Laravel Cashier handles subscription provisioning, secure customer portals, and dynamic pricing tiers per workspace.
+- **👑 Advanced Admin Panel** - Global super-admin dashboard for user impersonation, cross-workspace monitoring, and central operations.
+- **🎉 Announcements System** - Global notification broadcasts with colored typings, dynamic scheduling, and dismissible states.
+- **🚩 Feature Flags (Pennant)** - Database-driven feature flagging with targeted, workspace-specific rollout mechanisms.
+- **📜 System Audit Logs** - Complete change history and system-wide visibility via Spatie Activitylog tracking.
+- **🌙 Elegant UI Components** - Beautiful React 19 light/dark themes powered by Shadcn/UI and smooth Tailwind CSS v4 styling.
+- **⚡ Modern Architecture** - Laravel 12 + Inertia.js v2, strictly typed via Pest tests (190+ tests out-of-the-box).
 
 ## 📋 Requirements
 
@@ -29,17 +30,20 @@
 ## 🛠️ Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/xco-agency/laravel-saas-starter.git
    cd laravel-saas-starter
    ```
 
 2. **Install PHP dependencies**
+
    ```bash
    composer install
    ```
 
 3. **Install JavaScript dependencies**
+
    ```bash
    npm install
    # or
@@ -47,12 +51,14 @@
    ```
 
 4. **Set up environment**
+
    ```bash
    cp .env.example .env
    php artisan key:generate
    ```
 
 5. **Configure your `.env` file**
+
    ```env
    APP_NAME="Laravel SAAS Starter"
    APP_URL=http://localhost:8000
@@ -73,11 +79,13 @@
    ```
 
 6. **Run migrations**
+
    ```bash
    php artisan migrate
    ```
 
 7. **Build frontend assets**
+
    ```bash
    npm run build
    # or
@@ -85,6 +93,7 @@
    ```
 
 8. **Start the development server**
+
    ```bash
    composer run dev
    # or separately:
@@ -124,32 +133,34 @@ php artisan test tests/Feature/Auth/LoginTest.php
 - **Authentication**: Laravel Fortify
 - **Billing**: Laravel Cashier (Stripe)
 - **Testing**: Pest PHP v4
+- **Activity Tracking**: Spatie Activitylog
+- **Feature Flags**: Laravel Pennant
 - **Code Quality**: Laravel Pint, Prettier, ESLint
+
+## 📚 Deep Documentation
+
+For a comprehensive review of the project's internal architecture, component strategies, and feature usage instructions, **explore the dedicated `/docs` folder:**
+
+- [Features Index & Architectural Overviews](./docs/README.md)
+- [Authentication](./docs/features/authentication.md) | [Workspaces](./docs/features/workspaces.md) | [Team Management](./docs/features/team-management.md) | [Billing](./docs/features/billing.md)
+- [Admin Panel](./docs/features/admin-panel.md) | [Announcements](./docs/features/announcements.md) | [Feature Flags](./docs/features/feature-flags.md) | [Audit Logs](./docs/features/audit-logs.md)
+- [Internationalization (i18n)](./docs/features/internationalization.md) | [UI & Theming](./docs/features/ui-and-theming.md) | [Security](./docs/features/security.md)
 
 ## 🏗️ Project Structure
 
-```
+```text
 ├── app/
-│   ├── Actions/          # Fortify actions
-│   ├── Http/
-│   │   ├── Controllers/   # Application controllers
-│   │   ├── Middleware/    # Custom middleware
-│   │   └── Requests/      # Form request validation
-│   ├── Models/            # Eloquent models
-│   ├── Services/          # Business logic services
-│   └── Providers/         # Service providers
-├── database/
-│   ├── factories/         # Model factories
-│   ├── migrations/        # Database migrations
-│   └── seeders/           # Database seeders
+│   ├── Http/Controllers/  # Standard and Admin-specific controllers
+│   ├── Models/            # Global Eloquent structures
+│   └── Providers/         # Extensible application services (Pennant configs etc)
+├── database/              # Robust migrations, factories and hydration seeders
+├── docs/                  # In-depth architectural feature documentation!
 ├── resources/
 │   ├── js/
-│   │   ├── components/    # React components
-│   │   ├── layouts/       # Page layouts
-│   │   ├── pages/          # Inertia pages
-│   │   └── locales/        # i18n translations
-│   └── css/               # Global styles
-└── tests/                 # Pest tests
+│   │   ├── components/    # Reusable shadcn/ui & generic ui components
+│   │   ├── layouts/       # Strict domain boundaries (admin vs customer ui)
+│   │   └── pages/         # Inertia frontend pages
+└── tests/                 # Standardized Pest tests (190+ available)
 ```
 
 ## 🔧 Configuration
@@ -157,6 +168,7 @@ php artisan test tests/Feature/Auth/LoginTest.php
 ### Workspace Management
 
 Workspaces are multi-tenant organizations. Users can:
+
 - Create multiple workspaces
 - Switch between workspaces
 - Invite team members to workspaces
@@ -165,6 +177,7 @@ Workspaces are multi-tenant organizations. Users can:
 ### Billing
 
 Configure Stripe in your `.env` file. The application supports:
+
 - Subscription management
 - Multiple pricing tiers
 - Billing portal access
@@ -175,6 +188,7 @@ Configure Stripe in your `.env` file. The application supports:
 **Endpoint:** `/stripe/webhook`
 
 **Required Events:**
+
 - `customer.subscription.created`
 - `customer.subscription.updated`
 - `customer.subscription.deleted`
@@ -182,10 +196,10 @@ Configure Stripe in your `.env` file. The application supports:
 - `invoice.payment_failed`
 - `invoice.payment_action_required`
 
-
 ### Internationalization
 
 Add new languages by:
+
 1. Creating translation files in `resources/js/locales/`
 2. Adding the locale to your configuration
 3. Updating the language selector component
@@ -209,4 +223,3 @@ For support, please open an issue on GitHub or contact us at [support@xco.agency
 ---
 
 **Ready to build your SaaS?** Get started today and launch 10x faster! 🚀
-
