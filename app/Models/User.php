@@ -32,6 +32,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'current_workspace_id',
         'locale',
         'onboarded_at',
+        'avatar_url',
     ];
 
     /**

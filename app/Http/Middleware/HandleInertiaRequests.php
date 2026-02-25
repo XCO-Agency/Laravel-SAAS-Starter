@@ -66,7 +66,9 @@ class HandleInertiaRequests extends Middleware
             'name' => config('app.name'),
             'quote' => ['message' => trim($message), 'author' => trim($author)],
             'auth' => [
-                'user' => $user,
+                'user' => $user ? array_merge($user->toArray(), [
+                    'avatar_url' => $user->avatar_url ? Storage::url($user->avatar_url) : null,
+                ]) : null,
                 'is_impersonating' => $request->session()->has('impersonated_by'),
             ],
             'locale' => $locale,

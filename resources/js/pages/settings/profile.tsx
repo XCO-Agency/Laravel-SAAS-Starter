@@ -5,6 +5,7 @@ import { Transition } from '@headlessui/react';
 import { Form, Head, Link, usePage } from '@inertiajs/react';
 
 import DeleteUser from '@/components/delete-user';
+import ExportData from '@/components/export-data';
 import { LanguageSwitcher } from '@/components/language-switcher';
 import InputError from '@/components/input-error';
 import { useTranslations } from '@/hooks/use-translations';
@@ -12,6 +13,10 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useInitials } from '@/hooks/use-initials';
+import { Camera, X } from 'lucide-react';
+import { type ChangeEvent, useRef, useState } from 'react';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
 import { edit } from '@/routes/profile';
@@ -25,6 +30,10 @@ export default function Profile({
 }) {
     const { auth, locale } = usePage<SharedData>().props;
     const { t } = useTranslations();
+    const getInitials = useInitials();
+    const fileInputRef = useRef<HTMLInputElement>(null);
+    const [avatarPreview, setAvatarPreview] = useState<string | null>(auth.user.avatar_url || auth.user.avatar || null);
+    const [removeAvatar, setRemoveAvatar] = useState(false);
 
     const breadcrumbs: BreadcrumbItem[] = [
         {
@@ -53,6 +62,72 @@ export default function Profile({
                     >
                         {({ processing, recentlySuccessful, errors }) => (
                             <>
+                                {removeAvatar && <input type="hidden" name="remove_avatar" value="true" />}
+                                <div className="space-y-2">
+                                    <Label>{t('settings.profile.avatar', 'Profile Photo')}</Label>
+                                    <div className="flex items-center gap-4">
+                                        {avatarPreview ? (
+                                            <div className="relative">
+                                                <Avatar className="h-20 w-20 overflow-hidden rounded-full">
+                                                    <AvatarImage src={avatarPreview} alt={auth.user.name} />
+                                                    <AvatarFallback className="rounded-lg bg-neutral-200 text-black dark:bg-neutral-700 dark:text-white">
+                                                        {getInitials(auth.user.name)}
+                                                    </AvatarFallback>
+                                                </Avatar>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => {
+                                                        setRemoveAvatar(true);
+                                                        setAvatarPreview(null);
+                                                        if (fileInputRef.current) fileInputRef.current.value = '';
+                                                    }}
+                                                    className="absolute -top-2 -right-2 rounded-full bg-destructive p-1 text-destructive-foreground shadow-sm hover:opacity-90"
+                                                >
+                                                    <X className="h-4 w-4" />
+                                                </button>
+                                            </div>
+                                        ) : (
+                                            <Avatar className="h-20 w-20 overflow-hidden rounded-full">
+                                                <AvatarImage src={auth.user.avatar} alt={auth.user.name} />
+                                                <AvatarFallback className="rounded-lg bg-neutral-200 text-black dark:bg-neutral-700 dark:text-white text-lg">
+                                                    {getInitials(auth.user.name)}
+                                                </AvatarFallback>
+                                            </Avatar>
+                                        )}
+                                        <div>
+                                            <input
+                                                ref={fileInputRef}
+                                                type="file"
+                                                name="avatar"
+                                                accept="image/*"
+                                                className="hidden"
+                                                onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                                                    const file = e.target.files?.[0];
+                                                    if (file) {
+                                                        setRemoveAvatar(false);
+                                                        const reader = new FileReader();
+                                                        reader.onloadend = () => setAvatarPreview(reader.result as string);
+                                                        reader.readAsDataURL(file);
+                                                    }
+                                                }}
+                                            />
+                                            <Button
+                                                type="button"
+                                                variant="outline"
+                                                onClick={() => fileInputRef.current?.click()}
+                                                disabled={processing}
+                                            >
+                                                <Camera className="mr-2 h-4 w-4" />
+                                                {t('settings.profile.upload_avatar', 'Upload Photo')}
+                                            </Button>
+                                            <p className="mt-1 text-xs text-muted-foreground">
+                                                JPG, JPEG, PNG up to 2MB
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <InputError message={errors.avatar} />
+                                </div>
+
                                 <div className="grid gap-2">
                                     <Label htmlFor="name">{t('settings.profile.name', 'Name')}</Label>
 
@@ -144,6 +219,7 @@ export default function Profile({
                     <LanguageSwitcher currentLocale={locale || auth.user?.locale || 'en'} />
                 </div>
 
+                <ExportData />
                 <DeleteUser />
             </SettingsLayout>
         </AppLayout>

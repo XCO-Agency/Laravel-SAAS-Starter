@@ -30,4 +30,10 @@ Route::middleware('auth')->group(function () {
     Route::get('settings/api-tokens', [\App\Http\Controllers\Settings\ApiTokenController::class, 'index'])->name('api-tokens.index');
     Route::post('settings/api-tokens', [\App\Http\Controllers\Settings\ApiTokenController::class, 'store'])->name('api-tokens.store');
     Route::delete('settings/api-tokens/{tokenId}', [\App\Http\Controllers\Settings\ApiTokenController::class, 'destroy'])->name('api-tokens.destroy');
+
+    // Data Export
+    Route::post('settings/export-data', [\App\Http\Controllers\Settings\SecurityController::class, 'exportData'])->name('security.export-data');
+    Route::get('settings/export-data/{filename}', [\App\Http\Controllers\Settings\SecurityController::class, 'downloadExport'])
+        ->name('security.export-download')
+        ->middleware('signed');
 });
