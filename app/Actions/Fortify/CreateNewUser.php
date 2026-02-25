@@ -43,8 +43,7 @@ class CreateNewUser implements CreatesNewUsers
                 'password' => $input['password'],
             ]);
 
-            // Create personal workspace for the new user
-            $this->workspaceService->createPersonalWorkspace($user);
+            // Workspace creation is now handled exclusively via the Onboarding Wizard
 
             return $user;
         });

@@ -188,7 +188,7 @@ The AI agent is now continually managing and executing the roadmap autonomously.
   - Implement Cashier subscription checkout flow.
   - Build frontend pricing tables connecting to Stripe capabilities.
   - Create Billing Settings page to manage plans, display invoices, and handle payment methods.
-- [ ] **Task 11: Granular Roles & Permissions Architecture**
+- [x] **Task 11: Granular Roles & Permissions Architecture**
   - Extract primitive role strings into robust Policy/Gate checks mapping to User/Workspace actions.
   - Implement UI inside Workspace Settings to modify member capabilities.
 - [x] **Task 12: Application Real-Time Notifications**
@@ -196,6 +196,8 @@ The AI agent is now continually managing and executing the roadmap autonomously.
   - Add an intuitive dropdown bell to the top navigation layout.
 
 ## 📝 Changelog
+
+- **2026-02-25**: Concluded `Task 11` (Granular Roles & Permissions Architecture). Transitioned string roles (`admin`, `owner`) into granular `Gate::authorize()` JSON-driven capability mappings stored securely in the `workspace_user` pivot table. Built a native interactive UI letting Owners dynamically toggle features per member natively.
 
 - **2026-02-25**: Orchestrated `Task 12` (Application Real-Time Notifications). Installed native Database Notifications returning via `$request->user()->unreadNotifications()`. Built a React `<NotificationsDropdown>` polling mechanism gracefully handling reading states inline, injected fluidly into `app-header.tsx` and `app-sidebar-header.tsx` top-level layouts. Supported natively by strictly authenticated Pest validations preventing cross-tenancy notification pollution.
 
@@ -208,3 +210,10 @@ The AI agent is now continually managing and executing the roadmap autonomously.
 - **2026-02-24**: Scaffolded Social Authentication via `laravel/socialite`. Deployed multi-tenant multi-provider OAuth registration spanning standard routing logic and Personal Workspaces. Task 4 completed.
 - **2026-02-24**: Successfully integrated `laravel/sanctum` for API Token Management within the unified Settings dashboard. Task 3 completed.
 - **2026-02-24**: Initial setup of the autonomous workflow system (`AI_ROADMAP.md`).
+
+## 🚀 Active Sprint 3: Onboarding & User Experience
+
+- [ ] **Task 13: User Onboarding Sequence**
+  - Implement a mandatory multi-step funnel for new registrations.
+  - Intercept authenticated traffic utilizing `EnsureUserIsOnboarded` middleware.
+  - Collect user details, generate the first Workspace, and prompt for initial plan selections dynamically.

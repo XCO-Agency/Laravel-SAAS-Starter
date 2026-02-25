@@ -32,6 +32,7 @@ class UserFactory extends Factory
             'two_factor_secret' => Str::random(10),
             'two_factor_recovery_codes' => Str::random(10),
             'two_factor_confirmed_at' => now(),
+            'onboarded_at' => now(),
         ];
     }
 
@@ -64,6 +65,16 @@ class UserFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'is_superadmin' => true,
+        ]);
+    }
+
+    /**
+     * Indicate that the user has not completed onboarding.
+     */
+    public function unonboarded(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'onboarded_at' => null,
         ]);
     }
 }

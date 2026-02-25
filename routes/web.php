@@ -24,7 +24,7 @@ Route::post('/invitations/{token}/accept', [InvitationController::class, 'accept
     ->middleware('auth')
     ->name('invitations.accept');
 
-Route::middleware(['auth', 'verified', 'workspace'])->group(function () {
+Route::middleware(['auth', 'verified', 'onboarded', 'workspace'])->group(function () {
     Route::get('dashboard', function () {
         $user = request()->user();
         $workspace = $user->currentWorkspace;
@@ -85,13 +85,19 @@ Route::middleware(['auth', 'verified', 'workspace'])->group(function () {
 });
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/notifications', [NotificationController::class, 'page'])->name('notifications.page');
+    // Onboarding Sequences (Exempt from onboarded check)
+    Route::get('/onboarding', [\App\Http\Controllers\OnboardingController::class, 'index'])->name('onboarding.index');
+    Route::post('/onboarding', [\App\Http\Controllers\OnboardingController::class, 'store'])->name('onboarding.store');
 
-    // Notifications API
-    Route::prefix('api/notifications')->name('notifications.')->group(function () {
-        Route::get('/', [NotificationController::class, 'index'])->name('index');
-        Route::post('/mark-all-read', [NotificationController::class, 'markAllAsRead'])->name('mark-all-read');
-        Route::patch('/{id}/read', [NotificationController::class, 'markAsRead'])->name('mark-read');
+    Route::middleware(['onboarded'])->group(function () {
+        Route::get('/notifications', [NotificationController::class, 'page'])->name('notifications.page');
+
+        // Notifications API
+        Route::prefix('api/notifications')->name('notifications.')->group(function () {
+            Route::get('/', [NotificationController::class, 'index'])->name('index');
+            Route::post('/mark-all-read', [NotificationController::class, 'markAllAsRead'])->name('mark-all-read');
+            Route::patch('/{id}/read', [NotificationController::class, 'markAsRead'])->name('mark-read');
+        });
     });
 
     // Stop impersonating outside of superadmin middleware (since active user is standard user)

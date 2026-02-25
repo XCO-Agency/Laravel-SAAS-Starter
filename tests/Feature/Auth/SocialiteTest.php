@@ -58,9 +58,9 @@ it('creates a new user and connected account on successful fresh callback', func
     
     $this->assertNotNull($user->email_verified_at);
 
-    // Assert Workspace logic works
-    $this->assertCount(1, $user->workspaces);
-    $this->assertTrue((bool)$user->workspaces->first()->personal_workspace);
+    // Assert Workspace logic is deferred to the Onboarding Wizard
+    $this->assertNull($user->onboarded_at);
+    $this->assertCount(0, $user->workspaces);
 
     // Assert Connection logic works
     $this->assertCount(1, $user->connectedAccounts);

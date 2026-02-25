@@ -75,16 +75,7 @@ class SocialiteController extends Controller
 
                 $user->markEmailAsVerified();
 
-                // Create personal workspace for new user
-                $workspace = Workspace::create([
-                    'name' => explode(' ', $user->name, 2)[0] . "'s Workspace",
-                    'slug' => Str::slug($user->name . '-' . Str::random(6)),
-                    'owner_id' => $user->id,
-                    'personal_workspace' => true,
-                ]);
-
-                $user->workspaces()->attach($workspace, ['role' => 'owner']);
-                $user->switchWorkspace($workspace);
+                // Workspace creation is natively deferred to the Onboarding Wizard 
 
                 DB::commit();
             } catch (\Exception $e) {

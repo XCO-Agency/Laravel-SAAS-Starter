@@ -31,6 +31,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'is_superadmin',
         'current_workspace_id',
         'locale',
+        'onboarded_at',
     ];
 
     /**
@@ -57,6 +58,7 @@ class User extends Authenticatable implements MustVerifyEmail
             'password' => 'hashed',
             'is_superadmin' => 'boolean',
             'two_factor_confirmed_at' => 'datetime',
+            'onboarded_at' => 'datetime',
         ];
     }
 

@@ -36,6 +36,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'workspace' => EnsureWorkspaceAccess::class,
             'workspace.owner' => EnsureWorkspaceOwner::class,
             'workspace.admin' => EnsureWorkspaceAdmin::class,
+            'onboarded' => \App\Http\Middleware\EnsureUserIsOnboarded::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
