@@ -343,6 +343,38 @@ class DatabaseSeeder extends Seeder
                 ]);
             }
 
+            // Seed public changelog entries
+            $changelogSamples = [
+                ['version' => '1.0.0', 'title' => 'Initial Release', 'body' => "Workspaces, team management, Stripe billing, and authentication are all live.\n\nThis is the foundation of the platform.", 'type' => 'feature', 'days_ago' => 60],
+                ['version' => '1.1.0', 'title' => 'Dark Mode & Internationalization', 'body' => 'Full dark mode support across all pages. Added i18n with English, French, Spanish, and German translations.', 'type' => 'feature', 'days_ago' => 45],
+                ['version' => '1.2.0', 'title' => 'Admin Panel & Audit Logs', 'body' => 'Super admin dashboard with user/workspace management, impersonation, and a complete audit log system powered by Spatie Activity Log.', 'type' => 'feature', 'days_ago' => 35],
+                ['version' => '1.3.0', 'title' => 'Feature Flags & Announcements', 'body' => 'Laravel Pennant integration for targeted feature rollouts. Global announcement banners with scheduling and dismissal.', 'type' => 'feature', 'days_ago' => 25],
+                ['version' => '1.3.1', 'title' => 'Command Palette Performance', 'body' => 'Improved the command palette (⌘K) search speed and added keyboard navigation hints.', 'type' => 'improvement', 'days_ago' => 20],
+                ['version' => '1.4.0', 'title' => 'Webhook Delivery Logs', 'body' => 'Track every outbound webhook delivery with status codes, payloads, and response bodies. Retry failed deliveries from the UI.', 'type' => 'feature', 'days_ago' => 15],
+                ['version' => '1.4.1', 'title' => 'Notification Badge Fix', 'body' => 'Fixed an issue where the notification badge count did not update after marking all notifications as read.', 'type' => 'fix', 'days_ago' => 12],
+                ['version' => '1.5.0', 'title' => 'Seat-Based Billing & 2FA Enforcement', 'body' => 'Workspaces now support seat-based billing with Stripe quantity sync. Admins can enforce two-factor authentication for all workspace members.', 'type' => 'feature', 'days_ago' => 5],
+                ['version' => '1.5.1', 'title' => 'System Health Monitor', 'body' => 'New admin page to monitor queue health, failed jobs, storage usage, and infrastructure drivers.', 'type' => 'improvement', 'days_ago' => 1],
+            ];
+
+            foreach ($changelogSamples as $sample) {
+                \App\Models\ChangelogEntry::create([
+                    'version' => $sample['version'],
+                    'title' => $sample['title'],
+                    'body' => $sample['body'],
+                    'type' => $sample['type'],
+                    'is_published' => true,
+                    'published_at' => now()->subDays($sample['days_ago']),
+                ]);
+            }
+
+            // Seed workspace API keys for demo workspaces
+            if ($demoWorkspaces->isNotEmpty()) {
+                $first = $demoWorkspaces->first();
+                \App\Models\WorkspaceApiKey::generateKey($first, $demo, 'Production API', ['read', 'write']);
+                \App\Models\WorkspaceApiKey::generateKey($first, $demo, 'CI/CD Pipeline', ['read', 'webhooks']);
+                \App\Models\WorkspaceApiKey::generateKey($first, $demo, 'Analytics Reader', ['read', 'billing:read'], now()->addMonths(3));
+            }
+
         });
     }
 }

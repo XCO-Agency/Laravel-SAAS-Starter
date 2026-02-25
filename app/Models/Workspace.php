@@ -126,6 +126,14 @@ class Workspace extends Model
     }
 
     /**
+     * Get the workspace's API keys.
+     */
+    public function apiKeys(): HasMany
+    {
+        return $this->hasMany(WorkspaceApiKey::class);
+    }
+
+    /**
      * Get the workspace's outbound webhook endpoints.
      */
     public function webhookEndpoints(): HasMany

@@ -1,9 +1,12 @@
 import { ImpersonationBanner } from '@/components/impersonation-banner';
 import { Link } from '@inertiajs/react';
 import {
+    Activity,
     ArrowLeft,
     Building2,
+    Clock,
     LayoutDashboard,
+    ListChecks,
     Megaphone,
     MessageSquare,
     ScrollText,
@@ -25,6 +28,9 @@ const adminNav = [
     { title: 'Announcements', href: '/admin/announcements', icon: Megaphone },
     { title: 'Feedback', href: '/admin/feedback', icon: MessageSquare },
     { title: 'Data Retention', href: '/admin/retention', icon: ShieldCheck },
+    { title: 'System Health', href: '/admin/system-health', icon: Activity },
+    { title: 'Changelog', href: '/admin/changelog', icon: ListChecks },
+    { title: 'Scheduled Tasks', href: '/admin/scheduled-tasks', icon: Clock },
 ];
 
 export default function AdminLayout({

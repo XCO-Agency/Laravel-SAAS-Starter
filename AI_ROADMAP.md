@@ -23,30 +23,26 @@ The AI agent is now continually managing and executing the roadmap autonomously.
 - **Stack**: Laravel 12, Inertia.js v2, React 19, Tailwind CSS v4, Stripe Cashier, Fortify.
 - **Completed Features**: Auth, 2FA, Workspaces, Teams, Stripe Billing, i18n, Dark Mode, Super Admin Panel, Feature Flags (Pennant), Announcements, Audit Logs, Command Palette.
 
-## 🚀 Active Sprint 11: Application Polish & Engagement
+## 🚀 Active Sprint 14: (Next)
 
-- [x] **Task 29: Webhook Event Log UI** — Completed.
-- [x] **Task 34: Email Template System** — Completed.
-- [x] **Task 35: User Feedback Widget** — Floating in-app feedback button with Bug/Idea/General types. Admin review panel with status tabs, type filtering, and actions. 14 tests.
-
-## 📋 Upcoming Sprint 12: Enterprise Mechanics
-
-- [ ] **Task 36: SSO / SAML Authentication**
-  - Enterprise SSO support for workspace-level identity providers.
-- [x] **Task 37: Seat-Based Billing** — Workspace seat helpers, Stripe quantity sync on member removal, billing page seat meter with progress bar, 6 tests.
-- [ ] **Task 38: Custom Domain per Workspace**
-  - Allow workspaces to use their own subdomain or custom domain.
-- [x] **Task 39: Data Retention Policies** — config-driven TTLs, daily `app:prune-old-records` command with `--dry-run`, admin UI with manual trigger, 6 tests.
-- [x] **Task 40: 2FA Enforcement per Workspace** — `require_two_factor` column, `RequireTwoFactor` middleware, security settings page, enforcement wall page, 7 tests.
+_Sprint 14 not yet planned. All previous sprints complete._
 
 ## 🏁 Completed Sprints
+
+- **Sprint 13**: Platform Maturity & Visibility (System Health Monitor, Public Changelog, Workspace API Keys, Scheduled Tasks Monitor).
 
 - **Sprints 1-8**: Core SaaS Mechanics, Admin Dashboard, Webhooks, Sentry, Activity Logs, Settings, UI refinement.
 - **Sprint 9**: Developer Experience & Integration (Feature Flags, Announcements, Command Palette).
 - **Sprint 10**: Deep Review & Polish (Documentation generated: UI/Theming, Workspaces, I18N, Billing, Security; Landing Page enhanced).
+- **Sprint 11**: Application Polish & Engagement (Webhook Event Log, Email Templates, Feedback Widget).
+- **Sprint 12**: Enterprise Mechanics (Seat-Based Billing, Data Retention, 2FA Enforcement).
 
 ## 📝 Changelog
 
+- **2026-02-25**: Task 44 (Scheduled Tasks Monitor). Read-only admin page introspecting Laravel Schedule with cron parsing, next-due calculation, flag badges, 8 tests.
+- **2026-02-25**: Task 43 (Workspace API Keys). wsk_-prefixed keys, SHA-256 hash storage, 5 scopes, expiry, revocation, admin-only management, 9 tests.
+- **2026-02-25**: Task 42 (Changelog). Admin CRUD for versioned release notes, public timeline page, typed entries (feature/improvement/fix), draft support, 9 seeder entries, 9 tests.
+- **2026-02-25**: Task 41 (System Health). Admin dashboard with queue stats, infrastructure drivers, storage usage, failed job management (retry/delete/flush), 7 tests.
 - **2026-02-25**: Task 40 (2FA Enforcement). RequireTwoFactor middleware, workspace security settings toggle, enforcement wall page, 7 tests.
 - **2026-02-25**: Task 39 (Data Retention). Config-driven pruning, daily scheduler, admin trigger UI with dry-run.
 - **2026-02-25**: Task 37 (Seat-Based Billing). Workspace seat helpers, Stripe quantity sync, seat meter on billing page.

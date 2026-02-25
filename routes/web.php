@@ -17,6 +17,9 @@ Route::get('/', function () {
     ]);
 })->name('home');
 
+// Public changelog
+Route::get('/changelog', [\App\Http\Controllers\ChangelogController::class, 'index'])->name('changelog');
+
 // Public invitation acceptance route
 Route::get('/invitations/{token}', [InvitationController::class, 'show'])
     ->name('invitations.show');
@@ -51,6 +54,11 @@ Route::middleware(['auth', 'verified', 'onboarded', 'workspace', 'require2fa'])-
         Route::post('/{workspace}/switch', [WorkspaceController::class, 'switch'])->name('switch');
 
         Route::get('/{workspace}/activity', [\App\Http\Controllers\WorkspaceActivityController::class, 'index'])->name('activity');
+
+        // Workspace API Keys
+        Route::get('/api-keys', [\App\Http\Controllers\WorkspaceApiKeyController::class, 'index'])->name('api-keys.index');
+        Route::post('/api-keys', [\App\Http\Controllers\WorkspaceApiKeyController::class, 'store'])->name('api-keys.store');
+        Route::delete('/api-keys/{id}', [\App\Http\Controllers\WorkspaceApiKeyController::class, 'destroy'])->name('api-keys.destroy');
 
         // Webhook routes
         Route::prefix('{workspace}/webhooks')->name('webhooks.')->group(function () {
@@ -179,4 +187,19 @@ Route::middleware(['auth', 'superadmin'])->prefix('admin')->name('admin.')->grou
     // Data Retention
     Route::get('/retention', [\App\Http\Controllers\Admin\RetentionController::class, 'index'])->name('retention.index');
     Route::post('/retention/prune', [\App\Http\Controllers\Admin\RetentionController::class, 'prune'])->name('retention.prune');
+
+    // System Health
+    Route::get('/system-health', [\App\Http\Controllers\Admin\SystemHealthController::class, 'index'])->name('system-health.index');
+    Route::post('/system-health/jobs/{id}/retry', [\App\Http\Controllers\Admin\SystemHealthController::class, 'retryJob'])->name('system-health.retry-job');
+    Route::delete('/system-health/jobs/{id}', [\App\Http\Controllers\Admin\SystemHealthController::class, 'deleteJob'])->name('system-health.delete-job');
+    Route::post('/system-health/jobs/flush', [\App\Http\Controllers\Admin\SystemHealthController::class, 'flushJobs'])->name('system-health.flush-jobs');
+
+    // Changelog
+    Route::get('/changelog', [\App\Http\Controllers\Admin\ChangelogController::class, 'index'])->name('changelog.index');
+    Route::post('/changelog', [\App\Http\Controllers\Admin\ChangelogController::class, 'store'])->name('changelog.store');
+    Route::put('/changelog/{changelogEntry}', [\App\Http\Controllers\Admin\ChangelogController::class, 'update'])->name('changelog.update');
+    Route::delete('/changelog/{changelogEntry}', [\App\Http\Controllers\Admin\ChangelogController::class, 'destroy'])->name('changelog.destroy');
+
+    // Scheduled Tasks
+    Route::get('/scheduled-tasks', [\App\Http\Controllers\Admin\ScheduledTaskController::class, 'index'])->name('scheduled-tasks.index');
 });
