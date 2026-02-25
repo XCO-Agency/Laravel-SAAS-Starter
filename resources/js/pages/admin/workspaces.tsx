@@ -6,7 +6,6 @@ import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import {
     Building2,
-    RotateCcw,
     Search,
     Users,
 } from 'lucide-react';
@@ -74,11 +73,6 @@ export default function AdminWorkspaces({ workspaces, filters, planOptions }: Ad
     const getInitials = (name: string) =>
         name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
 
-    const restoreWorkspace = (ws: PaginatedWorkspace) => {
-        if (confirm(`Restore workspace "${ws.name}"?`)) {
-            // Future: add restore endpoint
-        }
-    };
 
     return (
         <AdminLayout>
