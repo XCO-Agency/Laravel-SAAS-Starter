@@ -4,6 +4,7 @@ import {
     ArrowLeft,
     Building2,
     LayoutDashboard,
+    Megaphone,
     ScrollText,
     Users,
 } from 'lucide-react';
@@ -15,6 +16,7 @@ const adminNav = [
     { title: 'Users', href: '/admin/users', icon: Users },
     { title: 'Workspaces', href: '/admin/workspaces', icon: Building2 },
     { title: 'Audit Logs', href: '/admin/audit-logs', icon: ScrollText },
+    { title: 'Announcements', href: '/admin/announcements', icon: Megaphone },
 ];
 
 export default function AdminLayout({

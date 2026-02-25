@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Announcement;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -104,6 +105,7 @@ class HandleInertiaRequests extends Middleware
                 'info' => $request->session()->get('info'),
                 'token' => $request->session()->get('token'),
             ],
+            'announcement' => Announcement::currentlyActive()->latest()->first()?->only('id', 'title', 'body', 'type', 'link_text', 'link_url', 'is_dismissible'),
         ];
     }
 }
