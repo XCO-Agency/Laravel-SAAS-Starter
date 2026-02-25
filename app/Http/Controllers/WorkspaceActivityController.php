@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Workspace;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 use Spatie\Activitylog\Models\Activity;
@@ -15,6 +16,8 @@ class WorkspaceActivityController extends Controller
      */
     public function index(Request $request, Workspace $workspace): Response
     {
+        Gate::authorize('viewActivityLogging', $workspace);
+
         // Spatie activity log records the model class name 
         // in 'subject_type' and ID in 'subject_id'
         $activities = Activity::where(function ($query) use ($workspace) {

@@ -6,6 +6,7 @@ use App\Models\WebhookEndpoint;
 use App\Models\Workspace;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 use Spatie\WebhookServer\WebhookCall;
@@ -17,6 +18,8 @@ class WebhookEndpointController extends Controller
      */
     public function index(Request $request, Workspace $workspace): Response
     {
+        Gate::authorize('viewAny', [WebhookEndpoint::class, $workspace]);
+
         $endpoints = $workspace->webhookEndpoints()->latest()->get();
 
         return Inertia::render('workspaces/webhooks/index', [
@@ -30,6 +33,8 @@ class WebhookEndpointController extends Controller
      */
     public function store(Request $request, Workspace $workspace): RedirectResponse
     {
+        Gate::authorize('create', [WebhookEndpoint::class, $workspace]);
+
         $validated = $request->validate([
             'url' => ['required', 'url', 'max:255'],
             'events' => ['nullable', 'array'],
@@ -51,7 +56,7 @@ class WebhookEndpointController extends Controller
      */
     public function update(Request $request, Workspace $workspace, WebhookEndpoint $webhookEndpoint): RedirectResponse
     {
-        abort_if($webhookEndpoint->workspace_id !== $workspace->id, 403);
+        Gate::authorize('update', $webhookEndpoint);
 
         $validated = $request->validate([
             'url' => ['required', 'url', 'max:255'],
@@ -74,7 +79,7 @@ class WebhookEndpointController extends Controller
      */
     public function destroy(Workspace $workspace, WebhookEndpoint $webhookEndpoint): RedirectResponse
     {
-        abort_if($webhookEndpoint->workspace_id !== $workspace->id, 403);
+        Gate::authorize('delete', $webhookEndpoint);
 
         $webhookEndpoint->delete();
 
@@ -86,7 +91,7 @@ class WebhookEndpointController extends Controller
      */
     public function ping(Workspace $workspace, WebhookEndpoint $webhookEndpoint): RedirectResponse
     {
-        abort_if($webhookEndpoint->workspace_id !== $workspace->id, 403);
+        Gate::authorize('update', $webhookEndpoint);
 
         WebhookCall::create()
             ->url($webhookEndpoint->url)

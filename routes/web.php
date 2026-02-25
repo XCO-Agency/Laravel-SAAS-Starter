@@ -47,17 +47,13 @@ Route::middleware(['auth', 'verified', 'workspace'])->group(function () {
         Route::post('/', [WorkspaceController::class, 'store'])->name('store');
         Route::get('/settings', [WorkspaceController::class, 'settings'])->name('settings');
         Route::put('/settings', [WorkspaceController::class, 'update'])->name('update');
-        Route::delete('/', [WorkspaceController::class, 'destroy'])
-            ->middleware('workspace.owner')
-            ->name('destroy');
+        Route::delete('/', [WorkspaceController::class, 'destroy'])->name('destroy');
         Route::post('/{workspace}/switch', [WorkspaceController::class, 'switch'])->name('switch');
 
-        Route::get('/{workspace}/activity', [\App\Http\Controllers\WorkspaceActivityController::class, 'index'])
-            ->middleware('workspace.admin')
-            ->name('activity');
+        Route::get('/{workspace}/activity', [\App\Http\Controllers\WorkspaceActivityController::class, 'index'])->name('activity');
 
         // Webhook routes
-        Route::middleware('workspace.admin')->prefix('{workspace}/webhooks')->name('webhooks.')->group(function () {
+        Route::prefix('{workspace}/webhooks')->name('webhooks.')->group(function () {
             Route::get('/', [\App\Http\Controllers\WebhookEndpointController::class, 'index'])->name('index');
             Route::post('/', [\App\Http\Controllers\WebhookEndpointController::class, 'store'])->name('store');
             Route::put('/{webhookEndpoint}', [\App\Http\Controllers\WebhookEndpointController::class, 'update'])->name('update');
@@ -69,39 +65,22 @@ Route::middleware(['auth', 'verified', 'workspace'])->group(function () {
     // Team routes
     Route::prefix('team')->name('team.')->group(function () {
         Route::get('/', [TeamController::class, 'index'])->name('index');
-        Route::post('/invite', [TeamController::class, 'invite'])
-            ->middleware('workspace.admin')
-            ->name('invite');
-        Route::delete('/members/{user}', [TeamController::class, 'removeMember'])
-            ->middleware('workspace.admin')
-            ->name('remove');
-        Route::put('/members/{user}/role', [TeamController::class, 'updateRole'])
-            ->middleware('workspace.admin')
-            ->name('update-role');
-        Route::post('/transfer-ownership/{user}', [TeamController::class, 'transferOwnership'])
-            ->middleware('workspace.owner')
-            ->name('transfer-ownership');
-        Route::delete('/invitations/{invitation}', [TeamController::class, 'cancelInvitation'])
-            ->middleware('workspace.admin')
-            ->name('cancel-invitation');
+        Route::post('/invite', [TeamController::class, 'invite'])->name('invite');
+        Route::delete('/members/{user}', [TeamController::class, 'removeMember'])->name('remove');
+        Route::put('/members/{user}/role', [TeamController::class, 'updateRole'])->name('update-role');
+        Route::put('/members/{user}/permissions', [TeamController::class, 'updatePermissions'])->name('update-permissions');
+        Route::post('/transfer-ownership/{user}', [TeamController::class, 'transferOwnership'])->name('transfer-ownership');
+        Route::delete('/invitations/{invitation}', [TeamController::class, 'cancelInvitation'])->name('cancel-invitation');
     });
 
     // Billing routes
     Route::prefix('billing')->name('billing.')->group(function () {
         Route::get('/', [BillingController::class, 'index'])->name('index');
         Route::get('/plans', [BillingController::class, 'plans'])->name('plans');
-        Route::post('/subscribe', [BillingController::class, 'subscribe'])
-            ->middleware('workspace.owner')
-            ->name('subscribe');
-        Route::post('/cancel', [BillingController::class, 'cancel'])
-            ->middleware('workspace.owner')
-            ->name('cancel');
-        Route::post('/resume', [BillingController::class, 'resume'])
-            ->middleware('workspace.owner')
-            ->name('resume');
-        Route::get('/portal', [BillingController::class, 'portal'])
-            ->middleware('workspace.owner')
-            ->name('portal');
+        Route::post('/subscribe', [BillingController::class, 'subscribe'])->name('subscribe');
+        Route::post('/cancel', [BillingController::class, 'cancel'])->name('cancel');
+        Route::post('/resume', [BillingController::class, 'resume'])->name('resume');
+        Route::get('/portal', [BillingController::class, 'portal'])->name('portal');
     });
 });
 

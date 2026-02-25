@@ -7,6 +7,7 @@ use App\Models\Workspace;
 use App\Services\WorkspaceService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -156,10 +157,7 @@ class WorkspaceController extends Controller
         $user = $request->user();
         $workspace = $user->currentWorkspace;
 
-        // Only owner can delete
-        if (! $workspace->userIsOwner($user)) {
-            abort(403, 'Only the workspace owner can delete this workspace.');
-        }
+        Gate::authorize('delete', $workspace);
 
         if ($workspace->personal_workspace) {
             return redirect()->back()

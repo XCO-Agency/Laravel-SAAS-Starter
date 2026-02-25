@@ -109,7 +109,7 @@ class Workspace extends Model
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'workspace_user')
-            ->withPivot('role')
+            ->withPivot('role', 'permissions')
             ->withTimestamps();
     }
 
@@ -163,6 +163,45 @@ class Workspace extends Model
         $role = $this->getUserRole($user);
 
         return in_array($role, ['owner', 'admin']);
+    }
+
+    /**
+     * Get the explicit sub-tier permissions of a user in the workspace.
+     */
+    public function getUserPermissions(User $user): array
+    {
+        $member = $this->users()->where('user_id', $user->id)->first();
+
+        if (!$member || empty($member->pivot->permissions)) {
+            return [];
+        }
+
+        return json_decode($member->pivot->permissions, true) ?? [];
+    }
+
+    /**
+     * Determine if a user has a specific granular capability. 
+     * Owners have all capabilities implicitly. Admins have most capabilities implicitly.
+     */
+    public function hasPermission(User $user, string $permission): bool
+    {
+        // 1. Owners can do anything natively
+        if ($this->userIsOwner($user)) {
+            return true;
+        }
+
+        // 2. Evaluate the raw JSON permission array first so explicitly granted overrides work cleanly
+        $permissions = $this->getUserPermissions($user);
+        if (in_array($permission, $permissions)) {
+            return true;
+        }
+
+        // 3. Admins pass cleanly for standard management capabilities, but NOT sensitive billing
+        if ($this->userIsAdmin($user)) {
+            return in_array($permission, ['manage_team', 'manage_webhooks', 'view_activity_logs']);
+        }
+
+        return false;
     }
 
     /**

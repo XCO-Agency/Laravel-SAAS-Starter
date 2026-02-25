@@ -70,7 +70,7 @@ class DatabaseSeeder extends Seeder
             ]);
 
             // Set varied attributes for additional users
-            $additionalUsers->each(function ($user, $index) use ($locales) {
+            $additionalUsers->each(function (User $user, int $index) use ($locales) {
                 // Mix of verified and unverified
                 if ($index % 3 === 0) {
                     $user->update(['email_verified_at' => null]);
@@ -92,7 +92,7 @@ class DatabaseSeeder extends Seeder
             $users = $users->merge($additionalUsers);
 
             // 3. Create personal workspaces for all users
-            $users->each(function ($user) use ($workspaceService) {
+            $users->each(function (User $user) use ($workspaceService) {
                 $workspaceService->createPersonalWorkspace($user);
             });
 
@@ -106,7 +106,7 @@ class DatabaseSeeder extends Seeder
             ];
 
             $demoWorkspaces = collect();
-            $otherUsers = $users->reject(fn ($user) => $user->id === $demo->id);
+            $otherUsers = $users->reject(fn (User $user) => $user->id === $demo->id);
 
             foreach ($demoWorkspaceNames as $index => $name) {
                 $workspace = $workspaceService->create($demo, [
@@ -237,7 +237,7 @@ class DatabaseSeeder extends Seeder
                     ]);
 
                     // Add some members to these workspaces too
-                    $members = $users->reject(fn ($user) => $user->id === $owner->id)->random(rand(2, 5));
+                    $members = $users->reject(fn (User $user) => $user->id === $owner->id)->random(rand(2, 5));
                     foreach ($members as $member) {
                         $workspace->addUser($member, 'member');
                     }

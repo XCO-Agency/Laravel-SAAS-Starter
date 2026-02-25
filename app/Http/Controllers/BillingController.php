@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 use Laravel\Cashier\Http\Controllers\WebhookController;
@@ -80,6 +81,8 @@ class BillingController extends Controller
 
         $user = $request->user();
         $workspace = $user->currentWorkspace;
+        Gate::authorize('manageBilling', $workspace);
+
         $plans = config('billing.plans');
 
         $plan = $plans[$validated['plan']] ?? null;
@@ -142,6 +145,7 @@ class BillingController extends Controller
     public function portal(Request $request): RedirectResponse|\Illuminate\Http\JsonResponse
     {
         $workspace = $request->user()->currentWorkspace;
+        Gate::authorize('manageBilling', $workspace);
 
         if (! $workspace->hasStripeId()) {
             if ($request->wantsJson()) {
@@ -168,6 +172,7 @@ class BillingController extends Controller
     public function cancel(Request $request): \Illuminate\Http\JsonResponse
     {
         $workspace = $request->user()->currentWorkspace;
+        Gate::authorize('manageBilling', $workspace);
 
         if (! $workspace->subscribed('default')) {
             return response()->json([
@@ -198,6 +203,8 @@ class BillingController extends Controller
     public function resume(Request $request): \Illuminate\Http\JsonResponse
     {
         $workspace = $request->user()->currentWorkspace;
+        Gate::authorize('manageBilling', $workspace);
+
         $subscription = $workspace->subscription('default');
 
         if (! $subscription || ! $subscription->onGracePeriod()) {

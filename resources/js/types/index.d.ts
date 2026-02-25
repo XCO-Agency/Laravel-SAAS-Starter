@@ -53,6 +53,7 @@ export interface TeamMember {
     name: string;
     email: string;
     role: WorkspaceRole;
+    permissions?: string[];
     joined_at: string;
     is_current_user: boolean;
 }

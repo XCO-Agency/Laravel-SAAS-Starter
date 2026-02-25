@@ -8,6 +8,7 @@ use App\Services\InvitationService;
 use App\Services\WorkspaceService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -42,6 +43,7 @@ class TeamController extends Controller
                     'name' => $member->name,
                     'email' => $member->email,
                     'role' => $member->pivot->role,
+                    'permissions' => json_decode($member->pivot->permissions, true) ?? [],
                     'joined_at' => $member->pivot->created_at,
                     'is_current_user' => $member->id === $user->id,
                 ]),
@@ -61,6 +63,7 @@ class TeamController extends Controller
     {
         $user = $request->user();
         $workspace = $user->currentWorkspace;
+        Gate::authorize('manageTeam', $workspace);
 
         $validated = $request->validate([
             'email' => ['required', 'email', 'max:255'],
@@ -90,6 +93,7 @@ class TeamController extends Controller
     {
         $currentUser = $request->user();
         $workspace = $currentUser->currentWorkspace;
+        Gate::authorize('manageTeam', $workspace);
 
         // Cannot remove the owner
         if ($workspace->userIsOwner($user)) {
@@ -124,6 +128,7 @@ class TeamController extends Controller
     {
         $currentUser = $request->user();
         $workspace = $currentUser->currentWorkspace;
+        Gate::authorize('manageTeam', $workspace);
 
         $validated = $request->validate([
             'role' => ['required', Rule::in(['admin', 'member'])],
@@ -142,12 +147,43 @@ class TeamController extends Controller
     }
 
     /**
+     * Update a member's granular permissions.
+     */
+    public function updatePermissions(Request $request, User $user): RedirectResponse
+    {
+        $currentUser = $request->user();
+        $workspace = $currentUser->currentWorkspace;
+        Gate::authorize('manageTeam', $workspace);
+
+        $validated = $request->validate([
+            'permissions' => ['present', 'array'],
+            'permissions.*' => ['string'],
+        ]);
+
+        if (!$workspace->hasUser($user)) {
+            abort(404);
+        }
+
+        if ($workspace->userIsOwner($user)) {
+            return redirect()->back()->with('error', 'Cannot modify the permissions of the workspace owner.');
+        }
+
+        $workspace->users()->updateExistingPivot($user->id, [
+            'permissions' => json_encode($validated['permissions'])
+        ]);
+
+        return redirect()->back()
+            ->with('success', "{$user->name}'s granular permissions have been updated.");
+    }
+
+    /**
      * Transfer workspace ownership to another user.
      */
     public function transferOwnership(Request $request, User $user): RedirectResponse
     {
         $currentUser = $request->user();
         $workspace = $currentUser->currentWorkspace;
+        Gate::authorize('delete', $workspace);
 
         // Cannot transfer personal workspace
         if ($workspace->personal_workspace) {
@@ -179,6 +215,7 @@ class TeamController extends Controller
     {
         $user = $request->user();
         $workspace = $user->currentWorkspace;
+        Gate::authorize('manageTeam', $workspace);
 
         // Ensure invitation belongs to current workspace
         if ($invitation->workspace_id !== $workspace->id) {

@@ -3,6 +3,7 @@ import { useTranslations } from '@/hooks/use-translations';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
     Card,
     CardContent,
@@ -52,11 +53,19 @@ import {
     Mail,
     MoreHorizontal,
     Settings,
+    Shield,
     Trash2,
     UserPlus,
     Users,
 } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+
+const AVAILABLE_PERMISSIONS = [
+    { id: 'manage_team', label: 'Manage Team', description: 'Can invite, remove, and manage team members.' },
+    { id: 'manage_billing', label: 'Manage Billing', description: 'Can subscribe or cancel plans.' },
+    { id: 'manage_webhooks', label: 'Manage Webhooks', description: 'Can create and configure webhook endpoints.' },
+    { id: 'view_activity_logs', label: 'View Activity Logs', description: 'Can view audit logs and events.' }
+];
 
 interface TeamIndexProps {
     workspace: Workspace;
@@ -81,6 +90,40 @@ export default function TeamIndex({
     const { t } = useTranslations();
     const isAdmin = userRole === 'owner' || userRole === 'admin';
     const isOwner = userRole === 'owner';
+
+    const [editPermissionsOpen, setEditPermissionsOpen] = useState(false);
+    const [selectedMemberForPermissions, setSelectedMemberForPermissions] = useState<TeamMember | null>(null);
+
+    const {
+        data: permissionsData,
+        setData: setPermissionsData,
+        processing: permissionsProcessing,
+    } = useForm({
+        permissions: [] as string[],
+    });
+
+    useEffect(() => {
+        if (selectedMemberForPermissions) {
+            setPermissionsData('permissions', selectedMemberForPermissions.permissions || []);
+        }
+    }, [selectedMemberForPermissions, setPermissionsData]);
+
+    const handleUpdatePermissions = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!selectedMemberForPermissions) return;
+
+        router.put(
+            `/team/members/${selectedMemberForPermissions.id}/permissions`,
+            permissionsData,
+            {
+                preserveScroll: true,
+                onSuccess: () => {
+                    setEditPermissionsOpen(false);
+                    setTimeout(() => setSelectedMemberForPermissions(null), 200);
+                },
+            }
+        );
+    };
 
     const {
         data: inviteData,
@@ -366,6 +409,18 @@ export default function TeamIndex({
                                                                     ? t('team.demote_to_member', 'Demote to Member')
                                                                     : t('team.promote_to_admin', 'Promote to Admin')}
                                                             </DropdownMenuItem>
+                                                            <DropdownMenuSeparator />
+                                                            {member.role === 'member' && (
+                                                                <DropdownMenuItem
+                                                                    onClick={() => {
+                                                                        setSelectedMemberForPermissions(member);
+                                                                        setEditPermissionsOpen(true);
+                                                                    }}
+                                                                >
+                                                                    <Shield className="mr-2 h-4 w-4" />
+                                                                    {t('team.manage_permissions', 'Manage Permissions')}
+                                                                </DropdownMenuItem>
+                                                            )}
                                                             {isOwner &&
                                                                 member.role ===
                                                                 'admin' && (
@@ -463,6 +518,67 @@ export default function TeamIndex({
                             </CardContent>
                         </Card>
                     )}
+
+                    {/* Manage Permissions Dialog */}
+                    <Dialog open={editPermissionsOpen} onOpenChange={(open) => {
+                        setEditPermissionsOpen(open);
+                        if (!open) setTimeout(() => setSelectedMemberForPermissions(null), 200);
+                    }}>
+                        <DialogContent>
+                            <form onSubmit={handleUpdatePermissions}>
+                                <DialogHeader>
+                                    <DialogTitle>
+                                        Manage Permissions
+                                    </DialogTitle>
+                                    <DialogDescription>
+                                        Assign granular capabilities to {selectedMemberForPermissions?.name}.
+                                    </DialogDescription>
+                                </DialogHeader>
+                                <div className="space-y-4 py-4">
+                                    {AVAILABLE_PERMISSIONS.map((permission) => (
+                                        <div key={permission.id} className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                                            <Checkbox
+                                                id={permission.id}
+                                                checked={permissionsData.permissions.includes(permission.id)}
+                                                onCheckedChange={(checked) => {
+                                                    const updatedPermissions = checked
+                                                        ? [...permissionsData.permissions, permission.id]
+                                                        : permissionsData.permissions.filter((p) => p !== permission.id);
+                                                    setPermissionsData('permissions', updatedPermissions);
+                                                }}
+                                            />
+                                            <div className="space-y-1 leading-none">
+                                                <Label htmlFor={permission.id}>
+                                                    {permission.label}
+                                                </Label>
+                                                <p className="text-sm text-muted-foreground">
+                                                    {permission.description}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                                <DialogFooter>
+                                    <Button
+                                        type="button"
+                                        variant="outline"
+                                        onClick={() => setEditPermissionsOpen(false)}
+                                    >
+                                        {t('common.cancel', 'Cancel')}
+                                    </Button>
+                                    <Button
+                                        type="submit"
+                                        disabled={permissionsProcessing}
+                                    >
+                                        {permissionsProcessing && (
+                                            <Spinner className="mr-2" />
+                                        )}
+                                        {t('common.save', 'Save Changes')}
+                                    </Button>
+                                </DialogFooter>
+                            </form>
+                        </DialogContent>
+                    </Dialog>
                 </div>
             </SettingsLayout>
         </AppLayout>
