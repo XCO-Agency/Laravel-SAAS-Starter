@@ -6,6 +6,7 @@ import {
     LayoutDashboard,
     Megaphone,
     ScrollText,
+    ToggleLeft,
     Users,
 } from 'lucide-react';
 import { type PropsWithChildren } from 'react';
@@ -15,6 +16,7 @@ const adminNav = [
     { title: 'Overview', href: '/admin/dashboard', icon: LayoutDashboard },
     { title: 'Users', href: '/admin/users', icon: Users },
     { title: 'Workspaces', href: '/admin/workspaces', icon: Building2 },
+    { title: 'Feature Flags', href: '/admin/feature-flags', icon: ToggleLeft },
     { title: 'Audit Logs', href: '/admin/audit-logs', icon: ScrollText },
     { title: 'Announcements', href: '/admin/announcements', icon: Megaphone },
 ];

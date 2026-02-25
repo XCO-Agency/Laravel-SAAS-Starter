@@ -96,6 +96,7 @@ class HandleInertiaRequests extends Middleware
                 'owner_id' => $currentWorkspace->owner_id,
                 'plan' => $currentWorkspace->plan_name,
                 'role' => $currentWorkspace->getUserRole($user),
+                'feature_flags' => \Laravel\Pennant\Feature::for($currentWorkspace)->all(),
             ] : null,
             'workspaces' => $workspaces,
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',

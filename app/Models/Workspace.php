@@ -11,13 +11,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 use Laravel\Cashier\Billable;
 use Laravel\Cashier\Subscription;
+use Laravel\Pennant\Concerns\HasFeatures;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class Workspace extends Model
 {
     /** @use HasFactory<\Database\Factories\WorkspaceFactory> */
-    use Billable, HasFactory, LogsActivity, SoftDeletes;
+    use Billable, HasFactory, HasFeatures, LogsActivity, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
