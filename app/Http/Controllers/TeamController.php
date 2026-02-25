@@ -162,7 +162,7 @@ class TeamController extends Controller
             'permissions.*' => ['string'],
         ]);
 
-        if (!$workspace->hasUser($user)) {
+        if (! $workspace->hasUser($user)) {
             abort(404);
         }
 
@@ -171,7 +171,7 @@ class TeamController extends Controller
         }
 
         $workspace->users()->updateExistingPivot($user->id, [
-            'permissions' => json_encode($validated['permissions'])
+            'permissions' => json_encode($validated['permissions']),
         ]);
 
         return redirect()->back()

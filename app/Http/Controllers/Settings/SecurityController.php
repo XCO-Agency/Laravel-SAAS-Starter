@@ -26,12 +26,12 @@ class SecurityController extends Controller
      */
     public function downloadExport(Request $request, string $filename): StreamedResponse
     {
-        $path = 'exports/' . $filename;
-        
-        if (!Storage::disk('local')->exists($path)) {
+        $path = 'exports/'.$filename;
+
+        if (! Storage::disk('local')->exists($path)) {
             abort(404, 'Export file not found or expired.');
         }
-        
+
         return response()->download(Storage::disk('local')->path($path));
     }
 }

@@ -39,7 +39,7 @@ class ImpersonationController extends Controller
         }
 
         $originalId = $request->session()->get('impersonated_by');
-        
+
         // Remove the session key
         $request->session()->forget('impersonated_by');
 

@@ -3,8 +3,6 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Laravel\Ai\Prompts\AgentPrompt;
-use Laravel\Ai\Responses\AgentResponse;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 

@@ -40,7 +40,7 @@ class NotificationPreferenceController extends Controller
             'notification_preferences' => array_merge(
                 $request->user()->notification_preferences ?? [],
                 $validated['preferences']
-            )
+            ),
         ]);
 
         return back()->with('success', __('Notification preferences updated.'));

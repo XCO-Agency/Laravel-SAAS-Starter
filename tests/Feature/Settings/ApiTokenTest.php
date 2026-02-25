@@ -34,13 +34,13 @@ it('allows a user to create a new api token', function () {
     ]);
 
     $response->assertRedirect(); // Typically redirects back
-    
+
     // Assert flash session token
     $response->assertSessionHas('token');
 
     // Re-fetch user explicitly to check relationships
     $user->refresh();
-    
+
     $this->assertCount(1, $user->tokens);
     $this->assertEquals('GitHub Actions', $user->tokens->first()->name);
 });
@@ -66,8 +66,8 @@ it('allows users to revoke their own api tokens', function () {
     $response = $this->actingAs($user)->delete("/settings/api-tokens/{$token->accessToken->id}");
 
     $response->assertRedirect();
-    
+
     $user->refresh();
-    
+
     $this->assertCount(0, $user->tokens);
 });

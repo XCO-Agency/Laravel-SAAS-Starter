@@ -1,11 +1,9 @@
 <?php
 
 use App\Models\User;
-use App\Models\WebhookEndpoint;
 use App\Models\Workspace;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
-use Spatie\WebhookServer\Events\WebhookCallSucceededEvent;
 use Spatie\WebhookServer\Events\DispatchingWebhookCallEvent;
 
 uses(RefreshDatabase::class);

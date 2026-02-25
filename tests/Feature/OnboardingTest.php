@@ -46,14 +46,14 @@ it('processes the wizard mutating the timestamp and spawning a workspace seamles
 
 it('allows seamlessly onboarded users into the dashboard securely bypassing the wizard', function () {
     $user = User::factory()->create(); // Automatically onboarded via factory defaults
-    // Simulate setting a fake current workspace since the factory might not spawn one natively 
+    // Simulate setting a fake current workspace since the factory might not spawn one natively
     // Wait, testing Dashboard requires a currentWorkspace. Let's just hit a generic onboarded route like /settings/profile instead
 
     $response = $this->actingAs($user)->get('/settings/profile');
 
     $response->assertSuccessful();
 
-    // Secondary check: ensure they can't access onboarding again 
+    // Secondary check: ensure they can't access onboarding again
     $responseWizard = $this->actingAs($user)->get(route('onboarding.index'));
     $responseWizard->assertRedirect(route('dashboard'));
 });

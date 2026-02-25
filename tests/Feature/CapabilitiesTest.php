@@ -7,16 +7,16 @@ beforeEach(function () {
     $this->owner = User::factory()->create();
     $this->admin = User::factory()->create();
     $this->member = User::factory()->create();
-    
+
     $this->workspace = Workspace::factory()->create([
         'owner_id' => $this->owner->id,
     ]);
-    
+
     // Attach users with native macro roles securely
     $this->workspace->users()->attach($this->owner->id, ['role' => 'owner']);
     $this->workspace->users()->attach($this->admin->id, ['role' => 'admin']);
     $this->workspace->users()->attach($this->member->id, ['role' => 'member']);
-    
+
     // Switch workspaces explicitly
     $this->owner->switchWorkspace($this->workspace);
     $this->admin->switchWorkspace($this->workspace);
@@ -57,7 +57,7 @@ it('allows administrators to functionally update underlying member capabilities'
         ])
         ->assertRedirect()
         ->assertSessionHasNoErrors();
-        
+
     $this->assertDatabaseHas('workspace_user', [
         'workspace_id' => $this->workspace->id,
         'user_id' => $this->member->id,

@@ -5,7 +5,6 @@ namespace App\Policies;
 use App\Models\User;
 use App\Models\WebhookEndpoint;
 use App\Models\Workspace;
-use Illuminate\Auth\Access\Response;
 
 class WebhookEndpointPolicy
 {
@@ -15,7 +14,7 @@ class WebhookEndpointPolicy
     protected function canManageWebhooks(User $user, Workspace $workspace): bool
     {
         // Ensure the user actually belongs to this workspace context requested
-        if (!$user->belongsToWorkspace($workspace)) {
+        if (! $user->belongsToWorkspace($workspace)) {
             return false;
         }
 

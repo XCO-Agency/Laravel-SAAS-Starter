@@ -14,7 +14,7 @@ it('allows guests to update their locale preference in the session', function ()
     ]);
 
     $response->assertRedirect();
-    
+
     // Assert session was updated
     expect(Session::get('locale'))->toBe('fr');
 });
@@ -31,10 +31,10 @@ it('allows authenticated users to update their locale in session and database', 
     ]);
 
     $response->assertRedirect();
-    
+
     // Assert session updated
     expect(Session::get('locale'))->toBe('es');
-    
+
     // Assert database updated
     $user->refresh();
     expect($user->locale)->toBe('es');
@@ -46,7 +46,7 @@ it('rejects invalid locales', function () {
     ]);
 
     $response->assertSessionHasErrors(['locale']);
-    
+
     // Assert session was NOT updated
     expect(Session::get('locale'))->toBeNull();
 });

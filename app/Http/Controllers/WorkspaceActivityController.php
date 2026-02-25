@@ -18,18 +18,18 @@ class WorkspaceActivityController extends Controller
     {
         Gate::authorize('viewActivityLogging', $workspace);
 
-        // Spatie activity log records the model class name 
+        // Spatie activity log records the model class name
         // in 'subject_type' and ID in 'subject_id'
         $activities = Activity::where(function ($query) use ($workspace) {
             $query->where('subject_type', Workspace::class)
-                  ->where('subject_id', $workspace->id);
+                ->where('subject_id', $workspace->id);
         })->orWhere(function ($query) use ($workspace) {
             // Include potential future models bound directly to workspaces
             $query->where('properties->workspace_id', $workspace->id);
         })
-        ->with('causer')
-        ->latest()
-        ->paginate(20);
+            ->with('causer')
+            ->latest()
+            ->paginate(20);
 
         return Inertia::render('workspaces/activity/index', [
             'workspace' => $workspace,

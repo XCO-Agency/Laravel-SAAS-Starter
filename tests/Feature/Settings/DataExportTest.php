@@ -18,4 +18,3 @@ it('dispatches the export personal data job securely', function () {
         return $job->user->id === $user->id;
     });
 });
-

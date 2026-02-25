@@ -4,11 +4,10 @@ use App\Models\ConnectedAccount;
 use App\Models\User;
 use App\Models\Workspace;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Socialite\Contracts\Provider;
 use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Two\User as SocialiteUser;
 use Mockery as m;
-
-use Laravel\Socialite\Contracts\Provider;
 
 uses(RefreshDatabase::class);
 
@@ -31,7 +30,7 @@ it('redirects to the provider', function () {
 });
 
 it('creates a new user and connected account on successful fresh callback', function () {
-    $socialiteUser = new SocialiteUser();
+    $socialiteUser = new SocialiteUser;
     $socialiteUser->map([
         'id' => 'github_123',
         'nickname' => 'johndoe',
@@ -39,7 +38,7 @@ it('creates a new user and connected account on successful fresh callback', func
         'email' => 'john@example.com',
         'avatar' => 'https://example.com/avatar.jpg',
     ]);
-    
+
     $socialiteUser->token = 'fake_token';
 
     $this->mockProvider->shouldReceive('user')->andReturn($socialiteUser);
@@ -55,7 +54,7 @@ it('creates a new user and connected account on successful fresh callback', func
     $user = User::where('email', 'john@example.com')->first();
     $this->assertNotNull($user);
     $this->assertEquals('John Doe', $user->name);
-    
+
     $this->assertNotNull($user->email_verified_at);
 
     // Assert Workspace logic is deferred to the Onboarding Wizard
@@ -72,7 +71,7 @@ it('creates a new user and connected account on successful fresh callback', func
 
 it('logs in an existing connected account automatically', function () {
     $user = User::factory()->create();
-    
+
     ConnectedAccount::create([
         'user_id' => $user->id,
         'provider' => 'github',
@@ -80,7 +79,7 @@ it('logs in an existing connected account automatically', function () {
         'token' => 'old_token',
     ]);
 
-    $socialiteUser = new SocialiteUser();
+    $socialiteUser = new SocialiteUser;
     $socialiteUser->map([
         'id' => 'github_456',
         'email' => $user->email,
@@ -102,10 +101,10 @@ it('logs in an existing connected account automatically', function () {
 
 it('attaches to existing email account if a connection does not exist yet', function () {
     $user = User::factory()->create(['email' => 'existing@example.com']);
-    
+
     $this->assertCount(0, $user->connectedAccounts);
 
-    $socialiteUser = new SocialiteUser();
+    $socialiteUser = new SocialiteUser;
     $socialiteUser->map([
         'id' => 'github_789',
         'email' => 'existing@example.com',
@@ -118,7 +117,7 @@ it('attaches to existing email account if a connection does not exist yet', func
     $response->assertRedirect(route('dashboard', absolute: false));
 
     $this->assertAuthenticatedAs($user);
-    
+
     // User should now have exactly 1 connection mapped correctly
     $user->refresh();
     $this->assertCount(1, $user->connectedAccounts);

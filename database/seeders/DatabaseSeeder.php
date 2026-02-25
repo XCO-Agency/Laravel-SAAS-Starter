@@ -3,10 +3,10 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\WebhookEndpoint;
 use App\Models\Workspace;
 use App\Models\WorkspaceInvitation;
 use App\Services\WorkspaceService;
-use App\Models\WebhookEndpoint;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -125,12 +125,12 @@ class DatabaseSeeder extends Seeder
                 if ($index % 2 === 0) {
                     WebhookEndpoint::create([
                         'workspace_id' => $workspace->id,
-                        'url' => 'https://webhook.site/' . fake()->uuid(),
+                        'url' => 'https://webhook.site/'.fake()->uuid(),
                         'events' => ['workspace.updated', 'member.added'],
                         'is_active' => true,
                         'secret' => \Illuminate\Support\Str::random(32),
                     ]);
-                    
+
                     if ($index === 2) {
                         // Add a disabled secondary hook
                         WebhookEndpoint::create([

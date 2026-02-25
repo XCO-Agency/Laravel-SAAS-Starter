@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\User;
-use Illuminate\Notifications\DatabaseNotification;
 
 beforeEach(function () {
     $this->user = User::factory()->create();
@@ -11,7 +10,7 @@ describe('Notifications API', function () {
     it('requires authentication for api and page', function () {
         $this->getJson('/api/notifications')
             ->assertUnauthorized();
-            
+
         $this->get('/notifications')
             ->assertRedirect('/login');
     });
@@ -34,7 +33,7 @@ describe('Notifications API', function () {
             'data' => ['title' => 'Test', 'message' => 'Hello'],
             'read_at' => null,
         ]);
-        
+
         $this->user->notifications()->create([
             'id' => \Illuminate\Support\Str::uuid(),
             'type' => 'App\Notifications\MockNotification',
@@ -58,7 +57,7 @@ describe('Notifications API', function () {
         ]);
 
         $this->actingAs($this->user)
-            ->patchJson('/api/notifications/' . $notification->id . '/read')
+            ->patchJson('/api/notifications/'.$notification->id.'/read')
             ->assertOk()
             ->assertJsonPath('success', true);
 
@@ -91,7 +90,7 @@ describe('Notifications API', function () {
         ]);
 
         $this->actingAs($this->user)
-            ->patchJson('/api/notifications/' . $notification->id . '/read')
+            ->patchJson('/api/notifications/'.$notification->id.'/read')
             ->assertNotFound();
 
         expect($notification->fresh()->read_at)->toBeNull();

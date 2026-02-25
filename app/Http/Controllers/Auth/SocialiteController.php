@@ -6,11 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Models\ConnectedAccount;
 use App\Models\User;
 use App\Models\Workspace;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
-use Illuminate\Support\Facades\DB;
 
 class SocialiteController extends Controller
 {
@@ -47,11 +46,12 @@ class SocialiteController extends Controller
                 'token' => $socialUser->token,
                 'refresh_token' => $socialUser->refreshToken ?? null,
                 'expires_at' => property_exists($socialUser, 'expiresIn') && $socialUser->expiresIn
-                    ? now()->addSeconds($socialUser->expiresIn) 
+                    ? now()->addSeconds($socialUser->expiresIn)
                     : null,
             ]);
 
             Auth::login($account->user);
+
             return redirect()->intended(route('dashboard', absolute: false));
         }
 
@@ -60,7 +60,7 @@ class SocialiteController extends Controller
 
         if (! $user) {
             DB::beginTransaction();
-            
+
             try {
                 // Create a new user
                 $name = tap($socialUser->getName() ?: $socialUser->getNickname(), function ($name) {
@@ -75,11 +75,12 @@ class SocialiteController extends Controller
 
                 $user->markEmailAsVerified();
 
-                // Workspace creation is natively deferred to the Onboarding Wizard 
+                // Workspace creation is natively deferred to the Onboarding Wizard
 
                 DB::commit();
             } catch (\Exception $e) {
                 DB::rollBack();
+
                 return redirect()->route('login')->with('flash', [
                     'error' => 'Could not create your user account.',
                 ]);
@@ -97,7 +98,7 @@ class SocialiteController extends Controller
             'token' => $socialUser->token,
             'refresh_token' => $socialUser->refreshToken ?? null,
             'expires_at' => property_exists($socialUser, 'expiresIn') && $socialUser->expiresIn
-                ? now()->addSeconds($socialUser->expiresIn) 
+                ? now()->addSeconds($socialUser->expiresIn)
                 : null,
         ]);
 
