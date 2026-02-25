@@ -110,6 +110,7 @@ class TeamController extends Controller
         }
 
         $workspace->removeUser($user);
+        $workspace->syncSubscriptionQuantity();
 
         // If the removed user's current workspace is this one, switch them to their personal workspace
         if ($user->current_workspace_id === $workspace->id) {

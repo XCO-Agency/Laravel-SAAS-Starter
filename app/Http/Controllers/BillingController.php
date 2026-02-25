@@ -30,6 +30,8 @@ class BillingController extends Controller
                 'plan' => $workspace->plan_name,
                 'on_trial' => $workspace->onTrial('default'),
                 'trial_ends_at' => $subscription?->trial_ends_at,
+                'seat_count' => $workspace->activeSeatCount(),
+                'seat_limit' => $workspace->seatLimit(),
             ],
             'subscription' => $subscription ? [
                 'status' => $subscription->stripe_status,

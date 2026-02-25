@@ -363,4 +363,53 @@ class Workspace extends Model
     {
         return $this->subscribed('default') && $this->plan_name === 'Business';
     }
+
+    /**
+     * Get the seat limit for this workspace's current plan.
+     * Returns -1 for unlimited.
+     */
+    public function seatLimit(): int
+    {
+        $planKey = $this->plan_key;
+        $config = config("billing.plans.{$planKey}.limits.team_members");
+
+        return $config ?? 2;
+    }
+
+    /**
+     * Get the current number of confirmed members in the workspace.
+     */
+    public function activeSeatCount(): int
+    {
+        return $this->users()->count();
+    }
+
+    /**
+     * Determine if the workspace has at least one available seat.
+     */
+    public function hasAvailableSeat(): bool
+    {
+        $limit = $this->seatLimit();
+
+        return $limit === -1 || $this->activeSeatCount() < $limit;
+    }
+
+    /**
+     * Synchronise the Stripe subscription quantity to the current seat count.
+     * No-op when not subscribed.
+     */
+    public function syncSubscriptionQuantity(): void
+    {
+        $subscription = $this->subscription('default');
+
+        if (! $subscription || ! $subscription->active()) {
+            return;
+        }
+
+        try {
+            $subscription->updateQuantity($this->activeSeatCount());
+        } catch (\Exception) {
+            // Fail silently — Stripe sync is best-effort
+        }
+    }
 }

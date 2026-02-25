@@ -167,4 +167,8 @@ Route::middleware(['auth', 'superadmin'])->prefix('admin')->name('admin.')->grou
     Route::get('/feedback', [\App\Http\Controllers\Admin\FeedbackController::class, 'index'])->name('feedback.index');
     Route::put('/feedback/{feedback}', [\App\Http\Controllers\Admin\FeedbackController::class, 'update'])->name('feedback.update');
     Route::delete('/feedback/{feedback}', [\App\Http\Controllers\Admin\FeedbackController::class, 'destroy'])->name('feedback.destroy');
+
+    // Data Retention
+    Route::get('/retention', [\App\Http\Controllers\Admin\RetentionController::class, 'index'])->name('retention.index');
+    Route::post('/retention/prune', [\App\Http\Controllers\Admin\RetentionController::class, 'prune'])->name('retention.prune');
 });

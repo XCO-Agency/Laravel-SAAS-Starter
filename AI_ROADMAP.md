@@ -33,12 +33,10 @@ The AI agent is now continually managing and executing the roadmap autonomously.
 
 - [ ] **Task 36: SSO / SAML Authentication**
   - Enterprise SSO support for workspace-level identity providers.
-- [ ] **Task 37: Seat-Based Billing**
-  - Charge per active user/seat with automatic subscription adjustments.
+- [x] **Task 37: Seat-Based Billing** — Workspace seat helpers, Stripe quantity sync on member removal, billing page seat meter with progress bar, 6 tests.
 - [ ] **Task 38: Custom Domain per Workspace**
   - Allow workspaces to use their own subdomain or custom domain.
-- [ ] **Task 39: Data Retention Policies**
-  - Configurable auto-cleanup of old activity logs, notifications, and exports.
+- [x] **Task 39: Data Retention Policies** — config-driven TTLs, daily `app:prune-old-records` command with `--dry-run`, admin UI with manual trigger, 6 tests.
 
 ## 🏁 Completed Sprints
 
@@ -48,6 +46,8 @@ The AI agent is now continually managing and executing the roadmap autonomously.
 
 ## 📝 Changelog
 
+- **2026-02-25**: Task 39 (Data Retention). Config-driven pruning, daily scheduler, admin trigger UI with dry-run.
+- **2026-02-25**: Task 37 (Seat-Based Billing). Workspace seat helpers, Stripe quantity sync, seat meter on billing page.
 - **2026-02-25**: Completed Sprint 11 (Tasks 29, 34, 35). Webhook delivery logs, database-driven email templates, in-app feedback widget with admin review panel.
 - **2026-02-25**: Completed Sprint 10 (Tasks 31-33). Wrote extensive markdown documentation detailing architecture mapping to all physical features. Enhanced frontend landing page to showcase precise value capabilities.
 - **2026-02-25**: Completed Sprint 9 (Tasks 28, 30). Built interactive Announcement banner arrays resolving natively via global middleware payload. Bootstrapped native Laravel Pennant integration pushing targeted rollout caches downstream linearly to Inertia.

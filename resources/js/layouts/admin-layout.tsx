@@ -7,6 +7,7 @@ import {
     Megaphone,
     MessageSquare,
     ScrollText,
+    ShieldCheck,
     ToggleLeft,
     Users,
     Mail,
@@ -23,6 +24,7 @@ const adminNav = [
     { title: 'Email Templates', href: '/admin/mail-templates', icon: Mail },
     { title: 'Announcements', href: '/admin/announcements', icon: Megaphone },
     { title: 'Feedback', href: '/admin/feedback', icon: MessageSquare },
+    { title: 'Data Retention', href: '/admin/retention', icon: ShieldCheck },
 ];
 
 export default function AdminLayout({
