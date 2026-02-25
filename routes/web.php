@@ -3,6 +3,7 @@
 use App\Http\Controllers\BillingController;
 use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\LocaleController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\StripeWebhookController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\WorkspaceController;
@@ -105,6 +106,15 @@ Route::middleware(['auth', 'verified', 'workspace'])->group(function () {
 });
 
 Route::middleware(['auth'])->group(function () {
+    Route::get('/notifications', [NotificationController::class, 'page'])->name('notifications.page');
+
+    // Notifications API
+    Route::prefix('api/notifications')->name('notifications.')->group(function () {
+        Route::get('/', [NotificationController::class, 'index'])->name('index');
+        Route::post('/mark-all-read', [NotificationController::class, 'markAllAsRead'])->name('mark-all-read');
+        Route::patch('/{id}/read', [NotificationController::class, 'markAsRead'])->name('mark-read');
+    });
+
     // Stop impersonating outside of superadmin middleware (since active user is standard user)
     Route::post('/admin/impersonate/leave', [\App\Http\Controllers\Admin\ImpersonationController::class, 'leave'])->name('admin.impersonate.leave');
 });

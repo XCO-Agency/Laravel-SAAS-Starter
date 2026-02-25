@@ -266,6 +266,49 @@ class DatabaseSeeder extends Seeder
                     'expires_at' => now()->addDays(7),
                 ]);
             }
+            // 11. DEMO ACCOUNT: Seed dummy real-time notifications for the primary demo user
+            $demo->notifications()->create([
+                'id' => \Illuminate\Support\Str::uuid(),
+                'type' => 'App\Notifications\SystemMessage',
+                'data' => [
+                    'title' => 'Welcome to the Platform',
+                    'message' => 'Thanks for signing up! Your workspace is ready. Click here to invite your team members.',
+                    'action_url' => '/settings/team',
+                ],
+                'read_at' => null,
+            ]);
+            $demo->notifications()->create([
+                'id' => \Illuminate\Support\Str::uuid(),
+                'type' => 'App\Notifications\BillingAlert',
+                'data' => [
+                    'title' => 'Trial Expiring Soon',
+                    'message' => 'Your workspace trial will safely expire in a few days. Pick a plan to guarantee continued access.',
+                    'action_url' => '/billing',
+                ],
+                'read_at' => null,
+            ]);
+            $demo->notifications()->create([
+                'id' => \Illuminate\Support\Str::uuid(),
+                'type' => 'App\Notifications\SecurityAlert',
+                'data' => [
+                    'title' => 'New Login Detected',
+                    'message' => 'We detected a login from a new device (Mac OS X - Chrome).',
+                    'action_url' => null,
+                ],
+                'read_at' => now()->subDay(), // Already read
+            ]);
+
+            // Seed one for Admin just to have coverage
+            $admin->notifications()->create([
+                'id' => \Illuminate\Support\Str::uuid(),
+                'type' => 'App\Notifications\SystemMessage',
+                'data' => [
+                    'title' => 'Admin Credentials Provisioned',
+                    'message' => 'Your administrative scopes have been successfully hydrated.',
+                ],
+                'read_at' => null,
+            ]);
+
         });
     }
 }
