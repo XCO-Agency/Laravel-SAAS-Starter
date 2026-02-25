@@ -45,6 +45,13 @@ it('allows superadmins to access the dashboard and see system metrics', function
         ->has('metrics', fn (\Inertia\Testing\AssertableInertia $metrics) => $metrics
             ->where('total_users', User::count())
             ->where('total_workspaces', Workspace::count())
+            ->has('active_subscriptions')
+            ->has('new_users_30d')
+            ->has('user_growth_percent')
+            ->has('workspace_growth_percent')
         )
+        ->has('dailySignups')
+        ->has('planDistribution')
+        ->has('recent_users')
     );
 });

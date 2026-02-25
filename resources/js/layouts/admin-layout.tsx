@@ -2,7 +2,9 @@ import { ImpersonationBanner } from '@/components/impersonation-banner';
 import { Link } from '@inertiajs/react';
 import {
     ArrowLeft,
+    Building2,
     LayoutDashboard,
+    ScrollText,
     Users,
 } from 'lucide-react';
 import { type PropsWithChildren } from 'react';
@@ -11,6 +13,8 @@ import { cn } from '@/lib/utils';
 const adminNav = [
     { title: 'Overview', href: '/admin/dashboard', icon: LayoutDashboard },
     { title: 'Users', href: '/admin/users', icon: Users },
+    { title: 'Workspaces', href: '/admin/workspaces', icon: Building2 },
+    { title: 'Audit Logs', href: '/admin/audit-logs', icon: ScrollText },
 ];
 
 export default function AdminLayout({
