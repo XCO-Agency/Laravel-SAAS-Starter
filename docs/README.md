@@ -15,6 +15,7 @@ This repository contains comprehensive documentation for the architecture, featu
 - [Announcements](./features/announcements.md)
 - [Feature Flags](./features/feature-flags.md)
 - [Webhooks & Delivery Logs](features/webhooks.md)
+- [Email Templates](./features/email-templates.md)
 - [Internationalization (i18n)](./features/internationalization.md)
 - [UI & Theming](./features/ui-and-theming.md)
 - [Architecture & Security](./features/security.md)
