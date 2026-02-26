@@ -256,6 +256,10 @@ class Workspace extends Model
     public function updateUserRole(User $user, string $role): void
     {
         $this->users()->updateExistingPivot($user->id, ['role' => $role]);
+
+        if ($role === 'owner' && $this->owner_id !== $user->id) {
+            $this->update(['owner_id' => $user->id]);
+        }
     }
 
     /**

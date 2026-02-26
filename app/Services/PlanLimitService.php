@@ -16,7 +16,7 @@ class PlanLimitService
 
         return $plans[strtolower($plan)]['limits'] ?? [
             'workspaces' => 1,
-            'team_members' => 1,
+            'team_members' => 2, // Default to 2 to match Free plan
         ];
     }
 
@@ -60,7 +60,7 @@ class PlanLimitService
     public function canInviteTeamMember(Workspace $workspace): bool
     {
         $limits = $this->getLimits($workspace->plan_name);
-        $currentMembersCount = $workspace->members()->count();
+        $currentMembersCount = $workspace->users()->count();
         $pendingInvitationsCount = $workspace->invitations()->count();
 
         return ($currentMembersCount + $pendingInvitationsCount) < $limits['team_members'];
