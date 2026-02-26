@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Stripe\StripeClient;
 
 class CreateStripePlans extends Command
 {
@@ -26,7 +25,7 @@ class CreateStripePlans extends Command
      */
     public function handle(): int
     {
-        $stripe = new StripeClient(config('services.stripe.secret'));
+        $stripe = app(\Stripe\StripeClient::class);
 
         $plans = config('billing.plans');
         $createdPrices = [];

@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Listeners\LogWebhookCall;
 use App\Models\FeatureFlag;
 use App\Models\Workspace;
+use App\Policies\WorkspacePolicy;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -14,10 +16,8 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Cashier\Cashier;
 use Laravel\Pennant\Feature;
-use Spatie\WebhookServer\Events\WebhookCallSucceededEvent;
 use Spatie\WebhookServer\Events\WebhookCallFailedEvent;
-use App\Policies\WorkspacePolicy;
-use App\Listeners\LogWebhookCall;
+use Spatie\WebhookServer\Events\WebhookCallSucceededEvent;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -52,7 +52,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton(\Stripe\StripeClient::class, function ($app) {
+            return new \Stripe\StripeClient(config('services.stripe.secret'));
+        });
     }
 
     /**
