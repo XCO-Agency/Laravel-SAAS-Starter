@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/card';
 import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
+import { OnboardingChecklist } from '@/components/onboarding-checklist';
 import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
 import {
@@ -99,6 +100,9 @@ export default function Dashboard() {
             <Head title={t('dashboard.title', 'Dashboard')} />
 
             <div className="flex h-full flex-1 flex-col gap-6 p-4 lg:p-6">
+                {/* Onboarding Checklist */}
+                <OnboardingChecklist />
+
                 {/* Welcome Section */}
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>

@@ -39,6 +39,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'workspace.admin' => EnsureWorkspaceAdmin::class,
             'onboarded' => \App\Http\Middleware\EnsureUserIsOnboarded::class,
             'require2fa' => RequireTwoFactor::class,
+            'api-key' => \App\Http\Middleware\AuthenticateApiKey::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

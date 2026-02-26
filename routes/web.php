@@ -95,6 +95,10 @@ Route::middleware(['auth', 'verified', 'onboarded', 'workspace', 'require2fa'])-
     // Workspace Security Settings
     Route::get('/settings/workspace-security', [\App\Http\Controllers\Settings\WorkspaceSecurityController::class, 'index'])->name('workspace.security');
     Route::put('/settings/workspace-security', [\App\Http\Controllers\Settings\WorkspaceSecurityController::class, 'update'])->name('workspace.security.update');
+
+    // Onboarding Checklist
+    Route::get('/onboarding-checklist', [\App\Http\Controllers\OnboardingChecklistController::class, 'index'])->name('onboarding-checklist.index');
+    Route::post('/onboarding-checklist/dismiss', [\App\Http\Controllers\OnboardingChecklistController::class, 'dismiss'])->name('onboarding-checklist.dismiss');
 });
 
 // 2FA Enforcement Wall (auth only, no require2fa to avoid infinite redirect)

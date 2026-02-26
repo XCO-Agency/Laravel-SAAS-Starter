@@ -40,4 +40,9 @@ Route::middleware('auth')->group(function () {
     // Notifications
     Route::get('settings/notifications', [\App\Http\Controllers\Settings\NotificationPreferenceController::class, 'show'])->name('notifications.show');
     Route::put('settings/notifications', [\App\Http\Controllers\Settings\NotificationPreferenceController::class, 'update'])->name('notifications.update');
+
+    // Sessions
+    Route::get('settings/sessions', [\App\Http\Controllers\Settings\SessionController::class, 'index'])->name('sessions.index');
+    Route::delete('settings/sessions/{sessionId}', [\App\Http\Controllers\Settings\SessionController::class, 'destroy'])->name('sessions.destroy');
+    Route::delete('settings/sessions', [\App\Http\Controllers\Settings\SessionController::class, 'destroyAll'])->name('sessions.destroy-all');
 });
