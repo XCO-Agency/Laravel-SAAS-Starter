@@ -19,7 +19,7 @@ import {
     type WorkspaceRole,
 } from '@/types';
 import { Head, router, useForm } from '@inertiajs/react';
-import { AlertTriangle, Building2, Upload, X } from 'lucide-react';
+import { AlertTriangle, Building2, Download, Upload, X } from 'lucide-react';
 import { type ChangeEvent, useRef, useState } from 'react';
 
 interface WorkspaceSettingsProps {
@@ -87,6 +87,10 @@ export default function WorkspaceSettings({
         if (deleteConfirm === workspace.name) {
             router.delete('/workspaces');
         }
+    };
+
+    const handleExport = () => {
+        window.location.href = '/workspaces/export';
     };
 
     return (
@@ -239,6 +243,32 @@ export default function WorkspaceSettings({
                                 </div>
                                 <Button variant="outline" asChild>
                                     <a href="/billing">{t('billing.manage_subscription', 'Manage Subscription')}</a>
+                                </Button>
+                            </div>
+                        </CardContent>
+                    </Card>
+
+                    {/* Data Management */}
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>{t('workspace.settings.data_management', 'Data Management')}</CardTitle>
+                            <CardDescription>
+                                {t('workspace.settings.data_management_description', 'Export your workspace data for GDPR compliance or backup.')}
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="flex items-center justify-between">
+                                <div className="space-y-1">
+                                    <p className="text-sm font-medium">
+                                        {t('workspace.settings.export_data', 'Export Workspace Data')}
+                                    </p>
+                                    <p className="text-sm text-muted-foreground">
+                                        {t('workspace.settings.export_description', 'Download all workspace data, members, and activity logs in JSON format.')}
+                                    </p>
+                                </div>
+                                <Button variant="outline" onClick={handleExport}>
+                                    <Download className="mr-2 h-4 w-4" />
+                                    {t('workspace.settings.export_button', 'Export JSON')}
                                 </Button>
                             </div>
                         </CardContent>

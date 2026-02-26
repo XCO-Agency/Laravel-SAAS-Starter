@@ -62,6 +62,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        \Spatie\Activitylog\Models\Activity::observe(\App\Observers\ActivityLogObserver::class);
+
         Gate::policy(Workspace::class, WorkspacePolicy::class);
 
         Event::listen(WebhookCallSucceededEvent::class, [LogWebhookCall::class, 'handleSuccessfulCall']);

@@ -1,4 +1,5 @@
 import '../css/app.css';
+import './lib/echo';
 
 import { createInertiaApp } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
@@ -9,6 +10,11 @@ import * as Sentry from '@sentry/react';
 import { ToastProvider } from './components/ui/toast';
 import { initializeTheme } from './hooks/use-appearance';
 import i18n from './lib/i18n';
+import { configureEcho } from '@laravel/echo-react';
+
+configureEcho({
+    broadcaster: 'reverb',
+});
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 

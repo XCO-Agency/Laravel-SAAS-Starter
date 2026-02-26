@@ -1,0 +1,253 @@
+name: Endpoints
+description: ''
+endpoints:
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/user
+    metadata:
+      custom: []
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/v1/workspace
+    metadata:
+      custom: []
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Get workspace details.'
+      description: 'Returns detailed information about the workspace associated with the API key.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+           "data": {
+            "id": 1,
+            "name": "Acme Corp",
+            "slug": "acme-corp",
+            "logo": "https://example.com/logo.png",
+            "plan": "Pro",
+            "created_at": "2024-01-01T00:00:00Z"
+           }
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/v1/members
+    metadata:
+      custom: []
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'List workspace members.'
+      description: 'Returns a list of all users who belong to this workspace.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+           "data": [
+            {
+             "id": 1,
+             "name": "Anass",
+             "email": "anass@example.com",
+             "role": "owner",
+             "joined_at": "2024-01-01T00:00:00Z"
+            }
+           ]
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/notifications
+    metadata:
+      custom: []
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: "Get the authenticated user's recent notifications."
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+          set-cookie: 'XSRF-TOKEN=eyJpdiI6Ijl2ZlJDRkkwNEI3YXhjeXFoTHlmZXc9PSIsInZhbHVlIjoiM1VqQkMwNWdaWUlvWlMwWjFYVTZvcTYra3VrNFNtM2dCNkpuUzFtaktXT0hsdmhZczR1OFdDNHY0RGVvUDllNW05Q0gyWFJUNXh5MC9BdWo0NU91Q3NmMDdiWlFOUk55VDJQY0hwMzRuL2RndmloQ0poc09EL1djcld4Z1NodXciLCJtYWMiOiI3MjJhNjA2NGE2MjIyMThjNTk0ZjY5ZTc0YjlhMzZjMDVmMTQ0YmVhODg4ZDZhNmI1MDI2ZGExY2Y4ZDVmMjJlIiwidGFnIjoiIn0%3D; expires=Thu, 26 Feb 2026 21:06:24 GMT; Max-Age=7200; path=/; samesite=lax; laravel-session=eyJpdiI6IjVGRUJoZ0RPcFdyUzNDMUQ3cDZ5ZHc9PSIsInZhbHVlIjoiRExvZkUvNUc5R1B4WVNVZTM3YWd1aFhsTzdVNG8vVTVOZEdWZW1iT0tnT2tRcWQwYmY0TzdFTXg0ZnJHVHoyeXlkd0k5NytHQ1JUQjk5aEk3K3ZsNzhJVWowa0RnUWV0Y1FZVE82aU9TbEc5WE9hTFk1ZDdPRGt2M0VQd3Uvb28iLCJtYWMiOiI5NTg2MTM5MWY5OGI0MDUzYWRmMjQyMzk5NzNlYzcxMzRkZDM4MjExZjkwMTM3ODlhMGI5ZDVhMTJkMzVlMWM2IiwidGFnIjoiIn0%3D; expires=Thu, 26 Feb 2026 21:06:24 GMT; Max-Age=7200; path=/; httponly; samesite=lax'
+        description: null
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: api/notifications/mark-all-read
+    metadata:
+      custom: []
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Mark all unread notifications as read.'
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - PATCH
+    uri: 'api/notifications/{id}/read'
+    metadata:
+      custom: []
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Mark a specific notification as read.'
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'The ID of the notification.'
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: architecto
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null

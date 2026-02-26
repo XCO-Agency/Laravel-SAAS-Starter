@@ -50,6 +50,7 @@ Route::middleware(['auth', 'verified', 'onboarded', 'workspace', 'require2fa'])-
         Route::post('/', [WorkspaceController::class, 'store'])->name('store');
         Route::get('/settings', [WorkspaceController::class, 'settings'])->name('settings');
         Route::put('/settings', [WorkspaceController::class, 'update'])->name('update');
+        Route::get('/export', [\App\Http\Controllers\WorkspaceExportController::class, 'export'])->name('export');
         Route::delete('/', [WorkspaceController::class, 'destroy'])->name('destroy');
         Route::post('/{workspace}/switch', [WorkspaceController::class, 'switch'])->name('switch');
 

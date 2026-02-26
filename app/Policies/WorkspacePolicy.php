@@ -40,6 +40,14 @@ class WorkspacePolicy
     }
 
     /**
+     * Determine whether the user can update the workspace settings.
+     */
+    public function update(User $user, Workspace $workspace): bool
+    {
+        return $workspace->userIsAdmin($user);
+    }
+
+    /**
      * Determine whether the user can delete the workspace entirely.
      * Hardcoded to Owner only for extreme safety.
      */

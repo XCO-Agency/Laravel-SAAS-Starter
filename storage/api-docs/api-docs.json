@@ -1,0 +1,147 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Workspace API",
+        "description": "API for managing workspace resources using Workspace API Keys.",
+        "contact": {
+            "email": "support@xco.agency"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://my-default-host.com",
+            "description": "Workspace API Server"
+        }
+    ],
+    "paths": {
+        "/v1/workspace": {
+            "get": {
+                "tags": [
+                    "Workspace"
+                ],
+                "summary": "Get workspace details",
+                "description": "Retrieve details of the workspace associated with the API key.",
+                "operationId": "getWorkspace",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "Acme Corp"
+                                        },
+                                        "slug": {
+                                            "type": "string",
+                                            "example": "acme-corp"
+                                        },
+                                        "plan": {
+                                            "type": "string",
+                                            "example": "Pro"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/v1/members": {
+            "get": {
+                "tags": [
+                    "Workspace"
+                ],
+                "summary": "List workspace members",
+                "description": "Retrieve a list of members in the workspace.",
+                "operationId": "getWorkspaceMembers",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "members": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string",
+                                                        "example": "1"
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "John Doe"
+                                                    },
+                                                    "email": {
+                                                        "type": "string",
+                                                        "example": "john@example.com"
+                                                    },
+                                                    "role": {
+                                                        "type": "string",
+                                                        "example": "member"
+                                                    },
+                                                    "joined_at": {
+                                                        "type": "string",
+                                                        "format": "date-time"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "description": "Enter your Workspace API Key (wsk_...) as a Bearer token.",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Workspace",
+            "description": "Workspace"
+        }
+    ]
+}

@@ -35,6 +35,7 @@
         "laravel/mcp": "^0.5.9",
         "laravel/octane": "^2.13",
         "laravel/pennant": "^1.20",
+        "laravel/reverb": "^1.0",
         "laravel/sanctum": "^4.0",
         "laravel/socialite": "^5.24",
         "laravel/tinker": "^2.10.1",
@@ -46,6 +47,7 @@
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
+        "knuckleswtf/scribe": "^5.8",
         "laravel/boost": "^1.8",
         "laravel/pail": "^1.2.2",
         "laravel/pint": "^1.24",

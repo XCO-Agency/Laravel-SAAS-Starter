@@ -30,3 +30,8 @@ yarn-error.log
 **/caddy
 frankenphp
 frankenphp-worker.php
+
+/.scribe/endpoints.cache
+/public/vendor/scribe
+/resources/views/scribe
+/storage/app/private/scribe

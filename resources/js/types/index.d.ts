@@ -117,3 +117,10 @@ export interface User {
     timezone?: string;
     [key: string]: unknown;
 }
+
+declare global {
+    interface Window {
+        Pusher: typeof import('pusher-js').default;
+        Echo: import('laravel-echo').default;
+    }
+}

@@ -23,9 +23,12 @@ The AI agent is now continually managing and executing the roadmap autonomously.
 - **Stack**: Laravel 12, Inertia.js v2, React 19, Tailwind CSS v4, Stripe Cashier, Fortify.
 - **Completed Features**: Auth, 2FA, Workspaces, Teams, Stripe Billing, i18n, Dark Mode, Super Admin Panel, Feature Flags (Pennant), Announcements, Audit Logs, Command Palette.
 
-## 🚀 Active Sprint 14: (Next)
+## 🚀 Active Sprint 14: Developer Experience & Growth
 
-_Sprint 14 not yet planned. All previous sprints complete._
+- [ ] **Task 45: API Documentation**. Integrate OpenAPI/Swagger for `WorkspaceApiKey` authenticated endpoints.
+- [ ] **Task 46: Real-time Notifications**. Integrate Laravel Reverb for live workspace activity updates.
+- [ ] **Task 47: Data Export (GDPR)**. Implement workspace data export (JSON/CSV) for privacy compliance.
+- [ ] **Task 48: Advanced Search**. Implement global multi-resource search using Laravel Scout.
 
 ## 🏁 Completed Sprints
 
@@ -39,6 +42,7 @@ _Sprint 14 not yet planned. All previous sprints complete._
 
 ## 📝 Changelog
 
+- **2026-02-26**: Comprehensive Test Audit. Verified 332 tests passing across all layers. Full coverage for Console Commands, Models (FeatureFlag, WorkspaceApiKey), and Policies (WebhookEndpointPolicy). Fixed all session regressions.
 - **2026-02-25**: Task 44 (Scheduled Tasks Monitor). Read-only admin page introspecting Laravel Schedule with cron parsing, next-due calculation, flag badges, 8 tests.
 - **2026-02-25**: Task 43 (Workspace API Keys). wsk_-prefixed keys, SHA-256 hash storage, 5 scopes, expiry, revocation, admin-only management, 9 tests.
 - **2026-02-25**: Task 42 (Changelog). Admin CRUD for versioned release notes, public timeline page, typed entries (feature/improvement/fix), draft support, 9 seeder entries, 9 tests.
