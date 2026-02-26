@@ -18,7 +18,21 @@ use Spatie\Activitylog\Traits\LogsActivity;
 class Workspace extends Model
 {
     /** @use HasFactory<\Database\Factories\WorkspaceFactory> */
-    use Billable, HasFactory, HasFeatures, LogsActivity, SoftDeletes;
+    use \Laravel\Scout\Searchable, Billable, HasFactory, HasFeatures, LogsActivity, SoftDeletes;
+
+    /**
+     * Get the indexable data array for the model.
+     *
+     * @return array<string, mixed>
+     */
+    public function toSearchableArray(): array
+    {
+        return [
+            'id' => (int) $this->id,
+            'name' => $this->name,
+            'slug' => $this->slug,
+        ];
+    }
 
     /**
      * The attributes that are mass assignable.

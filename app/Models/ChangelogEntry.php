@@ -8,7 +8,22 @@ use Illuminate\Database\Eloquent\Model;
 class ChangelogEntry extends Model
 {
     /** @use HasFactory<\Database\Factories\ChangelogEntryFactory> */
-    use HasFactory;
+    use HasFactory, \Laravel\Scout\Searchable;
+
+    /**
+     * Get the indexable data array for the model.
+     *
+     * @return array<string, mixed>
+     */
+    public function toSearchableArray(): array
+    {
+        return [
+            'id' => (int) $this->id,
+            'title' => $this->title,
+            'body' => $this->body,
+            'version' => $this->version,
+        ];
+    }
 
     /**
      * @var list<string>

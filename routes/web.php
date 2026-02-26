@@ -128,6 +128,9 @@ Route::middleware(['auth'])->group(function () {
 
     // User Feedback
     Route::post('/feedback', [\App\Http\Controllers\FeedbackController::class, 'store'])->name('feedback.store');
+
+    // Global Search
+    Route::get('/api/search', [\App\Http\Controllers\SearchController::class, 'index'])->name('search.index');
 });
 
 // Stripe webhook (no CSRF, no auth)
