@@ -25,7 +25,7 @@ test('workspace can check if user is owner', function () {
     $workspace->users()->attach($owner->id, ['role' => 'owner']);
 
     expect($workspace->userIsOwner($owner))->toBeTrue();
-    
+
     $other = User::factory()->create();
     expect($workspace->userIsOwner($other))->toBeFalse();
 });
@@ -42,7 +42,7 @@ test('workspace can update user role', function () {
 
 test('workspace resolves plan name correctly', function () {
     $workspace = Workspace::factory()->create();
-    
+
     // Default should be Free
     expect($workspace->plan_name)->toBe('Free');
 });

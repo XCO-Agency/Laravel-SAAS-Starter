@@ -23,12 +23,12 @@ class EmailTemplateSeeder extends Seeder
 <br>
 <a href="{{ acceptUrl }}" style="display:inline-block;padding:10px 20px;background-color:#000;color:#fff;text-decoration:none;border-radius:5px;">Accept Invitation</a>
 ',
-                'text_template' => "Hello!
+                'text_template' => 'Hello!
 
 You have been invited to join the {{ workspaceName }} workspace by {{ inviterName }}.
 
 Accept your invitation here:
-{{ acceptUrl }}",
+{{ acceptUrl }}',
             ]
         );
     }

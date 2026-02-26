@@ -1,9 +1,9 @@
 <?php
 
 use App\Models\User;
-use Spatie\MailTemplates\Models\MailTemplate;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
+use Spatie\MailTemplates\Models\MailTemplate;
 
 uses(RefreshDatabase::class);
 

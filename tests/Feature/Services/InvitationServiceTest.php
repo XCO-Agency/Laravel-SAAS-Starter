@@ -3,18 +3,18 @@
 use App\Models\User;
 use App\Models\Workspace;
 use App\Models\WorkspaceInvitation;
-use App\Services\InvitationService;
 use App\Notifications\TeamInvitationNotification;
+use App\Services\InvitationService;
 use Illuminate\Support\Facades\Notification;
 
 beforeEach(function () {
-    $this->service = new InvitationService();
+    $this->service = new InvitationService;
     $this->user = User::factory()->create();
     $this->workspace = Workspace::factory()->create(['owner_id' => $this->user->id]);
-    
+
     // owner is already added as owner in Workspace model boot or factory?
     // Let's ensure owner is in users pivot for relation tests.
-    if (!$this->workspace->hasUser($this->user)) {
+    if (! $this->workspace->hasUser($this->user)) {
         $this->workspace->users()->attach($this->user->id, ['role' => 'owner']);
     }
 });

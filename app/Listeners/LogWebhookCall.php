@@ -2,11 +2,10 @@
 
 namespace App\Listeners;
 
-use Spatie\WebhookServer\Events\WebhookCallSucceededEvent;
-use Spatie\WebhookServer\Events\WebhookCallFailedEvent;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 use App\Models\WebhookLog;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Spatie\WebhookServer\Events\WebhookCallFailedEvent;
+use Spatie\WebhookServer\Events\WebhookCallSucceededEvent;
 
 class LogWebhookCall implements ShouldQueue
 {

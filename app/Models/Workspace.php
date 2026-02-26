@@ -18,7 +18,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
 class Workspace extends Model
 {
     /** @use HasFactory<\Database\Factories\WorkspaceFactory> */
-    use \Laravel\Scout\Searchable, Billable, HasFactory, HasFeatures, LogsActivity, SoftDeletes;
+    use Billable, HasFactory, HasFeatures, \Laravel\Scout\Searchable, LogsActivity, SoftDeletes;
 
     /**
      * Get the indexable data array for the model.

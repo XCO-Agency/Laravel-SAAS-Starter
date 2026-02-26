@@ -5,11 +5,11 @@ use App\Models\Workspace;
 use App\Policies\WorkspacePolicy;
 
 beforeEach(function () {
-    $this->policy = new WorkspacePolicy();
+    $this->policy = new WorkspacePolicy;
     $this->owner = User::factory()->create();
     $this->admin = User::factory()->create();
     $this->member = User::factory()->create();
-    
+
     $this->workspace = Workspace::factory()->create(['owner_id' => $this->owner->id]);
     $this->workspace->users()->attach($this->owner->id, ['role' => 'owner']);
     $this->workspace->users()->attach($this->admin->id, ['role' => 'admin']);
@@ -28,7 +28,7 @@ it('allows admins to manage team and webhooks but not billing or delete', functi
     expect($this->policy->manageTeam($this->admin, $this->workspace))->toBeTrue();
     expect($this->policy->manageWebhooks($this->admin, $this->workspace))->toBeTrue();
     expect($this->policy->viewActivityLogging($this->admin, $this->workspace))->toBeTrue();
-    
+
     expect($this->policy->manageBilling($this->admin, $this->workspace))->toBeFalse();
     expect($this->policy->delete($this->admin, $this->workspace))->toBeFalse();
 });

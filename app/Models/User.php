@@ -18,7 +18,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
 class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use \Laravel\Scout\Searchable, HasApiTokens, HasFactory, LogsActivity, Notifiable, SoftDeletes, TwoFactorAuthenticatable;
+    use HasApiTokens, HasFactory, \Laravel\Scout\Searchable, LogsActivity, Notifiable, SoftDeletes, TwoFactorAuthenticatable;
 
     /**
      * Get the indexable data array for the model.

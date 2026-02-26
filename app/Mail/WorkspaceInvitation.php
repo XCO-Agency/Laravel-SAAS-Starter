@@ -12,8 +12,11 @@ class WorkspaceInvitation extends TemplateMailable
     use Queueable, SerializesModels;
 
     public string $workspaceName;
+
     public string $inviterName;
+
     public string $acceptUrl;
+
     public string $role;
 
     /**

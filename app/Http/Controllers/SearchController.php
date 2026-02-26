@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
-use App\Models\User;
-use App\Models\Workspace;
 use App\Models\Announcement;
 use App\Models\ChangelogEntry;
+use App\Models\User;
+use App\Models\Workspace;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class SearchController extends Controller
 {
@@ -90,7 +89,7 @@ class SearchController extends Controller
             $results->push([
                 'type' => 'Changelog',
                 'title' => $entry->title,
-                'subtitle' => 'Version ' . $entry->version,
+                'subtitle' => 'Version '.$entry->version,
                 'url' => route('changelog'),
                 'icon' => 'History',
             ]);

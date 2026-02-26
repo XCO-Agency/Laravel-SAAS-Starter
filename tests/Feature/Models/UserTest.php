@@ -34,7 +34,7 @@ test('user can check if belongs to workspace', function () {
     $workspace->users()->attach($user->id, ['role' => 'owner']);
 
     expect($user->belongsToWorkspace($workspace))->toBeTrue();
-    
+
     $otherWorkspace = Workspace::factory()->create();
     expect($user->belongsToWorkspace($otherWorkspace))->toBeFalse();
 });

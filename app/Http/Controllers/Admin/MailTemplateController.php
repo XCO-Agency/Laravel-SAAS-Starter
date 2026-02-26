@@ -46,7 +46,7 @@ class MailTemplateController extends Controller
                 'html_template' => $mailTemplate->html_template,
                 'text_template' => $mailTemplate->text_template,
             ],
-            'variables' => $this->extractVariables($mailTemplate->html_template . ' ' . $mailTemplate->text_template . ' ' . $mailTemplate->subject),
+            'variables' => $this->extractVariables($mailTemplate->html_template.' '.$mailTemplate->text_template.' '.$mailTemplate->subject),
         ]);
     }
 
@@ -74,7 +74,7 @@ class MailTemplateController extends Controller
     {
         $combined = implode(' ', $templateStrings);
         preg_match_all('/{{\s*([a-zA-Z0-9_]+)\s*}}/', $combined, $matches);
-        
+
         return array_values(array_unique($matches[1] ?? []));
     }
 }

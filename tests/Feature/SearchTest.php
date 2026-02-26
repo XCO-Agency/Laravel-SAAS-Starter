@@ -1,9 +1,9 @@
 <?php
 
-use App\Models\User;
-use App\Models\Workspace;
 use App\Models\Announcement;
 use App\Models\ChangelogEntry;
+use App\Models\User;
+use App\Models\Workspace;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
@@ -67,20 +67,20 @@ it('returns empty results for empty query', function () {
 
 it('returns grouped results', function () {
     User::factory()->create(['name' => 'Test User']);
-    
+
     // Regular user should only see their own workspace
     $response = $this->actingAs($this->user)
         ->getJson(route('search.index', ['query' => 'Acme']));
 
     $response->assertStatus(200)
         ->assertJsonStructure([
-            'Workspace'
+            'Workspace',
         ]);
 });
 
 it('restricts regular users to their own workspace members', function () {
     $otherUser = User::factory()->create(['name' => 'Secret User']);
-    
+
     $response = $this->actingAs($this->user)
         ->getJson(route('search.index', ['query' => 'Secret']));
 
@@ -91,7 +91,7 @@ it('restricts regular users to their own workspace members', function () {
 it('allows superadmins to search globally', function () {
     $superAdmin = User::factory()->create(['is_superadmin' => true]);
     $secretUser = User::factory()->create(['name' => 'Secret User']);
-    
+
     $response = $this->actingAs($superAdmin)
         ->getJson(route('search.index', ['query' => 'Secret']));
 
@@ -101,7 +101,7 @@ it('allows superadmins to search globally', function () {
 
 it('restricts regular users to their own workspaces', function () {
     $otherWorkspace = Workspace::factory()->create(['name' => 'Other Inc']);
-    
+
     $response = $this->actingAs($this->user)
         ->getJson(route('search.index', ['query' => 'Other']));
 

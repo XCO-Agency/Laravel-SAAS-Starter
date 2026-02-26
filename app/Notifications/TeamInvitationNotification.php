@@ -2,9 +2,7 @@
 
 namespace App\Notifications;
 
-use App\Models\User;
 use App\Models\WorkspaceInvitation;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
 class TeamInvitationNotification extends Notification

@@ -55,7 +55,7 @@ test('users can only see logs from their own workspace', function () {
     $user->switchWorkspace($workspace);
 
     $otherWorkspace = Workspace::factory()->create();
-    
+
     WebhookLog::create([
         'workspace_id' => $otherWorkspace->id,
         'webhook_endpoint_id' => null,
