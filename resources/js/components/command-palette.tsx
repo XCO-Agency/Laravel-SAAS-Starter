@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Command } from 'cmdk';
 import { router, usePage } from '@inertiajs/react';
 import { BadgePercent, Building, CreditCard, Home, Settings, User, Megaphone, History, Loader2 } from 'lucide-react';
@@ -18,7 +18,7 @@ interface GroupedResults {
     [key: string]: SearchResult[];
 }
 
-const IconMap: Record<string, any> = {
+const IconMap: Record<string, React.ComponentType<{ className?: string }>> = {
     User,
     Building,
     Megaphone,
@@ -52,28 +52,30 @@ export default function CommandPalette() {
         return () => window.removeEventListener('open-command-palette', handleCustomEvent);
     }, []);
 
-    const fetchResults = useCallback(
-        debounce(async (query: string) => {
-            if (!query) {
-                setResults({});
-                return;
-            }
+    const fetchResults = React.useMemo(
+        () =>
+            debounce(async (query: string) => {
+                if (!query) {
+                    setResults({});
+                    return;
+                }
 
-            setLoading(true);
-            try {
-                const { data } = await axios.get(`/api/search?query=${encodeURIComponent(query)}`);
-                setResults(data);
-            } catch (error) {
-                console.error('Search failed', error);
-            } finally {
-                setLoading(false);
-            }
-        }, 300),
+                setLoading(true);
+                try {
+                    const { data } = await axios.get(`/api/search?query=${encodeURIComponent(query)}`);
+                    setResults(data);
+                } catch (error) {
+                    console.error('Search failed', error);
+                } finally {
+                    setLoading(false);
+                }
+            }, 300),
         []
     );
 
     useEffect(() => {
         fetchResults(search);
+        return () => fetchResults.cancel();
     }, [search, fetchResults]);
 
     const runCommand = (command: () => void) => {

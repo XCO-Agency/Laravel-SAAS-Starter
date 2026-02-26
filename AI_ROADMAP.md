@@ -23,14 +23,16 @@ The AI agent is now continually managing and executing the roadmap autonomously.
 - **Stack**: Laravel 12, Inertia.js v2, React 19, Tailwind CSS v4, Stripe Cashier, Fortify.
 - **Completed Features**: Auth, 2FA, Workspaces, Teams, Stripe Billing, i18n, Dark Mode, Super Admin Panel, Feature Flags (Pennant), Announcements, Audit Logs, Command Palette.
 
-## 🚀 Active Sprint 14: Developer Experience & Growth
+## 🚀 Active Sprint 15: Engagement & User Success
 
-- [ ] **Task 45: API Documentation**. Integrate OpenAPI/Swagger for `WorkspaceApiKey` authenticated endpoints.
-- [ ] **Task 46: Real-time Notifications**. Integrate Laravel Reverb for live workspace activity updates.
-- [ ] **Task 47: Data Export (GDPR)**. Implement workspace data export (JSON/CSV) for privacy compliance.
-- [ ] **Task 48: Advanced Search**. Implement global multi-resource search using Laravel Scout.
+- [ ] **Task 51: Account Deletion (Self-Service)**. Implement secure user account deletion with data cleanup.
+- [ ] **Task 52: Usage Dashboard**. Visual dashboard showing plan limits vs current usage (members, API calls, storage).
+- [ ] **Task 53: Admin Impersonation UI**. Add clear "Impersonate" buttons and a persistent "Stop Impersonating" banner.
+- [ ] **Task 54: SEO Management**. Global and per-page meta tag management for admins.
 
 ## 🏁 Completed Sprints
+
+- **Sprint 14**: Developer Experience & Growth (API Documentation, Real-time Notifications, Data Export, Advanced Search).
 
 - **Sprint 13**: Platform Maturity & Visibility (System Health Monitor, Public Changelog, Workspace API Keys, Scheduled Tasks Monitor).
 
