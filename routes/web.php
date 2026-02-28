@@ -216,4 +216,10 @@ Route::middleware(['auth', 'superadmin'])->prefix('admin')->name('admin.')->grou
 
     // Scheduled Tasks
     Route::get('/scheduled-tasks', [\App\Http\Controllers\Admin\ScheduledTaskController::class, 'index'])->name('scheduled-tasks.index');
+
+    // SEO Metadata
+    Route::get('/seo', [\App\Http\Controllers\Admin\SeoMetadataController::class, 'index'])->name('seo.index');
+    Route::post('/seo', [\App\Http\Controllers\Admin\SeoMetadataController::class, 'store'])->name('seo.store');
+    Route::put('/seo/{seoMetadata}', [\App\Http\Controllers\Admin\SeoMetadataController::class, 'update'])->name('seo.update');
+    Route::delete('/seo/{seoMetadata}', [\App\Http\Controllers\Admin\SeoMetadataController::class, 'destroy'])->name('seo.destroy');
 });

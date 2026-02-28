@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Models\Announcement;
+use App\Models\SeoMetadata;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -107,6 +108,7 @@ class HandleInertiaRequests extends Middleware
                 'token' => $request->session()->get('token'),
             ],
             'announcement' => Announcement::currentlyActive()->latest()->first()?->only('id', 'title', 'body', 'type', 'link_text', 'link_url', 'is_dismissible'),
+            'seo' => fn () => SeoMetadata::forPath($request->path())?->only('title', 'description', 'keywords', 'og_title', 'og_description', 'og_image', 'og_type', 'twitter_card', 'twitter_site', 'twitter_creator', 'twitter_image'),
         ];
     }
 }

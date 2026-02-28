@@ -23,15 +23,13 @@ The AI agent is now continually managing and executing the roadmap autonomously.
 - **Stack**: Laravel 12, Inertia.js v2, React 19, Tailwind CSS v4, Stripe Cashier, Fortify.
 - **Completed Features**: Auth, 2FA, Workspaces, Teams, Stripe Billing, i18n, Dark Mode, Super Admin Panel, Feature Flags (Pennant), Announcements, Audit Logs, Command Palette.
 
-## 🚀 Active Sprint 15: Engagement & User Success
+## 🚀 Active Sprint 16: (Next)
 
-- [ ] **Task 51: Account Deletion (Self-Service)**. Implement secure user account deletion with data cleanup.
-- [ ] **Task 52: Usage Dashboard**. Visual dashboard showing plan limits vs current usage (members, API calls, storage).
-- [ ] **Task 53: Admin Impersonation UI**. Add clear "Impersonate" buttons and a persistent "Stop Impersonating" banner.
-- [ ] **Task 54: SEO Management**. Global and per-page meta tag management for admins.
+_Sprint 16 not yet planned. All previous sprints complete._
 
 ## 🏁 Completed Sprints
 
+- **Sprint 15**: Engagement & User Success (Account Deletion, Usage Dashboard, Admin Impersonation UI, SEO Management).
 - **Sprint 14**: Developer Experience & Growth (API Documentation, Real-time Notifications, Data Export, Advanced Search).
 
 - **Sprint 13**: Platform Maturity & Visibility (System Health Monitor, Public Changelog, Workspace API Keys, Scheduled Tasks Monitor).
@@ -44,6 +42,7 @@ The AI agent is now continually managing and executing the roadmap autonomously.
 
 ## 📝 Changelog
 
+- **2026-02-28**: Sprint 15 complete. Task 51 (Account Deletion): password-confirmed soft-delete with workspace cleanup, subscription cancellation, 4 tests. Task 52 (Usage Dashboard): visual plan limits vs current usage for workspaces/members/API keys/webhooks, PlanLimitService, sidebar nav, 4 tests. Task 53 (Admin Impersonation UI): impersonate/leave controller, persistent banner, session-based identity swap, 4 tests. Task 54 (SEO Management): admin CRUD for per-page and global meta tags (OG + Twitter Card), shared Inertia prop, seeder data, 10 tests.
 - **2026-02-26**: Comprehensive Test Audit. Verified 332 tests passing across all layers. Full coverage for Console Commands, Models (FeatureFlag, WorkspaceApiKey), and Policies (WebhookEndpointPolicy). Fixed all session regressions.
 - **2026-02-25**: Task 44 (Scheduled Tasks Monitor). Read-only admin page introspecting Laravel Schedule with cron parsing, next-due calculation, flag badges, 8 tests.
 - **2026-02-25**: Task 43 (Workspace API Keys). wsk_-prefixed keys, SHA-256 hash storage, 5 scopes, expiry, revocation, admin-only management, 9 tests.

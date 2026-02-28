@@ -12,7 +12,7 @@ import {
 import { WorkspaceSwitcher } from '@/components/workspace-switcher';
 import { useTranslations } from '@/hooks/use-translations';
 import { type NavItem, type SharedData } from '@/types';
-import { BookOpen, LayoutGrid, ShieldAlert } from 'lucide-react';
+import { BarChart3, BookOpen, LayoutGrid, ShieldAlert } from 'lucide-react';
 import { usePage } from '@inertiajs/react';
 import { useMemo } from 'react';
 
@@ -22,6 +22,11 @@ const getMainNavItems = (t: (key: string, fallback: string) => string, isSuperad
             title: t('navigation.dashboard', 'Dashboard'),
             href: '/dashboard',
             icon: LayoutGrid,
+        },
+        {
+            title: t('navigation.usage', 'Usage'),
+            href: '/usage',
+            icon: BarChart3,
         },
     ];
 

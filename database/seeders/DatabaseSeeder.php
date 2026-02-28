@@ -367,6 +367,43 @@ class DatabaseSeeder extends Seeder
                 ]);
             }
 
+            // Seed SEO metadata entries
+            \App\Models\SeoMetadata::create([
+                'path' => null,
+                'title' => 'Laravel SaaS Starter - Build Your SaaS Faster',
+                'description' => 'A production-ready Laravel SaaS starter kit with billing, teams, workspaces, and more.',
+                'keywords' => 'laravel, saas, starter, billing, teams, workspaces',
+                'og_title' => 'Laravel SaaS Starter',
+                'og_description' => 'Build your next SaaS product faster with our production-ready starter kit.',
+                'og_type' => 'website',
+                'twitter_card' => 'summary_large_image',
+                'is_global' => true,
+            ]);
+
+            \App\Models\SeoMetadata::create([
+                'path' => '/',
+                'title' => 'Home - Laravel SaaS Starter',
+                'description' => 'Welcome to the Laravel SaaS Starter. Get started with authentication, billing, and team management out of the box.',
+                'keywords' => 'homepage, laravel, saas',
+                'og_title' => 'Welcome to Laravel SaaS Starter',
+                'og_description' => 'Everything you need to launch your SaaS product.',
+                'og_type' => 'website',
+                'twitter_card' => 'summary_large_image',
+                'is_global' => false,
+            ]);
+
+            \App\Models\SeoMetadata::create([
+                'path' => '/changelog',
+                'title' => 'Changelog - Laravel SaaS Starter',
+                'description' => 'See what\'s new in the Laravel SaaS Starter. Latest features, improvements, and bug fixes.',
+                'keywords' => 'changelog, updates, releases',
+                'og_title' => 'Changelog',
+                'og_description' => 'Track the latest updates and improvements.',
+                'og_type' => 'website',
+                'twitter_card' => 'summary',
+                'is_global' => false,
+            ]);
+
             // Seed workspace API keys for demo workspaces
             if ($demoWorkspaces->isNotEmpty()) {
                 $first = $demoWorkspaces->first();

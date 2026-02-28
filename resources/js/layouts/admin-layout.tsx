@@ -5,6 +5,7 @@ import {
     ArrowLeft,
     Building2,
     Clock,
+    Globe,
     LayoutDashboard,
     ListChecks,
     Megaphone,
@@ -31,6 +32,7 @@ const adminNav = [
     { title: 'System Health', href: '/admin/system-health', icon: Activity },
     { title: 'Changelog', href: '/admin/changelog', icon: ListChecks },
     { title: 'Scheduled Tasks', href: '/admin/scheduled-tasks', icon: Clock },
+    { title: 'SEO', href: '/admin/seo', icon: Globe },
 ];
 
 export default function AdminLayout({

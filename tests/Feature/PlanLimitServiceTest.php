@@ -8,7 +8,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 uses(RefreshDatabase::class);
 
 beforeEach(function () {
-    $this->planLimitService = new PlanLimitService();
+    $this->planLimitService = new PlanLimitService;
     $this->user = User::factory()->create();
 });
 
@@ -33,8 +33,8 @@ it('checks api key limits correctly', function () {
 
     // By default it's Free plan (2 API keys)
     expect($this->planLimitService->canCreateApiKey($workspace))->toBeTrue();
-    
-    // We can't easily change the plan without Stripe mocks, 
+
+    // We can't easily change the plan without Stripe mocks,
     // but we've verified getLimits works with different strings.
 });
 

@@ -2,8 +2,8 @@
 
 use App\Models\User;
 use App\Models\Workspace;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Hash;
 
 uses(RefreshDatabase::class);
 
@@ -20,11 +20,11 @@ it('can delete account with correct password', function () {
         ]);
 
     $response->assertRedirect('/');
-    
+
     $this->assertSoftDeleted('users', [
         'id' => $this->user->id,
     ]);
-    
+
     $this->assertGuest();
 });
 
@@ -37,7 +37,7 @@ it('cannot delete account with incorrect password', function () {
 
     $response->assertRedirect(route('profile.edit'));
     $response->assertSessionHasErrors('password');
-    
+
     $this->assertDatabaseHas('users', [
         'id' => $this->user->id,
         'deleted_at' => null,
@@ -67,7 +67,7 @@ it('prevents deletion if user owns a shared workspace with other members', funct
         'personal_workspace' => false,
     ]);
     $workspace->users()->attach($this->user->id, ['role' => 'owner']);
-    
+
     $otherUser = User::factory()->create();
     $workspace->users()->attach($otherUser->id, ['role' => 'member']);
 
@@ -79,7 +79,7 @@ it('prevents deletion if user owns a shared workspace with other members', funct
 
     $response->assertRedirect(route('profile.edit'));
     $response->assertSessionHasErrors('account');
-    
+
     $this->assertDatabaseHas('users', [
         'id' => $this->user->id,
         'deleted_at' => null,

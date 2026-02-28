@@ -88,7 +88,7 @@ class ProfileController extends Controller
 
         foreach ($ownedWorkspaces as $workspace) {
             // If it's a shared workspace with other members, prevent deletion
-            if (!$workspace->personal_workspace && $workspace->users()->count() > 1) {
+            if (! $workspace->personal_workspace && $workspace->users()->count() > 1) {
                 return back()->withErrors([
                     'account' => __('You cannot delete your account while you own a workspace with other members. Please transfer ownership or remove all members first.'),
                 ]);
@@ -104,7 +104,7 @@ class ProfileController extends Controller
             if ($workspace->subscribed()) {
                 $workspace->subscription()->cancelNow();
             }
-            
+
             $workspace->delete();
         }
 

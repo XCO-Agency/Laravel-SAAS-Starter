@@ -1617,25 +1617,25 @@
         },
         {
             "name": "laravel/ai",
-            "version": "v0.2.2",
+            "version": "v0.2.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/ai.git",
-                "reference": "c874cbcf000e0406606bc6512a613998fe0f8e3d"
+                "reference": "467196be87c9cc2ed1f381deffbe24371e89ba4f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/ai/zipball/c874cbcf000e0406606bc6512a613998fe0f8e3d",
-                "reference": "c874cbcf000e0406606bc6512a613998fe0f8e3d",
+                "url": "https://api.github.com/repos/laravel/ai/zipball/467196be87c9cc2ed1f381deffbe24371e89ba4f",
+                "reference": "467196be87c9cc2ed1f381deffbe24371e89ba4f",
                 "shasum": ""
             },
             "require": {
-                "illuminate/console": "^12.0",
-                "illuminate/container": "^12.0",
-                "illuminate/contracts": "^12.0",
-                "illuminate/filesystem": "^12.0",
-                "illuminate/json-schema": "^12.0",
-                "illuminate/support": "^12.0",
+                "illuminate/console": "^12.0|^13.0",
+                "illuminate/container": "^12.0|^13.0",
+                "illuminate/contracts": "^12.0|^13.0",
+                "illuminate/filesystem": "^12.0|^13.0",
+                "illuminate/json-schema": "^12.0|^13.0",
+                "illuminate/support": "^12.0|^13.0",
                 "laravel/prompts": "^0.3.6",
                 "laravel/serializable-closure": "^2.0",
                 "php": "^8.3",
@@ -1679,7 +1679,7 @@
                 "issues": "https://github.com/laravel/ai/issues",
                 "source": "https://github.com/laravel/ai"
             },
-            "time": "2026-02-25T15:40:18+00:00"
+            "time": "2026-02-26T22:55:23+00:00"
         },
         {
             "name": "laravel/cashier",
@@ -4702,26 +4702,26 @@
         },
         {
             "name": "prism-php/prism",
-            "version": "v0.99.19",
+            "version": "v0.99.20",
             "source": {
                 "type": "git",
                 "url": "https://github.com/prism-php/prism.git",
-                "reference": "7ebf450f6137fcb6d79cc52f5bffb6d7569b2019"
+                "reference": "51efcb3d746315c5823593d56c77ecb29b960250"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/prism-php/prism/zipball/7ebf450f6137fcb6d79cc52f5bffb6d7569b2019",
-                "reference": "7ebf450f6137fcb6d79cc52f5bffb6d7569b2019",
+                "url": "https://api.github.com/repos/prism-php/prism/zipball/51efcb3d746315c5823593d56c77ecb29b960250",
+                "reference": "51efcb3d746315c5823593d56c77ecb29b960250",
                 "shasum": ""
             },
             "require": {
                 "ext-fileinfo": "*",
-                "laravel/framework": "^11.0|^12.0",
+                "laravel/framework": "^11.0|^12.0|^13.0",
                 "php": "^8.2"
             },
             "require-dev": {
                 "brianium/paratest": "^7.8.4",
-                "laravel/mcp": "^0.5.2",
+                "laravel/mcp": "^0.6.0",
                 "laravel/pint": "^1.14",
                 "mockery/mockery": "^1.6",
                 "orchestra/testbench": "^10",
@@ -4769,7 +4769,7 @@
             "description": "A powerful Laravel package for integrating Large Language Models (LLMs) into your applications.",
             "support": {
                 "issues": "https://github.com/prism-php/prism/issues",
-                "source": "https://github.com/prism-php/prism/tree/v0.99.19"
+                "source": "https://github.com/prism-php/prism/tree/v0.99.20"
             },
             "funding": [
                 {
@@ -4777,7 +4777,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-01-28T12:09:02+00:00"
+            "time": "2026-02-26T21:31:53+00:00"
         },
         {
             "name": "psr/clock",
@@ -13248,16 +13248,16 @@
         },
         {
             "name": "webmozart/assert",
-            "version": "2.1.5",
+            "version": "2.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webmozarts/assert.git",
-                "reference": "79155f94852fa27e2f73b459f6503f5e87e2c188"
+                "reference": "ff31ad6efc62e66e518fbab1cde3453d389bcdc8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webmozarts/assert/zipball/79155f94852fa27e2f73b459f6503f5e87e2c188",
-                "reference": "79155f94852fa27e2f73b459f6503f5e87e2c188",
+                "url": "https://api.github.com/repos/webmozarts/assert/zipball/ff31ad6efc62e66e518fbab1cde3453d389bcdc8",
+                "reference": "ff31ad6efc62e66e518fbab1cde3453d389bcdc8",
                 "shasum": ""
             },
             "require": {
@@ -13304,9 +13304,9 @@
             ],
             "support": {
                 "issues": "https://github.com/webmozarts/assert/issues",
-                "source": "https://github.com/webmozarts/assert/tree/2.1.5"
+                "source": "https://github.com/webmozarts/assert/tree/2.1.6"
             },
-            "time": "2026-02-18T14:09:36+00:00"
+            "time": "2026-02-27T10:28:38+00:00"
         }
     ],
     "aliases": [],

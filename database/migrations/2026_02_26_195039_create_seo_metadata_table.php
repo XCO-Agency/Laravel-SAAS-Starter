@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('title')->nullable();
             $table->string('description', 511)->nullable();
             $table->string('keywords')->nullable();
-            
+
             // Open Graph
             $table->string('og_title')->nullable();
             $table->string('og_description', 511)->nullable();
