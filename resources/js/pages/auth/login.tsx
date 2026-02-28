@@ -138,8 +138,6 @@ export default function Login({
                                 </TextLink>
                             </div>
                         )}
-
-                        {import.meta.env.DEV && (
                             <div className="space-y-3 pt-4 border-t mt-2">
                                 <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Developer Quick Login</span>
                                 <div className="grid grid-cols-3 gap-2">
@@ -184,7 +182,6 @@ export default function Login({
                                     </Button>
                                 </div>
                             </div>
-                        )}
 
                         <SocialLoginButtons />
                     </>
