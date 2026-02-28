@@ -3,7 +3,7 @@ import { Command } from 'cmdk';
 import { router, usePage } from '@inertiajs/react';
 import { BadgePercent, Building, CreditCard, Home, Settings, User, Megaphone, History, Loader2 } from 'lucide-react';
 import { SharedData } from '@/types';
-import axios from 'axios';
+import http from '@/lib/http';
 import { debounce } from 'lodash';
 
 interface SearchResult {
@@ -62,7 +62,7 @@ export default function CommandPalette() {
 
                 setLoading(true);
                 try {
-                    const { data } = await axios.get(`/api/search?query=${encodeURIComponent(query)}`);
+                    const { data } = await http.get<GroupedResults>(`/api/search?query=${encodeURIComponent(query)}`);
                     setResults(data);
                 } catch (error) {
                     console.error('Search failed', error);

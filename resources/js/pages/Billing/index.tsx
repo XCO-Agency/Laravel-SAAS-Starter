@@ -10,6 +10,7 @@ import {
 import { Spinner } from '@/components/ui/spinner';
 import { useToast } from '@/components/ui/toast';
 import { useTranslations } from '@/hooks/use-translations';
+import http from '@/lib/http';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
 import {
@@ -73,17 +74,7 @@ export default function BillingIndex({
     const handleResumeSubscription = async () => {
         setResumeLoading(true);
         try {
-            const response = await fetch('/billing/resume', {
-                method: 'POST',
-                headers: {
-                    Accept: 'application/json',
-                    'X-CSRF-TOKEN':
-                        document
-                            .querySelector('meta[name="csrf-token"]')
-                            ?.getAttribute('content') || '',
-                },
-            });
-            const data = await response.json();
+            const { data } = await http.post<{ success?: boolean; error?: string }>('/billing/resume');
             if (data.success) {
                 window.location.reload();
             } else {
@@ -102,17 +93,7 @@ export default function BillingIndex({
     const handlePortalRedirect = async () => {
         setPortalLoading(true);
         try {
-            const response = await fetch('/billing/portal', {
-                method: 'GET',
-                headers: {
-                    Accept: 'application/json',
-                    'X-CSRF-TOKEN':
-                        document
-                            .querySelector('meta[name="csrf-token"]')
-                            ?.getAttribute('content') || '',
-                },
-            });
-            const data = await response.json();
+            const { data } = await http.get<{ portal_url?: string }>('/billing/portal');
             if (data.portal_url) {
                 window.location.href = data.portal_url;
             }

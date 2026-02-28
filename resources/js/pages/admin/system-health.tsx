@@ -8,8 +8,8 @@ import {
     CardTitle,
 } from '@/components/ui/card';
 import AdminLayout from '@/layouts/admin-layout';
+import http from '@/lib/http';
 import { Head, router } from '@inertiajs/react';
-import axios from 'axios';
 import {
     Activity,
     AlertTriangle,
@@ -90,7 +90,7 @@ export default function SystemHealth({ failedJobs, stats }: SystemHealthProps) {
     const retryJob = async (id: number) => {
         setActionLoading(`retry-${id}`);
         try {
-            await axios.post(`/admin/system-health/jobs/${id}/retry`);
+            await http.post(`/admin/system-health/jobs/${id}/retry`);
             router.reload({ only: ['failedJobs', 'stats'] });
         } finally {
             setActionLoading(null);
@@ -100,7 +100,7 @@ export default function SystemHealth({ failedJobs, stats }: SystemHealthProps) {
     const deleteJob = async (id: number) => {
         setActionLoading(`delete-${id}`);
         try {
-            await axios.delete(`/admin/system-health/jobs/${id}`);
+            await http.delete(`/admin/system-health/jobs/${id}`);
             router.reload({ only: ['failedJobs', 'stats'] });
         } finally {
             setActionLoading(null);
@@ -113,7 +113,7 @@ export default function SystemHealth({ failedJobs, stats }: SystemHealthProps) {
         }
         setActionLoading('flush');
         try {
-            await axios.post('/admin/system-health/jobs/flush');
+            await http.post('/admin/system-health/jobs/flush');
             router.reload({ only: ['failedJobs', 'stats'] });
         } finally {
             setActionLoading(null);

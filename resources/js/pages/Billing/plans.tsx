@@ -12,6 +12,7 @@ import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import { useToast } from '@/components/ui/toast';
 import { useTranslations } from '@/hooks/use-translations';
+import http from '@/lib/http';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
 import { type BreadcrumbItem, type Plan, type WorkspaceRole } from '@/types';
@@ -64,35 +65,18 @@ export default function PlansPage({
         setProcessing(planId);
 
         try {
-            const response = await fetch('/billing/subscribe', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Accept: 'application/json',
-                    'X-CSRF-TOKEN':
-                        document
-                            .querySelector('meta[name="csrf-token"]')
-                            ?.getAttribute('content') || '',
-                },
-                body: JSON.stringify({
-                    plan: planId,
-                    billing_period: billingPeriod,
-                }),
+            const { data } = await http.post<{ checkout_url?: string; success?: boolean; error?: string }>('/billing/subscribe', {
+                body: { plan: planId, billing_period: billingPeriod },
             });
 
-            const data = await response.json();
-
             if (data.checkout_url) {
-                // Full browser redirect to Stripe Checkout
                 window.location.href = data.checkout_url;
             } else if (data.success) {
-                // Plan swap successful, redirect to billing page
                 router.visit('/billing');
             } else if (data.error) {
                 addToast(data.error, 'error');
                 setProcessing(null);
             } else {
-                // Fallback: reload the page
                 router.visit('/billing');
             }
         } catch (error) {
@@ -114,19 +98,7 @@ export default function PlansPage({
         setProcessing('free');
 
         try {
-            const response = await fetch('/billing/cancel', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Accept: 'application/json',
-                    'X-CSRF-TOKEN':
-                        document
-                            .querySelector('meta[name="csrf-token"]')
-                            ?.getAttribute('content') || '',
-                },
-            });
-
-            const data = await response.json();
+            const { data } = await http.post<{ success?: boolean; error?: string }>('/billing/cancel');
 
             if (data.success) {
                 router.visit('/billing');

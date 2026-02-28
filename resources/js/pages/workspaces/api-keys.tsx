@@ -1,5 +1,5 @@
 import AppLayout from '@/layouts/app-layout';
-import { Head, router, useForm, usePage } from '@inertiajs/react';
+import { Head, useForm, usePage } from '@inertiajs/react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -186,11 +186,10 @@ export default function WorkspaceApiKeys({ keys, availableScopes, isAdmin }: Pro
                                                 key={scope}
                                                 type="button"
                                                 onClick={() => toggleScope(scope)}
-                                                className={`rounded-full px-3 py-1 text-xs font-medium border transition-colors ${
-                                                    form.data.scopes.includes(scope)
+                                                className={`rounded-full px-3 py-1 text-xs font-medium border transition-colors ${form.data.scopes.includes(scope)
                                                         ? 'bg-primary text-primary-foreground border-primary'
                                                         : 'bg-muted text-muted-foreground border-transparent hover:border-border'
-                                                }`}
+                                                    }`}
                                             >
                                                 {scope}
                                             </button>

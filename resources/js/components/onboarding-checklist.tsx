@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { useTranslations } from '@/hooks/use-translations';
+import http from '@/lib/http';
 import { Link } from '@inertiajs/react';
 import { CheckCircle2, Circle, Sparkles, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -29,15 +30,8 @@ export function OnboardingChecklist() {
 
     const fetchChecklist = async () => {
         try {
-            const response = await fetch('/onboarding-checklist', {
-                headers: {
-                    Accept: 'application/json',
-                    'X-CSRF-TOKEN':
-                        document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
-                },
-            });
+            const { data: result, response } = await http.get<ChecklistData>('/onboarding-checklist');
             if (response.ok) {
-                const result = await response.json();
                 setData(result);
                 if (result.dismissed) {
                     setHidden(true);
@@ -51,14 +45,7 @@ export function OnboardingChecklist() {
     const dismiss = async () => {
         setDismissing(true);
         try {
-            await fetch('/onboarding-checklist/dismiss', {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'X-CSRF-TOKEN':
-                        document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
-                },
-            });
+            await http.post('/onboarding-checklist/dismiss');
             setHidden(true);
         } catch {
             // Silently fail

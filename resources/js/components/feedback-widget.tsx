@@ -1,6 +1,6 @@
-import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
+import http from '@/lib/http';
 import { Bug, CheckCircle, ChevronDown, Lightbulb, MessageCircle, MessageSquare, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -39,7 +39,15 @@ export function FeedbackWidget() {
         setProcessing(true);
 
         try {
-            await axios.post('/feedback', { type, message });
+            const { data, response } = await http.post<{ errors?: { message?: string; type?: string } }>('/feedback', {
+                body: { type, message },
+            });
+
+            if (response.status === 422) {
+                setErrors(data.errors ?? {});
+                return;
+            }
+
             setSuccess(true);
             setMessage('');
             setType('general');
@@ -47,10 +55,8 @@ export function FeedbackWidget() {
                 setSuccess(false);
                 setOpen(false);
             }, 2500);
-        } catch (err: unknown) {
-            if (axios.isAxiosError(err) && err.response?.status === 422) {
-                setErrors(err.response.data.errors ?? {});
-            }
+        } catch {
+            // Network error — silently ignore
         } finally {
             setProcessing(false);
         }

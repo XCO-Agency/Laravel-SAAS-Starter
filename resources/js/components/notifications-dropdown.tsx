@@ -6,17 +6,24 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useTranslations } from '@/hooks/use-translations';
+import http from '@/lib/http';
 import { Link } from '@inertiajs/react';
 import { Bell, Check, Info } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 // Define standard Laravel Database Notification structure mapping
+interface NotificationData {
+    title?: string;
+    message?: string;
+    action_url?: string;
+}
+
 interface Notification {
     id: string;
     type: string;
     notifiable_type: string;
     notifiable_id: number;
-    data: any;
+    data: NotificationData;
     read_at: string | null;
     created_at: string;
     updated_at: string;
@@ -30,18 +37,8 @@ export function NotificationsDropdown() {
 
     const fetchNotifications = async () => {
         try {
-            const response = await fetch('/api/notifications', {
-                headers: {
-                    Accept: 'application/json',
-                    'X-CSRF-TOKEN':
-                        document
-                            .querySelector('meta[name="csrf-token"]')
-                            ?.getAttribute('content') || '',
-                },
-            });
-
+            const { data, response } = await http.get<{ notifications: Notification[]; unread_count: number }>('/api/notifications');
             if (response.ok) {
-                const data = await response.json();
                 setNotifications(data.notifications);
                 setUnreadCount(data.unread_count);
             }
@@ -52,16 +49,7 @@ export function NotificationsDropdown() {
 
     const markAsRead = async (id: string) => {
         try {
-            await fetch(`/api/notifications/${id}/read`, {
-                method: 'PATCH',
-                headers: {
-                    Accept: 'application/json',
-                    'X-CSRF-TOKEN':
-                        document
-                            .querySelector('meta[name="csrf-token"]')
-                            ?.getAttribute('content') || '',
-                },
-            });
+            await http.patch(`/api/notifications/${id}/read`);
             // Optimistically update the local state
             setNotifications(
                 notifications.map((n) =>
@@ -76,16 +64,7 @@ export function NotificationsDropdown() {
 
     const markAllAsRead = async () => {
         try {
-            await fetch(`/api/notifications/mark-all-read`, {
-                method: 'POST',
-                headers: {
-                    Accept: 'application/json',
-                    'X-CSRF-TOKEN':
-                        document
-                            .querySelector('meta[name="csrf-token"]')
-                            ?.getAttribute('content') || '',
-                },
-            });
+            await http.post('/api/notifications/mark-all-read');
             // Optimistically update the local state
             setNotifications(
                 notifications.map((n) => ({
@@ -100,28 +79,21 @@ export function NotificationsDropdown() {
     };
 
     useEffect(() => {
-        // Fetch initially
-         
-        fetchNotifications();
-
-        // Poll every 30 seconds
-        const interval = setInterval(() => {
-            fetchNotifications();
-        }, 30000);
-
+        // Fetch initially and poll every 30 seconds
+        fetchNotifications(); // eslint-disable-line react-hooks/set-state-in-effect
+        const interval = setInterval(fetchNotifications, 30000);
         return () => clearInterval(interval);
     }, []);
 
-    // Also fetch when we open the dropdown to ensure it's completely fresh
-    useEffect(() => {
-        if (open) {
-             
+    const handleOpenChange = (isOpen: boolean) => {
+        setOpen(isOpen);
+        if (isOpen) {
             fetchNotifications();
         }
-    }, [open]);
+    };
 
     return (
-        <DropdownMenu open={open} onOpenChange={setOpen}>
+        <DropdownMenu open={open} onOpenChange={handleOpenChange}>
             <DropdownMenuTrigger asChild>
                 <Button
                     variant="ghost"

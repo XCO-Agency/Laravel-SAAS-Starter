@@ -8,8 +8,8 @@ import {
     CardTitle,
 } from '@/components/ui/card';
 import AdminLayout from '@/layouts/admin-layout';
+import http from '@/lib/http';
 import { Head } from '@inertiajs/react';
-import axios from 'axios';
 import { AlertCircle, CheckCircle, Clock, RefreshCw, ShieldCheck } from 'lucide-react';
 import { useState } from 'react';
 
@@ -36,8 +36,15 @@ export default function Retention({ policies }: RetentionProps) {
         setError(null);
 
         try {
-            const response = await axios.post('/admin/retention/prune', { dry_run: dryRun });
-            setOutput(response.data.output ?? 'Done.');
+            const { data, response } = await http.post<{ output?: string }>('/admin/retention/prune', {
+                body: { dry_run: dryRun },
+            });
+
+            if (!response.ok) {
+                throw new Error('Request failed');
+            }
+
+            setOutput(data.output ?? 'Done.');
         } catch {
             setError('Failed to run pruning command. Check server logs.');
         } finally {

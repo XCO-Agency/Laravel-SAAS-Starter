@@ -1,3 +1,4 @@
+import http from '@/lib/http';
 import { Head, Link, router } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
@@ -34,31 +35,18 @@ export default function NotificationsIndex({ notifications }: { notifications: P
         if (currentlyRead) return;
 
         try {
-            await fetch(`/api/notifications/${id}/read`, {
-                method: 'PATCH',
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
-                    'Accept': 'application/json',
-                },
-            });
-            // Reload the page smoothly via Inertia to get fresh data
+            await http.patch(`/api/notifications/${id}/read`);
             router.reload({ only: ['notifications'] });
-        } catch (_error) {
+        } catch {
             console.error('Failed to mark notification as read');
         }
     };
 
     const markAllAsRead = async () => {
         try {
-            await fetch('/api/notifications/mark-all-read', {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
-                    'Accept': 'application/json',
-                },
-            });
+            await http.post('/api/notifications/mark-all-read');
             router.reload({ only: ['notifications'] });
-        } catch (_error) {
+        } catch {
             console.error('Failed to mark notifications as read');
         }
     };

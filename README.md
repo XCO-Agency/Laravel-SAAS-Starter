@@ -17,7 +17,7 @@
 - **🚩 Feature Flags (Pennant)** - Database-driven feature flagging with targeted, workspace-specific rollout mechanisms.
 - **📜 System Audit Logs** - Complete change history and system-wide visibility via Spatie Activitylog tracking.
 - **🌙 Elegant UI Components** - Beautiful React 19 light/dark themes powered by Shadcn/UI and smooth Tailwind CSS v4 styling.
-- **⚡ Modern Architecture** - Laravel 12 + Inertia.js v2, strictly typed via Pest tests (190+ tests out-of-the-box).
+- **⚡ Modern Architecture** - Laravel 12 + Inertia.js v2, strictly typed via Pest tests (365+ tests out-of-the-box).
 
 ## 📋 Requirements
 
@@ -139,13 +139,28 @@ php artisan test tests/Feature/Auth/LoginTest.php
 
 ## 📚 Deep Documentation
 
-For a comprehensive review of the project's internal architecture, component strategies, and feature usage instructions, **explore the dedicated `/docs` folder:**
+For a comprehensive review of the project's internal architecture, component strategies, and feature usage instructions, **explore the dedicated [`/docs`](./docs/README.md) folder:**
 
-- [Features Index & Architectural Overviews](./docs/README.md)
-- [Authentication](./docs/features/authentication.md) | [Workspaces](./docs/features/workspaces.md) | [Team Management](./docs/features/team-management.md) | [Billing](./docs/features/billing.md)
-- [Admin Panel](./docs/features/admin-panel.md) | [Announcements](./docs/features/announcements.md) | [Feature Flags](./docs/features/feature-flags.md) | [Audit Logs](./docs/features/audit-logs.md)
-- [Webhooks & Delivery Logs](docs/features/webhooks.md)
-- [Internationalization (i18n)](./docs/features/internationalization.md) | [UI & Theming](./docs/features/ui-and-theming.md) | [Security](./docs/features/security.md)
+**Core**
+[Authentication](./docs/features/authentication.md) | [Workspaces](./docs/features/workspaces.md) | [Team Management](./docs/features/team-management.md) | [Session Management](./docs/features/session-management.md)
+
+**Billing & Usage**
+[Billing](./docs/features/billing.md) | [Seat-Based Billing](./docs/features/seat-billing.md) | [Usage Dashboard](./docs/features/usage-dashboard.md)
+
+**Admin**
+[Admin Panel](./docs/features/admin-panel.md) | [Impersonation](./docs/features/impersonation.md) | [System Health](./docs/features/system-health.md) | [Scheduled Tasks](./docs/features/scheduled-tasks.md) | [Data Retention](./docs/features/data-retention.md) | [SEO Management](./docs/features/seo-management.md)
+
+**Platform Features**
+[Announcements](./docs/features/announcements.md) | [Feature Flags](./docs/features/feature-flags.md) | [Audit Logs](./docs/features/audit-logs.md) | [Changelog](./docs/features/changelog.md) | [Email Templates](./docs/features/email-templates.md) | [Webhooks](./docs/features/webhooks.md) | [Real-time Notifications](./docs/features/real-time-notifications.md) | [Feedback](./docs/features/feedback.md) | [Onboarding Checklist](./docs/features/onboarding-checklist.md) | [Advanced Search](./docs/features/advanced-search.md)
+
+**Security & Compliance**
+[2FA Enforcement](./docs/features/2fa-enforcement.md) | [GDPR Data Export](./docs/features/gdpr-data-export.md) | [Account Deletion](./docs/features/account-deletion.md) | [Security](./docs/features/security.md)
+
+**API & Integrations**
+[Workspace API Keys](./docs/features/workspace-api-keys.md) | [API Authentication](./docs/features/api-authentication.md) | [API Documentation](./docs/features/api-documentation.md)
+
+**Frontend**
+[Internationalization](./docs/features/internationalization.md) | [UI & Theming](./docs/features/ui-and-theming.md)
 
 ## 🏗️ Project Structure
 
@@ -161,7 +176,7 @@ For a comprehensive review of the project's internal architecture, component str
 │   │   ├── components/    # Reusable shadcn/ui & generic ui components
 │   │   ├── layouts/       # Strict domain boundaries (admin vs customer ui)
 │   │   └── pages/         # Inertia frontend pages
-└── tests/                 # Standardized Pest tests (190+ available)
+└── tests/                 # Standardized Pest tests (365+ available)
 ```
 
 ## 🔧 Configuration
