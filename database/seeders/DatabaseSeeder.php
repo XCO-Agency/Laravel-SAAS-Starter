@@ -313,6 +313,121 @@ class DatabaseSeeder extends Seeder
                 ],
                 'read_at' => null,
             ]);
+            // Seed announcements
+            \App\Models\Announcement::create([
+                'title' => 'Welcome to v1.5!',
+                'body' => 'We just shipped seat-based billing, 2FA enforcement, and a new system health monitor. Check it out!',
+                'type' => 'info',
+                'link_text' => 'View Changelog',
+                'link_url' => '/changelog',
+                'is_active' => true,
+                'is_dismissible' => true,
+                'starts_at' => now()->subDays(3),
+                'ends_at' => now()->addDays(14),
+            ]);
+
+            \App\Models\Announcement::create([
+                'title' => 'Scheduled Maintenance',
+                'body' => 'We will be performing maintenance on March 5th from 2:00 AM to 4:00 AM UTC.',
+                'type' => 'warning',
+                'link_text' => null,
+                'link_url' => null,
+                'is_active' => false,
+                'is_dismissible' => true,
+                'starts_at' => now()->addDays(5),
+                'ends_at' => now()->addDays(6),
+            ]);
+
+            \App\Models\Announcement::create([
+                'title' => 'New: Dark Mode',
+                'body' => 'Dark mode is now available! Toggle it from your profile settings.',
+                'type' => 'success',
+                'link_text' => 'Try It',
+                'link_url' => '/settings/profile',
+                'is_active' => false,
+                'is_dismissible' => true,
+                'starts_at' => now()->subDays(60),
+                'ends_at' => now()->subDays(30),
+            ]);
+
+            // Seed feature flags
+            \App\Models\FeatureFlag::create([
+                'key' => 'new-dashboard',
+                'name' => 'New Dashboard',
+                'description' => 'Enables the redesigned dashboard with analytics widgets.',
+                'is_global' => false,
+                'workspace_ids' => $demoWorkspaces->take(2)->pluck('id')->toArray(),
+            ]);
+
+            \App\Models\FeatureFlag::create([
+                'key' => 'ai-assistant',
+                'name' => 'AI Assistant',
+                'description' => 'Enables the AI-powered assistant in the command palette.',
+                'is_global' => true,
+                'workspace_ids' => [],
+            ]);
+
+            \App\Models\FeatureFlag::create([
+                'key' => 'advanced-analytics',
+                'name' => 'Advanced Analytics',
+                'description' => 'Unlocks advanced analytics and reporting for Pro+ workspaces.',
+                'is_global' => false,
+                'workspace_ids' => $demoWorkspaces->slice(1, 2)->pluck('id')->toArray(),
+            ]);
+
+            \App\Models\FeatureFlag::create([
+                'key' => 'beta-api-v2',
+                'name' => 'Beta API v2',
+                'description' => 'Grants access to the beta version of API v2 endpoints.',
+                'is_global' => false,
+                'workspace_ids' => [],
+            ]);
+
+            // Seed webhook delivery logs for workspaces that have webhook endpoints
+            $webhookEndpoints = WebhookEndpoint::all();
+            foreach ($webhookEndpoints as $endpoint) {
+                // Successful deliveries
+                for ($i = 0; $i < 3; $i++) {
+                    \App\Models\WebhookLog::create([
+                        'workspace_id' => $endpoint->workspace_id,
+                        'webhook_endpoint_id' => $endpoint->id,
+                        'event_type' => $endpoint->events[array_rand($endpoint->events)],
+                        'url' => $endpoint->url,
+                        'status' => 200,
+                        'payload' => ['event' => 'workspace.updated', 'data' => ['id' => $endpoint->workspace_id]],
+                        'response' => 'OK',
+                        'error' => null,
+                        'created_at' => now()->subHours(rand(1, 72)),
+                    ]);
+                }
+
+                // One failed delivery
+                \App\Models\WebhookLog::create([
+                    'workspace_id' => $endpoint->workspace_id,
+                    'webhook_endpoint_id' => $endpoint->id,
+                    'event_type' => 'member.added',
+                    'url' => $endpoint->url,
+                    'status' => 500,
+                    'payload' => ['event' => 'member.added', 'data' => ['user_id' => 1]],
+                    'response' => 'Internal Server Error',
+                    'error' => 'Connection timed out after 30 seconds',
+                    'created_at' => now()->subHours(rand(1, 48)),
+                ]);
+
+                // One timeout
+                \App\Models\WebhookLog::create([
+                    'workspace_id' => $endpoint->workspace_id,
+                    'webhook_endpoint_id' => $endpoint->id,
+                    'event_type' => 'workspace.updated',
+                    'url' => $endpoint->url,
+                    'status' => 0,
+                    'payload' => ['event' => 'workspace.updated', 'data' => ['id' => $endpoint->workspace_id]],
+                    'response' => null,
+                    'error' => 'cURL error 28: Connection timed out',
+                    'created_at' => now()->subDays(rand(1, 7)),
+                ]);
+            }
+
             // Seed email templates for the admin panel
             (new EmailTemplateSeeder)->run();
 

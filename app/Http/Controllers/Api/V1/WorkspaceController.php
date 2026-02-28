@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\WorkspaceResource;
 use App\Models\Workspace;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
@@ -58,11 +59,17 @@ class WorkspaceController extends Controller
      *  }
      * }
      */
-    public function show(Request $request): WorkspaceResource
+    public function show(Request $request): JsonResponse
     {
         $workspace = $request->attributes->get('workspace');
 
-        return new WorkspaceResource($workspace);
+        return response()->json([
+            'id' => $workspace->id,
+            'name' => $workspace->name,
+            'slug' => $workspace->slug,
+            'plan' => $workspace->plan_name,
+            'created_at' => $workspace->created_at->toIso8601String(),
+        ]);
     }
 
     /**
@@ -84,10 +91,17 @@ class WorkspaceController extends Controller
      *  ]
      * }
      */
-    public function members(Request $request): AnonymousResourceCollection
+    public function members(Request $request): JsonResponse
     {
         $workspace = $request->attributes->get('workspace');
 
-        return \App\Http\Resources\UserResource::collection($workspace->users);
+        return response()->json([
+            'members' => $workspace->users->map(fn ($user) => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'role' => $user->pivot->role,
+            ])->values(),
+        ]);
     }
 }
