@@ -30,6 +30,8 @@ return [
             'limits' => [
                 'workspaces' => 1,
                 'team_members' => 2,
+                'api_keys' => 2,
+                'webhooks' => 1,
             ],
             'features' => [
                 '1 Workspace',
@@ -53,6 +55,8 @@ return [
             'limits' => [
                 'workspaces' => 5,
                 'team_members' => 10,
+                'api_keys' => 10,
+                'webhooks' => 5,
             ],
             'features' => [
                 '5 Workspaces',
@@ -78,6 +82,8 @@ return [
             'limits' => [
                 'workspaces' => -1, // Unlimited
                 'team_members' => -1, // Unlimited
+                'api_keys' => -1, // Unlimited
+                'webhooks' => -1, // Unlimited
             ],
             'features' => [
                 'Unlimited Workspaces',

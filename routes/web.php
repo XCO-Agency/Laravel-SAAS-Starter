@@ -100,6 +100,12 @@ Route::middleware(['auth', 'verified', 'onboarded', 'workspace', 'require2fa'])-
     // Onboarding Checklist
     Route::get('/onboarding-checklist', [\App\Http\Controllers\OnboardingChecklistController::class, 'index'])->name('onboarding-checklist.index');
     Route::post('/onboarding-checklist/dismiss', [\App\Http\Controllers\OnboardingChecklistController::class, 'dismiss'])->name('onboarding-checklist.dismiss');
+
+    // Usage Dashboard
+    Route::get('/usage', [\App\Http\Controllers\UsageController::class, 'index'])->name('usage.index');
+
+    // Impersonation
+    Route::post('/admin/impersonate/leave', [\App\Http\Controllers\Admin\ImpersonationController::class, 'leave'])->name('admin.impersonate.leave');
 });
 
 // 2FA Enforcement Wall (auth only, no require2fa to avoid infinite redirect)

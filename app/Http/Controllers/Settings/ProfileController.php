@@ -83,7 +83,30 @@ class ProfileController extends Controller
 
         $user = $request->user();
 
+        // Check for workspaces where the user is the owner
+        $ownedWorkspaces = $user->ownedWorkspaces;
+
+        foreach ($ownedWorkspaces as $workspace) {
+            // If it's a shared workspace with other members, prevent deletion
+            if (!$workspace->personal_workspace && $workspace->users()->count() > 1) {
+                return back()->withErrors([
+                    'account' => __('You cannot delete your account while you own a workspace with other members. Please transfer ownership or remove all members first.'),
+                ]);
+            }
+        }
+
+        // logout before deleting to avoid session issues
         Auth::logout();
+
+        // Delete personal/solely-owned workspaces
+        foreach ($ownedWorkspaces as $workspace) {
+            // Cancel subscriptions if any
+            if ($workspace->subscribed()) {
+                $workspace->subscription()->cancelNow();
+            }
+            
+            $workspace->delete();
+        }
 
         $user->delete();
 

@@ -83,7 +83,7 @@ class HandleInertiaRequests extends Middleware
                     'two_factor_confirmed_at' => $user->two_factor_confirmed_at,
                     'created_at' => $user->created_at,
                 ] : null,
-                'is_impersonating' => $request->session()->has('admin:impersonator'),
+                'is_impersonating' => $request->session()->has('impersonated_by'),
             ],
             'locale' => $locale,
             'currentWorkspace' => $currentWorkspace ? [
