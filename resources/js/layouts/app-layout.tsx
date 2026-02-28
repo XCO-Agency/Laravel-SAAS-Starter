@@ -1,8 +1,9 @@
 import AppLayoutTemplate from '@/layouts/app/app-sidebar-layout';
 import { type BreadcrumbItem, type SharedData } from '@/types';
 import { usePage, router } from '@inertiajs/react';
-import { useEffect, type ReactNode } from 'react';
+import { type ReactNode } from 'react';
 import { useToast } from '@/components/ui/toast';
+import { useEcho } from '@laravel/echo-react';
 
 interface AppLayoutProps {
     children: ReactNode;
@@ -13,20 +14,13 @@ export default ({ children, breadcrumbs, ...props }: AppLayoutProps) => {
     const { currentWorkspace } = usePage<SharedData>().props;
     const { addToast } = useToast();
 
-    useEffect(() => {
-        if (!currentWorkspace) {
-            return;
-        }
-
-        const channel = window.Echo.private(`workspace.${currentWorkspace.id}`)
-            .listen('.workspace.activity', (e: { message: string, type: 'success' | 'error' | 'info' }) => {
-                addToast(e.message, e.type);
-            });
-
-        return () => {
-            channel.stopListening('.workspace.activity');
-        };
-    }, [currentWorkspace, addToast]);
+    useEcho(
+        currentWorkspace ? `workspace.${currentWorkspace.id}` : null,
+        '.workspace.activity',
+        (e: { message: string; type: 'success' | 'error' | 'info' }) => {
+            addToast(e.message, e.type);
+        },
+    );
 
     const { auth } = usePage<SharedData>().props;
 
