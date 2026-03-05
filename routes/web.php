@@ -41,7 +41,7 @@ Route::post('/invitations/{token}/accept', [InvitationController::class, 'accept
 Route::get('/join/{token}', [WorkspaceInviteLinkController::class, 'show'])->name('invite-links.show');
 Route::post('/join/{token}', [WorkspaceInviteLinkController::class, 'join'])->middleware('auth')->name('invite-links.join');
 
-Route::middleware(['auth', 'verified', 'onboarded', 'workspace', 'require2fa', 'workspace.ip'])->group(function () {
+Route::middleware(['auth', 'verified', 'onboarded', 'workspace', 'require2fa', 'workspace.ip', 'workspace.suspended'])->group(function () {
     Route::get('dashboard', function () {
         $user = request()->user();
         $workspace = $user->currentWorkspace;
@@ -182,7 +182,7 @@ Route::middleware('guest')->group(function () {
         ->where('provider', 'github|google');
 });
 
-require __DIR__.'/settings.php';
+require __DIR__ . '/settings.php';
 
 // Admin routes
 Route::middleware(['auth', 'superadmin'])->prefix('admin')->name('admin.')->group(function () {
@@ -197,6 +197,8 @@ Route::middleware(['auth', 'superadmin'])->prefix('admin')->name('admin.')->grou
 
     // Workspace Management
     Route::get('/workspaces', [\App\Http\Controllers\Admin\WorkspaceController::class, 'index'])->name('workspaces.index');
+    Route::post('/workspaces/{workspace}/suspend', [\App\Http\Controllers\Admin\WorkspaceController::class, 'suspend'])->name('workspaces.suspend');
+    Route::post('/workspaces/{workspace}/unsuspend', [\App\Http\Controllers\Admin\WorkspaceController::class, 'unsuspend'])->name('workspaces.unsuspend');
 
     // Audit Logs
     Route::get('/audit-logs', [\App\Http\Controllers\Admin\AuditLogController::class, 'index'])->name('audit-logs.index');

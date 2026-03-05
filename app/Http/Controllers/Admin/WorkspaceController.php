@@ -21,13 +21,15 @@ class WorkspaceController extends Controller
         $workspaces = Workspace::withTrashed()
             ->withCount('users')
             ->with('owner:id,name,email')
-            ->when($search, fn ($query) => $query
-                ->where('name', 'like', "%{$search}%")
-                ->orWhere('slug', 'like', "%{$search}%")
+            ->when(
+                $search,
+                fn($query) => $query
+                    ->where('name', 'like', "%{$search}%")
+                    ->orWhere('slug', 'like', "%{$search}%")
             )
             ->latest()
             ->paginate(15)
-            ->through(fn ($workspace) => [
+            ->through(fn($workspace) => [
                 'id' => $workspace->id,
                 'name' => $workspace->name,
                 'slug' => $workspace->slug,
@@ -41,12 +43,14 @@ class WorkspaceController extends Controller
                 ] : null,
                 'created_at' => $workspace->created_at,
                 'deleted_at' => $workspace->deleted_at,
+                'suspended_at' => $workspace->suspended_at,
+                'suspension_reason' => $workspace->suspension_reason,
             ])
             ->withQueryString();
 
         // Filter by plan name after mapping (since plan_name is computed, not a DB column)
         if ($plan) {
-            $filteredData = collect($workspaces->items())->filter(fn ($w) => $w['plan'] === $plan)->values();
+            $filteredData = collect($workspaces->items())->filter(fn($w) => $w['plan'] === $plan)->values();
             $workspaces->setCollection($filteredData);
         }
 
@@ -56,7 +60,37 @@ class WorkspaceController extends Controller
                 'search' => $search,
                 'plan' => $plan,
             ],
-            'planOptions' => collect(config('billing.plans', []))->map(fn ($p) => $p['name'])->values(),
+            'planOptions' => collect(config('billing.plans', []))->map(fn($p) => $p['name'])->values(),
         ]);
+    }
+
+    /**
+     * Suspend a workspace.
+     */
+    public function suspend(Request $request, Workspace $workspace): \Illuminate\Http\RedirectResponse
+    {
+        $validated = $request->validate([
+            'reason' => ['nullable', 'string', 'max:255'],
+        ]);
+
+        $workspace->update([
+            'suspended_at' => now(),
+            'suspension_reason' => $validated['reason'] ?? null,
+        ]);
+
+        return back()->with('success', 'Workspace suspended successfully.');
+    }
+
+    /**
+     * Unsuspend a workspace.
+     */
+    public function unsuspend(Workspace $workspace): \Illuminate\Http\RedirectResponse
+    {
+        $workspace->update([
+            'suspended_at' => null,
+            'suspension_reason' => null,
+        ]);
+
+        return back()->with('success', 'Workspace unsuspended successfully.');
     }
 }

@@ -5,7 +5,26 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from '@/components/ui/dialog';
+import {
+    AlertTriangle,
     Building2,
+    CheckCircle,
+    MoreHorizontal,
     Search,
     Users,
 } from 'lucide-react';
@@ -27,6 +46,8 @@ interface PaginatedWorkspace {
     owner: Owner | null;
     created_at: string;
     deleted_at: string | null;
+    suspended_at: string | null;
+    suspension_reason: string | null;
 }
 
 interface PaginationLink {
@@ -59,6 +80,9 @@ const PLAN_BADGE_VARIANT: Record<string, 'default' | 'secondary' | 'outline'> = 
 export default function AdminWorkspaces({ workspaces, filters, planOptions }: AdminWorkspacesProps) {
     const [search, setSearch] = useState(filters.search || '');
     const [plan, setPlan] = useState(filters.plan || '');
+    const [suspensionDialogWorkspace, setSuspensionDialogWorkspace] = useState<PaginatedWorkspace | null>(null);
+    const [suspensionReason, setSuspensionReason] = useState('');
+    const [processing, setProcessing] = useState(false);
 
     const handleSearch = (e: FormEvent) => {
         e.preventDefault();
@@ -72,6 +96,26 @@ export default function AdminWorkspaces({ workspaces, filters, planOptions }: Ad
 
     const getInitials = (name: string) =>
         name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+
+    const handleSuspend = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!suspensionDialogWorkspace) return;
+
+        setProcessing(true);
+        router.post(`/admin/workspaces/${suspensionDialogWorkspace.id}/suspend`, {
+            reason: suspensionReason,
+        }, {
+            onFinish: () => {
+                setProcessing(false);
+                setSuspensionDialogWorkspace(null);
+                setSuspensionReason('');
+            },
+        });
+    };
+
+    const handleUnsuspend = (workspace: PaginatedWorkspace) => {
+        router.post(`/admin/workspaces/${workspace.id}/unsuspend`);
+    };
 
 
     return (
@@ -126,6 +170,7 @@ export default function AdminWorkspaces({ workspaces, filters, planOptions }: Ad
                                 <th className="px-6 py-3 font-medium">Members</th>
                                 <th className="px-6 py-3 font-medium">Status</th>
                                 <th className="px-6 py-3 font-medium">Created</th>
+                                <th className="px-6 py-3 font-medium text-right">Actions</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-border">
@@ -171,6 +216,8 @@ export default function AdminWorkspaces({ workspaces, filters, planOptions }: Ad
                                         <td className="px-6 py-4">
                                             {ws.deleted_at ? (
                                                 <Badge variant="destructive">Deleted</Badge>
+                                            ) : ws.suspended_at ? (
+                                                <Badge variant="destructive" className="bg-orange-600 hover:bg-orange-700">Suspended</Badge>
                                             ) : ws.personal_workspace ? (
                                                 <Badge variant="outline">Personal</Badge>
                                             ) : (
@@ -179,6 +226,35 @@ export default function AdminWorkspaces({ workspaces, filters, planOptions }: Ad
                                         </td>
                                         <td className="px-6 py-4 text-muted-foreground text-xs">
                                             {new Date(ws.created_at).toLocaleDateString()}
+                                        </td>
+                                        <td className="px-6 py-4 text-right">
+                                            <DropdownMenu>
+                                                <DropdownMenuTrigger asChild>
+                                                    <Button variant="ghost" className="h-8 w-8 p-0">
+                                                        <span className="sr-only">Open menu</span>
+                                                        <MoreHorizontal className="h-4 w-4" />
+                                                    </Button>
+                                                </DropdownMenuTrigger>
+                                                <DropdownMenuContent align="end">
+                                                    <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                                                    <DropdownMenuSeparator />
+                                                    {ws.suspended_at ? (
+                                                        <DropdownMenuItem onClick={() => handleUnsuspend(ws)}>
+                                                            <CheckCircle className="mr-2 h-4 w-4" />
+                                                            Unsuspend Workspace
+                                                        </DropdownMenuItem>
+                                                    ) : (
+                                                        <DropdownMenuItem
+                                                            onClick={() => setSuspensionDialogWorkspace(ws)}
+                                                            className="text-destructive focus:text-destructive"
+                                                            disabled={!!ws.deleted_at}
+                                                        >
+                                                            <AlertTriangle className="mr-2 h-4 w-4" />
+                                                            Suspend Workspace
+                                                        </DropdownMenuItem>
+                                                    )}
+                                                </DropdownMenuContent>
+                                            </DropdownMenu>
                                         </td>
                                     </tr>
                                 ))
@@ -203,6 +279,45 @@ export default function AdminWorkspaces({ workspaces, filters, planOptions }: Ad
                     </div>
                 )}
             </div>
+
+            <Dialog open={!!suspensionDialogWorkspace} onOpenChange={() => setSuspensionDialogWorkspace(null)}>
+                <DialogContent>
+                    <form onSubmit={handleSuspend}>
+                        <DialogHeader>
+                            <DialogTitle>Suspend Workspace</DialogTitle>
+                            <DialogDescription>
+                                Are you sure you want to suspend <strong>{suspensionDialogWorkspace?.name}</strong>?
+                                Members will be redirected to a suspension page and unable to access workspace data.
+                            </DialogDescription>
+                        </DialogHeader>
+                        <div className="py-4">
+                            <label htmlFor="reason" className="mb-2 block text-sm font-medium">
+                                Reason for suspension (optional)
+                            </label>
+                            <Input
+                                id="reason"
+                                value={suspensionReason}
+                                onChange={e => setSuspensionReason(e.target.value)}
+                                placeholder="e.g. Terms of Service violation"
+                                maxLength={255}
+                            />
+                        </div>
+                        <DialogFooter>
+                            <Button
+                                type="button"
+                                variant="outline"
+                                onClick={() => setSuspensionDialogWorkspace(null)}
+                                disabled={processing}
+                            >
+                                Cancel
+                            </Button>
+                            <Button type="submit" variant="destructive" disabled={processing}>
+                                {processing ? 'Suspending...' : 'Suspend Workspace'}
+                            </Button>
+                        </DialogFooter>
+                    </form>
+                </DialogContent>
+            </Dialog>
         </AdminLayout>
     );
 }
