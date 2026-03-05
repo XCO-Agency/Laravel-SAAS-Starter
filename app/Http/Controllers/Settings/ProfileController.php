@@ -39,6 +39,7 @@ class ProfileController extends Controller
             'email' => $validated['email'],
             'bio' => $validated['bio'] ?? null,
             'timezone' => $validated['timezone'],
+            'date_format' => $validated['date_format'],
         ]);
 
         if ($user->isDirty('email')) {
@@ -46,12 +47,12 @@ class ProfileController extends Controller
         }
 
         if ($request->hasFile('avatar')) {
-            if ($user->avatar_url) {
-                Storage::disk('public')->delete($user->avatar_url);
+            if ($user->getRawOriginal('avatar_url')) {
+                Storage::disk('public')->delete($user->getRawOriginal('avatar_url'));
             }
             $user->avatar_url = $request->file('avatar')->store('avatars', 'public');
-        } elseif ($request->boolean('remove_avatar') && $user->avatar_url) {
-            Storage::disk('public')->delete($user->avatar_url);
+        } elseif ($request->boolean('remove_avatar') && $user->getRawOriginal('avatar_url')) {
+            Storage::disk('public')->delete($user->getRawOriginal('avatar_url'));
             $user->avatar_url = null;
         }
 

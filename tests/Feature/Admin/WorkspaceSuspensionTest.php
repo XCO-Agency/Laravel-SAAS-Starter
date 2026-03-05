@@ -54,36 +54,36 @@ test('non-superadmin cannot suspend or unsuspend workspaces', function () {
 });
 
 test('suspended workspace blocks access to standard routes', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->create([
+        'onboarded_at' => now(),
+    ]);
     $workspace = Workspace::factory()->create([
         'owner_id' => $user->id,
         'suspended_at' => now(),
         'suspension_reason' => 'Non-payment',
     ]);
+    $user->workspaces()->attach($workspace, ['role' => 'owner', 'permissions' => json_encode([])]);
 
     // Switch to the suspended workspace
     $user->switchWorkspace($workspace);
 
-    $this->actingAs($user)
-        ->get(route('dashboard'))
-        ->assertForbidden()
-        ->assertInertia(
-            fn($page) => $page
-                ->component('workspace-suspended')
-                ->has('workspace.suspended_at')
-                ->where('workspace.suspension_reason', 'Non-payment')
-        );
+    $response = $this->actingAs($user)
+        ->get(route('dashboard'));
+
+    $response->assertRedirect(route('workspace.suspended'));
 });
 
 test('suspended workspace allows access to allowed routes', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->create([
+        'onboarded_at' => now(),
+    ]);
     $workspace = Workspace::factory()->create([
         'owner_id' => $user->id,
         'suspended_at' => now(),
     ]);
+    $user->workspaces()->attach($workspace, ['role' => 'owner', 'permissions' => json_encode([])]);
     $user->switchWorkspace($workspace);
 
-    $this->withoutExceptionHandling();
     $response = $this->actingAs($user)
         ->get(route('workspaces.index'));
 

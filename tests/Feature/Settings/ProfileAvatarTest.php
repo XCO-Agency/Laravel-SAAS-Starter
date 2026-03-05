@@ -17,6 +17,7 @@ it('allows a user to test uploading a valid avatar', function () {
             'email' => 'john@example.com',
             'avatar' => $file,
             'timezone' => 'UTC',
+            'date_format' => 'Y-m-d',
         ]);
 
     $response->assertSessionHasNoErrors();
@@ -25,7 +26,8 @@ it('allows a user to test uploading a valid avatar', function () {
     $user->refresh();
 
     expect($user->avatar_url)->not->toBeNull();
-    Storage::disk('public')->assertExists($user->avatar_url);
+    $avatarPath = str_replace('/storage/', '', $user->avatar_url);
+    Storage::disk('public')->assertExists($avatarPath);
 });
 
 it('rejects invalid avatar file types natively', function () {
@@ -39,6 +41,7 @@ it('rejects invalid avatar file types natively', function () {
             'email' => 'john@example.com',
             'avatar' => $file,
             'timezone' => 'UTC',
+            'date_format' => 'Y-m-d',
         ]);
 
     $response->assertSessionHasErrors('avatar');
@@ -61,6 +64,7 @@ it('allows a user to explicitly remove an existing avatar', function () {
             'email' => 'john@example.com',
             'remove_avatar' => true,
             'timezone' => 'UTC',
+            'date_format' => 'Y-m-d',
         ]);
 
     $response->assertSessionHasNoErrors();

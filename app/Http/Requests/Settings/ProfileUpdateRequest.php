@@ -32,6 +32,7 @@ class ProfileUpdateRequest extends FormRequest
             'remove_avatar' => ['nullable', 'boolean'],
             'bio' => ['nullable', 'string', 'max:1000'],
             'timezone' => ['required', 'string', 'timezone'],
+            'date_format' => ['required', 'string', Rule::in(['Y-m-d', 'd/m/Y', 'm/d/Y', 'Y/m/d', 'M j, Y'])],
         ];
     }
 }

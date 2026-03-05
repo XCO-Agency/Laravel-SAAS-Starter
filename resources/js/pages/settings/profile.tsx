@@ -175,6 +175,37 @@ export default function Profile({
                                     />
                                 </div>
 
+                                <div className="grid gap-2">
+                                    <Label htmlFor="date_format">{t('settings.profile.date_format', 'Date Format')}</Label>
+
+                                    <input type="hidden" name="date_format" id="date_format" defaultValue={auth.user.date_format || 'Y-m-d'} />
+
+                                    <Select
+                                        defaultValue={auth.user.date_format || 'Y-m-d'}
+                                        onValueChange={(val) => {
+                                            const el = document.getElementById('date_format') as HTMLInputElement;
+                                            if (el) el.value = val;
+                                        }}
+                                        name="date_format_select"
+                                    >
+                                        <SelectTrigger className="w-full">
+                                            <SelectValue placeholder="Select a date format" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="Y-m-d">YYYY-MM-DD (e.g., 2026-03-05)</SelectItem>
+                                            <SelectItem value="d/m/Y">DD/MM/YYYY (e.g., 05/03/2026)</SelectItem>
+                                            <SelectItem value="m/d/Y">MM/DD/YYYY (e.g., 03/05/2026)</SelectItem>
+                                            <SelectItem value="Y/m/d">YYYY/MM/DD (e.g., 2026/03/05)</SelectItem>
+                                            <SelectItem value="M j, Y">MMM D, YYYY (e.g., Mar 5, 2026)</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+
+                                    <InputError
+                                        className="mt-2"
+                                        message={errors.date_format}
+                                    />
+                                </div>
+
                                 {mustVerifyEmail &&
                                     auth.user.email_verified_at === null && (
                                         <div>

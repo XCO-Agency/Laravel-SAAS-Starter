@@ -139,6 +139,25 @@ Route::middleware(['auth', 'verified', 'onboarded', 'workspace'])->group(functio
     Route::get('/workspace/2fa-required', [\App\Http\Controllers\Settings\WorkspaceSecurityController::class, 'twoFactorRequired'])->name('workspace.2fa-required');
 });
 
+// Workspace Suspension Wall
+Route::middleware(['auth', 'verified', 'onboarded', 'workspace'])->group(function () {
+    Route::get('/workspace/suspended', function (\Illuminate\Http\Request $request) {
+        $workspace = $request->user()->currentWorkspace;
+
+        if (! $workspace || ! $workspace->suspended_at) {
+            return redirect()->route('dashboard');
+        }
+
+        return Inertia::render('workspace-suspended', [
+            'workspace' => [
+                'name' => $workspace->name,
+                'suspended_at' => $workspace->suspended_at->toIso8601String(),
+                'suspension_reason' => $workspace->suspension_reason,
+            ],
+        ]);
+    })->name('workspace.suspended');
+});
+
 Route::middleware(['auth'])->group(function () {
     // Onboarding Sequences (Exempt from onboarded check)
     Route::get('/onboarding', [\App\Http\Controllers\OnboardingController::class, 'index'])->name('onboarding.index');
@@ -182,7 +201,7 @@ Route::middleware('guest')->group(function () {
         ->where('provider', 'github|google');
 });
 
-require __DIR__ . '/settings.php';
+require __DIR__.'/settings.php';
 
 // Admin routes
 Route::middleware(['auth', 'superadmin'])->prefix('admin')->name('admin.')->group(function () {

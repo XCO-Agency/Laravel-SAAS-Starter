@@ -127,6 +127,7 @@ export interface User {
     is_superadmin?: boolean;
     bio?: string | null;
     timezone?: string;
+    date_format?: string;
     [key: string]: unknown;
 }
 

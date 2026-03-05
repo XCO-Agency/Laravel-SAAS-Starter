@@ -50,6 +50,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'avatar_url',
         'bio',
         'timezone',
+        'date_format',
         'notification_preferences',
         'onboarding_checklist_dismissed_at',
         'password_updated_at',
@@ -172,13 +173,13 @@ class User extends Authenticatable implements MustVerifyEmail
     /**
      * Get the user's avatar URL with fallback.
      */
-    public function getAvatarUrlAttribute($value): string
+    public function getAvatarUrlAttribute($value): ?string
     {
         if ($value) {
             return str_starts_with($value, 'http') ? $value : \Illuminate\Support\Facades\Storage::url($value);
         }
 
-        return 'https://ui-avatars.com/api/?name='.urlencode($this->name).'&color=7F9CF5&background=EBF4FF';
+        return null; // The frontend should handle fallback avatars
     }
 
     /**

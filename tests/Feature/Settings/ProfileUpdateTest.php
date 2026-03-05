@@ -21,6 +21,7 @@ test('profile information can be updated', function () {
             'name' => 'Test User',
             'email' => 'test@example.com',
             'timezone' => 'UTC',
+            'date_format' => 'Y-m-d',
         ]);
 
     $response
@@ -43,6 +44,7 @@ test('email verification status is unchanged when the email address is unchanged
             'name' => 'Test User',
             'email' => $user->email,
             'timezone' => 'UTC',
+            'date_format' => 'Y-m-d',
         ]);
 
     $response

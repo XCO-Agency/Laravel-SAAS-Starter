@@ -23,13 +23,13 @@ class WorkspaceController extends Controller
             ->with('owner:id,name,email')
             ->when(
                 $search,
-                fn($query) => $query
+                fn ($query) => $query
                     ->where('name', 'like', "%{$search}%")
                     ->orWhere('slug', 'like', "%{$search}%")
             )
             ->latest()
             ->paginate(15)
-            ->through(fn($workspace) => [
+            ->through(fn ($workspace) => [
                 'id' => $workspace->id,
                 'name' => $workspace->name,
                 'slug' => $workspace->slug,
@@ -50,7 +50,7 @@ class WorkspaceController extends Controller
 
         // Filter by plan name after mapping (since plan_name is computed, not a DB column)
         if ($plan) {
-            $filteredData = collect($workspaces->items())->filter(fn($w) => $w['plan'] === $plan)->values();
+            $filteredData = collect($workspaces->items())->filter(fn ($w) => $w['plan'] === $plan)->values();
             $workspaces->setCollection($filteredData);
         }
 
@@ -60,7 +60,7 @@ class WorkspaceController extends Controller
                 'search' => $search,
                 'plan' => $plan,
             ],
-            'planOptions' => collect(config('billing.plans', []))->map(fn($p) => $p['name'])->values(),
+            'planOptions' => collect(config('billing.plans', []))->map(fn ($p) => $p['name'])->values(),
         ]);
     }
 

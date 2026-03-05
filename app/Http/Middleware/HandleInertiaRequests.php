@@ -79,6 +79,7 @@ class HandleInertiaRequests extends Middleware
                     'avatar_url' => $user->avatar_url,
                     'bio' => $user->bio,
                     'timezone' => $user->timezone ?? 'UTC',
+                    'date_format' => $user->date_format ?? 'Y-m-d',
                     'notification_preferences' => $user->notification_preferences,
                     'two_factor_confirmed_at' => $user->two_factor_confirmed_at,
                     'created_at' => $user->created_at,
