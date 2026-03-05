@@ -12,6 +12,7 @@ interface MaintenanceConfig {
     active: boolean;
     message: string;
     secret: string;
+    allowed_ips?: string[];
 }
 
 interface Props {
@@ -24,6 +25,7 @@ export default function AdminMaintenance({ maintenance, isDown }: Props) {
 
     const form = useForm({
         message: maintenance.message || '',
+        allowed_ips: maintenance.allowed_ips ? maintenance.allowed_ips.join(', ') : '',
     });
 
     const handleToggle = (e: React.FormEvent) => {
@@ -98,18 +100,39 @@ export default function AdminMaintenance({ maintenance, isDown }: Props) {
                             </CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-6">
-                            <div className="space-y-2">
-                                <Label htmlFor="message">Custom Message (optional)</Label>
-                                <Textarea
-                                    id="message"
-                                    value={form.data.message}
-                                    onChange={(e) => form.setData('message', e.target.value)}
-                                    placeholder="We're performing scheduled maintenance. We'll be back shortly."
-                                    rows={3}
-                                />
-                                {form.errors.message && (
-                                    <p className="text-xs text-destructive">{form.errors.message}</p>
-                                )}
+                            <div className="space-y-4">
+                                <div className="space-y-2">
+                                    <Label htmlFor="message">Custom Message (optional)</Label>
+                                    <Textarea
+                                        id="message"
+                                        value={form.data.message}
+                                        onChange={(e) => form.setData('message', e.target.value)}
+                                        placeholder="We're performing scheduled maintenance. We'll be back shortly."
+                                        rows={3}
+                                        disabled={isDown}
+                                    />
+                                    {form.errors.message && (
+                                        <p className="text-xs text-destructive">{form.errors.message}</p>
+                                    )}
+                                </div>
+
+                                <div className="space-y-2">
+                                    <Label htmlFor="allowed_ips">Allowed IP Addresses (optional)</Label>
+                                    <div className="text-[0.8rem] text-muted-foreground pb-1 leading-snug">
+                                        Comma-separated list of IP addresses that can bypass the maintenance screen without a secret URL.
+                                    </div>
+                                    <Textarea
+                                        id="allowed_ips"
+                                        value={form.data.allowed_ips}
+                                        onChange={(e) => form.setData('allowed_ips', e.target.value)}
+                                        placeholder="192.168.1.1, 10.0.0.5"
+                                        rows={2}
+                                        disabled={isDown}
+                                    />
+                                    {form.errors.allowed_ips && (
+                                        <p className="text-xs text-destructive">{form.errors.allowed_ips}</p>
+                                    )}
+                                </div>
                             </div>
 
                             <div className="flex justify-end pt-2">
@@ -131,6 +154,6 @@ export default function AdminMaintenance({ maintenance, isDown }: Props) {
                     </Card>
                 </form>
             </div>
-        </AdminLayout>
+        </AdminLayout >
     );
 }

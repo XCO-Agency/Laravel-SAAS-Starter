@@ -23,6 +23,7 @@ class MaintenanceController extends Controller
             'active' => false,
             'message' => '',
             'secret' => '',
+            'allowed_ips' => [],
         ]);
 
         return Inertia::render('admin/maintenance', [
@@ -38,9 +39,22 @@ class MaintenanceController extends Controller
     {
         $validated = $request->validate([
             'message' => ['nullable', 'string', 'max:500'],
+            'allowed_ips' => ['nullable', 'string'],
         ]);
 
         $isCurrentlyDown = app()->isDownForMaintenance();
+
+        // Parse IPs string to array
+        $allowedIps = [];
+        if (!empty($validated['allowed_ips'])) {
+            $ips = explode(',', $validated['allowed_ips']);
+            foreach ($ips as $ip) {
+                $cleanedIp = trim($ip);
+                if (filter_var($cleanedIp, FILTER_VALIDATE_IP)) {
+                    $allowedIps[] = $cleanedIp;
+                }
+            }
+        }
 
         if ($isCurrentlyDown) {
             // Bring the app up
@@ -50,6 +64,7 @@ class MaintenanceController extends Controller
                 'active' => false,
                 'message' => $validated['message'] ?? '',
                 'secret' => '',
+                'allowed_ips' => $allowedIps,
             ]);
 
             return back()->with('success', 'Application is now live.');
@@ -76,6 +91,7 @@ class MaintenanceController extends Controller
             'active' => true,
             'message' => $validated['message'] ?? '',
             'secret' => $secret,
+            'allowed_ips' => $allowedIps,
         ]);
 
         return back()->with('success', 'Application is now in maintenance mode.');

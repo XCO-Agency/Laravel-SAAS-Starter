@@ -52,6 +52,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'timezone',
         'notification_preferences',
         'onboarding_checklist_dismissed_at',
+        'password_updated_at',
     ];
 
     /**
@@ -81,6 +82,7 @@ class User extends Authenticatable implements MustVerifyEmail
             'onboarded_at' => 'datetime',
             'notification_preferences' => 'array',
             'onboarding_checklist_dismissed_at' => 'datetime',
+            'password_updated_at' => 'datetime',
         ];
     }
 

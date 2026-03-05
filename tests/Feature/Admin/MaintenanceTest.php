@@ -32,10 +32,11 @@ describe('Maintenance Mode Page', function () {
         $this->actingAs($this->superadmin)
             ->get('/admin/maintenance')
             ->assertOk()
-            ->assertInertia(fn ($page) => $page
-                ->component('admin/maintenance')
-                ->has('maintenance')
-                ->has('isDown')
+            ->assertInertia(
+                fn($page) => $page
+                    ->component('admin/maintenance')
+                    ->has('maintenance')
+                    ->has('isDown')
             );
     });
 
@@ -90,5 +91,53 @@ describe('Maintenance Mode Toggle', function () {
         $this->actingAs($user)
             ->post('/admin/maintenance/toggle', [])
             ->assertForbidden();
+    });
+
+    it('stores allowed_ips correctly from string', function () {
+        $this->actingAs($this->superadmin)
+            ->post('/admin/maintenance/toggle', [
+                'message' => 'Under maintenance',
+                'allowed_ips' => '192.168.1.1, 10.0.0.5 , invalid-ip, 127.0.0.1',
+            ])
+            ->assertRedirect()
+            ->assertSessionHas('success');
+
+        $config = Cache::get('maintenance_mode');
+        expect($config['allowed_ips'])->toBe(['192.168.1.1', '10.0.0.5', '127.0.0.1']);
+    });
+});
+
+describe('Maintenance IP Whitelist Middleware', function () {
+    it('bypasses maintenance mode for whitelisted IP', function () {
+        // Toggle maintenance mode on with a whitelisted IP
+        $this->actingAs($this->superadmin)
+            ->post('/admin/maintenance/toggle', [
+                'allowed_ips' => '127.0.0.1',
+            ]);
+
+        // Assert it is actually down
+        expect(app()->isDownForMaintenance())->toBeTrue();
+
+        // Make a request from the whitelisted IP
+        $response = $this->withServerVariables(['REMOTE_ADDR' => '127.0.0.1'])->get('/');
+
+        // It should let us through (since we're unauthenticated it hits the welcome page)
+        $response->assertStatus(200);
+    });
+
+    it('blocks non-whitelisted IP during maintenance mode', function () {
+        // Toggle maintenance mode on with a whitelisted IP
+        $this->actingAs($this->superadmin)
+            ->post('/admin/maintenance/toggle', [
+                'allowed_ips' => '192.168.1.1',
+            ]);
+
+        expect(app()->isDownForMaintenance())->toBeTrue();
+
+        // Make a request from a blocked IP
+        $response = $this->withServerVariables(['REMOTE_ADDR' => '10.0.0.5'])->get('/');
+
+        // It should return 503 Maintenance Mode
+        $response->assertStatus(503);
     });
 });

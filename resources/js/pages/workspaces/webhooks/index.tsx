@@ -100,17 +100,60 @@ export default function WorkspaceWebhooks({ workspace, endpoints }: WebhookLogsP
                                     </DialogDescription>
                                 </DialogHeader>
                                 <form onSubmit={submit} className="space-y-4">
-                                    <div className="space-y-2">
-                                        <Label htmlFor="url">Payload URL</Label>
-                                        <Input
-                                            id="url"
-                                            type="url"
-                                            value={data.url}
-                                            onChange={(e) => setData('url', e.target.value)}
-                                            placeholder="https://example.com/webhooks"
-                                            required
-                                        />
-                                        <InputError message={errors.url} />
+                                    <div className="space-y-4">
+                                        <div className="space-y-2">
+                                            <Label htmlFor="url">Payload URL</Label>
+                                            <Input
+                                                id="url"
+                                                type="url"
+                                                value={data.url}
+                                                onChange={(e) => setData('url', e.target.value)}
+                                                placeholder="https://example.com/webhooks"
+                                                required
+                                            />
+                                            <InputError message={errors.url} />
+                                        </div>
+
+                                        <div className="space-y-2 pt-2 border-t">
+                                            <Label>Subscribed Events</Label>
+                                            <p className="text-[0.8rem] text-muted-foreground pb-2">
+                                                Select which workspace events should trigger a payload to this endpoint. Let empty to subscribe to all events.
+                                            </p>
+
+                                            <div className="space-y-3">
+                                                {[
+                                                    { id: 'WorkspaceUpdated', label: 'Workspace Updated', desc: 'When workspace settings are changed' },
+                                                    { id: 'WorkspaceMemberAdded', label: 'Member Added', desc: 'When a user accepts an invite' },
+                                                    { id: 'WorkspaceMemberRemoved', label: 'Member Removed', desc: 'When a user is removed or leaves' },
+                                                    { id: 'WorkspaceMemberRoleUpdated', label: 'Member Role Updated', desc: 'When a member receives a new role' },
+                                                    { id: 'SubscriptionUpdated', label: 'Subscription Updated', desc: 'When the billing plan changes' },
+                                                ].map((event) => (
+                                                    <div key={event.id} className="flex items-start gap-2">
+                                                        <input
+                                                            type="checkbox"
+                                                            id={`event-${event.id}`}
+                                                            checked={data.events.includes(event.id)}
+                                                            className="mt-1 shrink-0 h-4 w-4 rounded border-input bg-background ring-offset-background disabled:cursor-not-allowed disabled:opacity-50"
+                                                            onChange={(e) => {
+                                                                if (e.target.checked) {
+                                                                    setData('events', [...data.events, event.id]);
+                                                                } else {
+                                                                    setData('events', data.events.filter((id) => id !== event.id));
+                                                                }
+                                                            }}
+                                                        />
+                                                        <div className="space-y-1 leading-none">
+                                                            <Label htmlFor={`event-${event.id}`} className="font-medium cursor-pointer">
+                                                                {event.label}
+                                                            </Label>
+                                                            <p className="text-[0.8rem] text-muted-foreground">
+                                                                {event.desc}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
                                     </div>
                                     <DialogFooter>
                                         <Button type="button" variant="outline" onClick={() => setIsCreateModalOpen(false)}>
@@ -158,6 +201,18 @@ export default function WorkspaceWebhooks({ workspace, endpoints }: WebhookLogsP
                                                 </div>
                                                 <div className="text-xs text-muted-foreground flex gap-1 items-center mt-1">
                                                     Created {formatDistanceToNow(new Date(endpoint.created_at), { addSuffix: true })}
+                                                </div>
+
+                                                <div className="flex flex-wrap gap-1 mt-3">
+                                                    {(!endpoint.events || endpoint.events.length === 0) ? (
+                                                        <Badge variant="outline" className="text-[10px] text-muted-foreground">All Events</Badge>
+                                                    ) : (
+                                                        endpoint.events.map((event) => (
+                                                            <Badge key={event} variant="secondary" className="text-[10px]">
+                                                                {event}
+                                                            </Badge>
+                                                        ))
+                                                    )}
                                                 </div>
                                             </div>
                                             <div className="flex items-center gap-2 shrink-0">

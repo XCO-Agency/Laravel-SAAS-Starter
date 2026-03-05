@@ -72,6 +72,15 @@ class AppServiceProvider extends ServiceProvider
         Event::listen(\Illuminate\Auth\Events\Login::class, \App\Listeners\LogSuccessfulLogin::class);
         Event::listen(\Illuminate\Auth\Events\Failed::class, \App\Listeners\LogFailedLogin::class);
 
+        // Core App Webhook Dispatches
+        Event::listen([
+            \App\Events\WorkspaceUpdated::class,
+            \App\Events\WorkspaceMemberAdded::class,
+            \App\Events\WorkspaceMemberRemoved::class,
+            \App\Events\WorkspaceMemberRoleUpdated::class,
+            \App\Events\SubscriptionUpdated::class,
+        ], \App\Listeners\DispatchWebhooks::class);
+
         // Tell Cashier to use Workspace as the billable model instead of User
         Cashier::useCustomerModel(Workspace::class);
 
