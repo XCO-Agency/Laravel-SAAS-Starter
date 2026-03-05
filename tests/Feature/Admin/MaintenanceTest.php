@@ -33,7 +33,7 @@ describe('Maintenance Mode Page', function () {
             ->get('/admin/maintenance')
             ->assertOk()
             ->assertInertia(
-                fn($page) => $page
+                fn ($page) => $page
                     ->component('admin/maintenance')
                     ->has('maintenance')
                     ->has('isDown')

@@ -24,7 +24,6 @@ class PreventRequestsDuringMaintenance extends Middleware
      * Handle an incoming request.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
      * @return mixed
      *
      * @throws \Symfony\Component\HttpKernel\Exception\HttpException
@@ -36,7 +35,7 @@ class PreventRequestsDuringMaintenance extends Middleware
             $config = Cache::get('maintenance_mode', []);
             $allowedIps = $config['allowed_ips'] ?? [];
 
-            if (!empty($allowedIps) && in_array($request->ip(), $allowedIps)) {
+            if (! empty($allowedIps) && in_array($request->ip(), $allowedIps)) {
                 return $next($request);
             }
         }

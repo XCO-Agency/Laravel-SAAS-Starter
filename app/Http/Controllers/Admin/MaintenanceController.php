@@ -46,7 +46,7 @@ class MaintenanceController extends Controller
 
         // Parse IPs string to array
         $allowedIps = [];
-        if (!empty($validated['allowed_ips'])) {
+        if (! empty($validated['allowed_ips'])) {
             $ips = explode(',', $validated['allowed_ips']);
             foreach ($ips as $ip) {
                 $cleanedIp = trim($ip);

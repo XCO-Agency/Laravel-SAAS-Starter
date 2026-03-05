@@ -42,7 +42,7 @@ class EnsurePasswordNotExpired
             // You can either log them out and redirect to forgot password, or redirect to a custom 'update password' view.
             // Using Fortify's `password.confirm` flow or a custom notification flow is ideal.
             // For now, let's redirect to standard profile page with an error flashed (assuming profile has a password update block).
-            return redirect()->route('settings.profile')->with('error', 'Your password has expired. Please update it immediately.');
+            return redirect()->route('profile.edit')->with('error', 'Your password has expired. Please update it immediately.');
         }
 
         return $next($request);

@@ -112,4 +112,17 @@ return [
 
     'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Password Expiry Days
+    |--------------------------------------------------------------------------
+    |
+    | Once set to a number greater than 0, users will be required to update
+    | their password after the specified number of days has elapsed since
+    | their last password update.
+    |
+    */
+
+    'password_expiry_days' => env('AUTH_PASSWORD_EXPIRY_DAYS', 90),
+
 ];

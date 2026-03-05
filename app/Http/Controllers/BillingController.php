@@ -39,7 +39,7 @@ class BillingController extends Controller
                 'on_grace_period' => $subscription->onGracePeriod(),
                 'cancelled' => $subscription->canceled(),
             ] : null,
-            'invoices' => $invoices->map(fn($invoice) => [
+            'invoices' => $invoices->map(fn ($invoice) => [
                 'id' => $invoice->id,
                 'date' => $invoice->date()->format('F j, Y'),
                 'total' => $invoice->total(),
@@ -118,7 +118,7 @@ class BillingController extends Controller
             } catch (\Exception $e) {
                 return response()->json([
                     'success' => false,
-                    'error' => 'Failed to update subscription: ' . $e->getMessage(),
+                    'error' => 'Failed to update subscription: '.$e->getMessage(),
                 ], 500);
             }
         }
@@ -128,15 +128,15 @@ class BillingController extends Controller
             $checkout = $workspace->newSubscription('default', $priceId)
                 ->trialDays(config('billing.trial_days', 0))
                 ->checkout([
-                    'success_url' => route('billing.index') . '?checkout=success',
-                    'cancel_url' => route('billing.plans') . '?checkout=cancelled',
+                    'success_url' => route('billing.index').'?checkout=success',
+                    'cancel_url' => route('billing.plans').'?checkout=cancelled',
                 ]);
 
             return response()->json(['checkout_url' => $checkout->url]);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'error' => 'Failed to create checkout: ' . $e->getMessage(),
+                'error' => 'Failed to create checkout: '.$e->getMessage(),
             ], 500);
         }
     }
@@ -208,7 +208,7 @@ class BillingController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'error' => 'Failed to cancel subscription: ' . $e->getMessage(),
+                'error' => 'Failed to cancel subscription: '.$e->getMessage(),
             ], 500);
         }
     }
@@ -240,7 +240,7 @@ class BillingController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'error' => 'Failed to resume subscription: ' . $e->getMessage(),
+                'error' => 'Failed to resume subscription: '.$e->getMessage(),
             ], 500);
         }
     }

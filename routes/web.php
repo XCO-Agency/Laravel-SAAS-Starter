@@ -166,7 +166,7 @@ Route::middleware('guest')->group(function () {
         ->where('provider', 'github|google');
 });
 
-require __DIR__ . '/settings.php';
+require __DIR__.'/settings.php';
 
 // Admin routes
 Route::middleware(['auth', 'superadmin'])->prefix('admin')->name('admin.')->group(function () {

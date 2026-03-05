@@ -16,7 +16,7 @@ describe('Billing Index', function () {
             ->get('/billing')
             ->assertOk()
             ->assertInertia(
-                fn($page) => $page
+                fn ($page) => $page
                     ->component('Billing/index')
                     ->has('workspace')
                     ->has('plans')
@@ -33,7 +33,7 @@ describe('Billing Index', function () {
             ->get('/billing')
             ->assertOk()
             ->assertInertia(
-                fn($page) => $page
+                fn ($page) => $page
                     ->component('Billing/index')
                     ->where('userRole', 'admin')
             );
@@ -48,7 +48,7 @@ describe('Billing Index', function () {
             ->get('/billing')
             ->assertOk()
             ->assertInertia(
-                fn($page) => $page
+                fn ($page) => $page
                     ->component('Billing/index')
                     ->where('userRole', 'member')
             );
@@ -66,7 +66,7 @@ describe('Billing Plans', function () {
             ->get('/billing/plans')
             ->assertOk()
             ->assertInertia(
-                fn($page) => $page
+                fn ($page) => $page
                     ->component('Billing/plans')
                     ->has('plans')
                     ->has('currentPlan')
@@ -79,7 +79,7 @@ describe('Billing Plans', function () {
             ->get('/billing/plans')
             ->assertOk()
             ->assertInertia(
-                fn($page) => $page
+                fn ($page) => $page
                     ->where('currentPlan', 'free')
             );
     });

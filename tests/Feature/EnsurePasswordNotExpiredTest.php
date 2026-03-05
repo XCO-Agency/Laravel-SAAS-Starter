@@ -45,7 +45,7 @@ it('redirects to profile settings if password is expired', function () {
 
     $this->actingAs($user)
         ->get('/dashboard-test')
-        ->assertRedirect(route('settings.profile'))
+        ->assertRedirect(route('profile.edit'))
         ->assertSessionHas('error', 'Your password has expired. Please update it immediately.');
 });
 
@@ -57,7 +57,7 @@ it('redirects to profile settings if password_updated_at is null and created_at 
 
     $this->actingAs($user)
         ->get('/dashboard-test')
-        ->assertRedirect(route('settings.profile'))
+        ->assertRedirect(route('profile.edit'))
         ->assertSessionHas('error', 'Your password has expired. Please update it immediately.');
 });
 

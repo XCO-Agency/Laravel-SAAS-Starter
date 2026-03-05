@@ -23,6 +23,7 @@ class ResetUserPassword implements ResetsUserPasswords
 
         $user->forceFill([
             'password' => $input['password'],
+            'password_updated_at' => now(),
         ])->save();
     }
 }
