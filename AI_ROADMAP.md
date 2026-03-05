@@ -23,15 +23,16 @@ The AI agent is now continually managing and executing the roadmap autonomously.
 - **Stack**: Laravel 12, Inertia.js v2, React 19, Tailwind CSS v4, Stripe Cashier, Fortify.
 - **Completed Features**: Auth, 2FA, Workspaces, Teams, Stripe Billing, i18n, Dark Mode, Super Admin Panel, Feature Flags (Pennant), Announcements, Audit Logs, Command Palette.
 
-## 🚀 Active Sprint 16: Security & Customization
+## 🚀 Active Sprint 17: Collaboration & Admin Polish
 
-- [ ] **Task 55**: Shareable Invitation Links — Reusable join links for workspaces with max uses, expiry, and role assignment.
-- [ ] **Task 56**: Login Activity Log — Track authentication events with IP, device, and success/failure status.
-- [ ] **Task 57**: Admin Maintenance Mode — Super admin toggleable maintenance mode with custom message and IP allowlist.
-- [ ] **Task 58**: Workspace Custom Branding — Logo upload and accent color per workspace.
+- [ ] **Task 59**: Contextual Help Tooltips — Info tooltips across settings pages with contextual guidance for key features.
+- [ ] **Task 60**: Workspace Activity Feed — Live feed of workspace events (member joins, settings changes, billing events) visible to admins.
+- [ ] **Task 61**: Admin User Analytics — Charts and stats for user growth, active users, and retention on the admin dashboard.
+- [ ] **Task 62**: Notification Preferences — Per-user settings for email notification categories (security, billing, workspace).
 
 ## 🏁 Completed Sprints
 
+- **Sprint 16**: Security & Customization (Shareable Invitation Links, Login Activity Log, Admin Maintenance Mode, Workspace Custom Branding).
 - **Sprint 15**: Engagement & User Success (Account Deletion, Usage Dashboard, Admin Impersonation UI, SEO Management).
 - **Sprint 14**: Developer Experience & Growth (API Documentation, Real-time Notifications, Data Export, Advanced Search).
 
@@ -45,6 +46,7 @@ The AI agent is now continually managing and executing the roadmap autonomously.
 
 ## 📝 Changelog
 
+- **2026-03-05**: Sprint 16 complete. Task 55 (Shareable Invitation Links): reusable join links with max uses, expiry, role assignment, public join page, 13 tests. Task 56 (Login Activity Log): event listeners for Login/Failed, UA parsing, settings page, 9 tests. Task 57 (Admin Maintenance Mode): cache-based artisan down/up toggle with bypass secret, admin page, 5 tests. Task 58 (Workspace Custom Branding): accent_color migration, color picker with preset swatches and live preview, 5 tests. Total: 32 tests, 126 assertions.
 - **2026-02-28**: Sprint 15 complete. Task 51 (Account Deletion): password-confirmed soft-delete with workspace cleanup, subscription cancellation, 4 tests. Task 52 (Usage Dashboard): visual plan limits vs current usage for workspaces/members/API keys/webhooks, PlanLimitService, sidebar nav, 4 tests. Task 53 (Admin Impersonation UI): impersonate/leave controller, persistent banner, session-based identity swap, 4 tests. Task 54 (SEO Management): admin CRUD for per-page and global meta tags (OG + Twitter Card), shared Inertia prop, seeder data, 10 tests.
 - **2026-02-26**: Comprehensive Test Audit. Verified 332 tests passing across all layers. Full coverage for Console Commands, Models (FeatureFlag, WorkspaceApiKey), and Policies (WebhookEndpointPolicy). Fixed all session regressions.
 - **2026-02-25**: Task 44 (Scheduled Tasks Monitor). Read-only admin page introspecting Laravel Schedule with cron parsing, next-due calculation, flag badges, 8 tests.

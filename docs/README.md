@@ -39,6 +39,9 @@ This repository contains comprehensive documentation for the architecture, featu
 - [UI & Theming](./features/ui-and-theming.md)
 - [Architecture & Security](./features/security.md)
 - [Shareable Invite Links](./features/invite-links.md)
+- [Login Activity Log](./features/login-activity.md)
+- [Admin Maintenance Mode](./features/maintenance-mode.md)
+- [Workspace Custom Branding](./features/workspace-branding.md)
 
 ## Development Directives
 

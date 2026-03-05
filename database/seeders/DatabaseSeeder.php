@@ -525,7 +525,56 @@ class DatabaseSeeder extends Seeder
                 \App\Models\WorkspaceApiKey::generateKey($first, $demo, 'Production API', ['read', 'write']);
                 \App\Models\WorkspaceApiKey::generateKey($first, $demo, 'CI/CD Pipeline', ['read', 'webhooks']);
                 \App\Models\WorkspaceApiKey::generateKey($first, $demo, 'Analytics Reader', ['read', 'billing:read'], now()->addMonths(3));
+
+                // Seed invite links
+                \App\Models\WorkspaceInviteLink::create([
+                    'workspace_id' => $first->id,
+                    'created_by' => $demo->id,
+                    'token' => \Illuminate\Support\Str::random(32),
+                    'role' => 'member',
+                    'max_uses' => 10,
+                    'uses' => 3,
+                    'expires_at' => now()->addDays(14),
+                ]);
+
+                \App\Models\WorkspaceInviteLink::create([
+                    'workspace_id' => $first->id,
+                    'created_by' => $demo->id,
+                    'token' => \Illuminate\Support\Str::random(32),
+                    'role' => 'admin',
+                    'max_uses' => null,
+                    'uses' => 0,
+                    'expires_at' => null,
+                ]);
+
+                // Set accent color on demo workspace
+                $first->update(['accent_color' => '#6366f1']);
             }
+
+            // Seed login activities for demo user
+            \App\Models\LoginActivity::create([
+                'user_id' => $demo->id,
+                'ip_address' => '192.168.1.100',
+                'user_agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                'is_successful' => true,
+                'login_at' => now()->subHours(2),
+            ]);
+
+            \App\Models\LoginActivity::create([
+                'user_id' => $demo->id,
+                'ip_address' => '10.0.0.50',
+                'user_agent' => 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1',
+                'is_successful' => true,
+                'login_at' => now()->subDay(),
+            ]);
+
+            \App\Models\LoginActivity::create([
+                'user_id' => $demo->id,
+                'ip_address' => '203.0.113.42',
+                'user_agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                'is_successful' => false,
+                'login_at' => now()->subDays(3),
+            ]);
 
         });
     }
