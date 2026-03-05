@@ -1,6 +1,8 @@
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
 
+import { HelpTooltip } from '@/components/help-tooltip';
+
 import { useTranslations } from '@/hooks/use-translations';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -63,6 +65,7 @@ export default function LoginActivity({ activities }: { activities: LoginActivit
                         <CardTitle className="flex items-center gap-2">
                             <Clock className="h-5 w-5" />
                             {t('login_history.recent_activity', 'Recent Sign-in Activity')}
+                            <HelpTooltip content="This log tracks every sign-in attempt to your account, including the IP address, device, and whether it was successful. Use this to detect unauthorized access." />
                         </CardTitle>
                         <CardDescription>
                             {t(

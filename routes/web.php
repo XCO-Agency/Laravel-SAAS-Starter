@@ -235,4 +235,7 @@ Route::middleware(['auth', 'superadmin'])->prefix('admin')->name('admin.')->grou
     // Maintenance Mode
     Route::get('/maintenance', [\App\Http\Controllers\Admin\MaintenanceController::class, 'index'])->name('maintenance.index');
     Route::post('/maintenance/toggle', [\App\Http\Controllers\Admin\MaintenanceController::class, 'toggle'])->name('maintenance.toggle');
+
+    // User Analytics
+    Route::get('/user-analytics', [\App\Http\Controllers\Admin\UserAnalyticsController::class, 'index'])->name('user-analytics.index');
 });

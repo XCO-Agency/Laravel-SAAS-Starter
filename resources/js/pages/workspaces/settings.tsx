@@ -1,4 +1,5 @@
 import InputError from '@/components/input-error';
+import { HelpTooltip } from '@/components/help-tooltip';
 import { useTranslations } from '@/hooks/use-translations';
 import { Button } from '@/components/ui/button';
 import {
@@ -117,7 +118,10 @@ export default function WorkspaceSettings({
                             <form onSubmit={handleSubmit} className="space-y-6">
                                 {/* Logo Upload */}
                                 <div className="space-y-2">
-                                    <Label>{t('workspace.settings.logo', 'Logo')}</Label>
+                                    <Label className="flex items-center gap-1.5">
+                                        {t('workspace.settings.logo', 'Logo')}
+                                        <HelpTooltip content="Your workspace logo appears in the sidebar, team invitations, and exported data. Recommended size: 200×200px." />
+                                    </Label>
                                     <div className="flex items-center gap-4">
                                         {logoPreview ? (
                                             <div className="relative">
@@ -188,7 +192,10 @@ export default function WorkspaceSettings({
 
                                 {/* Slug */}
                                 <div className="space-y-2">
-                                    <Label htmlFor="slug">{t('workspace.settings.slug', 'Workspace Slug')}</Label>
+                                    <Label htmlFor="slug" className="flex items-center gap-1.5">
+                                        {t('workspace.settings.slug', 'Workspace Slug')}
+                                        <HelpTooltip content="The URL-friendly identifier for your workspace. Used in links and API endpoints. Only letters, numbers, dashes, and underscores." />
+                                    </Label>
                                     <div className="flex items-center">
                                         <span className="rounded-l-md border border-r-0 bg-muted px-3 py-2 text-sm text-muted-foreground">
                                             /

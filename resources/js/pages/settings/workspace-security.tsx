@@ -1,4 +1,5 @@
 import { Badge } from '@/components/ui/badge';
+import { HelpTooltip } from '@/components/help-tooltip';
 import { Button } from '@/components/ui/button';
 import {
     Card,
@@ -64,8 +65,9 @@ export default function WorkspaceSecurity({ require_two_factor }: WorkspaceSecur
                         <CardContent className="space-y-4">
                             <div className="flex items-center justify-between rounded-lg border p-4">
                                 <div className="space-y-0.5">
-                                    <Label htmlFor="require_2fa" className="text-base font-medium">
+                                    <Label htmlFor="require_2fa" className="flex items-center gap-1.5 text-base font-medium">
                                         Require 2FA for all members
+                                        <HelpTooltip content="When enabled, workspace members must enable two-factor authentication via authenticator app or SMS. Members without 2FA will be redirected to set it up upon login." />
                                     </Label>
                                     <p className="text-sm text-muted-foreground">
                                         Members without 2FA enabled will be redirected to set it up.

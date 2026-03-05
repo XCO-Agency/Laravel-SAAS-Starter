@@ -3,6 +3,7 @@ import { Link } from '@inertiajs/react';
 import {
     Activity,
     ArrowLeft,
+    BarChart3,
     Building2,
     Clock,
     Globe,
@@ -23,6 +24,7 @@ import { cn } from '@/lib/utils';
 const adminNav = [
     { title: 'Overview', href: '/admin/dashboard', icon: LayoutDashboard },
     { title: 'Users', href: '/admin/users', icon: Users },
+    { title: 'User Analytics', href: '/admin/user-analytics', icon: BarChart3 },
     { title: 'Workspaces', href: '/admin/workspaces', icon: Building2 },
     { title: 'Feature Flags', href: '/admin/feature-flags', icon: ToggleLeft },
     { title: 'Audit Logs', href: '/admin/audit-logs', icon: ScrollText },

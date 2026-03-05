@@ -76,3 +76,39 @@ it('prevents regular members from viewing the activity log feed', function () {
 
     $response->assertForbidden();
 });
+
+it('returns event types for the filter dropdown', function () {
+    $user = User::factory()->create();
+    $workspace = Workspace::factory()->create(['owner_id' => $user->id]);
+    $user->workspaces()->attach($workspace, ['role' => 'admin']);
+    $user->switchWorkspace($workspace);
+
+    $this->actingAs($user);
+
+    $response = $this->get("/workspaces/{$workspace->id}/activity");
+
+    $response->assertSuccessful();
+    $response->assertInertia(fn ($page) => $page
+        ->component('workspaces/activity/index')
+        ->has('eventTypes')
+        ->has('currentFilter')
+    );
+});
+
+it('filters activities by event type', function () {
+    $user = User::factory()->create();
+    $workspace = Workspace::factory()->create(['owner_id' => $user->id]);
+    $user->workspaces()->attach($workspace, ['role' => 'admin']);
+    $user->switchWorkspace($workspace);
+
+    $this->actingAs($user);
+
+    // The workspace creation already generated a 'created' event
+    $response = $this->get("/workspaces/{$workspace->id}/activity?event=created");
+
+    $response->assertSuccessful();
+    $response->assertInertia(fn ($page) => $page
+        ->component('workspaces/activity/index')
+        ->where('currentFilter', 'created')
+    );
+});
