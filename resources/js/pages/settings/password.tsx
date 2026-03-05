@@ -6,6 +6,7 @@ import SettingsLayout from '@/layouts/settings/layout';
 import { type BreadcrumbItem } from '@/types';
 import { Transition } from '@headlessui/react';
 import { Form, Head } from '@inertiajs/react';
+import { History } from 'lucide-react';
 import { useRef } from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -13,7 +14,18 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { edit } from '@/routes/user-password';
 
-export default function Password() {
+interface PasswordHistoryEntry {
+    id: number;
+    ip_address: string | null;
+    user_agent: string | null;
+    changed_at: string;
+}
+
+interface PasswordProps {
+    passwordHistory: PasswordHistoryEntry[];
+}
+
+export default function Password({ passwordHistory }: PasswordProps) {
     const passwordInput = useRef<HTMLInputElement>(null);
     const currentPasswordInput = useRef<HTMLInputElement>(null);
     const { t } = useTranslations();
@@ -140,6 +152,42 @@ export default function Password() {
                             </>
                         )}
                     </Form>
+
+                    {passwordHistory.length > 0 && (
+                        <div className="mt-8 border-t pt-6">
+                            <div className="mb-4 flex items-center gap-2">
+                                <History className="h-4 w-4 text-muted-foreground" />
+                                <h3 className="text-sm font-medium">
+                                    {t('settings.password.history_title', 'Password Change History')}
+                                </h3>
+                            </div>
+                            <div className="divide-y rounded-lg border">
+                                {passwordHistory.map((entry) => (
+                                    <div key={entry.id} className="flex items-center justify-between px-4 py-3 text-sm">
+                                        <div className="space-y-0.5">
+                                            <p className="text-muted-foreground">
+                                                {new Date(entry.changed_at).toLocaleDateString(undefined, {
+                                                    year: 'numeric',
+                                                    month: 'long',
+                                                    day: 'numeric',
+                                                    hour: '2-digit',
+                                                    minute: '2-digit',
+                                                })}
+                                            </p>
+                                            {entry.ip_address && (
+                                                <p className="text-xs text-muted-foreground/70">
+                                                    IP: {entry.ip_address}
+                                                </p>
+                                            )}
+                                        </div>
+                                        <span className="rounded-full bg-green-100 px-2 py-0.5 text-xs text-green-700 dark:bg-green-900/30 dark:text-green-400">
+                                            Changed
+                                        </span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
                 </div>
             </SettingsLayout>
         </AppLayout>

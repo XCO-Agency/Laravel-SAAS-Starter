@@ -48,6 +48,8 @@ class Workspace extends Model
         'personal_workspace',
         'require_two_factor',
         'allowed_ips',
+        'suspended_at',
+        'suspension_reason',
     ];
 
     /**
@@ -62,6 +64,7 @@ class Workspace extends Model
             'require_two_factor' => 'boolean',
             'trial_ends_at' => 'datetime',
             'allowed_ips' => 'array',
+            'suspended_at' => 'datetime',
         ];
     }
 
@@ -118,7 +121,7 @@ class Workspace extends Model
         $counter = 1;
 
         while (static::where('slug', $slug)->exists()) {
-            $slug = $originalSlug . '-' . $counter;
+            $slug = $originalSlug.'-'.$counter;
             $counter++;
         }
 
@@ -134,7 +137,7 @@ class Workspace extends Model
             return str_starts_with($this->logo, 'http') ? $this->logo : \Illuminate\Support\Facades\Storage::url($this->logo);
         }
 
-        return 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&color=7F9CF5&background=EBF4FF';
+        return 'https://ui-avatars.com/api/?name='.urlencode($this->name).'&color=7F9CF5&background=EBF4FF';
     }
 
     /**

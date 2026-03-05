@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
+use App\Models\PasswordHistory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\Password;
@@ -14,9 +15,22 @@ class PasswordController extends Controller
     /**
      * Show the user's password settings page.
      */
-    public function edit(): Response
+    public function edit(Request $request): Response
     {
-        return Inertia::render('settings/password');
+        $history = PasswordHistory::where('user_id', $request->user()->id)
+            ->latest('changed_at')
+            ->take(10)
+            ->get()
+            ->map(fn (PasswordHistory $entry) => [
+                'id' => $entry->id,
+                'ip_address' => $entry->ip_address,
+                'user_agent' => $entry->user_agent,
+                'changed_at' => $entry->changed_at->toIso8601String(),
+            ]);
+
+        return Inertia::render('settings/password', [
+            'passwordHistory' => $history,
+        ]);
     }
 
     /**
@@ -32,6 +46,13 @@ class PasswordController extends Controller
         $request->user()->update([
             'password' => $validated['password'],
             'password_updated_at' => now(),
+        ]);
+
+        PasswordHistory::create([
+            'user_id' => $request->user()->id,
+            'ip_address' => $request->ip(),
+            'user_agent' => $request->userAgent(),
+            'changed_at' => now(),
         ]);
 
         return back();

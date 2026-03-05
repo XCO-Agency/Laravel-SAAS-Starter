@@ -9,7 +9,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\URL;
-use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -58,7 +57,7 @@ class MagicLinkController extends Controller
      */
     public function authenticate(Request $request, User $user): RedirectResponse
     {
-        // The `signed` middleware (on the route) will automatically throw a 403 
+        // The `signed` middleware (on the route) will automatically throw a 403
         // if the signature is invalid or expired. So if we hit here, it's safe.
         Auth::login($user);
 

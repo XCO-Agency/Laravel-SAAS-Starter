@@ -55,4 +55,20 @@ class WorkspacePolicy
     {
         return $workspace->userIsOwner($user);
     }
+
+    /**
+     * Determine whether the user can restore a soft-deleted workspace.
+     */
+    public function restore(User $user, Workspace $workspace): bool
+    {
+        return $user->id === $workspace->owner_id;
+    }
+
+    /**
+     * Determine whether the user can permanently delete a workspace.
+     */
+    public function forceDelete(User $user, Workspace $workspace): bool
+    {
+        return $user->id === $workspace->owner_id;
+    }
 }

@@ -11,7 +11,7 @@ import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem, type Workspace } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
-import { Building2, Crown, Plus, Settings, Users } from 'lucide-react';
+import { Building2, Crown, Plus, Settings, Trash2, Users } from 'lucide-react';
 
 interface WorkspaceListItem extends Workspace {
     owner?: { id: number; name: string };
@@ -29,7 +29,7 @@ export default function WorkspacesIndex({
     workspaceLimitMessage,
 }: WorkspacesIndexProps) {
     const { t } = useTranslations();
-    
+
     const breadcrumbs: BreadcrumbItem[] = [
         { title: t('workspace.list.title', 'Workspaces'), href: '/workspaces' },
     ];
@@ -63,19 +63,26 @@ export default function WorkspacesIndex({
                     )}
                 </div>
 
-                <p className="text-sm text-muted-foreground">
-                    {workspaceLimitMessage}
-                </p>
+                <div className="flex items-center justify-between">
+                    <p className="text-sm text-muted-foreground">
+                        {workspaceLimitMessage}
+                    </p>
+                    <Button variant="ghost" size="sm" asChild>
+                        <Link href="/workspaces/trash">
+                            <Trash2 className="mr-1.5 h-3.5 w-3.5" />
+                            View Trash
+                        </Link>
+                    </Button>
+                </div>
 
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                     {workspaces.map((workspace) => (
                         <Card
                             key={workspace.id}
-                            className={`cursor-pointer transition-all hover:shadow-md ${
-                                workspace.is_current
-                                    ? 'ring-2 ring-primary'
-                                    : ''
-                            }`}
+                            className={`cursor-pointer transition-all hover:shadow-md ${workspace.is_current
+                                ? 'ring-2 ring-primary'
+                                : ''
+                                }`}
                             onClick={() => switchWorkspace(workspace)}
                         >
                             <CardHeader className="pb-3">

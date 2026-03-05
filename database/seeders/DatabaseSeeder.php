@@ -549,6 +549,12 @@ class DatabaseSeeder extends Seeder
 
                 // Set accent color on demo workspace
                 $first->update(['accent_color' => '#6366f1']);
+
+                // Soft-delete the last demo workspace to populate the Trash page
+                $lastWorkspace = $demoWorkspaces->last();
+                if ($lastWorkspace) {
+                    $lastWorkspace->delete();
+                }
             }
 
             // Seed login activities for demo user
@@ -575,7 +581,6 @@ class DatabaseSeeder extends Seeder
                 'is_successful' => false,
                 'login_at' => now()->subDays(3),
             ]);
-
         });
     }
 }

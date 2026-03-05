@@ -10,6 +10,7 @@ function createWorkspaceForUser(User $user): Workspace
     $workspace = Workspace::factory()->create(['owner_id' => $user->id]);
     $workspace->users()->attach($user, ['role' => 'admin']);
     $user->switchWorkspace($workspace);
+
     return $workspace;
 }
 

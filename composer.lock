@@ -1617,16 +1617,16 @@
         },
         {
             "name": "laravel/ai",
-            "version": "v0.2.5",
+            "version": "v0.2.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/ai.git",
-                "reference": "467196be87c9cc2ed1f381deffbe24371e89ba4f"
+                "reference": "17bd350a4f68d28a255bd704aaa6724790ed73ee"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/ai/zipball/467196be87c9cc2ed1f381deffbe24371e89ba4f",
-                "reference": "467196be87c9cc2ed1f381deffbe24371e89ba4f",
+                "url": "https://api.github.com/repos/laravel/ai/zipball/17bd350a4f68d28a255bd704aaa6724790ed73ee",
+                "reference": "17bd350a4f68d28a255bd704aaa6724790ed73ee",
                 "shasum": ""
             },
             "require": {
@@ -1679,7 +1679,7 @@
                 "issues": "https://github.com/laravel/ai/issues",
                 "source": "https://github.com/laravel/ai"
             },
-            "time": "2026-02-26T22:55:23+00:00"
+            "time": "2026-03-04T23:33:41+00:00"
         },
         {
             "name": "laravel/cashier",
@@ -4702,16 +4702,16 @@
         },
         {
             "name": "prism-php/prism",
-            "version": "v0.99.20",
+            "version": "v0.99.21",
             "source": {
                 "type": "git",
                 "url": "https://github.com/prism-php/prism.git",
-                "reference": "51efcb3d746315c5823593d56c77ecb29b960250"
+                "reference": "95272567629a62831294f63b1b927b1e2e608daf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/prism-php/prism/zipball/51efcb3d746315c5823593d56c77ecb29b960250",
-                "reference": "51efcb3d746315c5823593d56c77ecb29b960250",
+                "url": "https://api.github.com/repos/prism-php/prism/zipball/95272567629a62831294f63b1b927b1e2e608daf",
+                "reference": "95272567629a62831294f63b1b927b1e2e608daf",
                 "shasum": ""
             },
             "require": {
@@ -4769,7 +4769,7 @@
             "description": "A powerful Laravel package for integrating Large Language Models (LLMs) into your applications.",
             "support": {
                 "issues": "https://github.com/prism-php/prism/issues",
-                "source": "https://github.com/prism-php/prism/tree/v0.99.20"
+                "source": "https://github.com/prism-php/prism/tree/v0.99.21"
             },
             "funding": [
                 {
@@ -4777,7 +4777,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-02-26T21:31:53+00:00"
+            "time": "2026-03-01T21:12:44+00:00"
         },
         {
             "name": "psr/clock",
@@ -6211,16 +6211,16 @@
         },
         {
             "name": "sentry/sentry-laravel",
-            "version": "4.21.0",
+            "version": "4.21.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getsentry/sentry-laravel.git",
-                "reference": "4b939116c2d3c5de328f23a5f1dfb97b40e0c17b"
+                "reference": "8e8ac4b0da1c37934db79c3d3f4bbd8d98662146"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getsentry/sentry-laravel/zipball/4b939116c2d3c5de328f23a5f1dfb97b40e0c17b",
-                "reference": "4b939116c2d3c5de328f23a5f1dfb97b40e0c17b",
+                "url": "https://api.github.com/repos/getsentry/sentry-laravel/zipball/8e8ac4b0da1c37934db79c3d3f4bbd8d98662146",
+                "reference": "8e8ac4b0da1c37934db79c3d3f4bbd8d98662146",
                 "shasum": ""
             },
             "require": {
@@ -6285,7 +6285,7 @@
             ],
             "support": {
                 "issues": "https://github.com/getsentry/sentry-laravel/issues",
-                "source": "https://github.com/getsentry/sentry-laravel/tree/4.21.0"
+                "source": "https://github.com/getsentry/sentry-laravel/tree/4.21.1"
             },
             "funding": [
                 {
@@ -6297,7 +6297,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2026-02-26T16:08:52+00:00"
+            "time": "2026-03-03T14:29:01+00:00"
         },
         {
             "name": "spatie/laravel-activitylog",
@@ -11400,16 +11400,16 @@
         },
         {
             "name": "phpdocumentor/reflection-docblock",
-            "version": "6.0.1",
+            "version": "6.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/ReflectionDocBlock.git",
-                "reference": "2f5cbed597cb261d1ea458f3da3a9ad32e670b1e"
+                "reference": "897b5986ece6b4f9d8413fea345c7d49c757d6bf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/2f5cbed597cb261d1ea458f3da3a9ad32e670b1e",
-                "reference": "2f5cbed597cb261d1ea458f3da3a9ad32e670b1e",
+                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/897b5986ece6b4f9d8413fea345c7d49c757d6bf",
+                "reference": "897b5986ece6b4f9d8413fea345c7d49c757d6bf",
                 "shasum": ""
             },
             "require": {
@@ -11459,9 +11459,9 @@
             "description": "With this component, a library can provide support for annotations via DocBlocks or otherwise retrieve information that is embedded in a DocBlock.",
             "support": {
                 "issues": "https://github.com/phpDocumentor/ReflectionDocBlock/issues",
-                "source": "https://github.com/phpDocumentor/ReflectionDocBlock/tree/6.0.1"
+                "source": "https://github.com/phpDocumentor/ReflectionDocBlock/tree/6.0.2"
             },
-            "time": "2026-01-20T15:30:42+00:00"
+            "time": "2026-03-01T18:43:49+00:00"
         },
         {
             "name": "phpdocumentor/type-resolver",

@@ -70,6 +70,11 @@ Route::middleware(['auth', 'verified', 'onboarded', 'workspace', 'require2fa', '
         Route::delete('/', [WorkspaceController::class, 'destroy'])->name('destroy');
         Route::post('/{workspace}/switch', [WorkspaceController::class, 'switch'])->name('switch');
 
+        // Workspace Trash
+        Route::get('/trash', [\App\Http\Controllers\WorkspaceTrashController::class, 'index'])->name('trash');
+        Route::post('/trash/{workspace}/restore', [\App\Http\Controllers\WorkspaceTrashController::class, 'restore'])->name('trash.restore');
+        Route::delete('/trash/{workspace}', [\App\Http\Controllers\WorkspaceTrashController::class, 'forceDelete'])->name('trash.force-delete');
+
         Route::get('/{workspace}/activity', [\App\Http\Controllers\WorkspaceActivityController::class, 'index'])->name('activity');
 
         // Workspace API Keys

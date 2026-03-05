@@ -130,6 +130,14 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Get the user's password change history.
+     */
+    public function passwordHistories(): HasMany
+    {
+        return $this->hasMany(PasswordHistory::class);
+    }
+
+    /**
      * Get the user's current workspace.
      */
     public function currentWorkspace(): BelongsTo

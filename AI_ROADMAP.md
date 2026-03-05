@@ -23,15 +23,16 @@ The AI agent is now continually managing and executing the roadmap autonomously.
 - **Stack**: Laravel 12, Inertia.js v2, React 19, Tailwind CSS v4, Stripe Cashier, Fortify.
 - **Completed Features**: Auth, 2FA, Workspaces, Teams, Stripe Billing, i18n, Dark Mode, Super Admin Panel, Feature Flags (Pennant), Announcements, Audit Logs, Command Palette.
 
-## 🚀 Active Sprint 19: Identity & Compliance
+## 🚀 Active Sprint 20: Resilience & Self-Service
 
-- [ ] **Task 67**: Magic Link Authentication — Allow users to request an email with a secure, stateless signed URL to log in instantly without a password.
-- [ ] **Task 68**: Cookie Consent Manager — Implement a customizable GDPR-compliant banner managing configurable cookie preferences.
-- [ ] **Task 69**: Workspace IP Allowlist — Enable workspace-level security settings that restrict access to the tenant to an array of specific IP addresses.
-- [ ] **Task 70**: Robust Avatar Management — Built-in UI for uploading and cropping user and workspace avatars, falling back to auto-generated SVG initials.
+- [ ] **Task 71**: Workspace Trash & Restore — Allow soft-deleted workspaces to be restored from a trash view for a grace period before permanent deletion.
+- [ ] **Task 72**: Password Change History — Track and display a log of password changes for user security auditing and compliance.
+- [ ] **Task 73**: Workspace Suspension — Allow superadmins to suspend workspaces (block access without deleting data), with a branded suspension page.
+- [ ] **Task 74**: User Timezone & Date Format — Let users choose their timezone and date format preferences, applied consistently across the app.
 
 ## 🏁 Completed Sprints
 
+- **Sprint 19**: Identity & Compliance (Magic Link Authentication, Cookie Consent Manager, Workspace IP Allowlist, Robust Avatar Management).
 - **Sprint 18**: Enterprise Security & Billing Polish (Invoice PDF, Webhook Dispatching, Maintenance IP Whitelist, Password Expiry).
 - **Sprint 17**: Collaboration & Admin Polish (Contextual Help Tooltips, Workspace Activity Feed, Admin User Analytics, Notification Preferences).
 - **Sprint 16**: Security & Customization (Shareable Invitation Links, Login Activity Log, Admin Maintenance Mode, Workspace Custom Branding).
@@ -48,6 +49,7 @@ The AI agent is now continually managing and executing the roadmap autonomously.
 
 ## 📝 Changelog
 
+- **2026-03-05**: Sprint 19 complete. Task 67 (Magic Link Authentication): stateless signed URL login, 6 tests. Task 68 (Cookie Consent Manager): GDPR-compliant banner with granular preferences, privacy settings page. Task 69 (Workspace IP Allowlist): middleware, admin UI, 7 tests. Task 70 (Robust Avatar Management): async upload/delete controllers, image cropping, fallback avatars, 10 tests. Total: 23+ tests.
 - **2026-03-05**: Sprint 16 complete. Task 55 (Shareable Invitation Links): reusable join links with max uses, expiry, role assignment, public join page, 13 tests. Task 56 (Login Activity Log): event listeners for Login/Failed, UA parsing, settings page, 9 tests. Task 57 (Admin Maintenance Mode): cache-based artisan down/up toggle with bypass secret, admin page, 5 tests. Task 58 (Workspace Custom Branding): accent_color migration, color picker with preset swatches and live preview, 5 tests. Total: 32 tests, 126 assertions.
 - **2026-02-28**: Sprint 15 complete. Task 51 (Account Deletion): password-confirmed soft-delete with workspace cleanup, subscription cancellation, 4 tests. Task 52 (Usage Dashboard): visual plan limits vs current usage for workspaces/members/API keys/webhooks, PlanLimitService, sidebar nav, 4 tests. Task 53 (Admin Impersonation UI): impersonate/leave controller, persistent banner, session-based identity swap, 4 tests. Task 54 (SEO Management): admin CRUD for per-page and global meta tags (OG + Twitter Card), shared Inertia prop, seeder data, 10 tests.
 - **2026-02-26**: Comprehensive Test Audit. Verified 332 tests passing across all layers. Full coverage for Console Commands, Models (FeatureFlag, WorkspaceApiKey), and Policies (WebhookEndpointPolicy). Fixed all session regressions.

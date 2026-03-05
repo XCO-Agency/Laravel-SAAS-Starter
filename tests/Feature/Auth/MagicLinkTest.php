@@ -26,7 +26,7 @@ it('sends a magic link email to an existing user', function () {
         $user,
         MagicLinkNotification::class,
         function ($notification) use ($user) {
-            return str_contains($notification->url, '/magic-login/' . $user->id);
+            return str_contains($notification->url, '/magic-login/'.$user->id);
         }
     );
 });
@@ -68,7 +68,7 @@ it('rejects an invalid or modified signed magic link', function () {
     );
 
     // Tamper with the URL
-    $modifiedUrl = $url . 'a';
+    $modifiedUrl = $url.'a';
 
     $response = $this->get($modifiedUrl);
 

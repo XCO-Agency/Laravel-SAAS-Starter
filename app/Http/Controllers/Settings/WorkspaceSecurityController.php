@@ -45,7 +45,7 @@ class WorkspaceSecurityController extends Controller
             $ips = array_filter(array_map('trim', explode(',', $request->allowed_ips)));
             foreach ($ips as $ip) {
                 if (! filter_var($ip, FILTER_VALIDATE_IP)) {
-                    return back()->withErrors(['allowed_ips' => 'The IP address "' . $ip . '" is invalid.'])->withInput();
+                    return back()->withErrors(['allowed_ips' => 'The IP address "'.$ip.'" is invalid.'])->withInput();
                 }
             }
         }
