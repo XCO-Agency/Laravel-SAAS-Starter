@@ -19,7 +19,7 @@ import {
     type WorkspaceRole,
 } from '@/types';
 import { Head, router, useForm } from '@inertiajs/react';
-import { AlertTriangle, Building2, Download, Upload, X } from 'lucide-react';
+import { AlertTriangle, Building2, Download, Palette, Upload, X } from 'lucide-react';
 import { type ChangeEvent, useRef, useState } from 'react';
 
 interface WorkspaceSettingsProps {
@@ -41,6 +41,7 @@ export default function WorkspaceSettings({
         slug: workspace.slug,
         logo: null as File | null,
         remove_logo: false,
+        accent_color: workspace.accent_color || '',
     });
 
     const [logoPreview, setLogoPreview] = useState<string | null>(
@@ -244,6 +245,118 @@ export default function WorkspaceSettings({
                                 <Button variant="outline" asChild>
                                     <a href="/billing">{t('billing.manage_subscription', 'Manage Subscription')}</a>
                                 </Button>
+                            </div>
+                        </CardContent>
+                    </Card>
+
+                    {/* Branding */}
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className="flex items-center gap-2">
+                                <Palette className="h-5 w-5" />
+                                {t('workspace.settings.branding', 'Branding')}
+                            </CardTitle>
+                            <CardDescription>
+                                {t('workspace.settings.branding_description', 'Customize the accent color used across your workspace.')}
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="space-y-4">
+                                <div className="space-y-2">
+                                    <Label htmlFor="accent_color">
+                                        {t('workspace.settings.accent_color', 'Accent Color')}
+                                    </Label>
+                                    <div className="flex items-center gap-3">
+                                        <input
+                                            type="color"
+                                            id="accent_color"
+                                            value={data.accent_color || '#6366f1'}
+                                            onChange={(e) => setData('accent_color', e.target.value)}
+                                            className="h-10 w-14 cursor-pointer rounded-md border p-1"
+                                            disabled={!isAdmin}
+                                        />
+                                        <Input
+                                            value={data.accent_color || ''}
+                                            onChange={(e) => setData('accent_color', e.target.value)}
+                                            placeholder="#6366f1"
+                                            className="w-32 font-mono text-sm"
+                                            maxLength={7}
+                                            disabled={!isAdmin}
+                                        />
+                                        {data.accent_color && isAdmin && (
+                                            <Button
+                                                type="button"
+                                                variant="ghost"
+                                                size="sm"
+                                                onClick={() => setData('accent_color', '')}
+                                            >
+                                                {t('workspace.settings.reset_color', 'Reset')}
+                                            </Button>
+                                        )}
+                                    </div>
+                                    <InputError message={errors.accent_color} />
+                                </div>
+
+                                {/* Preset Colors */}
+                                {isAdmin && (
+                                    <div className="space-y-2">
+                                        <Label className="text-xs text-muted-foreground">
+                                            {t('workspace.settings.preset_colors', 'Presets')}
+                                        </Label>
+                                        <div className="flex flex-wrap gap-2">
+                                            {['#6366f1', '#8b5cf6', '#ec4899', '#ef4444', '#f97316', '#eab308', '#22c55e', '#06b6d4', '#3b82f6', '#64748b'].map((color) => (
+                                                <button
+                                                    key={color}
+                                                    type="button"
+                                                    onClick={() => setData('accent_color', color)}
+                                                    className={`h-8 w-8 rounded-full border-2 transition-transform hover:scale-110 ${data.accent_color === color ? 'border-foreground scale-110' : 'border-transparent'
+                                                        }`}
+                                                    style={{ backgroundColor: color }}
+                                                    title={color}
+                                                />
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* Live Preview */}
+                                {data.accent_color && (
+                                    <div className="rounded-lg border p-4">
+                                        <p className="mb-2 text-xs font-medium text-muted-foreground">
+                                            {t('workspace.settings.preview', 'Preview')}
+                                        </p>
+                                        <div className="flex items-center gap-3">
+                                            <div
+                                                className="h-8 w-8 rounded-lg"
+                                                style={{ backgroundColor: data.accent_color }}
+                                            />
+                                            <div>
+                                                <p className="text-sm font-medium" style={{ color: data.accent_color }}>
+                                                    {workspace.name}
+                                                </p>
+                                                <p className="text-xs text-muted-foreground">
+                                                    {t('workspace.settings.preview_example', 'Your brand color in action')}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+
+                                {isAdmin && (
+                                    <Button
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            router.put('/workspaces/settings', data, {
+                                                forceFormData: true,
+                                                preserveScroll: true,
+                                            });
+                                        }}
+                                        disabled={processing || !isDirty}
+                                    >
+                                        {processing && <Spinner className="mr-2" />}
+                                        {t('workspace.settings.save_branding', 'Save Branding')}
+                                    </Button>
+                                )}
                             </div>
                         </CardContent>
                     </Card>

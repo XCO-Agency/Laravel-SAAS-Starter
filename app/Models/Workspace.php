@@ -43,6 +43,7 @@ class Workspace extends Model
         'name',
         'slug',
         'logo',
+        'accent_color',
         'owner_id',
         'personal_workspace',
         'require_two_factor',

@@ -65,6 +65,10 @@ class WorkspaceService
             $updateData['logo'] = $data['logo'];
         }
 
+        if (array_key_exists('accent_color', $data)) {
+            $updateData['accent_color'] = $data['accent_color'];
+        }
+
         $workspace->update($updateData);
 
         return $workspace->fresh();

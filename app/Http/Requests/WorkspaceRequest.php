@@ -35,6 +35,7 @@ class WorkspaceRequest extends FormRequest
             ],
             'logo' => ['nullable', 'sometimes', 'image', 'max:2048'], // 2MB max
             'remove_logo' => ['nullable', 'boolean'],
+            'accent_color' => ['nullable', 'string', 'max:7', 'regex:/^#[0-9A-Fa-f]{6}$/'],
         ];
     }
 

@@ -32,6 +32,7 @@ export interface Workspace {
     slug: string;
     logo: string | null;
     logo_url: string | null;
+    accent_color: string | null;
     personal_workspace: boolean;
     owner_id?: number;
     plan?: string;
