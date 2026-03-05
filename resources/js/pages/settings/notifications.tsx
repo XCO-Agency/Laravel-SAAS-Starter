@@ -1,5 +1,6 @@
 import { type BreadcrumbItem } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
+import { HelpTooltip } from '@/components/help-tooltip';
 
 import { useTranslations } from '@/hooks/use-translations';
 import { Button } from '@/components/ui/button';
@@ -16,6 +17,7 @@ export default function Notifications({
         marketing: boolean;
         security: boolean;
         team: boolean;
+        billing: boolean;
     };
 }) {
     const { t } = useTranslations();
@@ -62,7 +64,10 @@ export default function Notifications({
 
                         <div className="flex items-center justify-between rounded-lg border p-4">
                             <div className="space-y-0.5">
-                                <Label htmlFor="security">{t('settings.notifications.security', 'Security emails')}</Label>
+                                <Label htmlFor="security" className="flex items-center gap-1.5">
+                                    {t('settings.notifications.security', 'Security emails')}
+                                    <HelpTooltip content="Critical security alerts cannot be disabled, but you can opt out of regular security digests." />
+                                </Label>
                                 <p className="text-sm text-muted-foreground">
                                     {t('settings.notifications.security_desc', 'Receive emails about your account security.')}
                                 </p>
@@ -85,6 +90,23 @@ export default function Notifications({
                                 id="team"
                                 checked={data.preferences.team}
                                 onCheckedChange={(val) => setData('preferences', { ...data.preferences, team: val })}
+                            />
+                        </div>
+
+                        <div className="flex items-center justify-between rounded-lg border p-4">
+                            <div className="space-y-0.5">
+                                <Label htmlFor="billing" className="flex items-center gap-1.5">
+                                    {t('settings.notifications.billing', 'Billing emails')}
+                                    <HelpTooltip content="Invoices and payment receipts will always be sent. This toggles upcoming renewal and budget alerts." />
+                                </Label>
+                                <p className="text-sm text-muted-foreground">
+                                    {t('settings.notifications.billing_desc', 'Receive emails about your subscription and billing.')}
+                                </p>
+                            </div>
+                            <Switch
+                                id="billing"
+                                checked={data.preferences.billing ?? true}
+                                onCheckedChange={(val) => setData('preferences', { ...data.preferences, billing: val })}
                             />
                         </div>
                     </div>

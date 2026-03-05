@@ -16,6 +16,7 @@ it('updates and persists json notification preferences accurately', function () 
             'marketing' => true,
             'security' => true,
             'team' => true,
+            'billing' => true,
         ],
     ]);
 
@@ -24,6 +25,7 @@ it('updates and persists json notification preferences accurately', function () 
             'marketing' => false,
             'security' => true,
             'team' => false,
+            'billing' => false,
         ],
     ]);
 
@@ -35,5 +37,6 @@ it('updates and persists json notification preferences accurately', function () 
     expect($user->notification_preferences)->toBeArray()
         ->and($user->notification_preferences['marketing'])->toBeFalse()
         ->and($user->notification_preferences['security'])->toBeTrue()
-        ->and($user->notification_preferences['team'])->toBeFalse();
+        ->and($user->notification_preferences['team'])->toBeFalse()
+        ->and($user->notification_preferences['billing'])->toBeFalse();
 });

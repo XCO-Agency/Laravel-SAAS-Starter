@@ -20,6 +20,7 @@ class NotificationPreferenceController extends Controller
                 'marketing' => true,
                 'security' => true,
                 'team' => true,
+                'billing' => true,
             ],
         ]);
     }
@@ -34,6 +35,7 @@ class NotificationPreferenceController extends Controller
             'preferences.marketing' => ['boolean'],
             'preferences.security' => ['boolean'],
             'preferences.team' => ['boolean'],
+            'preferences.billing' => ['boolean'],
         ]);
 
         $request->user()->update([
