@@ -26,6 +26,7 @@ This repository contains comprehensive documentation for the architecture, featu
 - [API Documentation](./features/api-documentation.md)
 - [Real-time Notifications](./features/real-time-notifications.md)
 - [Notification Channel Preferences](./features/notification-channel-preferences.md)
+- [Notification Delivery Analytics](./features/notification-delivery-analytics.md)
 - [GDPR Data Export](./features/gdpr-data-export.md)
 - [Advanced Global Search](./features/advanced-search.md)
 - [Scheduled Tasks Monitor](./features/scheduled-tasks.md)

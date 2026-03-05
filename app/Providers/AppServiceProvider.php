@@ -71,6 +71,7 @@ class AppServiceProvider extends ServiceProvider
 
         Event::listen(\Illuminate\Auth\Events\Login::class, \App\Listeners\LogSuccessfulLogin::class);
         Event::listen(\Illuminate\Auth\Events\Failed::class, \App\Listeners\LogFailedLogin::class);
+        Event::listen(\Illuminate\Notifications\Events\NotificationSent::class, \App\Listeners\LogNotificationDelivery::class);
 
         // Core App Webhook Dispatches
         Event::listen([

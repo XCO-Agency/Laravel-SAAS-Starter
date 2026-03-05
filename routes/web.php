@@ -276,4 +276,7 @@ Route::middleware(['auth', 'superadmin'])->prefix('admin')->name('admin.')->grou
 
     // User Analytics
     Route::get('/user-analytics', [\App\Http\Controllers\Admin\UserAnalyticsController::class, 'index'])->name('user-analytics.index');
+
+    // Notification Analytics
+    Route::get('/notification-analytics', [\App\Http\Controllers\Admin\NotificationAnalyticsController::class, 'index'])->name('notification-analytics.index');
 });

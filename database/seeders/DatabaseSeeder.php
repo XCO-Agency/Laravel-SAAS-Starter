@@ -592,6 +592,34 @@ class DatabaseSeeder extends Seeder
                 'is_successful' => false,
                 'login_at' => now()->subDays(3),
             ]);
+
+            // Seed notification delivery logs for analytics demo
+            $notificationTypes = [
+                ['type' => 'DataExportCompleted', 'category' => 'security'],
+                ['type' => 'TeamInvitationNotification', 'category' => 'team'],
+                ['type' => 'MagicLinkNotification', 'category' => 'security'],
+            ];
+
+            $allSeededUsers = $users->pluck('id')->toArray();
+
+            foreach (range(0, 29) as $daysAgo) {
+                $deliveriesPerDay = rand(3, 12);
+
+                for ($d = 0; $d < $deliveriesPerDay; $d++) {
+                    $notifConfig = $notificationTypes[array_rand($notificationTypes)];
+                    $channel = rand(0, 1) ? 'email' : 'in_app';
+                    $userId = $allSeededUsers[array_rand($allSeededUsers)];
+
+                    \App\Models\NotificationDeliveryLog::create([
+                        'user_id' => $userId,
+                        'notification_type' => $notifConfig['type'],
+                        'channel' => $channel,
+                        'category' => $notifConfig['category'],
+                        'is_successful' => true,
+                        'delivered_at' => now()->subDays($daysAgo)->subMinutes(rand(0, 1440)),
+                    ]);
+                }
+            }
         });
     }
 }
