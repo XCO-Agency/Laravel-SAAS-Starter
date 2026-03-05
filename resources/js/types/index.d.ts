@@ -48,6 +48,17 @@ export interface WorkspaceInvitation {
     created_at: string;
 }
 
+export interface WorkspaceInviteLink {
+    id: number;
+    token: string;
+    role: WorkspaceRole;
+    max_uses: number | null;
+    uses_count: number;
+    expires_at: string | null;
+    created_at: string;
+    url: string;
+}
+
 export interface TeamMember {
     id: number;
     name: string;

@@ -69,6 +69,9 @@ class AppServiceProvider extends ServiceProvider
         Event::listen(WebhookCallSucceededEvent::class, [LogWebhookCall::class, 'handleSuccessfulCall']);
         Event::listen(WebhookCallFailedEvent::class, [LogWebhookCall::class, 'handleFailedCall']);
 
+        Event::listen(\Illuminate\Auth\Events\Login::class, \App\Listeners\LogSuccessfulLogin::class);
+        Event::listen(\Illuminate\Auth\Events\Failed::class, \App\Listeners\LogFailedLogin::class);
+
         // Tell Cashier to use Workspace as the billable model instead of User
         Cashier::useCustomerModel(Workspace::class);
 

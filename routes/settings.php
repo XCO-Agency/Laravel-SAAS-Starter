@@ -45,4 +45,7 @@ Route::middleware('auth')->group(function () {
     Route::get('settings/sessions', [\App\Http\Controllers\Settings\SessionController::class, 'index'])->name('sessions.index');
     Route::delete('settings/sessions/{sessionId}', [\App\Http\Controllers\Settings\SessionController::class, 'destroy'])->name('sessions.destroy');
     Route::delete('settings/sessions', [\App\Http\Controllers\Settings\SessionController::class, 'destroyAll'])->name('sessions.destroy-all');
+
+    // Login Activity
+    Route::get('settings/login-history', [\App\Http\Controllers\Settings\LoginActivityController::class, 'index'])->name('login-history.index');
 });

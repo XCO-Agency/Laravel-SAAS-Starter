@@ -140,6 +140,14 @@ class Workspace extends Model
     }
 
     /**
+     * Get the workspace's shareable invite links.
+     */
+    public function inviteLinks(): HasMany
+    {
+        return $this->hasMany(WorkspaceInviteLink::class);
+    }
+
+    /**
      * Get the workspace's API keys.
      */
     public function apiKeys(): HasMany

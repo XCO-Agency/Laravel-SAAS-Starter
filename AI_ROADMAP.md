@@ -23,9 +23,12 @@ The AI agent is now continually managing and executing the roadmap autonomously.
 - **Stack**: Laravel 12, Inertia.js v2, React 19, Tailwind CSS v4, Stripe Cashier, Fortify.
 - **Completed Features**: Auth, 2FA, Workspaces, Teams, Stripe Billing, i18n, Dark Mode, Super Admin Panel, Feature Flags (Pennant), Announcements, Audit Logs, Command Palette.
 
-## 🚀 Active Sprint 16: (Next)
+## 🚀 Active Sprint 16: Security & Customization
 
-_Sprint 16 not yet planned. All previous sprints complete._
+- [ ] **Task 55**: Shareable Invitation Links — Reusable join links for workspaces with max uses, expiry, and role assignment.
+- [ ] **Task 56**: Login Activity Log — Track authentication events with IP, device, and success/failure status.
+- [ ] **Task 57**: Admin Maintenance Mode — Super admin toggleable maintenance mode with custom message and IP allowlist.
+- [ ] **Task 58**: Workspace Custom Branding — Logo upload and accent color per workspace.
 
 ## 🏁 Completed Sprints
 

@@ -44,12 +44,16 @@ import {
     type TeamMember,
     type Workspace,
     type WorkspaceInvitation,
+    type WorkspaceInviteLink,
     type WorkspaceRole,
 } from '@/types';
 import { Head, router, useForm } from '@inertiajs/react';
 import {
+    Check,
     Clock,
+    Copy,
     Crown,
+    Link2,
     Mail,
     MoreHorizontal,
     Settings,
@@ -71,6 +75,7 @@ interface TeamIndexProps {
     workspace: Workspace;
     members: TeamMember[];
     pendingInvitations: WorkspaceInvitation[];
+    inviteLinks: (WorkspaceInviteLink & { is_usable: boolean })[];
     userRole: WorkspaceRole;
     canInvite: boolean;
     memberLimitMessage: string;
@@ -82,11 +87,14 @@ export default function TeamIndex({
     workspace,
     members,
     pendingInvitations,
+    inviteLinks,
     userRole,
     canInvite,
     memberLimitMessage,
 }: TeamIndexProps) {
     const [inviteOpen, setInviteOpen] = useState(false);
+    const [linkDialogOpen, setLinkDialogOpen] = useState(false);
+    const [copiedId, setCopiedId] = useState<number | null>(null);
     const { t } = useTranslations();
     const isAdmin = userRole === 'owner' || userRole === 'admin';
     const isOwner = userRole === 'owner';
@@ -189,6 +197,45 @@ export default function TeamIndex({
         router.delete(`/team/invitations/${invitation.id}`, {
             preserveScroll: true,
         });
+    };
+
+    // Invite link form
+    const {
+        data: linkData,
+        setData: setLinkData,
+        processing: linkProcessing,
+        reset: resetLink,
+    } = useForm({
+        role: 'member' as 'admin' | 'member',
+        max_uses: '' as string | number,
+        expires_in_days: '' as string | number,
+    });
+
+    const handleCreateLink = (e: React.FormEvent) => {
+        e.preventDefault();
+        router.post('/team/invite-links', {
+            role: linkData.role,
+            max_uses: linkData.max_uses || null,
+            expires_in_days: linkData.expires_in_days || null,
+        }, {
+            preserveScroll: true,
+            onSuccess: () => {
+                resetLink();
+                setLinkDialogOpen(false);
+            },
+        });
+    };
+
+    const revokeLink = (link: WorkspaceInviteLink) => {
+        router.delete(`/team/invite-links/${link.id}`, {
+            preserveScroll: true,
+        });
+    };
+
+    const copyLinkUrl = (link: WorkspaceInviteLink & { is_usable: boolean }) => {
+        navigator.clipboard.writeText(link.url);
+        setCopiedId(link.id);
+        setTimeout(() => setCopiedId(null), 2000);
     };
 
     const getInitials = (name: string) => {
@@ -466,6 +513,167 @@ export default function TeamIndex({
                             </div>
                         </CardContent>
                     </Card>
+
+                    {/* Invite Links */}
+                    {isAdmin && (
+                        <Card>
+                            <CardHeader>
+                                <div className="flex items-center justify-between">
+                                    <div>
+                                        <CardTitle className="flex items-center gap-2">
+                                            <Link2 className="h-5 w-5" />
+                                            {t('team.invite_links', 'Invite Links')}
+                                        </CardTitle>
+                                        <CardDescription>
+                                            {t('team.invite_links_desc', 'Shareable links that let anyone join your workspace.')}
+                                        </CardDescription>
+                                    </div>
+                                    <Dialog open={linkDialogOpen} onOpenChange={setLinkDialogOpen}>
+                                        <DialogTrigger asChild>
+                                            <Button variant="outline" size="sm">
+                                                <Link2 className="mr-2 h-4 w-4" />
+                                                {t('team.create_link', 'Create Link')}
+                                            </Button>
+                                        </DialogTrigger>
+                                        <DialogContent>
+                                            <form onSubmit={handleCreateLink}>
+                                                <DialogHeader>
+                                                    <DialogTitle>
+                                                        {t('team.create_invite_link', 'Create Invite Link')}
+                                                    </DialogTitle>
+                                                    <DialogDescription>
+                                                        {t('team.create_invite_link_desc', 'Anyone with this link can join your workspace.')}
+                                                    </DialogDescription>
+                                                </DialogHeader>
+                                                <div className="space-y-4 py-4">
+                                                    <div className="space-y-2">
+                                                        <Label htmlFor="link-role">{t('team.role', 'Role')}</Label>
+                                                        <Select
+                                                            value={linkData.role}
+                                                            onValueChange={(value: 'admin' | 'member') =>
+                                                                setLinkData('role', value)
+                                                            }
+                                                        >
+                                                            <SelectTrigger>
+                                                                <SelectValue placeholder={t('team.role', 'Role')} />
+                                                            </SelectTrigger>
+                                                            <SelectContent>
+                                                                <SelectItem value="member">{t('team.member', 'Member')}</SelectItem>
+                                                                <SelectItem value="admin">{t('team.admin', 'Admin')}</SelectItem>
+                                                            </SelectContent>
+                                                        </Select>
+                                                    </div>
+                                                    <div className="space-y-2">
+                                                        <Label htmlFor="max-uses">{t('team.max_uses', 'Max Uses')} ({t('common.optional', 'optional')})</Label>
+                                                        <Input
+                                                            id="max-uses"
+                                                            type="number"
+                                                            min="1"
+                                                            max="1000"
+                                                            placeholder={t('team.unlimited', 'Unlimited')}
+                                                            value={linkData.max_uses}
+                                                            onChange={(e) => setLinkData('max_uses', e.target.value)}
+                                                        />
+                                                    </div>
+                                                    <div className="space-y-2">
+                                                        <Label htmlFor="expires">{t('team.expires_in', 'Expires In')} ({t('common.optional', 'optional')})</Label>
+                                                        <Select
+                                                            value={String(linkData.expires_in_days)}
+                                                            onValueChange={(value) => setLinkData('expires_in_days', value === '' ? '' : Number(value))}
+                                                        >
+                                                            <SelectTrigger>
+                                                                <SelectValue placeholder={t('team.never', 'Never')} />
+                                                            </SelectTrigger>
+                                                            <SelectContent>
+                                                                <SelectItem value="">{t('team.never', 'Never')}</SelectItem>
+                                                                <SelectItem value="1">1 {t('team.day', 'day')}</SelectItem>
+                                                                <SelectItem value="7">7 {t('team.days', 'days')}</SelectItem>
+                                                                <SelectItem value="14">14 {t('team.days', 'days')}</SelectItem>
+                                                                <SelectItem value="30">30 {t('team.days', 'days')}</SelectItem>
+                                                                <SelectItem value="90">90 {t('team.days', 'days')}</SelectItem>
+                                                            </SelectContent>
+                                                        </Select>
+                                                    </div>
+                                                </div>
+                                                <DialogFooter>
+                                                    <Button type="button" variant="outline" onClick={() => setLinkDialogOpen(false)}>
+                                                        {t('common.cancel', 'Cancel')}
+                                                    </Button>
+                                                    <Button type="submit" disabled={linkProcessing}>
+                                                        {linkProcessing && <Spinner className="mr-2" />}
+                                                        {t('team.create_link', 'Create Link')}
+                                                    </Button>
+                                                </DialogFooter>
+                                            </form>
+                                        </DialogContent>
+                                    </Dialog>
+                                </div>
+                            </CardHeader>
+                            {inviteLinks.length > 0 && (
+                                <CardContent>
+                                    <div className="space-y-3">
+                                        {inviteLinks.map((link) => (
+                                            <div
+                                                key={link.id}
+                                                className={`flex items-center justify-between rounded-lg border p-4 ${!link.is_usable ? 'opacity-50' : ''}`}
+                                            >
+                                                <div className="flex flex-col gap-1">
+                                                    <div className="flex items-center gap-2">
+                                                        <Badge variant="outline">
+                                                            {link.role.charAt(0).toUpperCase() + link.role.slice(1)}
+                                                        </Badge>
+                                                        {!link.is_usable && (
+                                                            <Badge variant="destructive">
+                                                                {t('team.inactive', 'Inactive')}
+                                                            </Badge>
+                                                        )}
+                                                    </div>
+                                                    <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                                                        <span>
+                                                            {link.uses_count}{link.max_uses ? `/${link.max_uses}` : ''} {t('team.uses', 'uses')}
+                                                        </span>
+                                                        {link.expires_at && (
+                                                            <span className="flex items-center gap-1">
+                                                                <Clock className="h-3 w-3" />
+                                                                {t('team.expires', 'Expires')}{' '}
+                                                                {new Date(link.expires_at).toLocaleDateString()}
+                                                            </span>
+                                                        )}
+                                                        {!link.expires_at && (
+                                                            <span>{t('team.never_expires', 'Never expires')}</span>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                                <div className="flex items-center gap-2">
+                                                    {link.is_usable && (
+                                                        <Button
+                                                            variant="ghost"
+                                                            size="icon"
+                                                            onClick={() => copyLinkUrl(link)}
+                                                            title={t('team.copy_link', 'Copy Link')}
+                                                        >
+                                                            {copiedId === link.id ? (
+                                                                <Check className="h-4 w-4 text-green-500" />
+                                                            ) : (
+                                                                <Copy className="h-4 w-4" />
+                                                            )}
+                                                        </Button>
+                                                    )}
+                                                    <Button
+                                                        variant="ghost"
+                                                        size="icon"
+                                                        onClick={() => revokeLink(link)}
+                                                    >
+                                                        <Trash2 className="h-4 w-4 text-destructive" />
+                                                    </Button>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </CardContent>
+                            )}
+                        </Card>
+                    )}
 
                     {/* Pending Invitations */}
                     {isAdmin && pendingInvitations.length > 0 && (

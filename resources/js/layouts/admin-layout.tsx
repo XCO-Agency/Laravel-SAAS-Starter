@@ -10,6 +10,7 @@ import {
     ListChecks,
     Megaphone,
     MessageSquare,
+    Power,
     ScrollText,
     ShieldCheck,
     ToggleLeft,
@@ -33,6 +34,7 @@ const adminNav = [
     { title: 'Changelog', href: '/admin/changelog', icon: ListChecks },
     { title: 'Scheduled Tasks', href: '/admin/scheduled-tasks', icon: Clock },
     { title: 'SEO', href: '/admin/seo', icon: Globe },
+    { title: 'Maintenance', href: '/admin/maintenance', icon: Power },
 ];
 
 export default function AdminLayout({

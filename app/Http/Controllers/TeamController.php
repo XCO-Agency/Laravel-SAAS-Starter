@@ -52,6 +52,21 @@ class TeamController extends Controller
             'pendingInvitations' => $workspace->invitations()
                 ->select('id', 'email', 'role', 'expires_at', 'created_at')
                 ->get(),
+            'inviteLinks' => $workspace->inviteLinks()
+                ->select('id', 'token', 'role', 'max_uses', 'uses_count', 'expires_at', 'created_at')
+                ->latest()
+                ->get()
+                ->map(fn ($link) => [
+                    'id' => $link->id,
+                    'token' => $link->token,
+                    'role' => $link->role,
+                    'max_uses' => $link->max_uses,
+                    'uses_count' => $link->uses_count,
+                    'expires_at' => $link->expires_at?->toISOString(),
+                    'created_at' => $link->created_at->toISOString(),
+                    'url' => route('invite-links.show', $link->token),
+                    'is_usable' => $link->isUsable(),
+                ]),
             'userRole' => $workspace->getUserRole($user),
             'canInvite' => $this->invitationService->canInvite($workspace),
             'memberLimitMessage' => $this->invitationService->getMemberLimitMessage($workspace),

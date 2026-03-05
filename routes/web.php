@@ -7,6 +7,7 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\StripeWebhookController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\WorkspaceController;
+use App\Http\Controllers\WorkspaceInviteLinkController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
@@ -26,6 +27,10 @@ Route::get('/invitations/{token}', [InvitationController::class, 'show'])
 Route::post('/invitations/{token}/accept', [InvitationController::class, 'accept'])
     ->middleware('auth')
     ->name('invitations.accept');
+
+// Public invite link routes
+Route::get('/join/{token}', [WorkspaceInviteLinkController::class, 'show'])->name('invite-links.show');
+Route::post('/join/{token}', [WorkspaceInviteLinkController::class, 'join'])->middleware('auth')->name('invite-links.join');
 
 Route::middleware(['auth', 'verified', 'onboarded', 'workspace', 'require2fa'])->group(function () {
     Route::get('dashboard', function () {
@@ -82,6 +87,10 @@ Route::middleware(['auth', 'verified', 'onboarded', 'workspace', 'require2fa'])-
         Route::put('/members/{user}/permissions', [TeamController::class, 'updatePermissions'])->name('update-permissions');
         Route::post('/transfer-ownership/{user}', [TeamController::class, 'transferOwnership'])->name('transfer-ownership');
         Route::delete('/invitations/{invitation}', [TeamController::class, 'cancelInvitation'])->name('cancel-invitation');
+
+        // Invite Links
+        Route::post('/invite-links', [WorkspaceInviteLinkController::class, 'store'])->name('invite-links.store');
+        Route::delete('/invite-links/{id}', [WorkspaceInviteLinkController::class, 'destroy'])->name('invite-links.destroy');
     });
 
     // Billing routes
@@ -222,4 +231,8 @@ Route::middleware(['auth', 'superadmin'])->prefix('admin')->name('admin.')->grou
     Route::post('/seo', [\App\Http\Controllers\Admin\SeoMetadataController::class, 'store'])->name('seo.store');
     Route::put('/seo/{seoMetadata}', [\App\Http\Controllers\Admin\SeoMetadataController::class, 'update'])->name('seo.update');
     Route::delete('/seo/{seoMetadata}', [\App\Http\Controllers\Admin\SeoMetadataController::class, 'destroy'])->name('seo.destroy');
+
+    // Maintenance Mode
+    Route::get('/maintenance', [\App\Http\Controllers\Admin\MaintenanceController::class, 'index'])->name('maintenance.index');
+    Route::post('/maintenance/toggle', [\App\Http\Controllers\Admin\MaintenanceController::class, 'toggle'])->name('maintenance.toggle');
 });

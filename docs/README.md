@@ -38,6 +38,7 @@ This repository contains comprehensive documentation for the architecture, featu
 - [Internationalization (i18n)](./features/internationalization.md)
 - [UI & Theming](./features/ui-and-theming.md)
 - [Architecture & Security](./features/security.md)
+- [Shareable Invite Links](./features/invite-links.md)
 
 ## Development Directives
 
