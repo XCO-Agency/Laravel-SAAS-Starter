@@ -23,15 +23,16 @@ The AI agent is now continually managing and executing the roadmap autonomously.
 - **Stack**: Laravel 12, Inertia.js v2, React 19, Tailwind CSS v4, Stripe Cashier, Fortify.
 - **Completed Features**: Auth, 2FA, Workspaces, Teams, Stripe Billing, i18n, Dark Mode, Super Admin Panel, Feature Flags (Pennant), Announcements, Audit Logs, Command Palette.
 
-## 🚀 Active Sprint 17: Collaboration & Admin Polish
+## 🚀 Active Sprint 18: Enterprise Security & Billing Polish
 
-- [ ] **Task 59**: Contextual Help Tooltips — Info tooltips across settings pages with contextual guidance for key features.
-- [ ] **Task 60**: Workspace Activity Feed — Live feed of workspace events (member joins, settings changes, billing events) visible to admins.
-- [ ] **Task 61**: Admin User Analytics — Charts and stats for user growth, active users, and retention on the admin dashboard.
-- [ ] **Task 62**: Notification Preferences — Per-user settings for email notification categories (security, billing, workspace).
+- [ ] **Task 63**: Invoice PDF Download — Native Cashier PDF generation allowing billing admins to view/download receipt PDFs.
+- [ ] **Task 64**: Automated Webhook Dispatching — Event listeners across the app that actually trigger automated payloads to registered Webhook Endpoints based on their `events` array configurations.
+- [ ] **Task 65**: Maintenance Mode IP Whitelist — Allow super admins to define IP addresses that completely bypass the underlying maintenance wall.
+- [ ] **Task 66**: Password Expiry Policy — Optional security feature forcing users to rotate their passwords every X days, configurable via settings.
 
 ## 🏁 Completed Sprints
 
+- **Sprint 17**: Collaboration & Admin Polish (Contextual Help Tooltips, Workspace Activity Feed, Admin User Analytics, Notification Preferences).
 - **Sprint 16**: Security & Customization (Shareable Invitation Links, Login Activity Log, Admin Maintenance Mode, Workspace Custom Branding).
 - **Sprint 15**: Engagement & User Success (Account Deletion, Usage Dashboard, Admin Impersonation UI, SEO Management).
 - **Sprint 14**: Developer Experience & Growth (API Documentation, Real-time Notifications, Data Export, Advanced Search).

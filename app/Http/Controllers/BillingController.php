@@ -39,12 +39,12 @@ class BillingController extends Controller
                 'on_grace_period' => $subscription->onGracePeriod(),
                 'cancelled' => $subscription->canceled(),
             ] : null,
-            'invoices' => $invoices->map(fn ($invoice) => [
+            'invoices' => $invoices->map(fn($invoice) => [
                 'id' => $invoice->id,
                 'date' => $invoice->date()->format('F j, Y'),
                 'total' => $invoice->total(),
-                'pdf_url' => $invoice->asStripeInvoice()->invoice_pdf ?? null,
-            ])->filter(fn ($invoice) => $invoice['pdf_url'] !== null)->values(),
+                'pdf_url' => route('billing.invoice.download', $invoice->id),
+            ])->values(),
             'plans' => $this->getPlansForDisplay(),
             'userRole' => $workspace->getUserRole($user),
         ]);
@@ -118,7 +118,7 @@ class BillingController extends Controller
             } catch (\Exception $e) {
                 return response()->json([
                     'success' => false,
-                    'error' => 'Failed to update subscription: '.$e->getMessage(),
+                    'error' => 'Failed to update subscription: ' . $e->getMessage(),
                 ], 500);
             }
         }
@@ -128,15 +128,15 @@ class BillingController extends Controller
             $checkout = $workspace->newSubscription('default', $priceId)
                 ->trialDays(config('billing.trial_days', 0))
                 ->checkout([
-                    'success_url' => route('billing.index').'?checkout=success',
-                    'cancel_url' => route('billing.plans').'?checkout=cancelled',
+                    'success_url' => route('billing.index') . '?checkout=success',
+                    'cancel_url' => route('billing.plans') . '?checkout=cancelled',
                 ]);
 
             return response()->json(['checkout_url' => $checkout->url]);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'error' => 'Failed to create checkout: '.$e->getMessage(),
+                'error' => 'Failed to create checkout: ' . $e->getMessage(),
             ], 500);
         }
     }
@@ -169,6 +169,20 @@ class BillingController extends Controller
     }
 
     /**
+     * Download the specified invoice as a PDF.
+     */
+    public function downloadInvoice(Request $request, string $invoiceId): SymfonyResponse
+    {
+        $workspace = $request->user()->currentWorkspace;
+        Gate::authorize('manageBilling', $workspace);
+
+        return $workspace->downloadInvoice($invoiceId, [
+            'vendor' => config('app.name'),
+            'product' => 'Subscription',
+        ]);
+    }
+
+    /**
      * Cancel the workspace subscription (downgrade to free).
      */
     public function cancel(Request $request): \Illuminate\Http\JsonResponse
@@ -194,7 +208,7 @@ class BillingController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'error' => 'Failed to cancel subscription: '.$e->getMessage(),
+                'error' => 'Failed to cancel subscription: ' . $e->getMessage(),
             ], 500);
         }
     }
@@ -226,7 +240,7 @@ class BillingController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'error' => 'Failed to resume subscription: '.$e->getMessage(),
+                'error' => 'Failed to resume subscription: ' . $e->getMessage(),
             ], 500);
         }
     }

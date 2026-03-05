@@ -101,6 +101,7 @@ Route::middleware(['auth', 'verified', 'onboarded', 'workspace', 'require2fa'])-
         Route::post('/cancel', [BillingController::class, 'cancel'])->name('cancel');
         Route::post('/resume', [BillingController::class, 'resume'])->name('resume');
         Route::get('/portal', [BillingController::class, 'portal'])->name('portal');
+        Route::get('/invoices/{invoice}', [BillingController::class, 'downloadInvoice'])->name('invoice.download');
     });
     // Workspace Security Settings
     Route::get('/settings/workspace-security', [\App\Http\Controllers\Settings\WorkspaceSecurityController::class, 'index'])->name('workspace.security');
@@ -165,7 +166,7 @@ Route::middleware('guest')->group(function () {
         ->where('provider', 'github|google');
 });
 
-require __DIR__.'/settings.php';
+require __DIR__ . '/settings.php';
 
 // Admin routes
 Route::middleware(['auth', 'superadmin'])->prefix('admin')->name('admin.')->group(function () {

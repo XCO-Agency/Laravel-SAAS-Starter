@@ -15,11 +15,12 @@ describe('Billing Index', function () {
         $this->actingAs($this->owner)
             ->get('/billing')
             ->assertOk()
-            ->assertInertia(fn ($page) => $page
-                ->component('Billing/index')
-                ->has('workspace')
-                ->has('plans')
-                ->where('userRole', 'owner')
+            ->assertInertia(
+                fn($page) => $page
+                    ->component('Billing/index')
+                    ->has('workspace')
+                    ->has('plans')
+                    ->where('userRole', 'owner')
             );
     });
 
@@ -31,9 +32,10 @@ describe('Billing Index', function () {
         $this->actingAs($admin)
             ->get('/billing')
             ->assertOk()
-            ->assertInertia(fn ($page) => $page
-                ->component('Billing/index')
-                ->where('userRole', 'admin')
+            ->assertInertia(
+                fn($page) => $page
+                    ->component('Billing/index')
+                    ->where('userRole', 'admin')
             );
     });
 
@@ -45,9 +47,10 @@ describe('Billing Index', function () {
         $this->actingAs($member)
             ->get('/billing')
             ->assertOk()
-            ->assertInertia(fn ($page) => $page
-                ->component('Billing/index')
-                ->where('userRole', 'member')
+            ->assertInertia(
+                fn($page) => $page
+                    ->component('Billing/index')
+                    ->where('userRole', 'member')
             );
     });
 
@@ -62,11 +65,12 @@ describe('Billing Plans', function () {
         $this->actingAs($this->owner)
             ->get('/billing/plans')
             ->assertOk()
-            ->assertInertia(fn ($page) => $page
-                ->component('Billing/plans')
-                ->has('plans')
-                ->has('currentPlan')
-                ->has('currentBillingPeriod')
+            ->assertInertia(
+                fn($page) => $page
+                    ->component('Billing/plans')
+                    ->has('plans')
+                    ->has('currentPlan')
+                    ->has('currentBillingPeriod')
             );
     });
 
@@ -74,8 +78,9 @@ describe('Billing Plans', function () {
         $this->actingAs($this->owner)
             ->get('/billing/plans')
             ->assertOk()
-            ->assertInertia(fn ($page) => $page
-                ->where('currentPlan', 'free')
+            ->assertInertia(
+                fn($page) => $page
+                    ->where('currentPlan', 'free')
             );
     });
 });
@@ -171,5 +176,17 @@ describe('Billing Portal', function () {
             ->assertJson([
                 'error' => 'No billing account found. Please subscribe to a plan first.',
             ]);
+    });
+});
+
+describe('Invoice Download', function () {
+    it('requires owner role to download invoice', function () {
+        $member = User::factory()->create();
+        $this->workspace->addUser($member, 'member');
+        $member->switchWorkspace($this->workspace);
+
+        $this->actingAs($member)
+            ->get('/billing/invoices/in_12345')
+            ->assertForbidden();
     });
 });
