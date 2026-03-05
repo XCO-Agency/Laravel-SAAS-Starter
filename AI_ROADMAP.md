@@ -23,14 +23,18 @@ The AI agent is now continually managing and executing the roadmap autonomously.
 - **Stack**: Laravel 12, Inertia.js v2, React 19, Tailwind CSS v4, Stripe Cashier, Fortify.
 - **Completed Features**: Auth, 2FA, Workspaces, Teams, Stripe Billing, i18n, Dark Mode, Super Admin Panel, Feature Flags (Pennant), Announcements, Audit Logs, Command Palette.
 
-## 🚀 Active Sprint 20: Resilience & Self-Service
+## 🚀 Active Sprint 22: Communication & Conversion Reliability
 
-- [ ] **Task 71**: Workspace Trash & Restore — Allow soft-deleted workspaces to be restored from a trash view for a grace period before permanent deletion.
-- [ ] **Task 72**: Password Change History — Track and display a log of password changes for user security auditing and compliance.
-- [ ] **Task 73**: Workspace Suspension — Allow superadmins to suspend workspaces (block access without deleting data), with a branded suspension page.
-- [ ] **Task 74**: User Timezone & Date Format — Let users choose their timezone and date format preferences, applied consistently across the app.
+- [ ] **Task 79**: Notification Delivery Analytics — Track per-channel delivery counts for email vs in-app notifications to monitor preference impact.
+- [ ] **Task 80**: Onboarding Completion Insights — Capture and display where users drop off in onboarding steps.
+- [ ] **Task 81**: Billing Reminder Notifications — Send proactive reminders for trial ending and renewal windows.
+- [ ] **Task 82**: Permission Preset Templates — Add reusable capability presets for common member responsibilities.
 
 ## 🏁 Completed Sprints
+
+- **Sprint 21**: Permissions Deepening & Onboarding Quality (Granular Team Permission Parity, Permission Matrix UI Polish, Onboarding Billing Step, Notification Channel Preferences).
+
+- **Sprint 20**: Resilience & Self-Service (Workspace Trash & Restore, Password Change History, Workspace Suspension, User Timezone & Date Format).
 
 - **Sprint 19**: Identity & Compliance (Magic Link Authentication, Cookie Consent Manager, Workspace IP Allowlist, Robust Avatar Management).
 - **Sprint 18**: Enterprise Security & Billing Polish (Invoice PDF, Webhook Dispatching, Maintenance IP Whitelist, Password Expiry).
@@ -49,6 +53,11 @@ The AI agent is now continually managing and executing the roadmap autonomously.
 
 ## 📝 Changelog
 
+- **2026-03-05**: Sprint 21 complete. Task 78 (Notification Channel Preferences): added per-channel toggles for email and in-app delivery, normalized legacy preference payloads to channels/categories schema, updated notification delivery logic for `DataExportCompleted`, and added feature/unit coverage for channel behavior.
+- **2026-03-05**: Task 77 complete. Onboarding wizard now includes an optional plan-selection step; paid-intent users are redirected to billing plans with recommendation query params and contextual onboarding guidance.
+- **2026-03-05**: Task 76 complete. Team permission matrix UI now groups capabilities by access domain (Team, Billing, Operations) with clearer labels/descriptions while preserving existing permission IDs and backend policy behavior.
+- **2026-03-05**: Sprint 21 started. Task 75 (Granular Team Permission Parity): invite-link create/revoke now authorizes through `manageTeam` policy/capability path, members with explicit `manage_team` permission can operate invite links, demo data includes granular-permission member examples, and invite-link tests expanded for permission-granted members.
+- **2026-03-05**: Sprint 20 complete. Task 71 (Workspace Trash & Restore): owner trash view, restore + force delete actions, scheduled pruning command, 9 tests. Task 72 (Password Change History): audit trail with IP/user-agent/timestamp in password settings, 5 tests. Task 73 (Workspace Suspension): superadmin suspend/unsuspend flow, suspension middleware + branded wall page, 5 tests. Task 74 (User Timezone & Date Format): profile preferences with validation and shared props hydration, 3 tests.
 - **2026-03-05**: Sprint 19 complete. Task 67 (Magic Link Authentication): stateless signed URL login, 6 tests. Task 68 (Cookie Consent Manager): GDPR-compliant banner with granular preferences, privacy settings page. Task 69 (Workspace IP Allowlist): middleware, admin UI, 7 tests. Task 70 (Robust Avatar Management): async upload/delete controllers, image cropping, fallback avatars, 10 tests. Total: 23+ tests.
 - **2026-03-05**: Sprint 16 complete. Task 55 (Shareable Invitation Links): reusable join links with max uses, expiry, role assignment, public join page, 13 tests. Task 56 (Login Activity Log): event listeners for Login/Failed, UA parsing, settings page, 9 tests. Task 57 (Admin Maintenance Mode): cache-based artisan down/up toggle with bypass secret, admin page, 5 tests. Task 58 (Workspace Custom Branding): accent_color migration, color picker with preset swatches and live preview, 5 tests. Total: 32 tests, 126 assertions.
 - **2026-02-28**: Sprint 15 complete. Task 51 (Account Deletion): password-confirmed soft-delete with workspace cleanup, subscription cancellation, 4 tests. Task 52 (Usage Dashboard): visual plan limits vs current usage for workspaces/members/API keys/webhooks, PlanLimitService, sidebar nav, 4 tests. Task 53 (Admin Impersonation UI): impersonate/leave controller, persistent banner, session-based identity swap, 4 tests. Task 54 (SEO Management): admin CRUD for per-page and global meta tags (OG + Twitter Card), shared Inertia prop, seeder data, 10 tests.

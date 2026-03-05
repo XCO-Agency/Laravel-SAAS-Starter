@@ -3,6 +3,13 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
 import { Building2, CheckCircle, ChevronRight, Store } from 'lucide-react';
 import { useState } from 'react';
 import AppLogo from '@/components/app-logo';
@@ -14,6 +21,8 @@ export default function OnboardingWizard() {
 
     const { data, setData, post, processing, errors } = useForm({
         workspace_name: '',
+        onboarding_plan: 'free' as 'free' | 'pro' | 'business',
+        onboarding_billing_period: 'monthly' as 'monthly' | 'yearly',
     });
 
     const submit = (e: React.FormEvent) => {
@@ -23,6 +32,10 @@ export default function OnboardingWizard() {
 
     const nextStep = () => {
         setStep(2);
+    };
+
+    const nextToBillingStep = () => {
+        setStep(3);
     };
 
     return (
@@ -56,6 +69,16 @@ export default function OnboardingWizard() {
                             2
                         </div>
                         <span className="mt-2 text-xs font-medium text-muted-foreground">Workspace</span>
+                    </div>
+                    <div className={`h-px flex-1 mx-4 transition-colors ${step >= 3 ? 'bg-primary' : 'bg-border'}`} />
+                    <div className="flex flex-col items-center">
+                        <div
+                            className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-medium transition-colors ${step >= 3 ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
+                                }`}
+                        >
+                            3
+                        </div>
+                        <span className="mt-2 text-xs font-medium text-muted-foreground">Plan</span>
                     </div>
                 </div>
 
@@ -112,7 +135,12 @@ export default function OnboardingWizard() {
                     {/* Step 2: Workspace Blueprint */}
                     {step === 2 && (
                         <Card className="border-none shadow-lg animate-in fade-in slide-in-from-right-4 duration-500">
-                            <form onSubmit={submit}>
+                            <form
+                                onSubmit={(e) => {
+                                    e.preventDefault();
+                                    nextToBillingStep();
+                                }}
+                            >
                                 <CardHeader>
                                     <CardTitle className="text-2xl">Name your Workspace</CardTitle>
                                     <CardDescription>
@@ -149,8 +177,77 @@ export default function OnboardingWizard() {
                                     <Button type="button" variant="ghost" onClick={() => setStep(1)}>
                                         Back
                                     </Button>
-                                    <Button type="submit" disabled={processing} className="min-w-32">
-                                        {processing ? 'Creating...' : 'Continue'}
+                                    <Button type="button" onClick={nextToBillingStep} className="min-w-32">
+                                        Continue
+                                        <ChevronRight className="ml-2 h-4 w-4" />
+                                    </Button>
+                                </CardFooter>
+                            </form>
+                        </Card>
+                    )}
+
+                    {/* Step 3: Optional Billing Preference */}
+                    {step === 3 && (
+                        <Card className="border-none shadow-lg animate-in fade-in slide-in-from-right-4 duration-500">
+                            <form onSubmit={submit}>
+                                <CardHeader>
+                                    <CardTitle className="text-2xl">Choose your starting plan</CardTitle>
+                                    <CardDescription>
+                                        Optional: pick a paid plan now to continue to billing, or start on free and decide later.
+                                    </CardDescription>
+                                </CardHeader>
+                                <CardContent className="space-y-4">
+                                    <div className="space-y-2">
+                                        <Label htmlFor="onboarding_plan">Plan</Label>
+                                        <Select
+                                            value={data.onboarding_plan}
+                                            onValueChange={(value: 'free' | 'pro' | 'business') =>
+                                                setData('onboarding_plan', value)
+                                            }
+                                        >
+                                            <SelectTrigger id="onboarding_plan">
+                                                <SelectValue placeholder="Select a plan" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectItem value="free">Free (decide later)</SelectItem>
+                                                <SelectItem value="pro">Pro</SelectItem>
+                                                <SelectItem value="business">Business</SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
+
+                                    {data.onboarding_plan !== 'free' && (
+                                        <div className="space-y-2">
+                                            <Label htmlFor="onboarding_billing_period">Billing Period</Label>
+                                            <Select
+                                                value={data.onboarding_billing_period}
+                                                onValueChange={(value: 'monthly' | 'yearly') =>
+                                                    setData('onboarding_billing_period', value)
+                                                }
+                                            >
+                                                <SelectTrigger id="onboarding_billing_period">
+                                                    <SelectValue placeholder="Select billing period" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    <SelectItem value="monthly">Monthly</SelectItem>
+                                                    <SelectItem value="yearly">Yearly</SelectItem>
+                                                </SelectContent>
+                                            </Select>
+                                        </div>
+                                    )}
+
+                                    {(errors.onboarding_plan || errors.onboarding_billing_period) && (
+                                        <p className="text-sm text-destructive">
+                                            {errors.onboarding_plan || errors.onboarding_billing_period}
+                                        </p>
+                                    )}
+                                </CardContent>
+                                <CardFooter className="flex justify-between">
+                                    <Button type="button" variant="ghost" onClick={() => setStep(2)}>
+                                        Back
+                                    </Button>
+                                    <Button type="submit" disabled={processing} className="min-w-40">
+                                        {processing ? 'Finishing...' : 'Finish Setup'}
                                     </Button>
                                 </CardFooter>
                             </form>

@@ -55,6 +55,22 @@ describe('Invite Link Creation', function () {
             ->assertForbidden();
     });
 
+    it('allows member with manage_team permission to create invite link', function () {
+        $member = User::factory()->create();
+        $this->workspace->addUser($member, 'member');
+        $this->workspace->users()->updateExistingPivot($member->id, [
+            'permissions' => json_encode(['manage_team']),
+        ]);
+        $member->switchWorkspace($this->workspace);
+
+        $this->actingAs($member)
+            ->post('/team/invite-links', [
+                'role' => 'member',
+            ])
+            ->assertRedirect()
+            ->assertSessionHas('success');
+    });
+
     it('validates role field', function () {
         $this->actingAs($this->owner)
             ->post('/team/invite-links', [
@@ -87,6 +103,24 @@ describe('Invite Link Revocation', function () {
             ->assertForbidden();
 
         $this->assertDatabaseHas('workspace_invite_links', ['id' => $link->id]);
+    });
+
+    it('allows member with manage_team permission to revoke invite link', function () {
+        $member = User::factory()->create();
+        $this->workspace->addUser($member, 'member');
+        $this->workspace->users()->updateExistingPivot($member->id, [
+            'permissions' => json_encode(['manage_team']),
+        ]);
+        $member->switchWorkspace($this->workspace);
+
+        $link = WorkspaceInviteLink::generateLink($this->workspace, $this->owner);
+
+        $this->actingAs($member)
+            ->delete("/team/invite-links/{$link->id}")
+            ->assertRedirect()
+            ->assertSessionHas('success');
+
+        $this->assertDatabaseMissing('workspace_invite_links', ['id' => $link->id]);
     });
 });
 

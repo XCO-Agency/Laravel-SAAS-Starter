@@ -25,6 +25,7 @@ This repository contains comprehensive documentation for the architecture, featu
 - [Workspace API Keys](./features/workspace-api-keys.md)
 - [API Documentation](./features/api-documentation.md)
 - [Real-time Notifications](./features/real-time-notifications.md)
+- [Notification Channel Preferences](./features/notification-channel-preferences.md)
 - [GDPR Data Export](./features/gdpr-data-export.md)
 - [Advanced Global Search](./features/advanced-search.md)
 - [Scheduled Tasks Monitor](./features/scheduled-tasks.md)
@@ -33,6 +34,7 @@ This repository contains comprehensive documentation for the architecture, featu
 - [Admin Impersonation](./features/impersonation.md)
 - [SEO Management](./features/seo-management.md)
 - [Onboarding Checklist](./features/onboarding-checklist.md)
+- [Onboarding Wizard](./features/onboarding-wizard.md)
 - [API Authentication](./features/api-authentication.md)
 - [Session Management](./features/session-management.md)
 - [Internationalization (i18n)](./features/internationalization.md)
@@ -42,6 +44,11 @@ This repository contains comprehensive documentation for the architecture, featu
 - [Login Activity Log](./features/login-activity.md)
 - [Admin Maintenance Mode](./features/maintenance-mode.md)
 - [Workspace Custom Branding](./features/workspace-branding.md)
+- [Workspace Trash & Restore](./features/workspace-trash.md)
+- [Workspace Suspension](./features/workspace-suspension.md)
+- [Password Change History](./features/password-change-history.md)
+- [User Timezone & Date Format](./features/user-timezone-date-format.md)
+- [Granular Roles & Permissions](./features/granular-roles-permissions.md)
 
 ## Development Directives
 

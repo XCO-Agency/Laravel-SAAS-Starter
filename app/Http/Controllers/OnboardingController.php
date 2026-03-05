@@ -35,6 +35,8 @@ class OnboardingController extends Controller
 
         $validated = $request->validate([
             'workspace_name' => ['required', 'string', 'max:255'],
+            'onboarding_plan' => ['nullable', 'string', 'in:free,pro,business'],
+            'onboarding_billing_period' => ['nullable', 'string', 'in:monthly,yearly'],
         ]);
 
         $user = $request->user();
@@ -49,6 +51,18 @@ class OnboardingController extends Controller
         $user->forceFill([
             'onboarded_at' => now(),
         ])->save();
+
+        $selectedPlan = $validated['onboarding_plan'] ?? 'free';
+        $selectedBillingPeriod = $validated['onboarding_billing_period'] ?? null;
+
+        if ($selectedPlan !== 'free' && $selectedBillingPeriod) {
+            return redirect()->route('billing.plans', [
+                'onboarding' => '1',
+                'recommended_plan' => $selectedPlan,
+                'recommended_billing_period' => $selectedBillingPeriod,
+            ])->with('success', 'Welcome! Your workspace is ready.')
+                ->with('info', 'Choose your billing plan to unlock premium features.');
+        }
 
         return redirect()->route('dashboard')
             ->with('success', 'Welcome! Your workspace is ready.');

@@ -16,12 +16,7 @@ class NotificationPreferenceController extends Controller
     public function show(Request $request): Response
     {
         return Inertia::render('settings/notifications', [
-            'notification_preferences' => $request->user()->notification_preferences ?? [
-                'marketing' => true,
-                'security' => true,
-                'team' => true,
-                'billing' => true,
-            ],
+            'notification_preferences' => $request->user()->normalizedNotificationPreferences(),
         ]);
     }
 
@@ -32,17 +27,23 @@ class NotificationPreferenceController extends Controller
     {
         $validated = $request->validate([
             'preferences' => ['required', 'array'],
-            'preferences.marketing' => ['boolean'],
-            'preferences.security' => ['boolean'],
-            'preferences.team' => ['boolean'],
-            'preferences.billing' => ['boolean'],
+            'preferences.channels' => ['required', 'array'],
+            'preferences.channels.email' => ['required', 'boolean'],
+            'preferences.channels.in_app' => ['required', 'boolean'],
+            'preferences.categories' => ['required', 'array'],
+            'preferences.categories.marketing' => ['required', 'boolean'],
+            'preferences.categories.security' => ['required', 'boolean'],
+            'preferences.categories.team' => ['required', 'boolean'],
+            'preferences.categories.billing' => ['required', 'boolean'],
         ]);
 
+        $current = $request->user()->normalizedNotificationPreferences();
+
         $request->user()->update([
-            'notification_preferences' => array_merge(
-                $request->user()->notification_preferences ?? [],
-                $validated['preferences']
-            ),
+            'notification_preferences' => [
+                'channels' => array_merge($current['channels'], $validated['preferences']['channels']),
+                'categories' => array_merge($current['categories'], $validated['preferences']['categories']),
+            ],
         ]);
 
         return back()->with('success', __('Notification preferences updated.'));

@@ -64,11 +64,45 @@ import {
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-const AVAILABLE_PERMISSIONS = [
-    { id: 'manage_team', label: 'Manage Team', description: 'Can invite, remove, and manage team members.' },
-    { id: 'manage_billing', label: 'Manage Billing', description: 'Can subscribe or cancel plans.' },
-    { id: 'manage_webhooks', label: 'Manage Webhooks', description: 'Can create and configure webhook endpoints.' },
-    { id: 'view_activity_logs', label: 'View Activity Logs', description: 'Can view audit logs and events.' }
+const AVAILABLE_PERMISSION_GROUPS = [
+    {
+        id: 'team',
+        label: 'Team Access',
+        permissions: [
+            {
+                id: 'manage_team',
+                label: 'Team Management',
+                description: 'Invite members, edit member roles, and manage invite links.',
+            },
+        ],
+    },
+    {
+        id: 'billing',
+        label: 'Billing Access',
+        permissions: [
+            {
+                id: 'manage_billing',
+                label: 'Billing Management',
+                description: 'Change subscription plans and manage billing portal actions.',
+            },
+        ],
+    },
+    {
+        id: 'operations',
+        label: 'Operations Access',
+        permissions: [
+            {
+                id: 'manage_webhooks',
+                label: 'Webhook Management',
+                description: 'Create and update workspace webhook endpoints.',
+            },
+            {
+                id: 'view_activity_logs',
+                label: 'Activity Log Visibility',
+                description: 'View workspace activity history and audit events.',
+            },
+        ],
+    },
 ];
 
 interface TeamIndexProps {
@@ -749,29 +783,38 @@ export default function TeamIndex({
                                         Manage Permissions
                                     </DialogTitle>
                                     <DialogDescription>
-                                        Assign granular capabilities to {selectedMemberForPermissions?.name}.
+                                        Assign capability groups to {selectedMemberForPermissions?.name}.
                                     </DialogDescription>
                                 </DialogHeader>
                                 <div className="space-y-4 py-4">
-                                    {AVAILABLE_PERMISSIONS.map((permission) => (
-                                        <div key={permission.id} className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
-                                            <Checkbox
-                                                id={permission.id}
-                                                checked={permissionsData.permissions.includes(permission.id)}
-                                                onCheckedChange={(checked) => {
-                                                    const updatedPermissions = checked
-                                                        ? [...permissionsData.permissions, permission.id]
-                                                        : permissionsData.permissions.filter((p) => p !== permission.id);
-                                                    setPermissionsData('permissions', updatedPermissions);
-                                                }}
-                                            />
-                                            <div className="space-y-1 leading-none">
-                                                <Label htmlFor={permission.id}>
-                                                    {permission.label}
-                                                </Label>
-                                                <p className="text-sm text-muted-foreground">
-                                                    {permission.description}
-                                                </p>
+                                    {AVAILABLE_PERMISSION_GROUPS.map((group) => (
+                                        <div key={group.id} className="space-y-2">
+                                            <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                                                {group.label}
+                                            </p>
+                                            <div className="space-y-3">
+                                                {group.permissions.map((permission) => (
+                                                    <div key={permission.id} className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                                                        <Checkbox
+                                                            id={permission.id}
+                                                            checked={permissionsData.permissions.includes(permission.id)}
+                                                            onCheckedChange={(checked) => {
+                                                                const updatedPermissions = checked
+                                                                    ? [...permissionsData.permissions, permission.id]
+                                                                    : permissionsData.permissions.filter((p) => p !== permission.id);
+                                                                setPermissionsData('permissions', updatedPermissions);
+                                                            }}
+                                                        />
+                                                        <div className="space-y-1 leading-none">
+                                                            <Label htmlFor={permission.id}>
+                                                                {permission.label}
+                                                            </Label>
+                                                            <p className="text-sm text-muted-foreground">
+                                                                {permission.description}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                ))}
                                             </div>
                                         </div>
                                     ))}

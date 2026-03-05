@@ -44,6 +44,31 @@ it('processes the wizard mutating the timestamp and spawning a workspace seamles
     ]);
 });
 
+it('redirects paid-intent onboarding users to billing plan selection', function () {
+    $user = User::factory()->unonboarded()->create();
+
+    $response = $this->actingAs($user)->post(route('onboarding.store'), [
+        'workspace_name' => 'Acme Paid Onboarding',
+        'onboarding_plan' => 'pro',
+        'onboarding_billing_period' => 'yearly',
+    ]);
+
+    $response->assertRedirect(route('billing.plans', [
+        'onboarding' => '1',
+        'recommended_plan' => 'pro',
+        'recommended_billing_period' => 'yearly',
+    ]));
+
+    $user->refresh();
+    expect($user->onboarded_at)->not->toBeNull();
+
+    $this->assertDatabaseHas('workspaces', [
+        'name' => 'Acme Paid Onboarding',
+        'owner_id' => $user->id,
+        'personal_workspace' => false,
+    ]);
+});
+
 it('allows seamlessly onboarded users into the dashboard securely bypassing the wizard', function () {
     $user = User::factory()->create(); // Automatically onboarded via factory defaults
     // Simulate setting a fake current workspace since the factory might not spawn one natively

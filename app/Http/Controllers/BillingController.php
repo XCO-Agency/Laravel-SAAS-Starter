@@ -58,6 +58,16 @@ class BillingController extends Controller
         $user = $request->user();
         $workspace = $user->currentWorkspace;
 
+        $recommendedPlan = $request->query('recommended_plan');
+        if (! in_array($recommendedPlan, ['pro', 'business'], true)) {
+            $recommendedPlan = null;
+        }
+
+        $recommendedBillingPeriod = $request->query('recommended_billing_period');
+        if (! in_array($recommendedBillingPeriod, ['monthly', 'yearly'], true)) {
+            $recommendedBillingPeriod = null;
+        }
+
         return Inertia::render('Billing/plans', [
             'workspace' => [
                 'id' => $workspace->id,
@@ -67,6 +77,9 @@ class BillingController extends Controller
             'plans' => $this->getPlansForDisplay(),
             'currentPlan' => $workspace->plan_key,
             'currentBillingPeriod' => $workspace->billing_period,
+            'recommendedPlan' => $recommendedPlan,
+            'recommendedBillingPeriod' => $recommendedBillingPeriod,
+            'fromOnboarding' => $request->query('onboarding') === '1',
             'userRole' => $workspace->getUserRole($user),
         ]);
     }

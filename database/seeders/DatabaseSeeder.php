@@ -184,6 +184,17 @@ class DatabaseSeeder extends Seeder
 
                     $workspace->addUser($member, $role);
                 }
+
+                // Grant one member explicit granular permissions to demonstrate capability-based access
+                $granularMember = $workspace->users()
+                    ->wherePivot('role', 'member')
+                    ->first();
+
+                if ($granularMember) {
+                    $workspace->users()->updateExistingPivot($granularMember->id, [
+                        'permissions' => json_encode(['manage_team']),
+                    ]);
+                }
             }
 
             // 6. DEMO ACCOUNT: Create workspace invitations for demo workspaces

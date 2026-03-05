@@ -83,6 +83,18 @@ describe('Billing Plans', function () {
                     ->where('currentPlan', 'free')
             );
     });
+
+    it('passes onboarding recommendation props when provided in query string', function () {
+        $this->actingAs($this->owner)
+            ->get('/billing/plans?onboarding=1&recommended_plan=pro&recommended_billing_period=yearly')
+            ->assertOk()
+            ->assertInertia(
+                fn ($page) => $page
+                    ->where('fromOnboarding', true)
+                    ->where('recommendedPlan', 'pro')
+                    ->where('recommendedBillingPeriod', 'yearly')
+            );
+    });
 });
 
 describe('Subscription', function () {

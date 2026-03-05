@@ -24,6 +24,9 @@ interface PlansPageProps {
     plans: Plan[];
     currentPlan: string;
     currentBillingPeriod: 'monthly' | 'yearly' | null;
+    recommendedPlan: 'pro' | 'business' | null;
+    recommendedBillingPeriod: 'monthly' | 'yearly' | null;
+    fromOnboarding: boolean;
     userRole: WorkspaceRole;
 }
 
@@ -31,11 +34,14 @@ export default function PlansPage({
     plans,
     currentPlan,
     currentBillingPeriod,
+    recommendedPlan,
+    recommendedBillingPeriod,
+    fromOnboarding,
     userRole,
 }: PlansPageProps) {
     const { t } = useTranslations();
     const [billingPeriod, setBillingPeriod] = useState<'monthly' | 'yearly'>(
-        currentBillingPeriod || 'monthly',
+        recommendedBillingPeriod || currentBillingPeriod || 'monthly',
     );
     const [processing, setProcessing] = useState<string | null>(null);
     const { addToast } = useToast();
@@ -159,6 +165,18 @@ export default function PlansPage({
             >
                 <div className="space-y-6">
 
+                {fromOnboarding && recommendedPlan && (
+                    <Card className="border-primary/40 bg-primary/5">
+                        <CardContent className="py-4">
+                            <p className="text-sm text-muted-foreground">
+                                {t('billing.plans.onboarding_hint', 'You chose the {{plan}} plan during onboarding. Complete your subscription below or pick a different option.', {
+                                    plan: recommendedPlan.charAt(0).toUpperCase() + recommendedPlan.slice(1),
+                                })}
+                            </p>
+                        </CardContent>
+                    </Card>
+                )}
+
                 {/* Billing Period Toggle */}
                 <div className="flex items-center justify-center gap-4">
                     <Label
@@ -211,6 +229,8 @@ export default function PlansPage({
                             className={`relative flex flex-col ${
                                 isExactCurrentPlan(plan)
                                     ? 'border-primary shadow-lg ring-2 ring-primary'
+                                    : recommendedPlan === plan.id
+                                    ? 'border-primary/70 shadow-md ring-1 ring-primary/40'
                                     : plan.popular
                                     ? 'border-primary shadow-lg'
                                     : ''

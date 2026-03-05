@@ -219,6 +219,60 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Get normalized notification preferences with channel and category defaults.
+     *
+     * @return array{
+     *     channels: array{email: bool, in_app: bool},
+     *     categories: array{marketing: bool, security: bool, team: bool, billing: bool}
+     * }
+     */
+    public function normalizedNotificationPreferences(): array
+    {
+        $defaults = [
+            'channels' => [
+                'email' => true,
+                'in_app' => true,
+            ],
+            'categories' => [
+                'marketing' => true,
+                'security' => true,
+                'team' => true,
+                'billing' => true,
+            ],
+        ];
+
+        $preferences = $this->notification_preferences ?? [];
+
+        if (isset($preferences['channels']) || isset($preferences['categories'])) {
+            return [
+                'channels' => array_merge($defaults['channels'], $preferences['channels'] ?? []),
+                'categories' => array_merge($defaults['categories'], $preferences['categories'] ?? []),
+            ];
+        }
+
+        return [
+            'channels' => $defaults['channels'],
+            'categories' => array_merge($defaults['categories'], array_intersect_key($preferences, $defaults['categories'])),
+        ];
+    }
+
+    /**
+     * Determine whether the given notification channel is enabled for the user.
+     */
+    public function notificationChannelEnabled(string $channel): bool
+    {
+        return $this->normalizedNotificationPreferences()['channels'][$channel] ?? true;
+    }
+
+    /**
+     * Determine whether the given notification category is enabled for the user.
+     */
+    public function notificationCategoryEnabled(string $category): bool
+    {
+        return $this->normalizedNotificationPreferences()['categories'][$category] ?? true;
+    }
+
+    /**
      * Get the options for recording activity.
      */
     public function getActivitylogOptions(): LogOptions

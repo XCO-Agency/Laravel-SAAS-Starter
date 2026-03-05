@@ -26,13 +26,33 @@ class DataExportCompleted extends Notification implements ShouldQueue
      */
     public function via(object $notifiable): array
     {
-        $securityEnabled = $notifiable->notification_preferences['security'] ?? true;
+        $securityEnabled = method_exists($notifiable, 'notificationCategoryEnabled')
+            ? $notifiable->notificationCategoryEnabled('security')
+            : ($notifiable->notification_preferences['security'] ?? true);
 
         if (! $securityEnabled) {
             return [];
         }
 
-        return ['mail'];
+        $channels = [];
+
+        $emailEnabled = method_exists($notifiable, 'notificationChannelEnabled')
+            ? $notifiable->notificationChannelEnabled('email')
+            : true;
+
+        $inAppEnabled = method_exists($notifiable, 'notificationChannelEnabled')
+            ? $notifiable->notificationChannelEnabled('in_app')
+            : true;
+
+        if ($emailEnabled) {
+            $channels[] = 'mail';
+        }
+
+        if ($inAppEnabled) {
+            $channels[] = 'database';
+        }
+
+        return $channels;
     }
 
     /**
@@ -56,7 +76,9 @@ class DataExportCompleted extends Notification implements ShouldQueue
     public function toArray(object $notifiable): array
     {
         return [
-            //
+            'title' => 'Your Data Export is Ready',
+            'message' => 'Your personal data export is ready to download for the next 24 hours.',
+            'action_url' => $this->downloadUrl,
         ];
     }
 }

@@ -38,7 +38,7 @@ Workspace admins and owners can generate reusable join links that allow anyone w
 
 ## Authorization
 
-- **Create/Revoke**: Only workspace owners and admins
+- **Create/Revoke**: Users with the workspace `manage_team` capability (owners and admins by default, plus members explicitly granted this permission)
 - **View/Join**: Any authenticated user (public pages accessible to guests)
 
 ## Key Files

@@ -12,9 +12,13 @@ class StoreInviteLinkRequest extends FormRequest
     public function authorize(): bool
     {
         $user = $this->user();
-        $workspace = $user->currentWorkspace;
+        $workspace = $user?->currentWorkspace;
 
-        return $workspace && $workspace->userIsAdmin($user);
+        if (! $user || ! $workspace) {
+            return false;
+        }
+
+        return $user->can('manageTeam', $workspace);
     }
 
     /**

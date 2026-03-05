@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreInviteLinkRequest;
 use App\Models\WorkspaceInviteLink;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
 class WorkspaceInviteLinkController extends Controller
@@ -37,10 +38,7 @@ class WorkspaceInviteLinkController extends Controller
     public function destroy(Request $request, int $id): \Illuminate\Http\RedirectResponse
     {
         $workspace = $request->user()->currentWorkspace;
-
-        if (! $workspace || ! $workspace->userIsAdmin($request->user())) {
-            abort(403);
-        }
+        Gate::authorize('manageTeam', $workspace);
 
         $link = WorkspaceInviteLink::where('workspace_id', $workspace->id)
             ->findOrFail($id);
