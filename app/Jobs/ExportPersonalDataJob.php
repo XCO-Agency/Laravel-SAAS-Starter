@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Notifications\DataExportCompleted;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 use ZipArchive;
@@ -41,7 +42,7 @@ class ExportPersonalDataJob implements ShouldQueue
         $json = json_encode($data, JSON_PRETTY_PRINT);
 
         $filename = 'export_'.$this->user->id.'_'.time().'_'.Str::random(8).'.zip';
-        $directory = storage_path('app/exports');
+        $directory = Storage::disk('local')->path('exports');
 
         if (! is_dir($directory)) {
             mkdir($directory, 0755, true);

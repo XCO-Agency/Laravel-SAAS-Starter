@@ -7,7 +7,7 @@ use App\Jobs\ExportPersonalDataJob;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class SecurityController extends Controller
 {
@@ -24,7 +24,7 @@ class SecurityController extends Controller
     /**
      * Download the specified user data export file securely.
      */
-    public function downloadExport(Request $request, string $filename): StreamedResponse
+    public function downloadExport(Request $request, string $filename): BinaryFileResponse
     {
         $path = 'exports/'.$filename;
 
