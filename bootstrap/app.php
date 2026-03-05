@@ -13,10 +13,10 @@ use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
-        web: __DIR__.'/../routes/web.php',
-        api: __DIR__.'/../routes/api.php',
-        commands: __DIR__.'/../routes/console.php',
-        channels: __DIR__.'/../routes/channels.php',
+        web: __DIR__ . '/../routes/web.php',
+        api: __DIR__ . '/../routes/api.php',
+        commands: __DIR__ . '/../routes/console.php',
+        channels: __DIR__ . '/../routes/channels.php',
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
@@ -42,6 +42,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'superadmin' => \App\Http\Middleware\EnsureSuperadmin::class,
             'workspace' => EnsureWorkspaceAccess::class,
+            'workspace.ip' => \App\Http\Middleware\EnforceWorkspaceIpAllowlist::class,
             'workspace.owner' => EnsureWorkspaceOwner::class,
             'workspace.admin' => EnsureWorkspaceAdmin::class,
             'onboarded' => \App\Http\Middleware\EnsureUserIsOnboarded::class,

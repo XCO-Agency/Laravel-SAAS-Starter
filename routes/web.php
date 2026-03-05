@@ -18,6 +18,15 @@ Route::get('/', function () {
     ]);
 })->name('home');
 
+// Magic Link Auth Routes
+Route::middleware('guest')->group(function () {
+    Route::get('/magic-login', [\App\Http\Controllers\Auth\MagicLinkController::class, 'create'])->name('magic-link.create');
+    Route::post('/magic-login', [\App\Http\Controllers\Auth\MagicLinkController::class, 'store'])->name('magic-link.store');
+    Route::get('/magic-login/{user}', [\App\Http\Controllers\Auth\MagicLinkController::class, 'authenticate'])
+        ->middleware('signed')
+        ->name('magic-link.authenticate');
+});
+
 // Public changelog
 Route::get('/changelog', [\App\Http\Controllers\ChangelogController::class, 'index'])->name('changelog');
 
@@ -32,7 +41,7 @@ Route::post('/invitations/{token}/accept', [InvitationController::class, 'accept
 Route::get('/join/{token}', [WorkspaceInviteLinkController::class, 'show'])->name('invite-links.show');
 Route::post('/join/{token}', [WorkspaceInviteLinkController::class, 'join'])->middleware('auth')->name('invite-links.join');
 
-Route::middleware(['auth', 'verified', 'onboarded', 'workspace', 'require2fa'])->group(function () {
+Route::middleware(['auth', 'verified', 'onboarded', 'workspace', 'require2fa', 'workspace.ip'])->group(function () {
     Route::get('dashboard', function () {
         $user = request()->user();
         $workspace = $user->currentWorkspace;
@@ -166,7 +175,7 @@ Route::middleware('guest')->group(function () {
         ->where('provider', 'github|google');
 });
 
-require __DIR__.'/settings.php';
+require __DIR__ . '/settings.php';
 
 // Admin routes
 Route::middleware(['auth', 'superadmin'])->prefix('admin')->name('admin.')->group(function () {

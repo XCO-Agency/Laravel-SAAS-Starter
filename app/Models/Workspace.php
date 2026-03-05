@@ -47,6 +47,7 @@ class Workspace extends Model
         'owner_id',
         'personal_workspace',
         'require_two_factor',
+        'allowed_ips',
     ];
 
     /**
@@ -60,6 +61,7 @@ class Workspace extends Model
             'personal_workspace' => 'boolean',
             'require_two_factor' => 'boolean',
             'trial_ends_at' => 'datetime',
+            'allowed_ips' => 'array',
         ];
     }
 
@@ -107,7 +109,7 @@ class Workspace extends Model
         $counter = 1;
 
         while (static::where('slug', $slug)->exists()) {
-            $slug = $originalSlug.'-'.$counter;
+            $slug = $originalSlug . '-' . $counter;
             $counter++;
         }
 

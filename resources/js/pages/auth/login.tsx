@@ -10,7 +10,7 @@ import AuthLayout from '@/layouts/auth-layout';
 import { register } from '@/routes';
 import { store } from '@/routes/login';
 import { request } from '@/routes/password';
-import { Form, Head } from '@inertiajs/react';
+import { Form, Head, Link } from '@inertiajs/react';
 import SocialLoginButtons from '@/components/social-login-buttons';
 
 interface LoginProps {
@@ -128,6 +128,29 @@ export default function Login({
                                 {processing && <Spinner />}
                                 {t('auth.login.button', 'Sign in')}
                             </Button>
+
+                            <div className="relative">
+                                <div className="absolute inset-0 flex items-center">
+                                    <span className="w-full border-t" />
+                                </div>
+                                <div className="relative flex justify-center text-xs uppercase">
+                                    <span className="bg-background px-2 text-muted-foreground">
+                                        Or
+                                    </span>
+                                </div>
+                            </div>
+
+                            <Link href="/magic-login" className="w-full">
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    className="w-full"
+                                    size="lg"
+                                >
+                                    Sign in with Magic Link
+                                </Button>
+                            </Link>
+
                         </div>
 
                         {canRegister && (
@@ -138,50 +161,50 @@ export default function Login({
                                 </TextLink>
                             </div>
                         )}
-                            <div className="space-y-3 pt-4 border-t mt-2">
-                                <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Developer Quick Login</span>
-                                <div className="grid grid-cols-3 gap-2">
-                                    <Button
-                                        type="button"
-                                        variant="secondary"
-                                        size="sm"
-                                        className="text-xs h-8 px-2 bg-red-100 text-red-800 hover:bg-red-200 dark:bg-red-900/30 dark:text-red-400 dark:hover:bg-red-900/50"
-                                        onClick={() => {
-                                            const e = document.getElementById('email') as HTMLInputElement;
-                                            const p = document.getElementById('password') as HTMLInputElement;
-                                            if (e && p) { e.value = 'superadmin@example.com'; p.value = 'password'; e.form?.requestSubmit(); }
-                                        }}
-                                    >
-                                        Super Admin
-                                    </Button>
-                                    <Button
-                                        type="button"
-                                        variant="secondary"
-                                        size="sm"
-                                        className="text-xs h-8 px-2"
-                                        onClick={() => {
-                                            const e = document.getElementById('email') as HTMLInputElement;
-                                            const p = document.getElementById('password') as HTMLInputElement;
-                                            if (e && p) { e.value = 'admin@example.com'; p.value = 'password'; e.form?.requestSubmit(); }
-                                        }}
-                                    >
-                                        Admin
-                                    </Button>
-                                    <Button
-                                        type="button"
-                                        variant="secondary"
-                                        size="sm"
-                                        className="text-xs h-8 px-2"
-                                        onClick={() => {
-                                            const e = document.getElementById('email') as HTMLInputElement;
-                                            const p = document.getElementById('password') as HTMLInputElement;
-                                            if (e && p) { e.value = 'demo@example.com'; p.value = 'password'; e.form?.requestSubmit(); }
-                                        }}
-                                    >
-                                        Demo
-                                    </Button>
-                                </div>
+                        <div className="space-y-3 pt-4 border-t mt-2">
+                            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Developer Quick Login</span>
+                            <div className="grid grid-cols-3 gap-2">
+                                <Button
+                                    type="button"
+                                    variant="secondary"
+                                    size="sm"
+                                    className="text-xs h-8 px-2 bg-red-100 text-red-800 hover:bg-red-200 dark:bg-red-900/30 dark:text-red-400 dark:hover:bg-red-900/50"
+                                    onClick={() => {
+                                        const e = document.getElementById('email') as HTMLInputElement;
+                                        const p = document.getElementById('password') as HTMLInputElement;
+                                        if (e && p) { e.value = 'superadmin@example.com'; p.value = 'password'; e.form?.requestSubmit(); }
+                                    }}
+                                >
+                                    Super Admin
+                                </Button>
+                                <Button
+                                    type="button"
+                                    variant="secondary"
+                                    size="sm"
+                                    className="text-xs h-8 px-2"
+                                    onClick={() => {
+                                        const e = document.getElementById('email') as HTMLInputElement;
+                                        const p = document.getElementById('password') as HTMLInputElement;
+                                        if (e && p) { e.value = 'admin@example.com'; p.value = 'password'; e.form?.requestSubmit(); }
+                                    }}
+                                >
+                                    Admin
+                                </Button>
+                                <Button
+                                    type="button"
+                                    variant="secondary"
+                                    size="sm"
+                                    className="text-xs h-8 px-2"
+                                    onClick={() => {
+                                        const e = document.getElementById('email') as HTMLInputElement;
+                                        const p = document.getElementById('password') as HTMLInputElement;
+                                        if (e && p) { e.value = 'demo@example.com'; p.value = 'password'; e.form?.requestSubmit(); }
+                                    }}
+                                >
+                                    Demo
+                                </Button>
                             </div>
+                        </div>
 
                         <SocialLoginButtons />
                     </>

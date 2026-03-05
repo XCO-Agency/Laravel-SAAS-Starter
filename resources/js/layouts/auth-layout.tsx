@@ -1,4 +1,5 @@
 import AuthLayoutTemplate from '@/layouts/auth/auth-simple-layout';
+import CookieConsentBanner from '@/components/cookie-consent-banner';
 
 export default function AuthLayout({
     children,
@@ -11,8 +12,11 @@ export default function AuthLayout({
     description: string;
 }) {
     return (
-        <AuthLayoutTemplate title={title} description={description} {...props}>
-            {children}
-        </AuthLayoutTemplate>
+        <>
+            <AuthLayoutTemplate title={title} description={description} {...props}>
+                {children}
+            </AuthLayoutTemplate>
+            <CookieConsentBanner />
+        </>
     );
 }

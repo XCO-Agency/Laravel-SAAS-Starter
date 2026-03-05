@@ -4,6 +4,7 @@ import { usePage, router } from '@inertiajs/react';
 import { type ReactNode } from 'react';
 import { useToast } from '@/components/ui/toast';
 import { useEcho } from '@laravel/echo-react';
+import CookieConsentBanner from '@/components/cookie-consent-banner';
 
 interface AppLayoutProps {
     children: ReactNode;
@@ -42,6 +43,7 @@ export default ({ children, breadcrumbs, ...props }: AppLayoutProps) => {
             <AppLayoutTemplate breadcrumbs={breadcrumbs} {...props}>
                 {children}
             </AppLayoutTemplate>
+            <CookieConsentBanner />
         </>
     );
 };

@@ -17,14 +17,16 @@ import { AlertTriangle, ShieldCheck, ShieldOff } from 'lucide-react';
 
 interface WorkspaceSecurityProps {
     require_two_factor: boolean;
+    allowed_ips: string[];
 }
 
-export default function WorkspaceSecurity({ require_two_factor }: WorkspaceSecurityProps) {
+export default function WorkspaceSecurity({ require_two_factor, allowed_ips }: WorkspaceSecurityProps) {
     const { props } = usePage();
     const flash = props.flash as { success?: string } | undefined;
 
-    const { data, setData, put, processing } = useForm({
+    const { data, setData, put, processing, errors } = useForm({
         require_two_factor,
+        allowed_ips: allowed_ips ? allowed_ips.join(', ') : '',
     });
 
     const save = () => {
@@ -88,6 +90,45 @@ export default function WorkspaceSecurity({ require_two_factor }: WorkspaceSecur
                                     </p>
                                 </div>
                             )}
+
+                            <Button onClick={save} disabled={processing}>
+                                {processing ? 'Saving…' : 'Save Settings'}
+                            </Button>
+                        </CardContent>
+                    </Card>
+
+                    {/* IP Allowlist Card */}
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className="flex items-center gap-2">
+                                <ShieldCheck className="h-5 w-5 text-indigo-500" />
+                                IP Allowlist
+                            </CardTitle>
+                            <CardDescription>
+                                Restrict access to your workspace to specific IP addresses. Enter multiple IP addresses separated by commas. Leave empty to allow all IPs.
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                            <div className="space-y-2">
+                                <Label htmlFor="allowed_ips">Allowed IP Addresses</Label>
+                                <textarea
+                                    id="allowed_ips"
+                                    className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                    placeholder="e.g., 192.168.1.1, 10.0.0.1"
+                                    value={data.allowed_ips}
+                                    onChange={(e) => setData('allowed_ips', e.target.value)}
+                                />
+                                {errors.allowed_ips && (
+                                    <p className="text-[0.8rem] font-medium text-destructive">{errors.allowed_ips}</p>
+                                )}
+                            </div>
+
+                            <div className="flex items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 p-3 dark:border-amber-900 dark:bg-amber-950/30">
+                                <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-amber-600" />
+                                <p className="text-sm text-amber-700 dark:text-amber-400">
+                                    <strong>Warning:</strong> Ensure your current IP address is included, or you will be immediately locked out of this workspace upon saving.
+                                </p>
+                            </div>
 
                             <Button onClick={save} disabled={processing}>
                                 {processing ? 'Saving…' : 'Save Settings'}

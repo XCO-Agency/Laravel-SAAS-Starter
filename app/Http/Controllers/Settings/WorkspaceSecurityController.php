@@ -19,6 +19,7 @@ class WorkspaceSecurityController extends Controller
 
         return Inertia::render('settings/workspace-security', [
             'require_two_factor' => (bool) $workspace->require_two_factor,
+            'allowed_ips' => $workspace->allowed_ips ?? [],
         ]);
     }
 
@@ -29,6 +30,7 @@ class WorkspaceSecurityController extends Controller
     {
         $request->validate([
             'require_two_factor' => ['required', 'boolean'],
+            'allowed_ips' => ['nullable', 'string'],
         ]);
 
         $workspace = $request->user()->currentWorkspace;
@@ -38,7 +40,20 @@ class WorkspaceSecurityController extends Controller
             abort(403, 'Only the workspace owner can change security settings.');
         }
 
-        $workspace->update(['require_two_factor' => $request->boolean('require_two_factor')]);
+        $ips = [];
+        if ($request->filled('allowed_ips')) {
+            $ips = array_filter(array_map('trim', explode(',', $request->allowed_ips)));
+            foreach ($ips as $ip) {
+                if (! filter_var($ip, FILTER_VALIDATE_IP)) {
+                    return back()->withErrors(['allowed_ips' => 'The IP address "' . $ip . '" is invalid.'])->withInput();
+                }
+            }
+        }
+
+        $workspace->update([
+            'require_two_factor' => $request->boolean('require_two_factor'),
+            'allowed_ips' => empty($ips) ? null : array_values($ips),
+        ]);
 
         return back()->with('success', 'Workspace security settings updated.');
     }

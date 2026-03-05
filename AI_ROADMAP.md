@@ -23,15 +23,16 @@ The AI agent is now continually managing and executing the roadmap autonomously.
 - **Stack**: Laravel 12, Inertia.js v2, React 19, Tailwind CSS v4, Stripe Cashier, Fortify.
 - **Completed Features**: Auth, 2FA, Workspaces, Teams, Stripe Billing, i18n, Dark Mode, Super Admin Panel, Feature Flags (Pennant), Announcements, Audit Logs, Command Palette.
 
-## 🚀 Active Sprint 18: Enterprise Security & Billing Polish
+## 🚀 Active Sprint 19: Identity & Compliance
 
-- [ ] **Task 63**: Invoice PDF Download — Native Cashier PDF generation allowing billing admins to view/download receipt PDFs.
-- [ ] **Task 64**: Automated Webhook Dispatching — Event listeners across the app that actually trigger automated payloads to registered Webhook Endpoints based on their `events` array configurations.
-- [ ] **Task 65**: Maintenance Mode IP Whitelist — Allow super admins to define IP addresses that completely bypass the underlying maintenance wall.
-- [ ] **Task 66**: Password Expiry Policy — Optional security feature forcing users to rotate their passwords every X days, configurable via settings.
+- [ ] **Task 67**: Magic Link Authentication — Allow users to request an email with a secure, stateless signed URL to log in instantly without a password.
+- [ ] **Task 68**: Cookie Consent Manager — Implement a customizable GDPR-compliant banner managing configurable cookie preferences.
+- [ ] **Task 69**: Workspace IP Allowlist — Enable workspace-level security settings that restrict access to the tenant to an array of specific IP addresses.
+- [ ] **Task 70**: Robust Avatar Management — Built-in UI for uploading and cropping user and workspace avatars, falling back to auto-generated SVG initials.
 
 ## 🏁 Completed Sprints
 
+- **Sprint 18**: Enterprise Security & Billing Polish (Invoice PDF, Webhook Dispatching, Maintenance IP Whitelist, Password Expiry).
 - **Sprint 17**: Collaboration & Admin Polish (Contextual Help Tooltips, Workspace Activity Feed, Admin User Analytics, Notification Preferences).
 - **Sprint 16**: Security & Customization (Shareable Invitation Links, Login Activity Log, Admin Maintenance Mode, Workspace Custom Branding).
 - **Sprint 15**: Engagement & User Success (Account Deletion, Usage Dashboard, Admin Impersonation UI, SEO Management).

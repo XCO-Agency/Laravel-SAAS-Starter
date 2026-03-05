@@ -9,7 +9,7 @@ import { show } from '@/routes/two-factor';
 import { edit as editPassword } from '@/routes/user-password';
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { Bell, Fingerprint, History, Lock, Monitor, Paintbrush, ShieldCheck, User } from 'lucide-react';
+import { Bell, Cookie, Fingerprint, History, Lock, Monitor, Paintbrush, ShieldCheck, User } from 'lucide-react';
 import { type PropsWithChildren, useMemo } from 'react';
 import { type SharedData, type Workspace } from '@/types';
 
@@ -76,6 +76,11 @@ const getNavSections = (t: (key: string, fallback: string) => string, workspace?
                 title: t('navigation.appearance', 'Appearance'),
                 href: editAppearance(),
                 icon: Paintbrush,
+            },
+            {
+                title: t('navigation.privacy', 'Privacy & Cookies'),
+                href: '/settings/privacy',
+                icon: Cookie,
             },
             {
                 title: t('navigation.notifications', 'Notifications'),
