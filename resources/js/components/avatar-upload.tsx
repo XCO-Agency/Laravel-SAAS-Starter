@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Camera, Image as ImageIcon, Loader2, Trash2 } from 'lucide-react';
 import { useRef, useState } from 'react';
+import ImageCropper from './image-cropper';
 
 // Using simple HTML image upload and form components since standard react-crop can be complex to integrate perfectly in this step.
 // We will focus on the UI flow, which includes previewing the image, making the request to the backend, and displaying errors.
@@ -12,6 +13,7 @@ interface AvatarUploadProps {
     onSuccess?: () => void;
     label?: string;
     description?: string;
+    fieldName?: string;
 }
 
 export default function AvatarUpload({
@@ -21,12 +23,14 @@ export default function AvatarUpload({
     onSuccess,
     label = 'Profile Picture',
     description = 'Upload a new avatar. Recommended size is 256x256px.',
+    fieldName = 'image',
 }: AvatarUploadProps) {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
     const [isUploading, setIsUploading] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [cropperSrc, setCropperSrc] = useState<string | null>(null);
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -47,14 +51,24 @@ export default function AvatarUpload({
             return;
         }
 
-        // Generate preview
         const reader = new FileReader();
         reader.onloadend = () => {
-            setPreviewUrl(reader.result as string);
+            setCropperSrc(reader.result as string);
         };
         reader.readAsDataURL(file);
+    };
 
-        // Auto upload
+    const handleCropComplete = async (croppedBlob: Blob) => {
+        setCropperSrc(null); // Close cropper
+        const file = new File([croppedBlob], 'avatar.jpg', { type: 'image/jpeg' });
+
+        // Generate preview for UI feedback
+        const previewReader = new FileReader();
+        previewReader.onloadend = () => {
+            setPreviewUrl(previewReader.result as string);
+        };
+        previewReader.readAsDataURL(file);
+
         handleUpload(file);
     };
 
@@ -63,7 +77,7 @@ export default function AvatarUpload({
         setError(null);
 
         const formData = new FormData();
-        formData.append('image', file);
+        formData.append(fieldName, file);
 
         try {
             // Setup CSRF/fetch, but Inertia is better if possible. Here we use fetch to upload manually since we don't have UseForm readily passing files perfectly with progress in this custom wrapper without redefining form state.
@@ -78,8 +92,9 @@ export default function AvatarUpload({
 
             if (onSuccess) onSuccess();
             // We do not clear preview on success unless parent changes currentUrl which remounts or we just rely on parent
-        } catch (err: any) {
-            setError(err.response?.data?.message || 'Failed to upload image. Please try again.');
+        } catch (err: unknown) {
+            const axiosError = err as { response?: { data?: { message?: string } } };
+            setError(axiosError.response?.data?.message || 'Failed to upload image. Please try again.');
             setPreviewUrl(null); // Revert
         } finally {
             setIsUploading(false);
@@ -96,8 +111,9 @@ export default function AvatarUpload({
             await axios.delete(deleteUrl);
             setPreviewUrl(null);
             if (onSuccess) onSuccess();
-        } catch (err: any) {
-            setError(err.response?.data?.message || 'Failed to delete image. Please try again.');
+        } catch (err: unknown) {
+            const axiosError = err as { response?: { data?: { message?: string } } };
+            setError(axiosError.response?.data?.message || 'Failed to delete image. Please try again.');
         } finally {
             setIsDeleting(false);
         }
@@ -169,6 +185,17 @@ export default function AvatarUpload({
 
                 {error && <p className="text-sm font-medium text-destructive">{error}</p>}
             </div>
+
+            {cropperSrc && (
+                <ImageCropper
+                    imageSrc={cropperSrc}
+                    onCropComplete={handleCropComplete}
+                    onCancel={() => {
+                        setCropperSrc(null);
+                        if (fileInputRef.current) fileInputRef.current.value = '';
+                    }}
+                />
+            )}
         </div>
     );
 }

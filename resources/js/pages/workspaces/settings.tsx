@@ -12,16 +12,18 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
-import AppLayout from '@/layouts/app-layout';
-import SettingsLayout from '@/layouts/settings/layout';
 import {
     type BreadcrumbItem,
     type Workspace,
     type WorkspaceRole,
 } from '@/types';
 import { Head, router, useForm } from '@inertiajs/react';
-import { AlertTriangle, Building2, Download, Palette, Upload, X } from 'lucide-react';
-import { type ChangeEvent, useRef, useState } from 'react';
+import { AlertTriangle, Download, Palette } from 'lucide-react';
+import { useState } from 'react';
+import AvatarUpload from '@/components/avatar-upload';
+import AppLayout from '@/layouts/app-layout';
+import SettingsLayout from '@/layouts/settings/layout';
+import { update as updateLogo, destroy as destroyLogo } from '@/routes/workspaces/logo';
 
 interface WorkspaceSettingsProps {
     workspace: Workspace;
@@ -45,36 +47,11 @@ export default function WorkspaceSettings({
         accent_color: workspace.accent_color || '',
     });
 
-    const [logoPreview, setLogoPreview] = useState<string | null>(
-        workspace.logo_url,
-    );
-    const fileInputRef = useRef<HTMLInputElement>(null);
+    // No longer needed as handled by AvatarUpload sub-requests
     const [deleteConfirm, setDeleteConfirm] = useState('');
 
     const isAdmin = userRole === 'owner' || userRole === 'admin';
     const isOwner = userRole === 'owner';
-
-    const handleLogoChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (file) {
-            setData('logo', file);
-            setData('remove_logo', false);
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setLogoPreview(reader.result as string);
-            };
-            reader.readAsDataURL(file);
-        }
-    };
-
-    const removeLogo = () => {
-        setData('logo', null);
-        setData('remove_logo', true);
-        setLogoPreview(null);
-        if (fileInputRef.current) {
-            fileInputRef.current.value = '';
-        }
-    };
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -116,61 +93,18 @@ export default function WorkspaceSettings({
                         </CardHeader>
                         <CardContent>
                             <form onSubmit={handleSubmit} className="space-y-6">
-                                {/* Logo Upload */}
-                                <div className="space-y-2">
-                                    <Label className="flex items-center gap-1.5">
-                                        {t('workspace.settings.logo', 'Logo')}
-                                        <HelpTooltip content="Your workspace logo appears in the sidebar, team invitations, and exported data. Recommended size: 200×200px." />
-                                    </Label>
-                                    <div className="flex items-center gap-4">
-                                        {logoPreview ? (
-                                            <div className="relative">
-                                                <img
-                                                    src={logoPreview}
-                                                    alt="Logo preview"
-                                                    className="h-20 w-20 rounded-lg object-cover"
-                                                />
-                                                {isAdmin && (
-                                                    <button
-                                                        type="button"
-                                                        onClick={removeLogo}
-                                                        className="absolute -top-2 -right-2 rounded-full bg-destructive p-1 text-destructive-foreground"
-                                                    >
-                                                        <X className="h-4 w-4" />
-                                                    </button>
-                                                )}
-                                            </div>
-                                        ) : (
-                                            <div className="flex h-20 w-20 items-center justify-center rounded-lg border-2 border-dashed">
-                                                <Building2 className="h-8 w-8 text-muted-foreground" />
-                                            </div>
-                                        )}
-                                        {isAdmin && (
-                                            <div>
-                                                <input
-                                                    ref={fileInputRef}
-                                                    type="file"
-                                                    accept="image/*"
-                                                    onChange={handleLogoChange}
-                                                    className="hidden"
-                                                    id="logo-upload"
-                                                />
-                                                <Button
-                                                    type="button"
-                                                    variant="outline"
-                                                    onClick={() =>
-                                                        fileInputRef.current?.click()
-                                                    }
-                                                >
-                                                    <Upload className="mr-2 h-4 w-4" />
-                                                    {t('workspace.settings.upload_logo', 'Upload Logo')}
-                                                </Button>
-                                                <p className="mt-1 text-xs text-muted-foreground">
-                                                    PNG, JPG, GIF up to 2MB
-                                                </p>
-                                            </div>
-                                        )}
-                                    </div>
+                                <div className="space-y-4">
+                                    <AvatarUpload
+                                        currentUrl={workspace.logo_url}
+                                        uploadUrl={updateLogo().url}
+                                        deleteUrl={destroyLogo().url}
+                                        onSuccess={() => {
+                                            router.reload({ only: ['workspace'] });
+                                        }}
+                                        label={t('workspace.settings.logo', 'Logo')}
+                                        description={t('workspace.settings.logo_description', 'Your workspace logo appears in the sidebar, team invitations, and exported data. Recommended size: 200×200px.')}
+                                        fieldName="image"
+                                    />
                                     <InputError message={errors.logo} />
                                 </div>
 

@@ -104,7 +104,7 @@ class WorkspaceController extends Controller
                 'name' => $workspace->name,
                 'slug' => $workspace->slug,
                 'logo' => $workspace->logo,
-                'logo_url' => $workspace->logo ? Storage::url($workspace->logo) : null,
+                'logo_url' => $workspace->logo_url,
                 'accent_color' => $workspace->accent_color,
                 'personal_workspace' => $workspace->personal_workspace,
                 'owner_id' => $workspace->owner_id,

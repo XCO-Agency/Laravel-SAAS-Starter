@@ -64,6 +64,8 @@ Route::middleware(['auth', 'verified', 'onboarded', 'workspace', 'require2fa', '
         Route::post('/', [WorkspaceController::class, 'store'])->name('store');
         Route::get('/settings', [WorkspaceController::class, 'settings'])->name('settings');
         Route::put('/settings', [WorkspaceController::class, 'update'])->name('update');
+        Route::post('/settings/logo', [\App\Http\Controllers\Settings\WorkspaceLogoController::class, 'update'])->name('logo.update');
+        Route::delete('/settings/logo', [\App\Http\Controllers\Settings\WorkspaceLogoController::class, 'destroy'])->name('logo.destroy');
         Route::get('/export', [\App\Http\Controllers\WorkspaceExportController::class, 'export'])->name('export');
         Route::delete('/', [WorkspaceController::class, 'destroy'])->name('destroy');
         Route::post('/{workspace}/switch', [WorkspaceController::class, 'switch'])->name('switch');
@@ -175,7 +177,7 @@ Route::middleware('guest')->group(function () {
         ->where('provider', 'github|google');
 });
 
-require __DIR__ . '/settings.php';
+require __DIR__.'/settings.php';
 
 // Admin routes
 Route::middleware(['auth', 'superadmin'])->prefix('admin')->name('admin.')->group(function () {

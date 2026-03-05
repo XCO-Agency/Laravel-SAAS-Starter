@@ -162,6 +162,18 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Get the user's avatar URL with fallback.
+     */
+    public function getAvatarUrlAttribute($value): string
+    {
+        if ($value) {
+            return str_starts_with($value, 'http') ? $value : \Illuminate\Support\Facades\Storage::url($value);
+        }
+
+        return 'https://ui-avatars.com/api/?name='.urlencode($this->name).'&color=7F9CF5&background=EBF4FF';
+    }
+
+    /**
      * Determine if the user belongs to the given workspace.
      */
     public function belongsToWorkspace(Workspace $workspace): bool

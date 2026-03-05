@@ -2,7 +2,7 @@ import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileCo
 import { send } from '@/routes/verification';
 import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Transition } from '@headlessui/react';
-import { Form, Head, Link, usePage } from '@inertiajs/react';
+import { Form, Head, Link, router, usePage } from '@inertiajs/react';
 
 import DeleteUser from '@/components/delete-user';
 import ExportData from '@/components/export-data';
@@ -21,13 +21,12 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { useInitials } from '@/hooks/use-initials';
-import { Camera, X } from 'lucide-react';
-import { type ChangeEvent, useRef, useState } from 'react';
+import { type ChangeEvent } from 'react';
+import AvatarUpload from '@/components/avatar-upload';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
 import { edit } from '@/routes/profile';
+import { update as updateAvatar, destroy as destroyAvatar } from '@/routes/profile/avatar';
 
 export default function Profile({
     mustVerifyEmail,
@@ -38,10 +37,7 @@ export default function Profile({
 }) {
     const { auth, locale } = usePage<SharedData>().props;
     const { t } = useTranslations();
-    const getInitials = useInitials();
-    const fileInputRef = useRef<HTMLInputElement>(null);
-    const [avatarPreview, setAvatarPreview] = useState<string | null>(auth.user.avatar_url || auth.user.avatar || null);
-    const [removeAvatar, setRemoveAvatar] = useState(false);
+    // const [removeAvatar, setRemoveAvatar] = useState(false); // No longer needed as handled by AvatarUpload sub-requests
 
     const breadcrumbs: BreadcrumbItem[] = [
         {
@@ -70,69 +66,17 @@ export default function Profile({
                     >
                         {({ processing, recentlySuccessful, errors }) => (
                             <>
-                                {removeAvatar && <input type="hidden" name="remove_avatar" value="true" />}
-                                <div className="space-y-2">
-                                    <Label>{t('settings.profile.avatar', 'Profile Photo')}</Label>
-                                    <div className="flex items-center gap-4">
-                                        {avatarPreview ? (
-                                            <div className="relative">
-                                                <Avatar className="h-20 w-20 overflow-hidden rounded-full">
-                                                    <AvatarImage src={avatarPreview} alt={auth.user.name} />
-                                                    <AvatarFallback className="rounded-lg bg-neutral-200 text-black dark:bg-neutral-700 dark:text-white">
-                                                        {getInitials(auth.user.name)}
-                                                    </AvatarFallback>
-                                                </Avatar>
-                                                <button
-                                                    type="button"
-                                                    onClick={() => {
-                                                        setRemoveAvatar(true);
-                                                        setAvatarPreview(null);
-                                                        if (fileInputRef.current) fileInputRef.current.value = '';
-                                                    }}
-                                                    className="absolute -top-2 -right-2 rounded-full bg-destructive p-1 text-destructive-foreground shadow-sm hover:opacity-90"
-                                                >
-                                                    <X className="h-4 w-4" />
-                                                </button>
-                                            </div>
-                                        ) : (
-                                            <Avatar className="h-20 w-20 overflow-hidden rounded-full">
-                                                <AvatarImage src={auth.user.avatar} alt={auth.user.name} />
-                                                <AvatarFallback className="rounded-lg bg-neutral-200 text-black dark:bg-neutral-700 dark:text-white text-lg">
-                                                    {getInitials(auth.user.name)}
-                                                </AvatarFallback>
-                                            </Avatar>
-                                        )}
-                                        <div>
-                                            <input
-                                                ref={fileInputRef}
-                                                type="file"
-                                                name="avatar"
-                                                accept="image/*"
-                                                className="hidden"
-                                                onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                                                    const file = e.target.files?.[0];
-                                                    if (file) {
-                                                        setRemoveAvatar(false);
-                                                        const reader = new FileReader();
-                                                        reader.onloadend = () => setAvatarPreview(reader.result as string);
-                                                        reader.readAsDataURL(file);
-                                                    }
-                                                }}
-                                            />
-                                            <Button
-                                                type="button"
-                                                variant="outline"
-                                                onClick={() => fileInputRef.current?.click()}
-                                                disabled={processing}
-                                            >
-                                                <Camera className="mr-2 h-4 w-4" />
-                                                {t('settings.profile.upload_avatar', 'Upload Photo')}
-                                            </Button>
-                                            <p className="mt-1 text-xs text-muted-foreground">
-                                                JPG, JPEG, PNG up to 2MB
-                                            </p>
-                                        </div>
-                                    </div>
+                                <div className="space-y-4">
+                                    <AvatarUpload
+                                        currentUrl={auth.user.avatar_url}
+                                        uploadUrl={updateAvatar().url}
+                                        deleteUrl={destroyAvatar().url}
+                                        onSuccess={() => {
+                                            router.reload({ only: ['auth'] });
+                                        }}
+                                        label={t('settings.profile.avatar', 'Profile Photo')}
+                                        description={t('settings.profile.avatar_description', 'Update your profile photo. Recommended size is 256x256px.')}
+                                    />
                                     <InputError message={errors.avatar} />
                                 </div>
 
