@@ -66,6 +66,15 @@ class Workspace extends Model
     }
 
     /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = [
+        'logo_url',
+    ];
+
+    /**
      * Get the options for recording activity.
      */
     public function getActivitylogOptions(): LogOptions
@@ -114,6 +123,18 @@ class Workspace extends Model
         }
 
         return $slug;
+    }
+
+    /**
+     * Get the workspace's logo URL with fallback.
+     */
+    public function getLogoUrlAttribute(): string
+    {
+        if ($this->logo) {
+            return str_starts_with($this->logo, 'http') ? $this->logo : \Illuminate\Support\Facades\Storage::url($this->logo);
+        }
+
+        return 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&color=7F9CF5&background=EBF4FF';
     }
 
     /**

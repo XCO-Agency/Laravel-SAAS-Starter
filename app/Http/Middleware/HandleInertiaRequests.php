@@ -51,12 +51,12 @@ class HandleInertiaRequests extends Middleware
             $workspaces = $user->workspaces()
                 ->select('workspaces.id', 'workspaces.name', 'workspaces.slug', 'workspaces.logo', 'workspaces.personal_workspace')
                 ->get()
-                ->map(fn ($workspace) => [
+                ->map(fn($workspace) => [
                     'id' => $workspace->id,
                     'name' => $workspace->name,
                     'slug' => $workspace->slug,
                     'logo' => $workspace->logo,
-                    'logo_url' => $workspace->logo ? Storage::url($workspace->logo) : null,
+                    'logo_url' => $workspace->logo_url,
                     'personal_workspace' => $workspace->personal_workspace,
                     'role' => $workspace->pivot->role,
                     'plan' => $workspace->plan_name,
@@ -77,7 +77,7 @@ class HandleInertiaRequests extends Middleware
                     'is_superadmin' => $user->is_superadmin,
                     'locale' => $user->locale,
                     'onboarded_at' => $user->onboarded_at,
-                    'avatar_url' => $user->avatar_url ? Storage::url($user->avatar_url) : null,
+                    'avatar_url' => $user->avatar_url,
                     'bio' => $user->bio,
                     'timezone' => $user->timezone ?? 'UTC',
                     'notification_preferences' => $user->notification_preferences,
@@ -92,7 +92,7 @@ class HandleInertiaRequests extends Middleware
                 'name' => $currentWorkspace->name,
                 'slug' => $currentWorkspace->slug,
                 'logo' => $currentWorkspace->logo,
-                'logo_url' => $currentWorkspace->logo ? Storage::url($currentWorkspace->logo) : null,
+                'logo_url' => $currentWorkspace->logo_url,
                 'personal_workspace' => $currentWorkspace->personal_workspace,
                 'owner_id' => $currentWorkspace->owner_id,
                 'plan' => $currentWorkspace->plan_name,
@@ -108,7 +108,7 @@ class HandleInertiaRequests extends Middleware
                 'token' => $request->session()->get('token'),
             ],
             'announcement' => Announcement::currentlyActive()->latest()->first()?->only('id', 'title', 'body', 'type', 'link_text', 'link_url', 'is_dismissible'),
-            'seo' => fn () => SeoMetadata::forPath($request->path())?->only('title', 'description', 'keywords', 'og_title', 'og_description', 'og_image', 'og_type', 'twitter_card', 'twitter_site', 'twitter_creator', 'twitter_image'),
+            'seo' => fn() => SeoMetadata::forPath($request->path())?->only('title', 'description', 'keywords', 'og_title', 'og_description', 'og_image', 'og_type', 'twitter_card', 'twitter_site', 'twitter_creator', 'twitter_image'),
         ];
     }
 }
