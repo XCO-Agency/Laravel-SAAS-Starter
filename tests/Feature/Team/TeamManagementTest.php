@@ -2,8 +2,10 @@
 
 use App\Models\User;
 use App\Models\Workspace;
+use Illuminate\Support\Facades\Notification;
 
 beforeEach(function () {
+    Notification::fake();
     $this->owner = User::factory()->create();
     $this->workspace = Workspace::factory()->create(['owner_id' => $this->owner->id]);
     $this->workspace->addUser($this->owner, 'owner');
@@ -34,6 +36,17 @@ describe('Team Index', function () {
     it('requires authentication', function () {
         $this->get('/team')
             ->assertRedirect('/login');
+    });
+
+    it('sets canInvite to false when member limit is reached', function () {
+        config(['billing.plans.free.limits.team_members' => 1]);
+
+        $this->actingAs($this->owner)
+            ->get('/team')
+            ->assertOk()
+            ->assertInertia(fn ($page) => $page
+                ->where('canInvite', false)
+            );
     });
 });
 
@@ -136,6 +149,51 @@ describe('Role Updates', function () {
         expect($this->workspace->fresh()->getUserRole($member))->toBe('admin');
     });
 
+    it('prevents admin from changing their own role', function () {
+        $admin = User::factory()->create();
+        $this->workspace->addUser($admin, 'admin');
+        $admin->switchWorkspace($this->workspace);
+
+        $this->actingAs($admin)
+            ->put("/team/members/{$admin->id}/role", [
+                'role' => 'member',
+            ])
+            ->assertRedirect()
+            ->assertSessionHas('error');
+
+        expect($this->workspace->fresh()->getUserRole($admin))->toBe('admin');
+    });
+
+    it('allows owner to update member role to viewer', function () {
+        $member = User::factory()->create();
+        $this->workspace->addUser($member, 'member');
+
+        $this->actingAs($this->owner)
+            ->put("/team/members/{$member->id}/role", [
+                'role' => 'viewer',
+            ])
+            ->assertRedirect();
+
+        expect($this->workspace->fresh()->getUserRole($member))->toBe('viewer');
+    });
+
+    it('allows admin to promote viewer to member', function () {
+        $admin = User::factory()->create();
+        $this->workspace->addUser($admin, 'admin');
+        $admin->switchWorkspace($this->workspace);
+
+        $viewer = User::factory()->create();
+        $this->workspace->addUser($viewer, 'viewer');
+
+        $this->actingAs($admin)
+            ->put("/team/members/{$viewer->id}/role", [
+                'role' => 'member',
+            ])
+            ->assertRedirect();
+
+        expect($this->workspace->fresh()->getUserRole($viewer))->toBe('member');
+    });
+
     it('prevents updating owner role', function () {
         $this->actingAs($this->owner)
             ->put("/team/members/{$this->owner->id}/role", [
@@ -155,6 +213,16 @@ describe('Role Updates', function () {
                 'role' => 'invalid-role',
             ])
             ->assertSessionHasErrors('role');
+    });
+
+    it('returns not found when updating role for non-member', function () {
+        $outsider = User::factory()->create();
+
+        $this->actingAs($this->owner)
+            ->put("/team/members/{$outsider->id}/role", [
+                'role' => 'member',
+            ])
+            ->assertNotFound();
     });
 });
 
@@ -212,6 +280,62 @@ describe('Ownership Transfer', function () {
             ->assertRedirect();
 
         expect($personalWorkspace->fresh()->owner_id)->toBe($this->owner->id);
+    });
+});
+
+describe('Permission Updates', function () {
+    it('allows owner to update member granular permissions', function () {
+        $member = User::factory()->create();
+        $this->workspace->addUser($member, 'member');
+
+        $this->actingAs($this->owner)
+            ->put("/team/members/{$member->id}/permissions", [
+                'permissions' => ['manage_team', 'view_activity_logs'],
+            ])
+            ->assertRedirect();
+
+        expect($this->workspace->fresh()->getUserPermissions($member))
+            ->toBe(['manage_team', 'view_activity_logs']);
+    });
+
+    it('rejects unsupported permission identifiers', function () {
+        $member = User::factory()->create();
+        $this->workspace->addUser($member, 'member');
+
+        $this->actingAs($this->owner)
+            ->put("/team/members/{$member->id}/permissions", [
+                'permissions' => ['invalid_permission'],
+            ])
+            ->assertSessionHasErrors('permissions.0');
+    });
+
+    it('prevents admin from changing their own permissions', function () {
+        $admin = User::factory()->create();
+        $this->workspace->addUser($admin, 'admin');
+        $admin->switchWorkspace($this->workspace);
+
+        $this->actingAs($admin)
+            ->put("/team/members/{$admin->id}/permissions", [
+                'permissions' => ['manage_team'],
+            ])
+            ->assertRedirect()
+            ->assertSessionHas('error');
+
+        expect($this->workspace->fresh()->getUserPermissions($admin))->toBe([]);
+    });
+
+    it('prevents updating granular permissions for admin users', function () {
+        $admin = User::factory()->create();
+        $this->workspace->addUser($admin, 'admin');
+
+        $this->actingAs($this->owner)
+            ->put("/team/members/{$admin->id}/permissions", [
+                'permissions' => ['manage_billing'],
+            ])
+            ->assertRedirect()
+            ->assertSessionHas('error');
+
+        expect($this->workspace->fresh()->getUserPermissions($admin))->toBe([]);
     });
 });
 
@@ -296,5 +420,20 @@ describe('Team Invitation', function () {
                 'role' => 'invalid-role',
             ])
             ->assertSessionHasErrors('role');
+    });
+
+    it('allows inviting a viewer role', function () {
+        $this->actingAs($this->owner)
+            ->post('/team/invite', [
+                'email' => 'viewer-invite@example.com',
+                'role' => 'viewer',
+            ])
+            ->assertRedirect();
+
+        $this->assertDatabaseHas('workspace_invitations', [
+            'workspace_id' => $this->workspace->id,
+            'email' => 'viewer-invite@example.com',
+            'role' => 'viewer',
+        ]);
     });
 });

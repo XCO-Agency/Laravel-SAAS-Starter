@@ -184,7 +184,7 @@ export default function TeamIndex({
         reset: resetInvite,
     } = useForm({
         email: '',
-        role: 'member' as 'admin' | 'member',
+        role: 'member' as WorkspaceRole,
     });
 
     const handleInvite = (e: React.FormEvent) => {
@@ -198,7 +198,7 @@ export default function TeamIndex({
         });
     };
 
-    const updateRole = (member: TeamMember, role: 'admin' | 'member') => {
+    const updateRole = (member: TeamMember, role: WorkspaceRole) => {
         router.put(
             `/team/members/${member.id}/role`,
             { role },
@@ -249,7 +249,7 @@ export default function TeamIndex({
         processing: linkProcessing,
         reset: resetLink,
     } = useForm({
-        role: 'member' as 'admin' | 'member',
+        role: 'member' as WorkspaceRole,
         max_uses: '' as string | number,
         expires_in_days: '' as string | number,
     });
@@ -357,9 +357,9 @@ export default function TeamIndex({
                                                 <Select
                                                     value={inviteData.role}
                                                     onValueChange={(
-                                                        value: 'admin' | 'member',
+                                                        value: string,
                                                     ) =>
-                                                        setInviteData('role', value)
+                                                        setInviteData('role', value as WorkspaceRole)
                                                     }
                                                 >
                                                     <SelectTrigger>
@@ -371,6 +371,9 @@ export default function TeamIndex({
                                                         </SelectItem>
                                                         <SelectItem value="admin">
                                                             {t('team.admin', 'Admin')}
+                                                        </SelectItem>
+                                                        <SelectItem value="viewer">
+                                                            {t('team.viewer', 'Viewer')}
                                                         </SelectItem>
                                                     </SelectContent>
                                                 </Select>
@@ -492,25 +495,32 @@ export default function TeamIndex({
                                                             </Button>
                                                         </DropdownMenuTrigger>
                                                         <DropdownMenuContent align="end">
-                                                            <DropdownMenuItem
-                                                                onClick={() =>
-                                                                    updateRole(
-                                                                        member,
-                                                                        member.role ===
-                                                                            'admin'
-                                                                            ? 'member'
-                                                                            : 'admin',
-                                                                    )
-                                                                }
-                                                            >
-                                                                <Settings className="mr-2 h-4 w-4" />
-                                                                {member.role ===
-                                                                    'admin'
-                                                                    ? t('team.demote_to_member', 'Demote to Member')
-                                                                    : t('team.promote_to_admin', 'Promote to Admin')}
-                                                            </DropdownMenuItem>
+                                                            {member.role !== 'admin' && (
+                                                                <DropdownMenuItem
+                                                                    onClick={() => updateRole(member, 'admin')}
+                                                                >
+                                                                    <Shield className="mr-2 h-4 w-4" />
+                                                                    {t('team.promote_to_admin', 'Promote to Admin')}
+                                                                </DropdownMenuItem>
+                                                            )}
+                                                            {member.role !== 'member' && (
+                                                                <DropdownMenuItem
+                                                                    onClick={() => updateRole(member, 'member')}
+                                                                >
+                                                                    <Settings className="mr-2 h-4 w-4" />
+                                                                    {t('team.set_role_member', 'Set Role to Member')}
+                                                                </DropdownMenuItem>
+                                                            )}
+                                                            {member.role !== 'viewer' && (
+                                                                <DropdownMenuItem
+                                                                    onClick={() => updateRole(member, 'viewer')}
+                                                                >
+                                                                    <Users className="mr-2 h-4 w-4" />
+                                                                    {t('team.set_role_viewer', 'Set Role to Viewer')}
+                                                                </DropdownMenuItem>
+                                                            )}
                                                             <DropdownMenuSeparator />
-                                                            {member.role === 'member' && (
+                                                            {['member', 'viewer'].includes(member.role) && (
                                                                 <DropdownMenuItem
                                                                     onClick={() => {
                                                                         setSelectedMemberForPermissions(member);
@@ -573,7 +583,7 @@ export default function TeamIndex({
                                     </div>
                                     <Dialog open={linkDialogOpen} onOpenChange={setLinkDialogOpen}>
                                         <DialogTrigger asChild>
-                                            <Button variant="outline" size="sm">
+                                            <Button variant="outline" size="sm" disabled={!canInvite}>
                                                 <Link2 className="mr-2 h-4 w-4" />
                                                 {t('team.create_link', 'Create Link')}
                                             </Button>
@@ -593,8 +603,8 @@ export default function TeamIndex({
                                                         <Label htmlFor="link-role">{t('team.role', 'Role')}</Label>
                                                         <Select
                                                             value={linkData.role}
-                                                            onValueChange={(value: 'admin' | 'member') =>
-                                                                setLinkData('role', value)
+                                                            onValueChange={(value: string) =>
+                                                                setLinkData('role', value as WorkspaceRole)
                                                             }
                                                         >
                                                             <SelectTrigger>
@@ -603,6 +613,7 @@ export default function TeamIndex({
                                                             <SelectContent>
                                                                 <SelectItem value="member">{t('team.member', 'Member')}</SelectItem>
                                                                 <SelectItem value="admin">{t('team.admin', 'Admin')}</SelectItem>
+                                                                <SelectItem value="viewer">{t('team.viewer', 'Viewer')}</SelectItem>
                                                             </SelectContent>
                                                         </Select>
                                                     </div>

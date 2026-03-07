@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\Ticket;
-use App\Models\TicketReply;
 use App\Models\User;
 use App\Models\Workspace;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -29,7 +28,7 @@ describe('User Ticket Portal', function () {
         $response = $this->actingAs($this->user)->get('/settings/tickets');
 
         $response->assertSuccessful();
-        $response->assertInertia(fn($page) => $page->component('settings/tickets/index'));
+        $response->assertInertia(fn ($page) => $page->component('settings/tickets/index'));
     });
 
     it('can create a new ticket', function () {
@@ -70,7 +69,7 @@ describe('User Ticket Portal', function () {
         $response = $this->actingAs($this->user)->get("/settings/tickets/{$ticket->id}");
 
         $response->assertSuccessful();
-        $response->assertInertia(fn($page) => $page->component('settings/tickets/show'));
+        $response->assertInertia(fn ($page) => $page->component('settings/tickets/show'));
     });
 
     it('cannot view someone elses ticket', function () {
@@ -88,7 +87,7 @@ describe('User Ticket Portal', function () {
         $ticket = Ticket::factory()->create([
             'user_id' => $this->user->id,
             'workspace_id' => $this->workspace->id,
-            'status' => 'resolved'
+            'status' => 'resolved',
         ]);
 
         $response = $this->actingAs($this->user)->post("/settings/tickets/{$ticket->id}/replies", [
@@ -116,7 +115,7 @@ describe('Admin Ticket Portal', function () {
         $response = $this->actingAs($this->superAdmin)->get('/admin/tickets');
 
         $response->assertSuccessful();
-        $response->assertInertia(fn($page) => $page->component('admin/tickets/index'));
+        $response->assertInertia(fn ($page) => $page->component('admin/tickets/index'));
     });
 
     it('non-admin cannot view admin tickets index page', function () {
@@ -131,7 +130,7 @@ describe('Admin Ticket Portal', function () {
         $response = $this->actingAs($this->superAdmin)->get("/admin/tickets/{$ticket->id}");
 
         $response->assertSuccessful();
-        $response->assertInertia(fn($page) => $page->component('admin/tickets/show'));
+        $response->assertInertia(fn ($page) => $page->component('admin/tickets/show'));
     });
 
     it('can update ticket status and priority as admin', function () {

@@ -218,125 +218,135 @@ require __DIR__.'/settings.php';
 
 // Admin routes
 Route::middleware(['auth', 'superadmin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
-    Route::post('/impersonate/{user}', [\App\Http\Controllers\Admin\ImpersonationController::class, 'impersonate'])->name('impersonate');
+    // 2FA Enforcement Wall
+    Route::get('/2fa-required', [\App\Http\Controllers\Admin\SecurityController::class, 'twoFactorRequired'])->name('2fa-required');
 
-    // User Management
-    Route::get('/users', [\App\Http\Controllers\Admin\UserController::class, 'index'])->name('users.index');
-    Route::put('/users/{user}', [\App\Http\Controllers\Admin\UserController::class, 'update'])->name('users.update');
-    Route::delete('/users/{user}', [\App\Http\Controllers\Admin\UserController::class, 'destroy'])->name('users.destroy');
-    Route::post('/users/{user}/restore', [\App\Http\Controllers\Admin\UserController::class, 'restore'])->name('users.restore');
-    Route::post('/users/bulk-verify-email', [\App\Http\Controllers\Admin\UserController::class, 'bulkVerifyEmail'])->name('users.bulk-verify-email');
-    Route::post('/users/bulk-suspend', [\App\Http\Controllers\Admin\UserController::class, 'bulkSuspend'])->name('users.bulk-suspend');
-    Route::post('/users/bulk-export', [\App\Http\Controllers\Admin\UserController::class, 'bulkExport'])->name('users.bulk-export');
-    Route::get('/users/{user}/sessions', [\App\Http\Controllers\Admin\UserSessionController::class, 'index'])->name('users.sessions.index');
-    Route::delete('/users/{user}/sessions/{sessionId}', [\App\Http\Controllers\Admin\UserSessionController::class, 'destroy'])->name('users.sessions.destroy');
-    Route::delete('/users/{user}/sessions', [\App\Http\Controllers\Admin\UserSessionController::class, 'destroyAll'])->name('users.sessions.destroy-all');
-    Route::get('/users/{user}/api-tokens', [\App\Http\Controllers\Admin\UserApiTokenController::class, 'index'])->name('users.api-tokens.index');
-    Route::post('/users/{user}/api-tokens', [\App\Http\Controllers\Admin\UserApiTokenController::class, 'store'])->name('users.api-tokens.store');
-    Route::delete('/users/{user}/api-tokens/{tokenId}', [\App\Http\Controllers\Admin\UserApiTokenController::class, 'destroy'])->name('users.api-tokens.destroy');
+    Route::middleware([\App\Http\Middleware\RequireAdminTwoFactor::class])->group(function () {
+        Route::get('/dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
+        Route::post('/impersonate/{user}', [\App\Http\Controllers\Admin\ImpersonationController::class, 'impersonate'])->name('impersonate');
 
-    // Workspace Management
-    Route::get('/workspaces', [\App\Http\Controllers\Admin\WorkspaceController::class, 'index'])->name('workspaces.index');
-    Route::post('/workspaces/{workspace}/suspend', [\App\Http\Controllers\Admin\WorkspaceController::class, 'suspend'])->name('workspaces.suspend');
-    Route::post('/workspaces/{workspace}/unsuspend', [\App\Http\Controllers\Admin\WorkspaceController::class, 'unsuspend'])->name('workspaces.unsuspend');
+        // User Management
+        Route::get('/users', [\App\Http\Controllers\Admin\UserController::class, 'index'])->name('users.index');
+        Route::put('/users/{user}', [\App\Http\Controllers\Admin\UserController::class, 'update'])->name('users.update');
+        Route::delete('/users/{user}', [\App\Http\Controllers\Admin\UserController::class, 'destroy'])->name('users.destroy');
+        Route::post('/users/{user}/restore', [\App\Http\Controllers\Admin\UserController::class, 'restore'])->name('users.restore');
+        Route::post('/users/bulk-verify-email', [\App\Http\Controllers\Admin\UserController::class, 'bulkVerifyEmail'])->name('users.bulk-verify-email');
+        Route::post('/users/bulk-suspend', [\App\Http\Controllers\Admin\UserController::class, 'bulkSuspend'])->name('users.bulk-suspend');
+        Route::post('/users/bulk-export', [\App\Http\Controllers\Admin\UserController::class, 'bulkExport'])->name('users.bulk-export');
+        Route::get('/users/{user}/sessions', [\App\Http\Controllers\Admin\UserSessionController::class, 'index'])->name('users.sessions.index');
+        Route::delete('/users/{user}/sessions/{sessionId}', [\App\Http\Controllers\Admin\UserSessionController::class, 'destroy'])->name('users.sessions.destroy');
+        Route::delete('/users/{user}/sessions', [\App\Http\Controllers\Admin\UserSessionController::class, 'destroyAll'])->name('users.sessions.destroy-all');
+        Route::get('/users/{user}/api-tokens', [\App\Http\Controllers\Admin\UserApiTokenController::class, 'index'])->name('users.api-tokens.index');
+        Route::post('/users/{user}/api-tokens', [\App\Http\Controllers\Admin\UserApiTokenController::class, 'store'])->name('users.api-tokens.store');
+        Route::delete('/users/{user}/api-tokens/{tokenId}', [\App\Http\Controllers\Admin\UserApiTokenController::class, 'destroy'])->name('users.api-tokens.destroy');
 
-    // Audit Logs
-    Route::get('/audit-logs', [\App\Http\Controllers\Admin\AuditLogController::class, 'index'])->name('audit-logs.index');
+        // Workspace Management
+        Route::get('/workspaces', [\App\Http\Controllers\Admin\WorkspaceController::class, 'index'])->name('workspaces.index');
+        Route::post('/workspaces/{workspace}/suspend', [\App\Http\Controllers\Admin\WorkspaceController::class, 'suspend'])->name('workspaces.suspend');
+        Route::post('/workspaces/{workspace}/unsuspend', [\App\Http\Controllers\Admin\WorkspaceController::class, 'unsuspend'])->name('workspaces.unsuspend');
 
-    // System Logs
-    Route::get('/logs', [\App\Http\Controllers\Admin\LogViewerController::class, 'index'])->name('logs.index');
-    Route::get('/logs/{file}/download', [\App\Http\Controllers\Admin\LogViewerController::class, 'download'])->where('file', '.*')->name('logs.download');
-    Route::get('/logs/{file}', [\App\Http\Controllers\Admin\LogViewerController::class, 'show'])->where('file', '.*')->name('logs.show');
-    Route::delete('/logs/{file}', [\App\Http\Controllers\Admin\LogViewerController::class, 'destroy'])->where('file', '.*')->name('logs.destroy');
+        // Audit Logs
+        Route::get('/audit-logs', [\App\Http\Controllers\Admin\AuditLogController::class, 'index'])->name('audit-logs.index');
+        Route::get('/impersonation-logs', [\App\Http\Controllers\Admin\ImpersonationLogController::class, 'index'])->name('impersonation-logs.index');
 
-    // Announcements
-    Route::get('/announcements', [\App\Http\Controllers\Admin\AnnouncementController::class, 'index'])->name('announcements.index');
-    Route::post('/announcements', [\App\Http\Controllers\Admin\AnnouncementController::class, 'store'])->name('announcements.store');
-    Route::put('/announcements/{announcement}', [\App\Http\Controllers\Admin\AnnouncementController::class, 'update'])->name('announcements.update');
-    Route::post('/announcements/{announcement}/toggle', [\App\Http\Controllers\Admin\AnnouncementController::class, 'toggle'])->name('announcements.toggle');
-    Route::delete('/announcements/{announcement}', [\App\Http\Controllers\Admin\AnnouncementController::class, 'destroy'])->name('announcements.destroy');
+        // Broadcasts
+        Route::get('/broadcasts', [\App\Http\Controllers\Admin\BroadcastController::class, 'index'])->name('broadcasts.index');
+        Route::post('/broadcasts', [\App\Http\Controllers\Admin\BroadcastController::class, 'store'])->name('broadcasts.store');
 
-    // Feature Flags
-    Route::get('/feature-flags', [\App\Http\Controllers\Admin\FeatureFlagController::class, 'index'])->name('feature-flags.index');
-    Route::post('/feature-flags', [\App\Http\Controllers\Admin\FeatureFlagController::class, 'store'])->name('feature-flags.store');
-    Route::put('/feature-flags/{featureFlag}', [\App\Http\Controllers\Admin\FeatureFlagController::class, 'update'])->name('feature-flags.update');
-    Route::delete('/feature-flags/{featureFlag}', [\App\Http\Controllers\Admin\FeatureFlagController::class, 'destroy'])->name('feature-flags.destroy');
+        // System Logs
+        Route::get('/logs', [\App\Http\Controllers\Admin\LogViewerController::class, 'index'])->name('logs.index');
+        Route::get('/logs/{file}/download', [\App\Http\Controllers\Admin\LogViewerController::class, 'download'])->where('file', '.*')->name('logs.download');
+        Route::get('/logs/{file}', [\App\Http\Controllers\Admin\LogViewerController::class, 'show'])->where('file', '.*')->name('logs.show');
+        Route::delete('/logs/{file}', [\App\Http\Controllers\Admin\LogViewerController::class, 'destroy'])->where('file', '.*')->name('logs.destroy');
 
-    // Email Templates
-    Route::get('/mail-templates', [\App\Http\Controllers\Admin\MailTemplateController::class, 'index'])->name('mail-templates.index');
-    Route::get('/mail-templates/{mailTemplate}/edit', [\App\Http\Controllers\Admin\MailTemplateController::class, 'edit'])->name('mail-templates.edit');
-    Route::put('/mail-templates/{mailTemplate}', [\App\Http\Controllers\Admin\MailTemplateController::class, 'update'])->name('mail-templates.update');
+        // Announcements
+        Route::get('/announcements', [\App\Http\Controllers\Admin\AnnouncementController::class, 'index'])->name('announcements.index');
+        Route::post('/announcements', [\App\Http\Controllers\Admin\AnnouncementController::class, 'store'])->name('announcements.store');
+        Route::put('/announcements/{announcement}', [\App\Http\Controllers\Admin\AnnouncementController::class, 'update'])->name('announcements.update');
+        Route::post('/announcements/{announcement}/toggle', [\App\Http\Controllers\Admin\AnnouncementController::class, 'toggle'])->name('announcements.toggle');
+        Route::delete('/announcements/{announcement}', [\App\Http\Controllers\Admin\AnnouncementController::class, 'destroy'])->name('announcements.destroy');
 
-    // User Feedback
-    Route::get('/feedback', [\App\Http\Controllers\Admin\FeedbackController::class, 'index'])->name('feedback.index');
-    Route::put('/feedback/{feedback}', [\App\Http\Controllers\Admin\FeedbackController::class, 'update'])->name('feedback.update');
-    Route::delete('/feedback/{feedback}', [\App\Http\Controllers\Admin\FeedbackController::class, 'destroy'])->name('feedback.destroy');
+        // Feature Flags
+        Route::get('/feature-flags', [\App\Http\Controllers\Admin\FeatureFlagController::class, 'index'])->name('feature-flags.index');
+        Route::post('/feature-flags', [\App\Http\Controllers\Admin\FeatureFlagController::class, 'store'])->name('feature-flags.store');
+        Route::put('/feature-flags/{featureFlag}', [\App\Http\Controllers\Admin\FeatureFlagController::class, 'update'])->name('feature-flags.update');
+        Route::delete('/feature-flags/{featureFlag}', [\App\Http\Controllers\Admin\FeatureFlagController::class, 'destroy'])->name('feature-flags.destroy');
 
-    // Data Retention
-    Route::get('/retention', [\App\Http\Controllers\Admin\RetentionController::class, 'index'])->name('retention.index');
-    Route::post('/retention/prune', [\App\Http\Controllers\Admin\RetentionController::class, 'prune'])->name('retention.prune');
+        // Email Templates
+        Route::get('/mail-templates', [\App\Http\Controllers\Admin\MailTemplateController::class, 'index'])->name('mail-templates.index');
+        Route::get('/mail-templates/{mailTemplate}/edit', [\App\Http\Controllers\Admin\MailTemplateController::class, 'edit'])->name('mail-templates.edit');
+        Route::put('/mail-templates/{mailTemplate}', [\App\Http\Controllers\Admin\MailTemplateController::class, 'update'])->name('mail-templates.update');
 
-    // System Health
-    Route::get('/system-health', [\App\Http\Controllers\Admin\SystemHealthController::class, 'index'])->name('system-health.index');
-    Route::post('/system-health/jobs/{id}/retry', [\App\Http\Controllers\Admin\SystemHealthController::class, 'retryJob'])->name('system-health.retry-job');
-    Route::delete('/system-health/jobs/{id}', [\App\Http\Controllers\Admin\SystemHealthController::class, 'deleteJob'])->name('system-health.delete-job');
-    Route::post('/system-health/jobs/flush', [\App\Http\Controllers\Admin\SystemHealthController::class, 'flushJobs'])->name('system-health.flush-jobs');
+        // User Feedback
+        Route::get('/feedback', [\App\Http\Controllers\Admin\FeedbackController::class, 'index'])->name('feedback.index');
+        Route::put('/feedback/{feedback}', [\App\Http\Controllers\Admin\FeedbackController::class, 'update'])->name('feedback.update');
+        Route::delete('/feedback/{feedback}', [\App\Http\Controllers\Admin\FeedbackController::class, 'destroy'])->name('feedback.destroy');
 
-    // Changelog
-    Route::get('/changelog', [\App\Http\Controllers\Admin\ChangelogController::class, 'index'])->name('changelog.index');
-    Route::post('/changelog', [\App\Http\Controllers\Admin\ChangelogController::class, 'store'])->name('changelog.store');
-    Route::put('/changelog/{changelogEntry}', [\App\Http\Controllers\Admin\ChangelogController::class, 'update'])->name('changelog.update');
-    Route::delete('/changelog/{changelogEntry}', [\App\Http\Controllers\Admin\ChangelogController::class, 'destroy'])->name('changelog.destroy');
+        // Data Retention
+        Route::get('/retention', [\App\Http\Controllers\Admin\RetentionController::class, 'index'])->name('retention.index');
+        Route::post('/retention/prune', [\App\Http\Controllers\Admin\RetentionController::class, 'prune'])->name('retention.prune');
 
-    // Scheduled Tasks
-    Route::get('/scheduled-tasks', [\App\Http\Controllers\Admin\ScheduledTaskController::class, 'index'])->name('scheduled-tasks.index');
+        // System Health
+        Route::get('/system-health', [\App\Http\Controllers\Admin\SystemHealthController::class, 'index'])->name('system-health.index');
+        Route::post('/system-health/jobs/{id}/retry', [\App\Http\Controllers\Admin\SystemHealthController::class, 'retryJob'])->name('system-health.retry-job');
+        Route::delete('/system-health/jobs/{id}', [\App\Http\Controllers\Admin\SystemHealthController::class, 'deleteJob'])->name('system-health.delete-job');
+        Route::post('/system-health/jobs/flush', [\App\Http\Controllers\Admin\SystemHealthController::class, 'flushJobs'])->name('system-health.flush-jobs');
 
-    // SEO Metadata
-    Route::get('/seo', [\App\Http\Controllers\Admin\SeoMetadataController::class, 'index'])->name('seo.index');
-    Route::post('/seo', [\App\Http\Controllers\Admin\SeoMetadataController::class, 'store'])->name('seo.store');
-    Route::put('/seo/{seoMetadata}', [\App\Http\Controllers\Admin\SeoMetadataController::class, 'update'])->name('seo.update');
-    Route::delete('/seo/{seoMetadata}', [\App\Http\Controllers\Admin\SeoMetadataController::class, 'destroy'])->name('seo.destroy');
+        // Changelog
+        Route::get('/changelog', [\App\Http\Controllers\Admin\ChangelogController::class, 'index'])->name('changelog.index');
+        Route::post('/changelog', [\App\Http\Controllers\Admin\ChangelogController::class, 'store'])->name('changelog.store');
+        Route::put('/changelog/{changelogEntry}', [\App\Http\Controllers\Admin\ChangelogController::class, 'update'])->name('changelog.update');
+        Route::delete('/changelog/{changelogEntry}', [\App\Http\Controllers\Admin\ChangelogController::class, 'destroy'])->name('changelog.destroy');
 
-    // Maintenance Mode
-    Route::get('/maintenance', [\App\Http\Controllers\Admin\MaintenanceController::class, 'index'])->name('maintenance.index');
-    Route::post('/maintenance/toggle', [\App\Http\Controllers\Admin\MaintenanceController::class, 'toggle'])->name('maintenance.toggle');
+        // Scheduled Tasks
+        Route::get('/scheduled-tasks', [\App\Http\Controllers\Admin\ScheduledTaskController::class, 'index'])->name('scheduled-tasks.index');
 
-    // User Analytics
-    Route::get('/user-analytics', [\App\Http\Controllers\Admin\UserAnalyticsController::class, 'index'])->name('user-analytics.index');
+        // SEO Metadata
+        Route::get('/seo', [\App\Http\Controllers\Admin\SeoMetadataController::class, 'index'])->name('seo.index');
+        Route::post('/seo', [\App\Http\Controllers\Admin\SeoMetadataController::class, 'store'])->name('seo.store');
+        Route::put('/seo/{seoMetadata}', [\App\Http\Controllers\Admin\SeoMetadataController::class, 'update'])->name('seo.update');
+        Route::delete('/seo/{seoMetadata}', [\App\Http\Controllers\Admin\SeoMetadataController::class, 'destroy'])->name('seo.destroy');
 
-    // Revenue Analytics
-    Route::get('/revenue-analytics', [\App\Http\Controllers\Admin\RevenueAnalyticsController::class, 'index'])->name('revenue-analytics.index');
+        // Maintenance Mode
+        Route::get('/maintenance', [\App\Http\Controllers\Admin\MaintenanceController::class, 'index'])->name('maintenance.index');
+        Route::post('/maintenance/toggle', [\App\Http\Controllers\Admin\MaintenanceController::class, 'toggle'])->name('maintenance.toggle');
 
-    // Notification Analytics
-    Route::get('/notification-analytics', [\App\Http\Controllers\Admin\NotificationAnalyticsController::class, 'index'])->name('notification-analytics.index');
+        // User Analytics
+        Route::get('/user-analytics', [\App\Http\Controllers\Admin\UserAnalyticsController::class, 'index'])->name('user-analytics.index');
 
-    // Onboarding Insights
-    Route::get('/onboarding-insights', [\App\Http\Controllers\Admin\OnboardingInsightsController::class, 'index'])->name('onboarding-insights.index');
+        // Revenue Analytics
+        Route::get('/revenue-analytics', [\App\Http\Controllers\Admin\RevenueAnalyticsController::class, 'index'])->name('revenue-analytics.index');
 
-    // Permission Presets
-    Route::get('/permission-presets', [\App\Http\Controllers\Admin\PermissionPresetController::class, 'index'])->name('permission-presets.index');
-    Route::post('/permission-presets', [\App\Http\Controllers\Admin\PermissionPresetController::class, 'store'])->name('permission-presets.store');
-    Route::put('/permission-presets/{permissionPreset}', [\App\Http\Controllers\Admin\PermissionPresetController::class, 'update'])->name('permission-presets.update');
-    Route::delete('/permission-presets/{permissionPreset}', [\App\Http\Controllers\Admin\PermissionPresetController::class, 'destroy'])->name('permission-presets.destroy');
+        // Notification Analytics
+        Route::get('/notification-analytics', [\App\Http\Controllers\Admin\NotificationAnalyticsController::class, 'index'])->name('notification-analytics.index');
 
-    // System Notifications
-    Route::get('/system-notifications', [\App\Http\Controllers\Admin\AdminNotificationController::class, 'index'])->name('system-notifications.index');
-    Route::patch('/system-notifications/{adminNotification}/read', [\App\Http\Controllers\Admin\AdminNotificationController::class, 'markAsRead'])->name('system-notifications.read');
-    Route::patch('/system-notifications/read-all', [\App\Http\Controllers\Admin\AdminNotificationController::class, 'markAllAsRead'])->name('system-notifications.read-all');
-    Route::delete('/system-notifications/{adminNotification}', [\App\Http\Controllers\Admin\AdminNotificationController::class, 'destroy'])->name('system-notifications.destroy');
+        // Onboarding Insights
+        Route::get('/onboarding-insights', [\App\Http\Controllers\Admin\OnboardingInsightsController::class, 'index'])->name('onboarding-insights.index');
 
-    // Localization Management
-    Route::get('/translations', [\App\Http\Controllers\Admin\TranslationController::class, 'index'])->name('translations.index');
-    Route::post('/translations', [\App\Http\Controllers\Admin\TranslationController::class, 'store'])->name('translations.store');
-    Route::get('/translations/{locale}', [\App\Http\Controllers\Admin\TranslationController::class, 'show'])->name('translations.show');
-    Route::put('/translations/{locale}', [\App\Http\Controllers\Admin\TranslationController::class, 'update'])->name('translations.update');
+        // Permission Presets
+        Route::get('/permission-presets', [\App\Http\Controllers\Admin\PermissionPresetController::class, 'index'])->name('permission-presets.index');
+        Route::post('/permission-presets', [\App\Http\Controllers\Admin\PermissionPresetController::class, 'store'])->name('permission-presets.store');
+        Route::put('/permission-presets/{permissionPreset}', [\App\Http\Controllers\Admin\PermissionPresetController::class, 'update'])->name('permission-presets.update');
+        Route::delete('/permission-presets/{permissionPreset}', [\App\Http\Controllers\Admin\PermissionPresetController::class, 'destroy'])->name('permission-presets.destroy');
 
-    // Support Tickets
-    Route::controller(\App\Http\Controllers\Admin\TicketController::class)->group(function () {
-        Route::get('/tickets', 'index')->name('tickets.index');
-        Route::get('/tickets/{ticket}', 'show')->name('tickets.show');
-        Route::patch('/tickets/{ticket}', 'update')->name('tickets.update');
-        Route::post('/tickets/{ticket}/replies', 'storeReply')->name('tickets.reply.store');
+        // System Notifications
+        Route::get('/system-notifications', [\App\Http\Controllers\Admin\AdminNotificationController::class, 'index'])->name('system-notifications.index');
+        Route::patch('/system-notifications/{adminNotification}/read', [\App\Http\Controllers\Admin\AdminNotificationController::class, 'markAsRead'])->name('system-notifications.read');
+        Route::patch('/system-notifications/read-all', [\App\Http\Controllers\Admin\AdminNotificationController::class, 'markAllAsRead'])->name('system-notifications.read-all');
+        Route::delete('/system-notifications/{adminNotification}', [\App\Http\Controllers\Admin\AdminNotificationController::class, 'destroy'])->name('system-notifications.destroy');
+
+        // Localization Management
+        Route::get('/translations', [\App\Http\Controllers\Admin\TranslationController::class, 'index'])->name('translations.index');
+        Route::post('/translations', [\App\Http\Controllers\Admin\TranslationController::class, 'store'])->name('translations.store');
+        Route::get('/translations/{locale}', [\App\Http\Controllers\Admin\TranslationController::class, 'show'])->name('translations.show');
+        Route::put('/translations/{locale}', [\App\Http\Controllers\Admin\TranslationController::class, 'update'])->name('translations.update');
+
+        // Support Tickets
+        Route::controller(\App\Http\Controllers\Admin\TicketController::class)->group(function () {
+            Route::get('/tickets', 'index')->name('tickets.index');
+            Route::get('/tickets/{ticket}', 'show')->name('tickets.show');
+            Route::patch('/tickets/{ticket}', 'update')->name('tickets.update');
+            Route::post('/tickets/{ticket}/replies', 'storeReply')->name('tickets.reply.store');
+        });
     });
 });

@@ -23,16 +23,21 @@ The AI agent is now continually managing and executing the roadmap autonomously.
 - **Stack**: Laravel 12, Inertia.js v2, React 19, Tailwind CSS v4, Stripe Cashier, Fortify.
 - **Completed Features**: Auth, 2FA, Workspaces, Teams, Stripe Billing, i18n, Dark Mode, Super Admin Panel, Feature Flags (Pennant), Announcements, Audit Logs, Command Palette.
 
-## 🚀 Active Sprint 25: Admin Experience Completion
+## 🚀 Active Sprint 26: Team Role UX Reliability
 
-- [x] **Task 93**: Localization Management UI Recovery — Re-enable superadmin translation management routes/navigation and validate existing localization workflows. ✅ (7 tests, 39 assertions)
-- [x] **Task 94**: Global Support Ticket System Recovery — Restore superadmin ticket management routes/navigation and validate ticket moderation workflows. ✅ (10 tests, 59 assertions)
-- [ ] **Task 95**: Admin Dashboard Analytics Widgets Recovery — Restore enhanced analytics widgets and validate dashboard data/visual contracts.
-- [ ] **Task 96**: Global Admin 2FA Enforcement Recovery — Reinstate admin 2FA enforcement wall and validate access guard behavior.
-- [ ] **Task 97**: Impersonation Audit Log Recovery — Restore impersonation audit routes/navigation and validate event visibility/security.
-- [ ] **Task 98**: Admin Broadcast Notifications Recovery — Restore broadcast messaging routes/navigation and validate dispatch flow.
+- [x] **Task 99**: Team Role Action Parity & Viewer Flow Coverage — Replace ambiguous role toggle actions with explicit role transitions in Team UI and validate viewer-role transitions across member updates and invite links. ✅ (4 tests, 20 assertions)
+- [x] **Task 100**: Team Permission Input Guardrails — Enforce allowed granular permission identifiers on team member permission updates and validate accepted/rejected payload paths. ✅ (2 tests, 4 assertions)
+- [x] **Task 101**: Invite Link Seat-Limit Enforcement — Prevent invite-link joins from bypassing workspace member limits and validate blocked-join behavior when limits are reached. ✅ (1 test, 2 assertions)
+- [x] **Task 102**: Self Role-Change Protection — Prevent team managers from changing their own role through direct requests and validate role integrity. ✅ (1 test, 2 assertions)
+- [x] **Task 103**: Self Permission-Edit Protection — Prevent team managers from changing their own granular permissions via direct requests and validate integrity safeguards. ✅ (1 test, 2 assertions)
+- [x] **Task 104**: Admin Granular Permission Lock — Prevent granular-permission mutations for admin-role users through direct requests and validate role-policy parity. ✅ (1 test, 2 assertions)
+- [x] **Task 105**: Non-Member Role Update Guard — Return not-found for role-update requests targeting users outside the current workspace and validate membership boundaries. ✅ (1 test, 1 assertion)
+- [x] **Task 106**: Invite Link Creation Seat Guard — Prevent creating new invite links when workspace team-member limits are reached to avoid unusable links. ✅ (1 test, 2 assertions)
+- [x] **Task 107**: Team Invite-Link Capacity UX Sync — Disable invite-link creation action in Team UI when workspace capacity is reached and validate `canInvite` contract. ✅ (1 test, 1 assertion)
 
 ## 🏁 Completed Sprints
+
+- **Sprint 25**: Admin Experience Completion (Localization Management Recovery, Support Tickets Recovery, Admin Dashboard Analytics Validation, Admin 2FA Enforcement Recovery, Impersonation Audit Log Recovery, Admin Broadcast Recovery).
 
 - **Sprint 24**: Advanced Integrations & UX (Admin System Notifications, Workspace Data Import, API Rate Limiting Dashboard, User Session Management, Admin Application Log Viewer, User API Key Management UI).
 
@@ -60,6 +65,28 @@ The AI agent is now continually managing and executing the roadmap autonomously.
 - **Sprint 12**: Enterprise Mechanics (Seat-Based Billing, Data Retention, 2FA Enforcement).
 
 ## 📝 Changelog
+
+- **2026-03-07**: Task 107 (Team Invite-Link Capacity UX Sync): disabled Team invite-link creation action when `canInvite` is false so customers get immediate UI feedback at capacity, and added feature coverage validating `canInvite=false` at seat limit. *(1 test, 1 assertion)*
+
+- **2026-03-07**: Task 106 (Invite Link Creation Seat Guard): added seat-limit enforcement to invite-link creation flow, returning an upgrade/error message when limits are reached, and added feature coverage confirming no invite-link record is created at limit. *(1 test, 2 assertions)*
+
+- **2026-03-07**: Task 105 (Non-Member Role Update Guard): added backend membership existence guard to team role update flow, returning `404` for non-member targets, and added feature coverage for non-member role-update denial. *(1 test, 1 assertion)*
+
+- **2026-03-07**: Task 104 (Admin Granular Permission Lock): added backend guard to reject granular permission updates for admin-role users (matching Team UI constraints), and added feature coverage confirming admin permission payloads are rejected and persisted permissions remain unchanged. *(1 test, 2 assertions)*
+
+- **2026-03-07**: Task 103 (Self Permission-Edit Protection): added backend guard to reject self-targeted granular permission updates in team management flow and added feature coverage confirming self updates are blocked and stored permissions remain unchanged. *(1 test, 2 assertions)*
+
+- **2026-03-07**: Task 102 (Self Role-Change Protection): added backend guard in team role update flow to block self role changes even via direct requests, and added feature coverage confirming self-role mutation is rejected and original role is preserved. *(1 test, 2 assertions)*
+
+- **2026-03-07**: Task 101 (Invite Link Seat-Limit Enforcement): enforced team member limit checks during invite-link join flow, returning users to join page with an error when workspace limits are reached, and added feature coverage to confirm blocked join and unchanged link usage counters. *(1 test, 2 assertions)*
+
+- **2026-03-07**: Task 100 (Team Permission Input Guardrails): added server-side whitelist validation for team granular permissions (`manage_team`, `manage_billing`, `manage_webhooks`, `view_activity_logs`) in permission update flow and added feature tests for successful updates and invalid-permission rejection. *(2 tests, 4 assertions)*
+
+- **2026-03-07**: Task 99 (Team Role Action Parity & Viewer Flow Coverage): fixed Team member role action menu to use explicit transitions (`admin`, `member`, `viewer`) instead of a misleading toggle path, added role-transition coverage for owner/admin viewer flows, and added invite-link viewer-role creation coverage. *(4 tests, 20 assertions)*
+
+- **2026-03-07**: Task 95 (Admin Dashboard Analytics Widgets Recovery): validated existing dashboard analytics implementation (`MRR`, `churn_rate`, growth charts, plan distribution) through focused admin dashboard feature tests and confirmed data contract integrity. *(3 tests, 29 assertions)*
+
+- **2026-03-07**: Tasks 96–98 recovery pass: restored admin 2FA wall route and middleware enforcement (`admin.2fa-required` + `RequireAdminTwoFactor` group), re-enabled impersonation log route (`admin.impersonation-logs.index`), restored broadcast routes (`admin.broadcasts.index/store`), restored admin navigation entries for impersonation logs and broadcasts, and re-enabled viewer role compatibility in team invite/role-update flows; validated with focused regressions and full suite (`998 passed`).
 
 - **2026-03-07**: Task 94 (Global Support Ticket System Recovery): restored admin ticket routes (`index/show/update/reply`), re-added support ticket navigation in admin and settings layouts, regenerated Wayfinder routes/actions, and validated end-to-end support ticket flows with focused Pest coverage. *(10 tests, 59 assertions)*
 

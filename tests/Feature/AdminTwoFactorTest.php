@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+
 use function Pest\Laravel\actingAs;
 
 it('redirects superadmins without 2fa to the enforcement wall', function () {

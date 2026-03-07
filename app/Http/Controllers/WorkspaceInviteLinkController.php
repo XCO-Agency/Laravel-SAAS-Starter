@@ -4,18 +4,25 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreInviteLinkRequest;
 use App\Models\WorkspaceInviteLink;
+use App\Services\InvitationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
 class WorkspaceInviteLinkController extends Controller
 {
+    public function __construct(protected InvitationService $invitationService) {}
+
     /**
      * Generate a new invite link.
      */
     public function store(StoreInviteLinkRequest $request): \Illuminate\Http\RedirectResponse
     {
         $workspace = $request->user()->currentWorkspace;
+
+        if (! $this->invitationService->canInvite($workspace)) {
+            return back()->with('error', 'You have reached your team member limit. Please upgrade your plan to invite more members.');
+        }
 
         $expiresAt = $request->validated('expires_in_days')
             ? now()->addDays($request->validated('expires_in_days'))
@@ -93,6 +100,12 @@ class WorkspaceInviteLinkController extends Controller
         // Check if user is already a member
         if ($workspace->hasUser($user)) {
             return redirect()->route('dashboard')->with('info', 'You are already a member of this workspace.');
+        }
+
+        if (! $this->invitationService->canInvite($workspace)) {
+            return redirect()
+                ->route('invite-links.show', $token)
+                ->with('error', 'This workspace has reached its team member limit.');
         }
 
         $workspace->addUser($user, $link->role);

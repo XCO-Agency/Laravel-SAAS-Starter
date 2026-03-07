@@ -1,5 +1,186 @@
 # Implementation Plan
 
+## Sprint 26 — Task 107: Team Invite-Link Capacity UX Sync
+
+### Goal
+Provide immediate customer-facing feedback in Team UI when workspace capacity is reached by disabling invite-link creation affordances in lockstep with backend seat guards.
+
+### Scope
+- Disable invite-link create button when `canInvite` is false.
+- Reuse existing `canInvite` prop contract from Team index payload.
+- Add feature coverage for `canInvite` false at limit.
+
+### Technical Steps
+1. Update Team page invite-link trigger button to honor `canInvite`.
+2. Add Team index feature test for seat-limit scenario (`canInvite=false`).
+3. Keep backend guards from Task 106 unchanged.
+4. Update roadmap/changelog/walkthrough/docs.
+
+### Verification
+- `php artisan test --compact tests/Feature/Team/TeamManagementTest.php`
+- `vendor/bin/pint --dirty`
+
+## Sprint 26 — Task 106: Invite Link Creation Seat Guard
+
+### Goal
+Prevent customers from generating invite links that cannot be used due to workspace seat limits.
+
+### Scope
+- Add member-limit check before invite-link creation.
+- Reuse existing team seat-limit service logic.
+- Add feature test for blocked creation at limit.
+
+### Technical Steps
+1. Add `canInvite` guard in `WorkspaceInviteLinkController@store`.
+2. Return with existing upgrade-oriented error message when limits are reached.
+3. Add feature test asserting blocked creation and missing link record.
+4. Update roadmap/changelog/walkthrough/docs.
+
+### Verification
+- `php artisan test --compact tests/Feature/Team/InviteLinkTest.php`
+- `vendor/bin/pint --dirty`
+
+## Sprint 26 — Task 105: Non-Member Role Update Guard
+
+### Goal
+Prevent role-update endpoint misuse by rejecting requests that target users who are not members of the current workspace.
+
+### Scope
+- Add membership check in role-update endpoint.
+- Return `404` when target user is outside workspace membership.
+- Add focused feature coverage for non-member role-update attempts.
+
+### Technical Steps
+1. Add `hasUser` membership guard in `TeamController@updateRole`.
+2. Keep existing self/owner protections and role validation intact.
+3. Add feature test asserting `assertNotFound()` for non-member target updates.
+4. Update roadmap/changelog/walkthrough/docs.
+
+### Verification
+- `php artisan test --compact tests/Feature/Team/TeamManagementTest.php`
+- `vendor/bin/pint --dirty`
+
+## Sprint 26 — Task 104: Admin Granular Permission Lock
+
+### Goal
+Align backend authorization behavior with Team UI by disallowing granular permission editing for admin-role users.
+
+### Scope
+- Add backend guard for admin targets in permission update endpoint.
+- Preserve owner and self-target protection added in prior tasks.
+- Add feature coverage for rejected admin permission edits.
+
+### Technical Steps
+1. Add admin-role guard in `TeamController@updatePermissions` before writing pivot permissions.
+2. Return error flash on admin-target permission-edit attempts.
+3. Add focused feature test that owner cannot assign granular permissions to admin members.
+4. Update roadmap/changelog/walkthrough/docs.
+
+### Verification
+- `php artisan test --compact tests/Feature/Team/TeamManagementTest.php`
+- `vendor/bin/pint --dirty`
+
+## Sprint 26 — Task 103: Self Permission-Edit Protection
+
+### Goal
+Ensure team managers cannot alter their own granular permission set through direct endpoint requests.
+
+### Scope
+- Add backend self-target protection in permission update endpoint.
+- Preserve existing permission whitelist and owner restrictions.
+- Add feature coverage for rejected admin self-permission updates.
+
+### Technical Steps
+1. Add early-return guard in `TeamController@updatePermissions` when acting user matches target user.
+2. Return with error flash and preserve stored permission state.
+3. Add focused feature test for admin self-permission update rejection.
+4. Update roadmap/changelog/walkthrough/docs.
+
+### Verification
+- `php artisan test --compact tests/Feature/Team/TeamManagementTest.php`
+- `vendor/bin/pint --dirty`
+
+## Sprint 26 — Task 102: Self Role-Change Protection
+
+### Goal
+Ensure team role-management endpoints cannot be used to change the acting user's own role, aligning backend behavior with the frontend safety UX.
+
+### Scope
+- Add backend guard for self role-change attempts.
+- Preserve existing owner-role protections and role validation.
+- Add feature test for admin self-role update rejection.
+
+### Technical Steps
+1. Add early-return guard in `TeamController@updateRole` when target user matches acting user.
+2. Return with error flash while leaving current role unchanged.
+3. Add a focused role-update feature test for admin self-change attempts.
+4. Update roadmap/changelog/walkthrough and docs to capture behavior.
+
+### Verification
+- `php artisan test --compact tests/Feature/Team/TeamManagementTest.php`
+- `vendor/bin/pint --dirty`
+
+## Sprint 26 — Task 101: Invite Link Seat-Limit Enforcement
+
+### Goal
+Ensure invite-link joins cannot bypass workspace member limits enforced elsewhere in team invitation flows.
+
+### Scope
+- Add member-limit guard in invite-link join endpoint.
+- Reuse existing invitation seat-limit service logic.
+- Add feature coverage for blocked join behavior at limit.
+
+### Technical Steps
+1. Inject `InvitationService` into `WorkspaceInviteLinkController`.
+2. Add guard in `join()` to deny join when `canInvite($workspace)` is false.
+3. Redirect denied users back to join page with error message.
+4. Add feature test asserting join denial and unchanged `uses_count`.
+
+### Verification
+- `php artisan test --compact tests/Feature/Team/InviteLinkTest.php`
+- `vendor/bin/pint --dirty`
+
+## Sprint 26 — Task 100: Team Permission Input Guardrails
+
+### Goal
+Prevent unsupported permission identifiers from being persisted through team permission update requests.
+
+### Scope
+- Add backend whitelist validation for granular permission IDs.
+- Keep existing permission payload shape unchanged.
+- Add feature coverage for accepted and rejected permission payloads.
+
+### Technical Steps
+1. Define allowed permission IDs in `TeamController@updatePermissions`.
+2. Apply `Rule::in(...)` validation to `permissions.*`.
+3. Add tests for valid permission updates and invalid permission rejection.
+4. Update roadmap/changelog/walkthrough and related feature documentation.
+
+### Verification
+- `php artisan test --compact tests/Feature/Team/TeamManagementTest.php`
+- `vendor/bin/pint --dirty`
+
+## Sprint 26 — Task 99: Team Role Action Parity & Viewer Flow Coverage
+
+### Goal
+Eliminate ambiguous team role-change behavior in the Team UI and ensure backend role transitions involving `viewer` are explicitly verified.
+
+### Scope
+- Replace role-toggle action with explicit role transition actions in Team member dropdown.
+- Preserve existing backend role endpoints and policy behavior.
+- Add feature tests for owner/admin transitions that include `viewer`.
+- Add invite-link test coverage for `viewer` role creation.
+
+### Technical Steps
+1. Replace toggle-based role update menu in `Team/index` with explicit action entries for `admin`, `member`, and `viewer` target roles.
+2. Add role transition tests in `TeamManagementTest` covering member→viewer and viewer→member transitions.
+3. Add `InviteLinkTest` case validating viewer-role invite-link generation.
+4. Update roadmap/changelog and walkthrough entry for task completion.
+
+### Verification
+- `php artisan test --compact tests/Feature/Team/TeamManagementTest.php tests/Feature/Team/InviteLinkTest.php`
+- `vendor/bin/pint --dirty`
+
 ## Sprint 21 — Task 75: Granular Team Permission Parity
 
 ### Goal
@@ -206,3 +387,47 @@ Restore full support-ticket accessibility by reconnecting existing user/admin ti
 - `php artisan wayfinder:generate --no-interaction`
 - `vendor/bin/pint --dirty`
 - `php artisan test --compact tests/Feature/SupportTicketsTest.php`
+
+## Sprint 25 — Tasks 96-98: Admin Security & Broadcast Recovery
+
+### Goal
+Restore previously available admin security and communication capabilities that regressed from route/middleware drift: admin 2FA enforcement, impersonation audit log viewing, and broadcast messaging management.
+
+### Scope
+- Reintroduce `admin.2fa-required` route and `RequireAdminTwoFactor` protection for admin area.
+- Re-enable impersonation audit-log listing route for superadmins.
+- Re-enable admin broadcast index/store routes.
+- Restore admin nav discoverability for impersonation logs and broadcasts.
+- Reconcile viewer-role support in team role management to avoid workspace role regressions.
+
+### Technical Steps
+1. Add admin enforcement wall route and wrap protected admin routes in `RequireAdminTwoFactor` middleware.
+2. Add missing `impersonation-logs` and `broadcasts` admin routes.
+3. Restore `Impersonation Logs` and `Broadcasts` entries in admin layout navigation.
+4. Re-enable `viewer` role acceptance in `TeamController` validations and team role selectors.
+5. Regenerate Wayfinder, format dirty files, and run targeted failing tests.
+6. Run full compact test suite for end-to-end confirmation.
+
+### Verification
+- `php artisan wayfinder:generate --no-interaction`
+- `vendor/bin/pint --dirty`
+- `php artisan test --compact tests/Feature/AdminBroadcastTest.php tests/Feature/AdminTwoFactorTest.php tests/Feature/ImpersonationLogTest.php tests/Feature/WorkspaceRoleTest.php`
+- `php artisan test --compact`
+
+## Sprint 25 — Task 95: Admin Dashboard Analytics Widgets Recovery
+
+### Goal
+Confirm the advanced admin analytics dashboard widgets remain intact and correctly wired after route/security recoveries.
+
+### Scope
+- Validate server-provided analytics props for admin dashboard.
+- Validate superadmin/standard-user/guest access expectations.
+- Confirm chart/metric payload contract used by `admin/dashboard` frontend.
+
+### Technical Steps
+1. Inspect `Admin\DashboardController` metrics/chart payloads for expected fields.
+2. Inspect `resources/js/pages/admin/dashboard.tsx` for widget rendering and contract parity.
+3. Run focused admin dashboard feature tests.
+
+### Verification
+- `php artisan test --compact tests/Feature/Admin/DashboardTest.php`

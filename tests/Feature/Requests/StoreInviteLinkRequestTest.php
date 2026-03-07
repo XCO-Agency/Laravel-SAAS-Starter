@@ -11,7 +11,7 @@ it('has the correct validation rules', function () {
 
     expect($rules)->toHaveKeys(['role', 'max_uses', 'expires_in_days'])
         ->and($rules['role'])->toContain('required')
-        ->and($rules['role'])->toContain('in:admin,member');
+        ->and($rules['role'])->toContain('in:admin,member,viewer');
 });
 
 it('authorizes users who can manage team', function () {

@@ -1,5 +1,152 @@
 # Walkthrough Log
 
+## 2026-03-07 — Sprint 26 / Task 107
+
+Implemented Team invite-link capacity UX synchronization.
+
+### Summary
+- Disabled invite-link creation button in Team UI when `canInvite` is false.
+- Kept the UX aligned with backend seat-limit guards added in prior task.
+- Added feature test coverage validating Team index returns `canInvite=false` at seat limit.
+
+### Verification
+- `php artisan test --compact tests/Feature/Team/TeamManagementTest.php`
+- `vendor/bin/pint --dirty`
+
+## 2026-03-07 — Sprint 26 / Task 106
+
+Implemented invite-link creation seat-limit guard.
+
+### Summary
+- Added backend member-limit check before creating invite links.
+- Prevented creation of links when workspace team-member capacity is reached.
+- Added feature test coverage to verify creation is blocked and no invite-link record is inserted.
+
+### Verification
+- `php artisan test --compact tests/Feature/Team/InviteLinkTest.php`
+- `vendor/bin/pint --dirty`
+
+## 2026-03-07 — Sprint 26 / Task 105
+
+Implemented non-member role-update protection.
+
+### Summary
+- Added backend membership guard in team role update endpoint to reject non-member target users.
+- Ensured role-update requests outside the current workspace return `404` rather than silently succeeding.
+- Added feature test coverage to validate non-member role-update denial behavior.
+
+### Verification
+- `php artisan test --compact tests/Feature/Team/TeamManagementTest.php`
+- `vendor/bin/pint --dirty`
+
+## 2026-03-07 — Sprint 26 / Task 104
+
+Implemented admin granular-permission lock in team management.
+
+### Summary
+- Added backend guard to reject granular permission updates targeting admin-role users.
+- Ensured permission-update endpoint behavior now matches Team UI role constraints (`member` and `viewer` only).
+- Added feature test coverage to verify admin-target permission edits are blocked and persisted admin permissions remain unchanged.
+
+### Verification
+- `php artisan test --compact tests/Feature/Team/TeamManagementTest.php`
+- `vendor/bin/pint --dirty`
+
+## 2026-03-07 — Sprint 26 / Task 103
+
+Implemented self permission-edit protection in team management.
+
+### Summary
+- Added backend guard in team permission update endpoint to reject self-targeted permission mutations.
+- Preserved existing permission whitelist validation and owner protections.
+- Added feature test coverage to verify self-permission updates are blocked and existing permissions remain unchanged.
+
+### Verification
+- `php artisan test --compact tests/Feature/Team/TeamManagementTest.php`
+- `vendor/bin/pint --dirty`
+
+## 2026-03-07 — Sprint 26 / Task 102
+
+Implemented self role-change protection in team role management.
+
+### Summary
+- Added backend safeguard in team role update endpoint to reject self role-change attempts.
+- Kept existing owner-role and role-value validation behavior intact.
+- Added feature test coverage to verify admin self-role change is blocked and role remains unchanged.
+
+### Verification
+- `php artisan test --compact tests/Feature/Team/TeamManagementTest.php`
+- `vendor/bin/pint --dirty`
+
+## 2026-03-07 — Sprint 26 / Task 101
+
+Implemented invite-link seat-limit enforcement.
+
+### Summary
+- Added member-limit enforcement to invite-link join flow using existing `InvitationService::canInvite()` logic.
+- Prevented users from joining via invite links when workspace seat limits are already reached.
+- Added feature test coverage to verify denied joins and unchanged invite-link usage counters.
+
+### Verification
+- `php artisan test --compact tests/Feature/Team/InviteLinkTest.php`
+- `vendor/bin/pint --dirty`
+
+## 2026-03-07 — Sprint 26 / Task 100
+
+Implemented granular permission input guardrails for team permission updates.
+
+### Summary
+- Added server-side whitelist validation for permission update payload entries.
+- Limited accepted permission identifiers to `manage_team`, `manage_billing`, `manage_webhooks`, and `view_activity_logs`.
+- Added feature test coverage for both successful member permission updates and invalid permission rejection.
+
+### Verification
+- `php artisan test --compact tests/Feature/Team/TeamManagementTest.php`
+- `vendor/bin/pint --dirty`
+
+## 2026-03-07 — Sprint 26 / Task 99
+
+Implemented team role action parity and viewer-flow test coverage.
+
+### Summary
+- Replaced Team member role action toggle with explicit transitions for `Promote to Admin`, `Set Role to Member`, and `Set Role to Viewer`.
+- Removed misleading UI path where menu text implied demotion to viewer while request payload promoted to admin.
+- Added team-management feature coverage for owner role update `member -> viewer` and admin role update `viewer -> member`.
+- Added invite-link feature coverage for creating viewer-role links.
+
+### Verification
+- `php artisan test --compact tests/Feature/Team/TeamManagementTest.php tests/Feature/Team/InviteLinkTest.php`
+- `vendor/bin/pint --dirty`
+
+## 2026-03-07 — Sprint 25 / Task 95
+
+Completed admin dashboard analytics widgets recovery validation.
+
+### Summary
+- Verified `Admin\DashboardController` provides expected analytics metrics and chart payloads (`mrr`, `churn_rate`, growth and plan distribution datasets).
+- Verified `admin/dashboard` page continues to render analytics cards/charts with matching prop contracts.
+- Confirmed access-control expectations (guest redirect, non-superadmin forbidden, superadmin success) via focused feature tests.
+
+### Verification
+- `php artisan test --compact tests/Feature/Admin/DashboardTest.php`
+
+## 2026-03-07 — Sprint 25 / Tasks 96-98
+
+Implemented admin security/broadcast recovery and regression stabilization.
+
+### Summary
+- Restored admin 2FA enforcement route (`/admin/2fa-required`) and re-applied `RequireAdminTwoFactor` middleware to protected admin routes.
+- Restored missing admin routes for impersonation logs (`/admin/impersonation-logs`) and broadcasts (`/admin/broadcasts`).
+- Re-added `Impersonation Logs` and `Broadcasts` entries in admin navigation.
+- Re-enabled `viewer` workspace role support in team invite/role update backend validation and frontend selectors.
+- Cleared all previously failing regression tests and confirmed full suite green.
+
+### Verification
+- `php artisan wayfinder:generate --no-interaction`
+- `vendor/bin/pint --dirty`
+- `php artisan test --compact tests/Feature/AdminBroadcastTest.php tests/Feature/AdminTwoFactorTest.php tests/Feature/ImpersonationLogTest.php tests/Feature/WorkspaceRoleTest.php`
+- `php artisan test --compact`
+
 ## 2026-03-07 — Sprint 25 / Task 94
 
 Implemented global support ticket system wiring recovery.

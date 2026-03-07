@@ -149,10 +149,11 @@ class TranslationController extends Controller
      */
     protected function getTranslationsForLocale(string $locale): array
     {
-        $path = $this->getLangPath() . "/{$locale}.json";
+        $path = $this->getLangPath()."/{$locale}.json";
 
         if (File::exists($path)) {
             $content = File::get($path);
+
             return json_decode($content, true) ?? [];
         }
 
@@ -164,7 +165,7 @@ class TranslationController extends Controller
      */
     protected function saveTranslationsForLocale(string $locale, array $translations): void
     {
-        $path = $this->getLangPath() . "/{$locale}.json";
+        $path = $this->getLangPath()."/{$locale}.json";
 
         // Sort keys alphabetically
         ksort($translations);
@@ -177,7 +178,7 @@ class TranslationController extends Controller
      */
     protected function createLocale(string $locale): void
     {
-        $path = $this->getLangPath() . "/{$locale}.json";
+        $path = $this->getLangPath()."/{$locale}.json";
         File::put($path, '{}');
     }
 }

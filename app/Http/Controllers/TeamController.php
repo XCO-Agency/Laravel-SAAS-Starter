@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\PermissionPreset;
 use App\Models\User;
+use App\Models\Workspace;
 use App\Models\WorkspaceInvitation;
 use App\Services\InvitationService;
 use App\Services\WorkspaceService;
@@ -86,7 +87,7 @@ class TeamController extends Controller
 
         $validated = $request->validate([
             'email' => ['required', 'email', 'max:255'],
-            'role' => ['required', Rule::in(['admin', 'member'])],
+            'role' => ['required', Rule::in([Workspace::ROLE_ADMIN, Workspace::ROLE_MEMBER, Workspace::ROLE_VIEWER])],
         ]);
 
         if (! $this->invitationService->canInvite($workspace)) {
@@ -150,8 +151,17 @@ class TeamController extends Controller
         $workspace = $currentUser->currentWorkspace;
         Gate::authorize('manageTeam', $workspace);
 
+        if (! $workspace->hasUser($user)) {
+            abort(404);
+        }
+
+        if ($user->id === $currentUser->id) {
+            return redirect()->back()
+                ->with('error', 'You cannot change your own role.');
+        }
+
         $validated = $request->validate([
-            'role' => ['required', Rule::in(['admin', 'member'])],
+            'role' => ['required', Rule::in([Workspace::ROLE_ADMIN, Workspace::ROLE_MEMBER, Workspace::ROLE_VIEWER])],
         ]);
 
         // Cannot change owner's role
@@ -175,9 +185,21 @@ class TeamController extends Controller
         $workspace = $currentUser->currentWorkspace;
         Gate::authorize('manageTeam', $workspace);
 
+        if ($user->id === $currentUser->id) {
+            return redirect()->back()
+                ->with('error', 'You cannot change your own permissions.');
+        }
+
+        $allowedPermissions = [
+            'manage_team',
+            'manage_billing',
+            'manage_webhooks',
+            'view_activity_logs',
+        ];
+
         $validated = $request->validate([
             'permissions' => ['present', 'array'],
-            'permissions.*' => ['string'],
+            'permissions.*' => ['string', Rule::in($allowedPermissions)],
         ]);
 
         if (! $workspace->hasUser($user)) {
@@ -186,6 +208,10 @@ class TeamController extends Controller
 
         if ($workspace->userIsOwner($user)) {
             return redirect()->back()->with('error', 'Cannot modify the permissions of the workspace owner.');
+        }
+
+        if ($workspace->userIsAdmin($user)) {
+            return redirect()->back()->with('error', 'Cannot modify granular permissions for admin users.');
         }
 
         $workspace->users()->updateExistingPivot($user->id, [

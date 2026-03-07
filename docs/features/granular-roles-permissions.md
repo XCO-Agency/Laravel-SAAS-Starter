@@ -29,6 +29,13 @@ Role defaults remain intact:
 - Invite-link revoke authorization now checks `manageTeam` via policy (`WorkspaceInviteLinkController@destroy`).
 - Permission-granted members (`manage_team`) can create/revoke invite links without requiring admin role.
 - Team permission management UI is grouped into clear access domains (Team Access, Billing Access, Operations Access) with more explicit capability labels.
+- Team member role actions now use explicit transitions (set to `admin`, `member`, or `viewer`) instead of a toggle action, preventing mismatch between action label and submitted role.
+- Viewer role support is now explicitly covered in team role update and invite-link creation tests.
+- Team permission update requests now enforce a strict backend whitelist for supported permission IDs to prevent invalid capability values from being stored.
+- Team role updates now reject self role-change attempts at the backend, matching the frontend safety behavior and preventing direct-request bypass.
+- Team permission updates now reject self-permission edit attempts at the backend, aligning with frontend UX safeguards and preventing direct-request bypass.
+- Team permission updates now reject admin-role targets at the backend to keep granular capability editing scoped to `member` and `viewer`, matching the Team UI contract.
+- Team role updates now enforce workspace membership at the backend and return `404` for non-member targets, preventing cross-workspace role-mutation attempts.
 
 ## Demo Data
 

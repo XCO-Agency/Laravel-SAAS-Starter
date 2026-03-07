@@ -3,9 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -17,7 +15,7 @@ class LogViewerController extends Controller
     public function index(): Response
     {
         $files = collect(File::files(storage_path('logs')))
-            ->filter(fn($file) => $file->getExtension() === 'log')
+            ->filter(fn ($file) => $file->getExtension() === 'log')
             ->map(function ($file) {
                 return [
                     'name' => $file->getFilename(),
@@ -45,9 +43,9 @@ class LogViewerController extends Controller
             abort(403);
         }
 
-        $path = storage_path('logs/' . $file);
+        $path = storage_path('logs/'.$file);
 
-        if (!File::exists($path)) {
+        if (! File::exists($path)) {
             abort(404, 'Log file not found.');
         }
 
@@ -56,7 +54,7 @@ class LogViewerController extends Controller
 
         // Get list of all log files to render the sidebar
         $files = collect(File::files(storage_path('logs')))
-            ->filter(fn($f) => $f->getExtension() === 'log')
+            ->filter(fn ($f) => $f->getExtension() === 'log')
             ->map(function ($f) {
                 return [
                     'name' => $f->getFilename(),
@@ -87,7 +85,7 @@ class LogViewerController extends Controller
             abort(403);
         }
 
-        $path = storage_path('logs/' . $file);
+        $path = storage_path('logs/'.$file);
 
         if (File::exists($path)) {
             File::delete($path);
@@ -105,9 +103,9 @@ class LogViewerController extends Controller
             abort(403);
         }
 
-        $path = storage_path('logs/' . $file);
+        $path = storage_path('logs/'.$file);
 
-        if (!File::exists($path)) {
+        if (! File::exists($path)) {
             abort(404, 'Log file not found.');
         }
 
@@ -127,7 +125,7 @@ class LogViewerController extends Controller
 
         $bytes /= (1 << (10 * $pow));
 
-        return round($bytes, 2) . ' ' . $units[$pow];
+        return round($bytes, 2).' '.$units[$pow];
     }
 
     /**

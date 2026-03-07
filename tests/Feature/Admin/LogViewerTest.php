@@ -10,7 +10,7 @@ beforeEach(function () {
 
     // Create a dummy log file for testing
     $this->dummyLogPath = storage_path('logs/test-dummy.log');
-    $this->dummyLogContent = <<<LOG
+    $this->dummyLogContent = <<<'LOG'
 [2023-01-01 12:00:00] local.INFO: Application started
 [2023-01-01 12:05:00] local.ERROR: Something went wrong
 Stack trace:
@@ -35,7 +35,7 @@ it('allows superadmin to view the log file list', function () {
 
     $response->assertSuccessful();
     $response->assertInertia(
-        fn($page) => $page
+        fn ($page) => $page
             ->component('admin/logs')
             ->has('files')
     );
@@ -46,7 +46,7 @@ it('allows superadmin to view a specific log file', function () {
 
     $response->assertSuccessful();
     $response->assertInertia(
-        fn($page) => $page
+        fn ($page) => $page
             ->component('admin/logs')
             ->where('currentFile.name', 'test-dummy.log')
             ->has('logs', 2)

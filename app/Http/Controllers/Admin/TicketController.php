@@ -25,7 +25,7 @@ class TicketController extends Controller
 
         // Search by subject
         if ($request->filled('search')) {
-            $query->where('subject', 'like', '%' . $request->search . '%');
+            $query->where('subject', 'like', '%'.$request->search.'%');
         }
 
         $tickets = $query->latest()->paginate(20)->withQueryString();

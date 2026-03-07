@@ -29,7 +29,7 @@ class StoreInviteLinkRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'role' => ['required', 'string', 'in:admin,member'],
+            'role' => ['required', 'string', 'in:admin,member,viewer'],
             'max_uses' => ['nullable', 'integer', 'min:1', 'max:1000'],
             'expires_in_days' => ['nullable', 'integer', 'min:1', 'max:90'],
         ];

@@ -3,8 +3,13 @@
 use App\Models\User;
 use App\Models\Workspace;
 use App\Models\WorkspaceInviteLink;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+
+uses(RefreshDatabase::class);
 
 beforeEach(function () {
+    config(['billing.plans.free.limits.team_members' => 5]);
+
     $this->owner = User::factory()->create();
     $this->workspace = Workspace::factory()->create(['owner_id' => $this->owner->id]);
     $this->workspace->addUser($this->owner, 'owner');
@@ -77,6 +82,40 @@ describe('Invite Link Creation', function () {
                 'role' => 'invalid-role',
             ])
             ->assertSessionHasErrors('role');
+    });
+
+    it('allows creating invite link with viewer role', function () {
+        $this->actingAs($this->owner)
+            ->post('/team/invite-links', [
+                'role' => 'viewer',
+                'max_uses' => 5,
+            ])
+            ->assertRedirect()
+            ->assertSessionHas('success');
+
+        $this->assertDatabaseHas('workspace_invite_links', [
+            'workspace_id' => $this->workspace->id,
+            'created_by' => $this->owner->id,
+            'role' => 'viewer',
+            'max_uses' => 5,
+        ]);
+    });
+
+    it('prevents creating invite link when member limit is reached', function () {
+        config(['billing.plans.free.limits.team_members' => 1]);
+
+        $this->actingAs($this->owner)
+            ->post('/team/invite-links', [
+                'role' => 'member',
+            ])
+            ->assertRedirect()
+            ->assertSessionHas('error');
+
+        $this->assertDatabaseMissing('workspace_invite_links', [
+            'workspace_id' => $this->workspace->id,
+            'created_by' => $this->owner->id,
+            'role' => 'member',
+        ]);
     });
 });
 
@@ -201,5 +240,27 @@ describe('Joining via Invite Link', function () {
 
         $this->post("/join/{$link->token}")
             ->assertRedirect('/login');
+    });
+
+    it('prevents joining when workspace member limit is reached', function () {
+        config(['billing.plans.free.limits.team_members' => 1]);
+
+        $link = WorkspaceInviteLink::generateLink($this->workspace, $this->owner);
+        $newUser = User::factory()->create();
+
+        $personalWorkspace = Workspace::factory()->create([
+            'owner_id' => $newUser->id,
+            'personal_workspace' => true,
+        ]);
+        $personalWorkspace->addUser($newUser, 'owner');
+        $newUser->switchWorkspace($personalWorkspace);
+
+        $this->actingAs($newUser)
+            ->post("/join/{$link->token}")
+            ->assertRedirect("/join/{$link->token}")
+            ->assertSessionHas('error');
+
+        expect($this->workspace->fresh()->hasUser($newUser))->toBeFalse();
+        expect($link->fresh()->uses_count)->toBe(0);
     });
 });
