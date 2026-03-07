@@ -3,6 +3,7 @@ import { Head, router } from '@inertiajs/react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -12,6 +13,8 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import {
+    CheckCircle,
+    Download,
     MoreHorizontal,
     RotateCcw,
     Search,
@@ -20,6 +23,8 @@ import {
     Trash2,
     UserCog,
     Users,
+    XCircle,
+    MonitorSmartphone,
 } from 'lucide-react';
 import { useState, type FormEvent } from 'react';
 
@@ -53,6 +58,7 @@ interface AdminUsersProps {
 
 export default function AdminUsers({ users, filters }: AdminUsersProps) {
     const [search, setSearch] = useState(filters.search || '');
+    const [selectedIds, setSelectedIds] = useState<number[]>([]);
 
     const handleSearch = (e: FormEvent) => {
         e.preventDefault();
@@ -78,6 +84,64 @@ export default function AdminUsers({ users, filters }: AdminUsersProps) {
         if (confirm(`Restore ${user.name}?`)) {
             router.post(`/admin/users/${user.id}/restore`, {}, { preserveScroll: true });
         }
+    };
+
+    const toggleSelect = (id: number) => {
+        setSelectedIds(prev =>
+            prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id],
+        );
+    };
+
+    const toggleSelectAll = () => {
+        if (selectedIds.length === users.data.length) {
+            setSelectedIds([]);
+        } else {
+            setSelectedIds(users.data.map(u => u.id));
+        }
+    };
+
+    const bulkVerifyEmail = () => {
+        if (confirm(`Verify email for ${selectedIds.length} selected user(s)?`)) {
+            router.post('/admin/users/bulk-verify-email', { user_ids: selectedIds }, {
+                preserveScroll: true,
+                onSuccess: () => setSelectedIds([]),
+            });
+        }
+    };
+
+    const bulkSuspend = () => {
+        if (confirm(`Suspend ${selectedIds.length} selected user(s)? They can be restored later.`)) {
+            router.post('/admin/users/bulk-suspend', { user_ids: selectedIds }, {
+                preserveScroll: true,
+                onSuccess: () => setSelectedIds([]),
+            });
+        }
+    };
+
+    const bulkExport = () => {
+        // Use a form submission for file download
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '/admin/users/bulk-export';
+
+        const csrfMeta = document.querySelector('meta[name="csrf-token"]');
+        const csrfInput = document.createElement('input');
+        csrfInput.type = 'hidden';
+        csrfInput.name = '_token';
+        csrfInput.value = csrfMeta?.getAttribute('content') ?? '';
+        form.appendChild(csrfInput);
+
+        selectedIds.forEach(id => {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'user_ids[]';
+            input.value = String(id);
+            form.appendChild(input);
+        });
+
+        document.body.appendChild(form);
+        form.submit();
+        document.body.removeChild(form);
     };
 
     return (
@@ -110,10 +174,47 @@ export default function AdminUsers({ users, filters }: AdminUsersProps) {
                     </form>
                 </div>
 
+                {/* Bulk Actions Toolbar */}
+                {selectedIds.length > 0 && (
+                    <div className="flex items-center gap-3 rounded-lg border bg-muted/50 px-4 py-2">
+                        <span className="text-sm font-medium">
+                            {selectedIds.length} selected
+                        </span>
+                        <div className="flex items-center gap-2">
+                            <Button size="sm" variant="outline" onClick={bulkVerifyEmail}>
+                                <CheckCircle className="mr-1.5 h-3.5 w-3.5" />
+                                Verify Email
+                            </Button>
+                            <Button size="sm" variant="outline" onClick={bulkExport}>
+                                <Download className="mr-1.5 h-3.5 w-3.5" />
+                                Export CSV
+                            </Button>
+                            <Button size="sm" variant="destructive" onClick={bulkSuspend}>
+                                <XCircle className="mr-1.5 h-3.5 w-3.5" />
+                                Suspend
+                            </Button>
+                        </div>
+                        <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => setSelectedIds([])}
+                            className="ml-auto text-xs"
+                        >
+                            Clear
+                        </Button>
+                    </div>
+                )}
+
                 <div className="rounded-xl border bg-card text-card-foreground shadow overflow-hidden">
                     <table className="w-full text-sm text-left">
                         <thead className="bg-muted/50 text-muted-foreground uppercase text-xs">
                             <tr>
+                                <th className="w-12 px-4 py-3">
+                                    <Checkbox
+                                        checked={users.data.length > 0 && selectedIds.length === users.data.length}
+                                        onCheckedChange={toggleSelectAll}
+                                    />
+                                </th>
                                 <th className="px-6 py-3 font-medium">User</th>
                                 <th className="px-6 py-3 font-medium">Email</th>
                                 <th className="px-6 py-3 font-medium">Status</th>
@@ -124,13 +225,19 @@ export default function AdminUsers({ users, filters }: AdminUsersProps) {
                         <tbody className="divide-y divide-border">
                             {users.data.length === 0 ? (
                                 <tr>
-                                    <td colSpan={5} className="px-6 py-12 text-center text-muted-foreground">
+                                    <td colSpan={6} className="px-6 py-12 text-center text-muted-foreground">
                                         No users found matching your search.
                                     </td>
                                 </tr>
                             ) : (
                                 users.data.map(user => (
-                                    <tr key={user.id} className={`transition-colors ${user.deleted_at ? 'opacity-50 bg-destructive/5' : 'hover:bg-muted/50'}`}>
+                                    <tr key={user.id} className={`transition-colors ${user.deleted_at ? 'opacity-50 bg-destructive/5' : selectedIds.includes(user.id) ? 'bg-primary/5' : 'hover:bg-muted/50'}`}>
+                                        <td className="px-4 py-4">
+                                            <Checkbox
+                                                checked={selectedIds.includes(user.id)}
+                                                onCheckedChange={() => toggleSelect(user.id)}
+                                            />
+                                        </td>
                                         <td className="px-6 py-4">
                                             <div className="flex items-center gap-3">
                                                 <Avatar className="h-8 w-8">
@@ -193,6 +300,12 @@ export default function AdminUsers({ users, filters }: AdminUsersProps) {
                                                         >
                                                             <UserCog className="mr-2 h-4 w-4" />
                                                             Impersonate
+                                                        </DropdownMenuItem>
+                                                        <DropdownMenuItem
+                                                            onClick={() => router.get(`/admin/users/${user.id}/sessions`)}
+                                                        >
+                                                            <MonitorSmartphone className="mr-2 h-4 w-4" />
+                                                            Manage Sessions
                                                         </DropdownMenuItem>
                                                         <DropdownMenuSeparator />
                                                         <DropdownMenuItem

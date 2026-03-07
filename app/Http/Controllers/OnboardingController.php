@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\OnboardingStepLog;
 use App\Services\WorkspaceService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -20,7 +22,29 @@ class OnboardingController extends Controller
             return redirect()->route('dashboard');
         }
 
+        // Log the welcome step view
+        $this->logStep($request->user()->id, 'welcome', 'viewed');
+
         return Inertia::render('onboarding/wizard');
+    }
+
+    /**
+     * Track an onboarding step event from the frontend.
+     */
+    public function trackStep(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'step' => ['required', 'string', 'in:welcome,workspace,plan'],
+            'action' => ['required', 'string', 'in:viewed,completed'],
+        ]);
+
+        $this->logStep(
+            $request->user()->id,
+            $validated['step'],
+            $validated['action'],
+        );
+
+        return response()->json(['success' => true]);
     }
 
     /**
@@ -52,6 +76,9 @@ class OnboardingController extends Controller
             'onboarded_at' => now(),
         ])->save();
 
+        // 3. Log onboarding completion
+        $this->logStep($user->id, 'plan', 'completed');
+
         $selectedPlan = $validated['onboarding_plan'] ?? 'free';
         $selectedBillingPeriod = $validated['onboarding_billing_period'] ?? null;
 
@@ -66,5 +93,17 @@ class OnboardingController extends Controller
 
         return redirect()->route('dashboard')
             ->with('success', 'Welcome! Your workspace is ready.');
+    }
+
+    /**
+     * Log an onboarding step event if not already logged.
+     */
+    private function logStep(int $userId, string $step, string $action): void
+    {
+        OnboardingStepLog::firstOrCreate([
+            'user_id' => $userId,
+            'step' => $step,
+            'action' => $action,
+        ]);
     }
 }

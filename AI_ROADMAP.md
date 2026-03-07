@@ -23,14 +23,26 @@ The AI agent is now continually managing and executing the roadmap autonomously.
 - **Stack**: Laravel 12, Inertia.js v2, React 19, Tailwind CSS v4, Stripe Cashier, Fortify.
 - **Completed Features**: Auth, 2FA, Workspaces, Teams, Stripe Billing, i18n, Dark Mode, Super Admin Panel, Feature Flags (Pennant), Announcements, Audit Logs, Command Palette.
 
-## 🚀 Active Sprint 22: Communication & Conversion Reliability
+## 🚀 Active Sprint 24: Advanced Integrations & UX
 
-- [ ] **Task 79**: Notification Delivery Analytics — Track per-channel delivery counts for email vs in-app notifications to monitor preference impact.
-- [ ] **Task 80**: Onboarding Completion Insights — Capture and display where users drop off in onboarding steps.
-- [ ] **Task 81**: Billing Reminder Notifications — Send proactive reminders for trial ending and renewal windows.
-- [ ] **Task 82**: Permission Preset Templates — Add reusable capability presets for common member responsibilities.
+- [x] **Task 87**: Admin System Notifications — In-app notification system for super-admins about critical events (failed webhooks, subscription cancellations, system errors). ✅ (19 tests, 160 assertions)
+- [x] **Task 88**: Workspace Data Import (CSV) — Allow workspace owners to bulk import team members via CSV upload with role assignment. ✅ (18 tests, 173 assertions)
+- [x] **Task 89**: API Rate Limiting Dashboard — Per-workspace dashboard showing API key usage rates, throttled requests, and rate limit configuration. *(18 tests, 211 assertions)*
+- [x] **Task 90**: User Session Management for Admins — Allow super-admins to view and terminate active user sessions from the admin panel. *(4 tests, 22 assertions)*
+- [x] **Task 91**: Admin Application Log Viewer — Controller and UI for viewing, filtering, downloading, and deleting Laravel log files, restricted to super-admins. *(6 tests, 40 assertions)*
+- [x] **Task 92**: User API Key Management UI — Allow users to generate, view, and revoke personal API keys from their account settings. *(5 tests, 24 assertions)*
+
+## 🚀 Active Sprint 25: Admin Configuration & Growth
+
+- [x] **Task 93**: Localization Management UI — Admin dashboard to view, edit, and save translation strings across supported JSON language files natively without requiring a code deployment.
+- [ ] **Task 94**: Global Support Ticket System — Allow users to submit support tickets, and provide a super-admin interface to manage, reply to, and close tickets.
+- [ ] **Task 95**: Admin Dashboard Analytics Widgets — A visual dashboard in the admin panel displaying MRR, user growth, churn, and active workspaces using Recharts.
 
 ## 🏁 Completed Sprints
+
+- **Sprint 23**: Operational Excellence & Growth (Admin Revenue Analytics, Admin Bulk User Actions, Workspace Member Activity Report, Workspace Analytics Dashboard).
+
+- **Sprint 22**: Communication & Conversion Reliability (Notification Delivery Analytics, Onboarding Completion Insights, Billing Reminder Notifications, Permission Preset Templates).
 
 - **Sprint 21**: Permissions Deepening & Onboarding Quality (Granular Team Permission Parity, Permission Matrix UI Polish, Onboarding Billing Step, Notification Channel Preferences).
 
@@ -53,6 +65,16 @@ The AI agent is now continually managing and executing the roadmap autonomously.
 
 ## 📝 Changelog
 
+- **2026-03-07**: Task 93 (Localization Management UI): Added TranslationController, admin UI (`translations.tsx`), and tests to directly edit and create translation JSON files dynamically. 7 tests/39 assertions.
+- **2026-03-06**: Task 90 (User Session Management for Admins): Controller and admin UI for viewing and terminating remote user sessions directly from the user management screen, 4 tests/22 assertions.
+- **2026-03-05**: Sprint 22 complete. Task 82 (Permission Preset Templates): admin CRUD for reusable permission bundles, preset selector in team permissions dialog, 4 default presets seeded, 13 tests/54 assertions.
+- **2026-03-05**: Task 83 (Admin Revenue Analytics): admin dashboard with MRR calculation, churn rate, trial conversion rate, plan distribution, subscription flow chart, revenue-by-plan breakdown, status alerts, 12 tests/149 assertions.
+- **2026-03-05**: Task 84 (Admin Bulk User Actions): checkbox selection on admin users page, bulk verify email, bulk suspend with self-exclusion, CSV export with streamed download, 10 tests/27 assertions.
+- **2026-03-05**: Task 85 (Workspace Member Activity Report): per-member engagement dashboard with login frequency, action counts, engagement scores (0-100), online/recent/inactive status detection, 14-day daily activity chart, settings layout integration, 13 tests/128 assertions.
+- **2026-03-05**: Task 86 (Workspace Analytics Dashboard): per-workspace usage metrics with member growth (6mo chart), API key usage listing, webhook delivery stats (success/failed/pending), 8-week activity volume chart, recent activity feed, settings layout integration, 10 tests/123 assertions.
+- **2026-03-05**: Task 81 (Billing Reminder Notifications): TrialEndingNotification and SubscriptionRenewalNotification with channel/category preference respect, app:send-billing-reminders artisan command scheduled daily at 09:00 UTC, deduplication via billing_reminder_logs table, 19 tests/53 assertions.
+- **2026-03-05**: Task 80 (Onboarding Completion Insights): admin funnel dashboard showing per-step viewed/completed unique counts, drop-off analysis with severity coloring, daily completions chart, average completion time; frontend step tracking via router.post, 9 tests/76 assertions.
+- **2026-03-05**: Task 79 (Notification Delivery Analytics): admin dashboard for per-channel email/in_app delivery metrics, daily stacked chart, category breakdown, type table, week-over-week trend; LogNotificationDelivery listener on NotificationSent event, 9 tests/92 assertions.
 - **2026-03-05**: Sprint 21 complete. Task 78 (Notification Channel Preferences): added per-channel toggles for email and in-app delivery, normalized legacy preference payloads to channels/categories schema, updated notification delivery logic for `DataExportCompleted`, and added feature/unit coverage for channel behavior.
 - **2026-03-05**: Task 77 complete. Onboarding wizard now includes an optional plan-selection step; paid-intent users are redirected to billing plans with recommendation query params and contextual onboarding guidance.
 - **2026-03-05**: Task 76 complete. Team permission matrix UI now groups capabilities by access domain (Team, Billing, Operations) with clearer labels/descriptions while preserving existing permission IDs and backend policy behavior.

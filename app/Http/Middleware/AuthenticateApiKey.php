@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\ApiRequestLog;
 use App\Models\WorkspaceApiKey;
 use Closure;
 use Illuminate\Http\Request;
@@ -43,6 +44,25 @@ class AuthenticateApiKey
         $request->attributes->set('workspace', $apiKey->workspace);
         $request->attributes->set('api_key', $apiKey);
 
-        return $next($request);
+        $startTime = microtime(true);
+
+        $response = $next($request);
+
+        // Log API request
+        $responseTime = (int) round((microtime(true) - $startTime) * 1000);
+
+        ApiRequestLog::create([
+            'workspace_id' => $apiKey->workspace_id,
+            'api_key_id' => $apiKey->id,
+            'method' => $request->method(),
+            'path' => $request->path(),
+            'status_code' => $response->getStatusCode(),
+            'response_time_ms' => $responseTime,
+            'was_throttled' => $response->getStatusCode() === 429,
+            'ip_address' => $request->ip(),
+            'requested_at' => now(),
+        ]);
+
+        return $response;
     }
 }

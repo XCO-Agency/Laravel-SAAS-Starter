@@ -16,6 +16,8 @@ class LogNotificationDelivery
         'App\Notifications\DataExportCompleted' => 'security',
         'App\Notifications\TeamInvitationNotification' => 'team',
         'App\Notifications\MagicLinkNotification' => 'security',
+        'App\Notifications\TrialEndingNotification' => 'billing',
+        'App\Notifications\SubscriptionRenewalNotification' => 'billing',
     ];
 
     /**

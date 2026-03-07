@@ -105,6 +105,13 @@ const AVAILABLE_PERMISSION_GROUPS = [
     },
 ];
 
+interface PermissionPreset {
+    id: number;
+    name: string;
+    description: string | null;
+    permissions: string[];
+}
+
 interface TeamIndexProps {
     workspace: Workspace;
     members: TeamMember[];
@@ -113,6 +120,7 @@ interface TeamIndexProps {
     userRole: WorkspaceRole;
     canInvite: boolean;
     memberLimitMessage: string;
+    permissionPresets: PermissionPreset[];
 }
 
 const breadcrumbs: BreadcrumbItem[] = [{ title: 'Team', href: '/team' }];
@@ -125,6 +133,7 @@ export default function TeamIndex({
     userRole,
     canInvite,
     memberLimitMessage,
+    permissionPresets = [],
 }: TeamIndexProps) {
     const [inviteOpen, setInviteOpen] = useState(false);
     const [linkDialogOpen, setLinkDialogOpen] = useState(false);
@@ -787,6 +796,27 @@ export default function TeamIndex({
                                     </DialogDescription>
                                 </DialogHeader>
                                 <div className="space-y-4 py-4">
+                                    {permissionPresets.length > 0 && (
+                                        <div className="space-y-2">
+                                            <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                                                Apply Preset
+                                            </p>
+                                            <div className="flex flex-wrap gap-2">
+                                                {permissionPresets.map((preset) => (
+                                                    <Button
+                                                        key={preset.id}
+                                                        type="button"
+                                                        variant="outline"
+                                                        size="sm"
+                                                        onClick={() => setPermissionsData('permissions', [...preset.permissions])}
+                                                        title={preset.description || undefined}
+                                                    >
+                                                        {preset.name}
+                                                    </Button>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
                                     {AVAILABLE_PERMISSION_GROUPS.map((group) => (
                                         <div key={group.id} className="space-y-2">
                                             <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">

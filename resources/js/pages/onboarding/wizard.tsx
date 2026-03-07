@@ -1,4 +1,4 @@
-import { Head, useForm, usePage } from '@inertiajs/react';
+import { Head, router, useForm, usePage } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -14,6 +14,10 @@ import { Building2, CheckCircle, ChevronRight, Store } from 'lucide-react';
 import { useState } from 'react';
 import AppLogo from '@/components/app-logo';
 import { SharedData } from '@/types';
+
+const trackStep = (step: string, action: string) => {
+    router.post('/onboarding/track-step', { step, action }, { preserveState: true, preserveScroll: true });
+};
 
 export default function OnboardingWizard() {
     const { auth } = usePage<SharedData>().props;
@@ -31,10 +35,14 @@ export default function OnboardingWizard() {
     };
 
     const nextStep = () => {
+        trackStep('welcome', 'completed');
+        trackStep('workspace', 'viewed');
         setStep(2);
     };
 
     const nextToBillingStep = () => {
+        trackStep('workspace', 'completed');
+        trackStep('plan', 'viewed');
         setStep(3);
     };
 

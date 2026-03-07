@@ -157,7 +157,7 @@ For a comprehensive review of the project's internal architecture, component str
 [2FA Enforcement](./docs/features/2fa-enforcement.md) | [GDPR Data Export](./docs/features/gdpr-data-export.md) | [Account Deletion](./docs/features/account-deletion.md) | [Security](./docs/features/security.md)
 
 **API & Integrations**
-[Workspace API Keys](./docs/features/workspace-api-keys.md) | [API Authentication](./docs/features/api-authentication.md) | [API Documentation](./docs/features/api-documentation.md)
+[Workspace API Keys](./docs/features/workspace-api-keys.md) | [API Authentication](./docs/features/api-authentication.md) | [API Documentation](./docs/features/api-documentation.md) | [API Usage Dashboard](./docs/features/api-usage-dashboard.md)
 
 **Frontend**
 [Internationalization](./docs/features/internationalization.md) | [UI & Theming](./docs/features/ui-and-theming.md)

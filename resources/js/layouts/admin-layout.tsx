@@ -2,12 +2,16 @@ import { ImpersonationBanner } from '@/components/impersonation-banner';
 import { Link } from '@inertiajs/react';
 import {
     Activity,
+    AlertTriangle,
     ArrowLeft,
     BarChart3,
     Bell,
     Building2,
     Clock,
+    Compass,
+    DollarSign,
     Globe,
+    KeyRound,
     LayoutDashboard,
     ListChecks,
     Megaphone,
@@ -18,6 +22,7 @@ import {
     ToggleLeft,
     Users,
     Mail,
+    Terminal,
 } from 'lucide-react';
 import { type PropsWithChildren } from 'react';
 import { cn } from '@/lib/utils';
@@ -26,7 +31,9 @@ const adminNav = [
     { title: 'Overview', href: '/admin/dashboard', icon: LayoutDashboard },
     { title: 'Users', href: '/admin/users', icon: Users },
     { title: 'User Analytics', href: '/admin/user-analytics', icon: BarChart3 },
+    { title: 'Revenue', href: '/admin/revenue-analytics', icon: DollarSign },
     { title: 'Notifications', href: '/admin/notification-analytics', icon: Bell },
+    { title: 'Onboarding', href: '/admin/onboarding-insights', icon: Compass },
     { title: 'Workspaces', href: '/admin/workspaces', icon: Building2 },
     { title: 'Feature Flags', href: '/admin/feature-flags', icon: ToggleLeft },
     { title: 'Audit Logs', href: '/admin/audit-logs', icon: ScrollText },
@@ -38,7 +45,11 @@ const adminNav = [
     { title: 'Changelog', href: '/admin/changelog', icon: ListChecks },
     { title: 'Scheduled Tasks', href: '/admin/scheduled-tasks', icon: Clock },
     { title: 'SEO', href: '/admin/seo', icon: Globe },
+    { title: 'Permissions', href: '/admin/permission-presets', icon: KeyRound },
+    { title: 'System Alerts', href: '/admin/system-notifications', icon: AlertTriangle },
     { title: 'Maintenance', href: '/admin/maintenance', icon: Power },
+    { title: 'System Logs', href: '/admin/logs', icon: Terminal },
+    { title: 'Translations', href: '/admin/translations', icon: Globe },
 ];
 
 export default function AdminLayout({

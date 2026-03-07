@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PermissionPreset;
 use App\Models\User;
 use App\Models\WorkspaceInvitation;
 use App\Services\InvitationService;
@@ -70,6 +71,7 @@ class TeamController extends Controller
             'userRole' => $workspace->getUserRole($user),
             'canInvite' => $this->invitationService->canInvite($workspace),
             'memberLimitMessage' => $this->invitationService->getMemberLimitMessage($workspace),
+            'permissionPresets' => PermissionPreset::query()->orderBy('name')->get(['id', 'name', 'description', 'permissions']),
         ]);
     }
 

@@ -3,9 +3,11 @@
 use App\Http\Controllers\BillingController;
 use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\LocaleController;
+use App\Http\Controllers\MemberActivityController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\StripeWebhookController;
 use App\Http\Controllers\TeamController;
+use App\Http\Controllers\TeamImportController;
 use App\Http\Controllers\WorkspaceController;
 use App\Http\Controllers\WorkspaceInviteLinkController;
 use Illuminate\Support\Facades\Route;
@@ -76,11 +78,15 @@ Route::middleware(['auth', 'verified', 'onboarded', 'workspace', 'require2fa', '
         Route::delete('/trash/{workspace}', [\App\Http\Controllers\WorkspaceTrashController::class, 'forceDelete'])->name('trash.force-delete');
 
         Route::get('/{workspace}/activity', [\App\Http\Controllers\WorkspaceActivityController::class, 'index'])->name('activity');
+        Route::get('/analytics', [\App\Http\Controllers\WorkspaceAnalyticsController::class, 'index'])->name('analytics');
 
         // Workspace API Keys
         Route::get('/api-keys', [\App\Http\Controllers\WorkspaceApiKeyController::class, 'index'])->name('api-keys.index');
         Route::post('/api-keys', [\App\Http\Controllers\WorkspaceApiKeyController::class, 'store'])->name('api-keys.store');
         Route::delete('/api-keys/{id}', [\App\Http\Controllers\WorkspaceApiKeyController::class, 'destroy'])->name('api-keys.destroy');
+
+        // API Usage Dashboard
+        Route::get('/api-usage', [\App\Http\Controllers\ApiUsageController::class, 'index'])->name('api-usage.index');
 
         // Webhook routes
         Route::prefix('{workspace}/webhooks')->name('webhooks.')->group(function () {
@@ -103,6 +109,12 @@ Route::middleware(['auth', 'verified', 'onboarded', 'workspace', 'require2fa', '
         Route::put('/members/{user}/permissions', [TeamController::class, 'updatePermissions'])->name('update-permissions');
         Route::post('/transfer-ownership/{user}', [TeamController::class, 'transferOwnership'])->name('transfer-ownership');
         Route::delete('/invitations/{invitation}', [TeamController::class, 'cancelInvitation'])->name('cancel-invitation');
+        Route::get('/activity-report', [MemberActivityController::class, 'index'])->name('activity-report');
+
+        // CSV Import
+        Route::get('/import', [TeamImportController::class, 'index'])->name('import');
+        Route::post('/import/preview', [TeamImportController::class, 'preview'])->name('import.preview');
+        Route::post('/import/process', [TeamImportController::class, 'process'])->name('import.process');
 
         // Invite Links
         Route::post('/invite-links', [WorkspaceInviteLinkController::class, 'store'])->name('invite-links.store');
@@ -162,6 +174,7 @@ Route::middleware(['auth'])->group(function () {
     // Onboarding Sequences (Exempt from onboarded check)
     Route::get('/onboarding', [\App\Http\Controllers\OnboardingController::class, 'index'])->name('onboarding.index');
     Route::post('/onboarding', [\App\Http\Controllers\OnboardingController::class, 'store'])->name('onboarding.store');
+    Route::post('/onboarding/track-step', [\App\Http\Controllers\OnboardingController::class, 'trackStep'])->name('onboarding.track-step');
 
     Route::middleware(['onboarded'])->group(function () {
         Route::get('/notifications', [NotificationController::class, 'page'])->name('notifications.page');
@@ -201,7 +214,7 @@ Route::middleware('guest')->group(function () {
         ->where('provider', 'github|google');
 });
 
-require __DIR__.'/settings.php';
+require __DIR__ . '/settings.php';
 
 // Admin routes
 Route::middleware(['auth', 'superadmin'])->prefix('admin')->name('admin.')->group(function () {
@@ -213,6 +226,20 @@ Route::middleware(['auth', 'superadmin'])->prefix('admin')->name('admin.')->grou
     Route::put('/users/{user}', [\App\Http\Controllers\Admin\UserController::class, 'update'])->name('users.update');
     Route::delete('/users/{user}', [\App\Http\Controllers\Admin\UserController::class, 'destroy'])->name('users.destroy');
     Route::post('/users/{user}/restore', [\App\Http\Controllers\Admin\UserController::class, 'restore'])->name('users.restore');
+    Route::post('/users/bulk-verify-email', [\App\Http\Controllers\Admin\UserController::class, 'bulkVerifyEmail'])->name('users.bulk-verify-email');
+    Route::post('/users/bulk-suspend', [\App\Http\Controllers\Admin\UserController::class, 'bulkSuspend'])->name('users.bulk-suspend');
+    Route::post('/users/bulk-export', [\App\Http\Controllers\Admin\UserController::class, 'bulkExport'])->name('users.bulk-export');
+
+    // User Sessions
+    Route::get('/users/{user}/sessions', [\App\Http\Controllers\Admin\UserSessionController::class, 'index'])->name('users.sessions.index');
+    Route::delete('/users/{user}/sessions/{id}', [\App\Http\Controllers\Admin\UserSessionController::class, 'destroy'])->name('users.sessions.destroy');
+    Route::delete('/users/{user}/sessions', [\App\Http\Controllers\Admin\UserSessionController::class, 'destroyAll'])->name('users.sessions.destroy-all');
+
+    // System Logs
+    Route::get('/logs', [\App\Http\Controllers\Admin\LogViewerController::class, 'index'])->name('logs.index');
+    Route::get('/logs/{file}/download', [\App\Http\Controllers\Admin\LogViewerController::class, 'download'])->name('logs.download')->where('file', '.*');
+    Route::get('/logs/{file}', [\App\Http\Controllers\Admin\LogViewerController::class, 'show'])->name('logs.show')->where('file', '.*');
+    Route::delete('/logs/{file}', [\App\Http\Controllers\Admin\LogViewerController::class, 'destroy'])->name('logs.destroy')->where('file', '.*');
 
     // Workspace Management
     Route::get('/workspaces', [\App\Http\Controllers\Admin\WorkspaceController::class, 'index'])->name('workspaces.index');
@@ -277,6 +304,30 @@ Route::middleware(['auth', 'superadmin'])->prefix('admin')->name('admin.')->grou
     // User Analytics
     Route::get('/user-analytics', [\App\Http\Controllers\Admin\UserAnalyticsController::class, 'index'])->name('user-analytics.index');
 
+    // Revenue Analytics
+    Route::get('/revenue-analytics', [\App\Http\Controllers\Admin\RevenueAnalyticsController::class, 'index'])->name('revenue-analytics.index');
+
     // Notification Analytics
     Route::get('/notification-analytics', [\App\Http\Controllers\Admin\NotificationAnalyticsController::class, 'index'])->name('notification-analytics.index');
+
+    // Onboarding Insights
+    Route::get('/onboarding-insights', [\App\Http\Controllers\Admin\OnboardingInsightsController::class, 'index'])->name('onboarding-insights.index');
+
+    // Permission Presets
+    Route::get('/permission-presets', [\App\Http\Controllers\Admin\PermissionPresetController::class, 'index'])->name('permission-presets.index');
+    Route::post('/permission-presets', [\App\Http\Controllers\Admin\PermissionPresetController::class, 'store'])->name('permission-presets.store');
+    Route::put('/permission-presets/{permissionPreset}', [\App\Http\Controllers\Admin\PermissionPresetController::class, 'update'])->name('permission-presets.update');
+    Route::delete('/permission-presets/{permissionPreset}', [\App\Http\Controllers\Admin\PermissionPresetController::class, 'destroy'])->name('permission-presets.destroy');
+
+    // System Notifications
+    Route::get('/system-notifications', [\App\Http\Controllers\Admin\AdminNotificationController::class, 'index'])->name('system-notifications.index');
+    Route::patch('/system-notifications/{adminNotification}/read', [\App\Http\Controllers\Admin\AdminNotificationController::class, 'markAsRead'])->name('system-notifications.read');
+    Route::patch('/system-notifications/read-all', [\App\Http\Controllers\Admin\AdminNotificationController::class, 'markAllAsRead'])->name('system-notifications.read-all');
+    Route::delete('/system-notifications/{adminNotification}', [\App\Http\Controllers\Admin\AdminNotificationController::class, 'destroy'])->name('system-notifications.destroy');
+
+    // Localization Management
+    Route::get('/translations', [\App\Http\Controllers\Admin\TranslationController::class, 'index'])->name('translations.index');
+    Route::post('/translations', [\App\Http\Controllers\Admin\TranslationController::class, 'store'])->name('translations.store');
+    Route::get('/translations/{locale}', [\App\Http\Controllers\Admin\TranslationController::class, 'show'])->name('translations.show');
+    Route::put('/translations/{locale}', [\App\Http\Controllers\Admin\TranslationController::class, 'update'])->name('translations.update');
 });

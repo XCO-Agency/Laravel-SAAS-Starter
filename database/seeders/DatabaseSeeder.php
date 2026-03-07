@@ -620,6 +620,85 @@ class DatabaseSeeder extends Seeder
                     ]);
                 }
             }
+
+            // Seed onboarding step logs for funnel demo
+            $onboardingSteps = ['welcome', 'workspace', 'plan'];
+            $onboardingUsers = $users->take(18);
+
+            foreach ($onboardingUsers as $index => $u) {
+                // All users view welcome
+                \App\Models\OnboardingStepLog::create([
+                    'user_id' => $u->id,
+                    'step' => 'welcome',
+                    'action' => 'viewed',
+                    'created_at' => $u->created_at->addMinutes(1),
+                ]);
+
+                // Most complete welcome
+                if ($index < 15) {
+                    \App\Models\OnboardingStepLog::create([
+                        'user_id' => $u->id,
+                        'step' => 'welcome',
+                        'action' => 'completed',
+                        'created_at' => $u->created_at->addMinutes(2),
+                    ]);
+                }
+
+                // Fewer view workspace
+                if ($index < 14) {
+                    \App\Models\OnboardingStepLog::create([
+                        'user_id' => $u->id,
+                        'step' => 'workspace',
+                        'action' => 'viewed',
+                        'created_at' => $u->created_at->addMinutes(3),
+                    ]);
+                }
+
+                // Even fewer complete workspace
+                if ($index < 11) {
+                    \App\Models\OnboardingStepLog::create([
+                        'user_id' => $u->id,
+                        'step' => 'workspace',
+                        'action' => 'completed',
+                        'created_at' => $u->created_at->addMinutes(5),
+                    ]);
+                }
+
+                // Some view plan
+                if ($index < 10) {
+                    \App\Models\OnboardingStepLog::create([
+                        'user_id' => $u->id,
+                        'step' => 'plan',
+                        'action' => 'viewed',
+                        'created_at' => $u->created_at->addMinutes(6),
+                    ]);
+                }
+
+                // Fewer complete plan
+                if ($index < 8) {
+                    \App\Models\OnboardingStepLog::create([
+                        'user_id' => $u->id,
+                        'step' => 'plan',
+                        'action' => 'completed',
+                        'created_at' => $u->created_at->addMinutes(8),
+                    ]);
+                }
+            }
+
+            // Seed default permission presets
+            $presets = [
+                ['name' => 'Team Lead', 'description' => 'Manage team members and view activity logs', 'permissions' => json_encode(['manage_team', 'view_activity_logs'])],
+                ['name' => 'Finance Manager', 'description' => 'Full billing access with activity visibility', 'permissions' => json_encode(['manage_billing', 'view_activity_logs'])],
+                ['name' => 'Operations Admin', 'description' => 'Manage webhooks and view activity logs', 'permissions' => json_encode(['manage_webhooks', 'view_activity_logs'])],
+                ['name' => 'Full Access', 'description' => 'All available permissions', 'permissions' => json_encode(['manage_team', 'manage_billing', 'manage_webhooks', 'view_activity_logs'])],
+            ];
+
+            foreach ($presets as $preset) {
+                \App\Models\PermissionPreset::firstOrCreate(
+                    ['name' => $preset['name']],
+                    $preset,
+                );
+            }
         });
     }
 }

@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class UserController extends Controller
 {
@@ -91,5 +92,83 @@ class UserController extends Controller
         $user->restore();
 
         return back()->with('success', "{$user->name} has been restored.");
+    }
+
+    /**
+     * Bulk verify email for selected users.
+     */
+    public function bulkVerifyEmail(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'user_ids' => ['required', 'array', 'min:1'],
+            'user_ids.*' => ['integer', 'exists:users,id'],
+        ]);
+
+        $count = User::whereIn('id', $validated['user_ids'])
+            ->whereNull('email_verified_at')
+            ->update(['email_verified_at' => now()]);
+
+        return back()->with('success', "{$count} user(s) email verified.");
+    }
+
+    /**
+     * Bulk suspend (soft-delete) selected users.
+     */
+    public function bulkSuspend(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'user_ids' => ['required', 'array', 'min:1'],
+            'user_ids.*' => ['integer', 'exists:users,id'],
+        ]);
+
+        // Exclude the current admin from being suspended
+        $userIds = collect($validated['user_ids'])
+            ->reject(fn ($id) => $id === $request->user()->id)
+            ->values()
+            ->all();
+
+        $count = User::whereIn('id', $userIds)
+            ->whereNull('deleted_at')
+            ->count();
+
+        User::whereIn('id', $userIds)->each(fn (User $user) => $user->delete());
+
+        return back()->with('success', "{$count} user(s) suspended.");
+    }
+
+    /**
+     * Export selected users as CSV.
+     */
+    public function bulkExport(Request $request): StreamedResponse
+    {
+        $validated = $request->validate([
+            'user_ids' => ['required', 'array', 'min:1'],
+            'user_ids.*' => ['integer'],
+        ]);
+
+        $users = User::withTrashed()
+            ->whereIn('id', $validated['user_ids'])
+            ->get(['id', 'name', 'email', 'is_superadmin', 'email_verified_at', 'created_at', 'deleted_at']);
+
+        return response()->streamDownload(function () use ($users) {
+            $handle = fopen('php://output', 'w');
+            fputcsv($handle, ['ID', 'Name', 'Email', 'Superadmin', 'Email Verified', 'Created At', 'Deleted At']);
+
+            foreach ($users as $user) {
+                fputcsv($handle, [
+                    $user->id,
+                    $user->name,
+                    $user->email,
+                    $user->is_superadmin ? 'Yes' : 'No',
+                    $user->email_verified_at?->toDateTimeString() ?? 'Not verified',
+                    $user->created_at->toDateTimeString(),
+                    $user->deleted_at?->toDateTimeString() ?? '',
+                ]);
+            }
+
+            fclose($handle);
+        }, 'users-export-'.now()->format('Y-m-d').'.csv', [
+            'Content-Type' => 'text/csv',
+        ]);
     }
 }

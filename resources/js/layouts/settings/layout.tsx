@@ -9,7 +9,7 @@ import { show } from '@/routes/two-factor';
 import { edit as editPassword } from '@/routes/user-password';
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { Bell, Cookie, Fingerprint, History, Lock, Monitor, Paintbrush, ShieldCheck, User } from 'lucide-react';
+import { BarChart3, Bell, Cookie, FileUp, Fingerprint, Activity, History, Lock, Monitor, Paintbrush, ShieldCheck, TrendingUp, User } from 'lucide-react';
 import { type PropsWithChildren, useMemo } from 'react';
 import { type SharedData, type Workspace } from '@/types';
 
@@ -33,9 +33,29 @@ const getNavSections = (t: (key: string, fallback: string) => string, workspace?
                 icon: null,
             },
             {
+                title: t('navigation.csv_import', 'CSV Import'),
+                href: '/team/import',
+                icon: FileUp,
+            },
+            {
                 title: t('navigation.billing', 'Billing'),
                 href: '/billing',
                 icon: null,
+            },
+            {
+                title: t('navigation.member_activity', 'Member Activity'),
+                href: '/team/activity-report',
+                icon: BarChart3,
+            },
+            {
+                title: t('navigation.analytics', 'Analytics'),
+                href: '/workspaces/analytics',
+                icon: TrendingUp,
+            },
+            {
+                title: t('navigation.api_usage', 'API Usage'),
+                href: '/workspaces/api-usage',
+                icon: Activity,
             },
             {
                 title: t('navigation.security', 'Security'),
