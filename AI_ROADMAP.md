@@ -35,7 +35,7 @@ The AI agent is now continually managing and executing the roadmap autonomously.
 ## 🚀 Active Sprint 25: Admin Configuration & Growth
 
 - [x] **Task 93**: Localization Management UI — Admin dashboard to view, edit, and save translation strings across supported JSON language files natively without requiring a code deployment.
-- [ ] **Task 94**: Global Support Ticket System — Allow users to submit support tickets, and provide a super-admin interface to manage, reply to, and close tickets.
+- [x] **Task 94**: Global Support Ticket System — Allow users to submit support tickets, and provide a super-admin interface to manage, reply to, and close tickets. *(10 tests, 59 assertions)*
 - [ ] **Task 95**: Admin Dashboard Analytics Widgets — A visual dashboard in the admin panel displaying MRR, user growth, churn, and active workspaces using Recharts.
 
 ## 🏁 Completed Sprints
@@ -65,6 +65,7 @@ The AI agent is now continually managing and executing the roadmap autonomously.
 
 ## 📝 Changelog
 
+- **2026-03-07**: Task 94 (Global Support Ticket System): Implement user ticket portal, admin ticket management dashboard, Ticket/TicketReply models, threaded conversation UI with Sonner toasts. 10 tests/59 assertions.
 - **2026-03-07**: Task 93 (Localization Management UI): Added TranslationController, admin UI (`translations.tsx`), and tests to directly edit and create translation JSON files dynamically. 7 tests/39 assertions.
 - **2026-03-06**: Task 90 (User Session Management for Admins): Controller and admin UI for viewing and terminating remote user sessions directly from the user management screen, 4 tests/22 assertions.
 - **2026-03-05**: Sprint 22 complete. Task 82 (Permission Preset Templates): admin CRUD for reusable permission bundles, preset selector in team permissions dialog, 4 default presets seeded, 13 tests/54 assertions.

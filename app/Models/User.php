@@ -273,6 +273,14 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Get the support tickets created by the user.
+     */
+    public function tickets(): HasMany
+    {
+        return $this->hasMany(Ticket::class);
+    }
+
+    /**
      * Get the options for recording activity.
      */
     public function getActivitylogOptions(): LogOptions

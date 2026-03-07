@@ -50,4 +50,12 @@ Route::middleware('auth')->group(function () {
 
     // Login Activity
     Route::get('settings/login-history', [\App\Http\Controllers\Settings\LoginActivityController::class, 'index'])->name('login-history.index');
+
+    // Tickets
+    Route::controller(\App\Http\Controllers\Settings\TicketController::class)->group(function () {
+        Route::get('settings/tickets', 'index')->name('settings.tickets.index');
+        Route::post('settings/tickets', 'store')->name('settings.tickets.store');
+        Route::get('settings/tickets/{ticket}', 'show')->name('settings.tickets.show');
+        Route::post('settings/tickets/{ticket}/replies', 'storeReply')->name('settings.tickets.reply.store');
+    });
 });

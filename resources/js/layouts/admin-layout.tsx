@@ -23,6 +23,7 @@ import {
     Users,
     Mail,
     Terminal,
+    Ticket,
 } from 'lucide-react';
 import { type PropsWithChildren } from 'react';
 import { cn } from '@/lib/utils';
@@ -50,6 +51,7 @@ const adminNav = [
     { title: 'Maintenance', href: '/admin/maintenance', icon: Power },
     { title: 'System Logs', href: '/admin/logs', icon: Terminal },
     { title: 'Translations', href: '/admin/translations', icon: Globe },
+    { title: 'Support Tickets', href: '/admin/tickets', icon: Ticket },
 ];
 
 export default function AdminLayout({

@@ -9,7 +9,7 @@ import { show } from '@/routes/two-factor';
 import { edit as editPassword } from '@/routes/user-password';
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { BarChart3, Bell, Cookie, FileUp, Fingerprint, Activity, History, Lock, Monitor, Paintbrush, ShieldCheck, TrendingUp, User } from 'lucide-react';
+import { BarChart3, Bell, Cookie, FileUp, Fingerprint, Activity, History, Lock, Monitor, Paintbrush, ShieldCheck, TrendingUp, User, Ticket } from 'lucide-react';
 import { type PropsWithChildren, useMemo } from 'react';
 import { type SharedData, type Workspace } from '@/types';
 
@@ -121,6 +121,11 @@ const getNavSections = (t: (key: string, fallback: string) => string, workspace?
                 title: t('navigation.login_history', 'Login History'),
                 href: '/settings/login-history',
                 icon: History,
+            },
+            {
+                title: t('navigation.support_tickets', 'Support Tickets'),
+                href: '/settings/tickets',
+                icon: Ticket,
             },
         ],
     },

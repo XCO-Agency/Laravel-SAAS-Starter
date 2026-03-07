@@ -297,6 +297,14 @@ Route::middleware(['auth', 'superadmin'])->prefix('admin')->name('admin.')->grou
     Route::put('/seo/{seoMetadata}', [\App\Http\Controllers\Admin\SeoMetadataController::class, 'update'])->name('seo.update');
     Route::delete('/seo/{seoMetadata}', [\App\Http\Controllers\Admin\SeoMetadataController::class, 'destroy'])->name('seo.destroy');
 
+    // Support Tickets
+    Route::controller(\App\Http\Controllers\Admin\TicketController::class)->group(function () {
+        Route::get('/tickets', 'index')->name('tickets.index');
+        Route::get('/tickets/{ticket}', 'show')->name('tickets.show');
+        Route::patch('/tickets/{ticket}', 'update')->name('tickets.update');
+        Route::post('/tickets/{ticket}/replies', 'storeReply')->name('tickets.reply.store');
+    });
+
     // Maintenance Mode
     Route::get('/maintenance', [\App\Http\Controllers\Admin\MaintenanceController::class, 'index'])->name('maintenance.index');
     Route::post('/maintenance/toggle', [\App\Http\Controllers\Admin\MaintenanceController::class, 'toggle'])->name('maintenance.toggle');
