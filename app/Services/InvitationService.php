@@ -13,7 +13,7 @@ class InvitationService
     /**
      * Send an invitation to join a workspace.
      */
-    public function invite(Workspace $workspace, string $email, string $role = 'member'): WorkspaceInvitation
+    public function invite(Workspace $workspace, string $email, string $role = Workspace::ROLE_MEMBER): WorkspaceInvitation
     {
         // Check if user is already a member
         $existingUser = User::where('email', $email)->first();

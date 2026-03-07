@@ -17,6 +17,17 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class Workspace extends Model
 {
+    /**
+     * Role constants.
+     */
+    public const ROLE_OWNER = 'owner';
+
+    public const ROLE_ADMIN = 'admin';
+
+    public const ROLE_MEMBER = 'member';
+
+    public const ROLE_VIEWER = 'viewer';
+
     /** @use HasFactory<\Database\Factories\WorkspaceFactory> */
     use Billable, HasFactory, HasFeatures, \Laravel\Scout\Searchable, LogsActivity, SoftDeletes;
 
@@ -121,7 +132,7 @@ class Workspace extends Model
         $counter = 1;
 
         while (static::where('slug', $slug)->exists()) {
-            $slug = $originalSlug.'-'.$counter;
+            $slug = $originalSlug . '-' . $counter;
             $counter++;
         }
 
@@ -137,7 +148,7 @@ class Workspace extends Model
             return str_starts_with($this->logo, 'http') ? $this->logo : \Illuminate\Support\Facades\Storage::url($this->logo);
         }
 
-        return 'https://ui-avatars.com/api/?name='.urlencode($this->name).'&color=7F9CF5&background=EBF4FF';
+        return 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&color=7F9CF5&background=EBF4FF';
     }
 
     /**
@@ -231,7 +242,25 @@ class Workspace extends Model
     {
         $role = $this->getUserRole($user);
 
-        return in_array($role, ['owner', 'admin']);
+        return in_array($role, [self::ROLE_OWNER, self::ROLE_ADMIN]);
+    }
+
+    /**
+     * Determine if the given user is a member (or higher) of the workspace.
+     */
+    public function userIsMember(User $user): bool
+    {
+        $role = $this->getUserRole($user);
+
+        return in_array($role, [self::ROLE_OWNER, self::ROLE_ADMIN, self::ROLE_MEMBER]);
+    }
+
+    /**
+     * Determine if the given user is a viewer of the workspace.
+     */
+    public function userIsViewer(User $user): bool
+    {
+        return $this->getUserRole($user) === self::ROLE_VIEWER;
     }
 
     /**
@@ -259,13 +288,19 @@ class Workspace extends Model
             return true;
         }
 
-        // 2. Evaluate the raw JSON permission array first so explicitly granted overrides work cleanly
+        // 2. Viewers have NO write permissions by default, ONLY read-only if we define any
+        if ($this->userIsViewer($user)) {
+            return in_array($permission, ['view_activity_logs']); // Only allow viewing logs for now if explicitly granted? 
+            // Actually, let's keep it simple: Viewers can ONLY view.
+        }
+
+        // 3. Evaluate the raw JSON permission array first so explicitly granted overrides work cleanly
         $permissions = $this->getUserPermissions($user);
         if (in_array($permission, $permissions)) {
             return true;
         }
 
-        // 3. Admins pass cleanly for standard management capabilities, but NOT sensitive billing
+        // 4. Admins pass cleanly for standard management capabilities, but NOT sensitive billing
         if ($this->userIsAdmin($user)) {
             return in_array($permission, ['manage_team', 'manage_webhooks', 'view_activity_logs']);
         }
@@ -278,7 +313,7 @@ class Workspace extends Model
      */
     public function userIsOwner(User $user): bool
     {
-        return $this->getUserRole($user) === 'owner';
+        return $this->getUserRole($user) === self::ROLE_OWNER;
     }
 
     /**

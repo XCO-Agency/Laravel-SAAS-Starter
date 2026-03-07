@@ -40,18 +40,23 @@ it('allows superadmins to access the dashboard and see system metrics', function
     $response->assertSuccessful();
 
     // In an Inertia test, you can test the Inertia page and passed props
-    $response->assertInertia(fn (\Inertia\Testing\AssertableInertia $page) => $page
-        ->component('admin/dashboard')
-        ->has('metrics', fn (\Inertia\Testing\AssertableInertia $metrics) => $metrics
-            ->where('total_users', User::count())
-            ->where('total_workspaces', Workspace::count())
-            ->has('active_subscriptions')
-            ->has('new_users_30d')
-            ->has('user_growth_percent')
-            ->has('workspace_growth_percent')
-        )
-        ->has('dailySignups')
-        ->has('planDistribution')
-        ->has('recent_users')
+    $response->assertInertia(
+        fn (\Inertia\Testing\AssertableInertia $page) => $page
+            ->component('admin/dashboard')
+            ->has(
+                'metrics',
+                fn (\Inertia\Testing\AssertableInertia $metrics) => $metrics
+                    ->where('total_users', User::count())
+                    ->where('total_workspaces', Workspace::count())
+                    ->has('active_subscriptions')
+                    ->has('new_users_30d')
+                    ->has('user_growth_percent')
+                    ->has('workspace_growth_percent')
+                    ->has('mrr')
+                    ->has('churn_rate')
+            )
+            ->has('dailySignups')
+            ->has('planDistribution')
+            ->has('recent_users')
     );
 });

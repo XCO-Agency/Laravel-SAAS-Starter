@@ -30,7 +30,7 @@ class TeamInvitationNotification extends Notification
     public function toMail(object $notifiable): \App\Mail\WorkspaceInvitation
     {
         return (new \App\Mail\WorkspaceInvitation($this->invitation))
-            ->to($notifiable->email);
+            ->to($this->invitation->email);
     }
 
     /**

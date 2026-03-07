@@ -24,7 +24,7 @@ export interface NavItem {
     external?: boolean;
 }
 
-export type WorkspaceRole = 'owner' | 'admin' | 'member';
+export type WorkspaceRole = 'owner' | 'admin' | 'member' | 'viewer';
 
 export interface Workspace {
     id: number;

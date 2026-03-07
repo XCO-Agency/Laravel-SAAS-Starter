@@ -79,7 +79,7 @@ class WorkspaceInviteLink extends Model
     /**
      * Generate a new invite link for a workspace.
      */
-    public static function generateLink(Workspace $workspace, User $creator, string $role = 'member', ?int $maxUses = null, ?\DateTimeInterface $expiresAt = null): static
+    public static function generateLink(Workspace $workspace, User $creator, string $role = Workspace::ROLE_MEMBER, ?int $maxUses = null, ?\DateTimeInterface $expiresAt = null): static
     {
         return static::create([
             'workspace_id' => $workspace->id,

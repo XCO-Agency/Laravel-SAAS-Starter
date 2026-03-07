@@ -22,6 +22,8 @@
 5. **Demo Data Hydration:** ALWAYS update the `DatabaseSeeder.php` after finalizing a new feature schema to ensure the local demo data environment is fully populated and demonstrates the capabilities just added.
 6. **Documentation Requirements:** Whenever you build a new feature, you MUST create a comprehensive markdown documentation file for it in the `/docs/features/` directory and update `docs/README.md` to index it.
 
+7. **Feature Focus:** Prioritize customer-facing features (Productivity tools, Billing, Settings, Onboarding) over administrative internals. Only implement "must-have" admin features (Audit logs, basic management) to maintain operational visibility.
+
 ## Next High-Priority SaaS Features (Agent's Decision)
 
 As of Sprint 2, the agent has prioritized the following:

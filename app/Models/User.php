@@ -208,14 +208,29 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->id === $workspace->owner_id;
     }
 
-    /**
-     * Determine if the user is an admin of the given workspace.
-     */
-    public function isAdminOfWorkspace(Workspace $workspace): bool
+    public function userIsAdmin(Workspace $workspace): bool
     {
         $role = $this->roleInWorkspace($workspace);
 
-        return in_array($role, ['owner', 'admin']);
+        return in_array($role, [Workspace::ROLE_OWNER, Workspace::ROLE_ADMIN]);
+    }
+
+    /**
+     * Determine if the user is a member (or higher) of the workspace.
+     */
+    public function userIsMember(Workspace $workspace): bool
+    {
+        $role = $this->roleInWorkspace($workspace);
+
+        return in_array($role, [Workspace::ROLE_OWNER, Workspace::ROLE_ADMIN, Workspace::ROLE_MEMBER]);
+    }
+
+    /**
+     * Determine if the user is a viewer of the workspace.
+     */
+    public function userIsViewer(Workspace $workspace): bool
+    {
+        return $this->roleInWorkspace($workspace) === Workspace::ROLE_VIEWER;
     }
 
     /**
