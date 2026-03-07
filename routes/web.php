@@ -214,7 +214,7 @@ Route::middleware('guest')->group(function () {
         ->where('provider', 'github|google');
 });
 
-require __DIR__.'/settings.php';
+require __DIR__ . '/settings.php';
 
 // Admin routes
 Route::middleware(['auth', 'superadmin'])->prefix('admin')->name('admin.')->group(function () {
@@ -253,6 +253,10 @@ Route::middleware(['auth', 'superadmin'])->prefix('admin')->name('admin.')->grou
         // Audit Logs
         Route::get('/audit-logs', [\App\Http\Controllers\Admin\AuditLogController::class, 'index'])->name('audit-logs.index');
         Route::get('/impersonation-logs', [\App\Http\Controllers\Admin\ImpersonationLogController::class, 'index'])->name('impersonation-logs.index');
+
+        // Broadcasts
+        Route::get('/broadcasts', [\App\Http\Controllers\Admin\BroadcastController::class, 'index'])->name('broadcasts.index');
+        Route::post('/broadcasts', [\App\Http\Controllers\Admin\BroadcastController::class, 'store'])->name('broadcasts.store');
 
         // Announcements
         Route::get('/announcements', [\App\Http\Controllers\Admin\AnnouncementController::class, 'index'])->name('announcements.index');

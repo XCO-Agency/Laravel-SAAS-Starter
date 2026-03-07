@@ -40,8 +40,8 @@ The AI agent is now continually managing and executing the roadmap autonomously.
 
 ## 🚀 Active Sprint 26: Admin Security & Broadcasting
 
-- [ ] **Task 96**: Global Admin 2FA Enforcement — Add a mandatory security middleware for the `/admin` prefix routes requiring super-admins to have 2FA enabled before gaining access, redirecting them to a setup wall if disabled.
-- [ ] **Task 97**: Impersonation Audit Log — Add a dedicated admin view to review an immutable audit trail of super-admins impersonating users, including timestamps, IP addresses, and user-agent data for security and privacy compliance.
+- [x] **Task 96**: Global Admin 2FA Enforcement — Add a mandatory security middleware for the `/admin` prefix routes requiring super-admins to have 2FA enabled before gaining access, redirecting them to a setup wall if disabled. *(7 tests, 19 assertions)*
+- [x] **Task 97**: Impersonation Audit Log — Add a dedicated admin view to review an immutable audit trail of super-admins impersonating users, including timestamps, IP addresses, and user-agent data for security and privacy compliance. *(3 tests, 11 assertions)*
 - [ ] **Task 98**: Admin Broadcast Notifications — A UI for super-admins to broadcast in-app messages and/or emails to all active platform users or specific segments (e.g., all workspace owners) natively via Laravel Notifications.
 
 ## 🏁 Completed Sprints
@@ -72,6 +72,8 @@ The AI agent is now continually managing and executing the roadmap autonomously.
 
 ## 📝 Changelog
 
+- **2026-03-07**: Task 97 (Impersonation Audit Log): Added dedicated `ImpersonationLog` model/migration, hooked into `ImpersonationController`, and created admin UI to view immutable session trails. 3 tests/11 assertions.
+- **2026-03-07**: Task 96 (Global Admin 2FA Enforcement): Implemented `RequireAdminTwoFactor` middleware, applied to all `/admin` routes, forcing a setup wall for super-admins without 2FA. 7 tests/19 assertions.
 - **2026-03-07**: Task 95 (Admin Dashboard Analytics Widgets): Implemented MRR and 30-day Churn calculations in `DashboardController`, added Recharts NPM dependency, replaced simple CSS sparklines with interactive `AreaChart` and `PieChart` components on the super-admin dashboard.
 - **2026-03-07**: Task 94 (Global Support Ticket System): Implement user ticket portal, admin ticket management dashboard, Ticket/TicketReply models, threaded conversation UI with Sonner toasts. 10 tests/59 assertions.
 - **2026-03-07**: Task 93 (Localization Management UI): Added TranslationController, admin UI (`translations.tsx`), and tests to directly edit and create translation JSON files dynamically. 7 tests/39 assertions.

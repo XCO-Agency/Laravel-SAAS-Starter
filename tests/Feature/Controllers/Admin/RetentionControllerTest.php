@@ -3,7 +3,7 @@
 use App\Models\User;
 
 beforeEach(function () {
-    $this->admin = User::factory()->withoutTwoFactor()->create(['is_superadmin' => true]);
+    $this->admin = User::factory()->create(['is_superadmin' => true]);
 });
 
 it('renders the retention settings page for superadmin', function () {
@@ -37,7 +37,7 @@ it('can run actual pruning', function () {
 });
 
 it('denies access to non-superadmin users', function () {
-    $user = User::factory()->withoutTwoFactor()->create(['is_superadmin' => false]);
+    $user = User::factory()->create(['is_superadmin' => false]);
 
     $this->actingAs($user)
         ->get(route('admin.retention.index'))

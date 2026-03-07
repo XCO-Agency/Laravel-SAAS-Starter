@@ -41,6 +41,7 @@ const adminNav = [
     { title: 'Impersonation Logs', href: '/admin/impersonation-logs', icon: ScrollText },
     { title: 'Email Templates', href: '/admin/mail-templates', icon: Mail },
     { title: 'Announcements', href: '/admin/announcements', icon: Megaphone },
+    { title: 'Broadcasts', href: '/admin/broadcasts', icon: Megaphone },
     { title: 'Feedback', href: '/admin/feedback', icon: MessageSquare },
     { title: 'Data Retention', href: '/admin/retention', icon: ShieldCheck },
     { title: 'System Health', href: '/admin/system-health', icon: Activity },
