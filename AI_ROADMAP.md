@@ -36,11 +36,18 @@ The AI agent is now continually managing and executing the roadmap autonomously.
 
 - [x] **Task 93**: Localization Management UI — Admin dashboard to view, edit, and save translation strings across supported JSON language files natively without requiring a code deployment.
 - [x] **Task 94**: Global Support Ticket System — Allow users to submit support tickets, and provide a super-admin interface to manage, reply to, and close tickets. *(10 tests, 59 assertions)*
-- [ ] **Task 95**: Admin Dashboard Analytics Widgets — A visual dashboard in the admin panel displaying MRR, user growth, churn, and active workspaces using Recharts.
+- [x] **Task 95**: Admin Dashboard Analytics Widgets — A visual dashboard in the admin panel displaying MRR, user growth, churn, and active workspaces using Recharts. *(1 test, 30 assertions)*
+
+## 🚀 Active Sprint 26: Admin Security & Broadcasting
+
+- [ ] **Task 96**: Global Admin 2FA Enforcement — Add a mandatory security middleware for the `/admin` prefix routes requiring super-admins to have 2FA enabled before gaining access, redirecting them to a setup wall if disabled.
+- [ ] **Task 97**: Impersonation Audit Log — Add a dedicated admin view to review an immutable audit trail of super-admins impersonating users, including timestamps, IP addresses, and user-agent data for security and privacy compliance.
+- [ ] **Task 98**: Admin Broadcast Notifications — A UI for super-admins to broadcast in-app messages and/or emails to all active platform users or specific segments (e.g., all workspace owners) natively via Laravel Notifications.
 
 ## 🏁 Completed Sprints
 
-- **Sprint 23**: Operational Excellence & Growth (Admin Revenue Analytics, Admin Bulk User Actions, Workspace Member Activity Report, Workspace Analytics Dashboard).
+- **Sprint 25**: Admin Configuration & Growth (Localization Management UI, Global Support Ticket System, Admin Dashboard Analytics Widgets).
+- **Sprint 24**: Advanced Integrations & UX (Admin System Notifications, Workspace Data Import, API Rate Limiting Dashboard, User Session Management, Admin Application Log Viewer, User API Key Management UI).
 
 - **Sprint 22**: Communication & Conversion Reliability (Notification Delivery Analytics, Onboarding Completion Insights, Billing Reminder Notifications, Permission Preset Templates).
 
@@ -65,6 +72,7 @@ The AI agent is now continually managing and executing the roadmap autonomously.
 
 ## 📝 Changelog
 
+- **2026-03-07**: Task 95 (Admin Dashboard Analytics Widgets): Implemented MRR and 30-day Churn calculations in `DashboardController`, added Recharts NPM dependency, replaced simple CSS sparklines with interactive `AreaChart` and `PieChart` components on the super-admin dashboard.
 - **2026-03-07**: Task 94 (Global Support Ticket System): Implement user ticket portal, admin ticket management dashboard, Ticket/TicketReply models, threaded conversation UI with Sonner toasts. 10 tests/59 assertions.
 - **2026-03-07**: Task 93 (Localization Management UI): Added TranslationController, admin UI (`translations.tsx`), and tests to directly edit and create translation JSON files dynamically. 7 tests/39 assertions.
 - **2026-03-06**: Task 90 (User Session Management for Admins): Controller and admin UI for viewing and terminating remote user sessions directly from the user management screen, 4 tests/22 assertions.

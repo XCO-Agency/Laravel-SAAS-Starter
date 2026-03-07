@@ -1,4 +1,4 @@
-import { AdminLayout } from '@/layouts/admin-layout';
+import AdminLayout from '@/layouts/admin-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, useForm, router } from '@inertiajs/react';
 import { formatDistanceToNow } from 'date-fns';
@@ -96,7 +96,7 @@ export default function AdminTicketShow({ ticket }: ShowProps) {
     };
 
     return (
-        <AdminLayout breadcrumbs={breadcrumbs}>
+        <AdminLayout>
             <Head title={`Ticket #${ticket.id}`} />
 
             <div className="flex h-full flex-1 flex-col space-y-6">

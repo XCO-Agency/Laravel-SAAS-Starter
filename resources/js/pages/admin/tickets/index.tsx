@@ -1,4 +1,4 @@
-import { AdminLayout } from '@/layouts/admin-layout';
+import AdminLayout from '@/layouts/admin-layout';
 import { Head, Link, router } from '@inertiajs/react';
 import { type BreadcrumbItem } from '@/types';
 import { formatDistanceToNow } from 'date-fns';
@@ -88,7 +88,7 @@ export default function AdminTicketsIndex({ tickets, filters }: IndexProps) {
     };
 
     return (
-        <AdminLayout breadcrumbs={breadcrumbs}>
+        <AdminLayout>
             <Head title="Support Tickets" />
 
             <div className="flex h-full flex-1 flex-col space-y-6">

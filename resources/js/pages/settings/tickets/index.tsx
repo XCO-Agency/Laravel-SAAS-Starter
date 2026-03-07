@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Layout } from '@/layouts/settings-layout';
+import Layout from '@/layouts/settings/layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { formatDistanceToNow } from 'date-fns';
@@ -96,7 +96,7 @@ export default function TicketsIndex({ tickets }: IndexProps) {
     };
 
     return (
-        <Layout breadcrumbs={breadcrumbs}>
+        <Layout>
             <Head title="Support Tickets" />
 
             <div className="space-y-6">

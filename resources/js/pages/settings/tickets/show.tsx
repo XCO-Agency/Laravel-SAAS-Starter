@@ -1,4 +1,4 @@
-import { Layout } from '@/layouts/settings-layout';
+import Layout from '@/layouts/settings/layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
 import { formatDistanceToNow } from 'date-fns';
@@ -86,7 +86,7 @@ export default function TicketShow({ ticket }: ShowProps) {
     };
 
     return (
-        <Layout breadcrumbs={breadcrumbs}>
+        <Layout>
             <Head title={ticket.subject} />
 
             <div className="space-y-6">

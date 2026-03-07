@@ -40,6 +40,23 @@ class DashboardController extends Controller
             ? round((($newWorkspacesThisPeriod - $newWorkspacesPriorPeriod) / $newWorkspacesPriorPeriod) * 100, 1)
             : ($newWorkspacesThisPeriod > 0 ? 100 : 0);
 
+        // ── MRR Calculation ──
+        $plans = config('billing.plans', []);
+        $mrr = $this->calculateMrr($plans);
+
+        // ── Churn rate (canceled in last 30 days / active at start of period) ──
+        $canceledLast30 = Subscription::where('stripe_status', 'canceled')
+            ->where('updated_at', '>=', $now->copy()->subDays(30))
+            ->count();
+
+        $activeAtPeriodStart = Subscription::whereIn('stripe_status', ['active', 'trialing'])
+            ->where('created_at', '<', $now->copy()->subDays(30))
+            ->count();
+
+        $churnRate = $activeAtPeriodStart > 0
+            ? round(($canceledLast30 / ($activeAtPeriodStart + $canceledLast30)) * 100, 1)
+            : 0;
+
         // Daily signups for the last 14 days (for sparkline chart)
         $dailySignups = collect(range(13, 0))->map(function ($daysAgo) use ($now) {
             $date = $now->copy()->subDays($daysAgo)->toDateString();
@@ -50,9 +67,18 @@ class DashboardController extends Controller
             ];
         })->values();
 
+        // Daily workspaces for the last 14 days
+        $dailyWorkspaces = collect(range(13, 0))->map(function ($daysAgo) use ($now) {
+            $date = $now->copy()->subDays($daysAgo)->toDateString();
+
+            return [
+                'date' => Carbon::parse($date)->format('M d'),
+                'count' => Workspace::whereDate('created_at', $date)->count(),
+            ];
+        })->values();
+
         // Plan distribution
         $planDistribution = [];
-        $plans = config('billing.plans', []);
         foreach ($plans as $key => $plan) {
             if ($key === 'free') {
                 $planDistribution[] = [
@@ -83,10 +109,46 @@ class DashboardController extends Controller
                 'new_users_30d' => $newUsersThisPeriod,
                 'user_growth_percent' => $userGrowthPercent,
                 'workspace_growth_percent' => $workspaceGrowthPercent,
+                'mrr' => $mrr,
+                'churn_rate' => $churnRate,
             ],
             'dailySignups' => $dailySignups,
+            'dailyWorkspaces' => $dailyWorkspaces,
             'planDistribution' => $planDistribution,
             'recent_users' => User::latest()->limit(5)->get(['id', 'name', 'email', 'created_at']),
         ]);
+    }
+
+    /**
+     * Calculate estimated Monthly Recurring Revenue from active subscriptions.
+     */
+    private function calculateMrr(array $plans): float
+    {
+        $mrr = 0.0;
+
+        foreach ($plans as $key => $plan) {
+            if ($key === 'free') {
+                continue;
+            }
+
+            $monthlyPriceId = $plan['stripe_price_id']['monthly'] ?? null;
+            $yearlyPriceId = $plan['stripe_price_id']['yearly'] ?? null;
+
+            if ($monthlyPriceId) {
+                $count = Subscription::where('stripe_price', $monthlyPriceId)
+                    ->whereIn('stripe_status', ['active', 'trialing'])
+                    ->sum(\Illuminate\Support\Facades\DB::raw('COALESCE(quantity, 1)'));
+                $mrr += $count * ($plan['price']['monthly'] ?? 0);
+            }
+
+            if ($yearlyPriceId) {
+                $count = Subscription::where('stripe_price', $yearlyPriceId)
+                    ->whereIn('stripe_status', ['active', 'trialing'])
+                    ->sum(\Illuminate\Support\Facades\DB::raw('COALESCE(quantity, 1)'));
+                $mrr += $count * round(($plan['price']['yearly'] ?? 0) / 12, 2);
+            }
+        }
+
+        return round($mrr, 2);
     }
 }

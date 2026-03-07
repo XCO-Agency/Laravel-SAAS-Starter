@@ -1,15 +1,28 @@
 import AdminLayout from '@/layouts/admin-layout';
 import { Head, Link, router } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
+    Activity,
     ArrowDownRight,
     ArrowUpRight,
-    Building2,
     CreditCard,
-    TrendingUp,
-    UserPlus,
+    DollarSign,
     Users,
 } from 'lucide-react';
+import {
+    Area,
+    AreaChart,
+    CartesianGrid,
+    Cell,
+    Legend,
+    Pie,
+    PieChart,
+    ResponsiveContainer,
+    Tooltip,
+    XAxis,
+    YAxis,
+} from 'recharts';
 
 interface Metrics {
     total_users: number;
@@ -18,9 +31,11 @@ interface Metrics {
     new_users_30d: number;
     user_growth_percent: number;
     workspace_growth_percent: number;
+    mrr: number;
+    churn_rate: number;
 }
 
-interface DailySignup {
+interface DailyStat {
     date: string;
     count: number;
 }
@@ -32,7 +47,8 @@ interface PlanDistItem {
 
 interface AdminDashboardProps {
     metrics: Metrics;
-    dailySignups: DailySignup[];
+    dailySignups: DailyStat[];
+    dailyWorkspaces: DailyStat[];
     planDistribution: PlanDistItem[];
     recent_users: {
         id: number;
@@ -42,83 +58,45 @@ interface AdminDashboardProps {
     }[];
 }
 
-function GrowthBadge({ value }: { value: number }) {
+function GrowthBadge({ value, invertColors = false }: { value: number, invertColors?: boolean }) {
     const isPositive = value >= 0;
+
+    // For churn, negative growth is good (green), positive growth is bad (red)
+    const healthyClass = 'text-emerald-600 dark:text-emerald-400';
+    const unhealthyClass = 'text-red-600 dark:text-red-400';
+
+    const colorClass = invertColors
+        ? (isPositive ? unhealthyClass : healthyClass)
+        : (isPositive ? healthyClass : unhealthyClass);
+
     return (
-        <span className={`inline-flex items-center gap-0.5 text-xs font-medium ${isPositive ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'}`}>
+        <span className={`inline-flex items-center gap-0.5 text-xs font-medium ${colorClass}`}>
             {isPositive ? <ArrowUpRight className="h-3 w-3" /> : <ArrowDownRight className="h-3 w-3" />}
             {Math.abs(value)}%
         </span>
     );
 }
 
-function Sparkline({ data, className = '' }: { data: number[]; className?: string }) {
-    if (data.length === 0) return null;
-    const max = Math.max(...data, 1);
-    const width = 120;
-    const height = 32;
-    const points = data.map((v, i) => {
-        const x = (i / (data.length - 1)) * width;
-        const y = height - (v / max) * height;
-        return `${x},${y}`;
-    }).join(' ');
+const COLORS = ['hsl(var(--primary))', 'hsl(var(--primary) / 0.7)', 'hsl(var(--primary) / 0.4)', 'hsl(var(--muted))'];
 
-    return (
-        <svg viewBox={`0 0 ${width} ${height}`} className={`${className}`} preserveAspectRatio="none">
-            <polyline
-                points={points}
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-            />
-        </svg>
-    );
-}
+export default function AdminDashboard({ metrics, dailySignups, dailyWorkspaces, planDistribution, recent_users }: AdminDashboardProps) {
+    // Combine daily stats for the multi-line chart
+    const combinedDailyStats = dailySignups.map((signupDay, index) => {
+        const workspaceDay = dailyWorkspaces[index] || { count: 0 };
+        return {
+            date: signupDay.date,
+            users: signupDay.count,
+            workspaces: workspaceDay.count,
+        };
+    }).reverse(); // Reverse to show chronological order left-to-right
 
-function MetricCard({ title, value, icon: Icon, growth, sparkData }: {
-    title: string;
-    value: string | number;
-    icon: typeof Users;
-    growth?: number;
-    sparkData?: number[];
-}) {
-    return (
-        <div className="rounded-xl border bg-card text-card-foreground shadow-sm">
-            <div className="p-6">
-                <div className="flex items-center justify-between">
-                    <p className="text-sm font-medium text-muted-foreground">{title}</p>
-                    <Icon className="h-4 w-4 text-muted-foreground" />
-                </div>
-                <div className="mt-2 flex items-end justify-between">
-                    <div>
-                        <p className="text-2xl font-bold">{value}</p>
-                        {growth !== undefined && (
-                            <p className="mt-1 text-xs text-muted-foreground">
-                                <GrowthBadge value={growth} /> vs last 30d
-                            </p>
-                        )}
-                    </div>
-                    {sparkData && (
-                        <Sparkline data={sparkData} className="h-8 w-20 text-primary/60" />
-                    )}
-                </div>
-            </div>
-        </div>
-    );
-}
-
-const PLAN_COLORS = [
-    'bg-zinc-200 dark:bg-zinc-700',
-    'bg-primary/70',
-    'bg-primary',
-    'bg-primary/40',
-];
-
-export default function AdminDashboard({ metrics, dailySignups, planDistribution, recent_users }: AdminDashboardProps) {
-    const signupCounts = dailySignups.map(d => d.count);
-    const totalPlanCount = planDistribution.reduce((sum, p) => sum + p.count, 0) || 1;
+    const formatCurrency = (value: number) => {
+        return new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            minimumFractionDigits: 0,
+        }).format(value);
+    };
 
     return (
         <AdminLayout>
@@ -129,110 +107,167 @@ export default function AdminDashboard({ metrics, dailySignups, planDistribution
                     <p className="text-muted-foreground text-sm">Monitor platform metrics across all workspaces.</p>
                 </div>
 
-                {/* Metric Cards */}
+                {/* Top Metric Cards */}
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-                    <MetricCard
-                        title="Total Users"
-                        value={metrics.total_users}
-                        icon={Users}
-                        growth={metrics.user_growth_percent}
-                        sparkData={signupCounts}
-                    />
-                    <MetricCard
-                        title="Total Workspaces"
-                        value={metrics.total_workspaces}
-                        icon={Building2}
-                        growth={metrics.workspace_growth_percent}
-                    />
-                    <MetricCard
-                        title="Active Subscriptions"
-                        value={metrics.active_subscriptions}
-                        icon={CreditCard}
-                    />
-                    <MetricCard
-                        title="New Users (30d)"
-                        value={metrics.new_users_30d}
-                        icon={UserPlus}
-                        sparkData={signupCounts}
-                    />
+                    <Card>
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                            <CardTitle className="text-sm font-medium">Monthly Recurring Revenue</CardTitle>
+                            <DollarSign className="h-4 w-4 text-muted-foreground" />
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-2xl font-bold">{formatCurrency(metrics.mrr)}</div>
+                            <p className="text-xs text-muted-foreground mt-1">
+                                From active subscriptions
+                            </p>
+                        </CardContent>
+                    </Card>
+
+                    <Card>
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                            <CardTitle className="text-sm font-medium">Active Subscriptions</CardTitle>
+                            <CreditCard className="h-4 w-4 text-muted-foreground" />
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-2xl font-bold">{metrics.active_subscriptions}</div>
+                            <p className="text-xs text-muted-foreground mt-1">
+                                Paying and trialing workspaces
+                            </p>
+                        </CardContent>
+                    </Card>
+
+                    <Card>
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                            <CardTitle className="text-sm font-medium">Churn Rate (30d)</CardTitle>
+                            <Activity className="h-4 w-4 text-muted-foreground" />
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-2xl font-bold">{metrics.churn_rate}%</div>
+                            <p className="text-xs text-muted-foreground mt-1">
+                                Subscriber retention health
+                            </p>
+                        </CardContent>
+                    </Card>
+
+                    <Card>
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                            <CardTitle className="text-sm font-medium">Total Users</CardTitle>
+                            <Users className="h-4 w-4 text-muted-foreground" />
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-2xl font-bold">{metrics.total_users}</div>
+                            <p className="text-xs text-muted-foreground mt-1">
+                                <GrowthBadge value={metrics.user_growth_percent} /> from previous 30d
+                            </p>
+                        </CardContent>
+                    </Card>
                 </div>
 
-                {/* Middle Row: Signup Trend + Plan Distribution */}
-                <div className="grid gap-4 md:grid-cols-2">
-                    {/* Daily Signups Chart */}
-                    <div className="rounded-xl border bg-card text-card-foreground shadow-sm">
-                        <div className="p-6 pb-2">
-                            <div className="flex items-center gap-2">
-                                <TrendingUp className="h-4 w-4 text-muted-foreground" />
-                                <h3 className="text-sm font-medium">Daily Signups (14d)</h3>
+                {/* Second Row: Charts */}
+                <div className="grid gap-4 md:grid-cols-7">
+                    {/* Growth Chart */}
+                    <Card className="md:col-span-4">
+                        <CardHeader>
+                            <CardTitle>Platform Growth</CardTitle>
+                            <CardDescription>
+                                Daily new users and workspaces over the last 14 days
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent className="pl-0">
+                            <div className="h-[300px]">
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <AreaChart data={combinedDailyStats} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                                        <defs>
+                                            <linearGradient id="colorUsers" x1="0" y1="0" x2="0" y2="1">
+                                                <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.3} />
+                                                <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0} />
+                                            </linearGradient>
+                                            <linearGradient id="colorWorkspaces" x1="0" y1="0" x2="0" y2="1">
+                                                <stop offset="5%" stopColor="hsl(var(--foreground))" stopOpacity={0.3} />
+                                                <stop offset="95%" stopColor="hsl(var(--foreground))" stopOpacity={0} />
+                                            </linearGradient>
+                                        </defs>
+                                        <XAxis
+                                            dataKey="date"
+                                            stroke="hsl(var(--muted-foreground))"
+                                            fontSize={12}
+                                            tickLine={false}
+                                            axisLine={false}
+                                            dy={10}
+                                        />
+                                        <YAxis
+                                            stroke="hsl(var(--muted-foreground))"
+                                            fontSize={12}
+                                            tickLine={false}
+                                            axisLine={false}
+                                            tickFormatter={(value) => `${value}`}
+                                        />
+                                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
+                                        <Tooltip
+                                            contentStyle={{ backgroundColor: 'hsl(var(--card))', borderColor: 'hsl(var(--border))', borderRadius: '8px' }}
+                                            itemStyle={{ color: 'hsl(var(--foreground))' }}
+                                        />
+                                        <Legend wrapperStyle={{ paddingTop: '10px' }} />
+                                        <Area
+                                            type="monotone"
+                                            dataKey="users"
+                                            name="New Users"
+                                            stroke="hsl(var(--primary))"
+                                            strokeWidth={2}
+                                            fillOpacity={1}
+                                            fill="url(#colorUsers)"
+                                        />
+                                        <Area
+                                            type="monotone"
+                                            dataKey="workspaces"
+                                            name="New Workspaces"
+                                            stroke="hsl(var(--foreground))"
+                                            strokeWidth={2}
+                                            fillOpacity={1}
+                                            fill="url(#colorWorkspaces)"
+                                        />
+                                    </AreaChart>
+                                </ResponsiveContainer>
                             </div>
-                        </div>
-                        <div className="px-6 pb-6">
-                            <div className="flex items-end gap-1" style={{ height: '120px' }}>
-                                {dailySignups.map((day, i) => {
-                                    const maxCount = Math.max(...signupCounts, 1);
-                                    const heightPercent = (day.count / maxCount) * 100;
-                                    return (
-                                        <div
-                                            key={i}
-                                            className="group relative flex-1 flex flex-col items-center"
-                                        >
-                                            <div
-                                                className="w-full rounded-t bg-primary/70 hover:bg-primary transition-colors min-h-[2px]"
-                                                style={{ height: `${Math.max(heightPercent, 2)}%` }}
-                                            />
-                                            <span className="text-[9px] text-muted-foreground mt-1 hidden lg:block">
-                                                {day.date.split(' ')[1]}
-                                            </span>
-                                            {/* Tooltip */}
-                                            <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-popover text-popover-foreground text-xs px-2 py-1 rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-10">
-                                                {day.date}: {day.count}
-                                            </div>
-                                        </div>
-                                    );
-                                })}
-                            </div>
-                        </div>
-                    </div>
+                        </CardContent>
+                    </Card>
 
                     {/* Plan Distribution */}
-                    <div className="rounded-xl border bg-card text-card-foreground shadow-sm">
-                        <div className="p-6 pb-2">
-                            <div className="flex items-center gap-2">
-                                <CreditCard className="h-4 w-4 text-muted-foreground" />
-                                <h3 className="text-sm font-medium">Plan Distribution</h3>
+                    <Card className="md:col-span-3">
+                        <CardHeader>
+                            <CardTitle>Plan Distribution</CardTitle>
+                            <CardDescription>
+                                Active workspace subscriptions across pricing tiers
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="h-[300px] flex items-center justify-center">
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <PieChart>
+                                        <Pie
+                                            data={planDistribution}
+                                            cx="50%"
+                                            cy="50%"
+                                            innerRadius={60}
+                                            outerRadius={100}
+                                            paddingAngle={2}
+                                            dataKey="count"
+                                            nameKey="plan"
+                                        >
+                                            {planDistribution.map((entry, index) => (
+                                                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                            ))}
+                                        </Pie>
+                                        <Tooltip
+                                            contentStyle={{ backgroundColor: 'hsl(var(--card))', borderColor: 'hsl(var(--border))', borderRadius: '8px' }}
+                                            itemStyle={{ color: 'hsl(var(--foreground))' }}
+                                            formatter={(value: any, name: any) => [`${value} Workspaces`, name]}
+                                        />
+                                        <Legend layout="horizontal" verticalAlign="bottom" align="center" />
+                                    </PieChart>
+                                </ResponsiveContainer>
                             </div>
-                        </div>
-                        <div className="px-6 pb-6 space-y-3">
-                            {/* Stacked bar */}
-                            <div className="flex h-3 rounded-full overflow-hidden bg-muted">
-                                {planDistribution.map((p, i) => (
-                                    <div
-                                        key={p.plan}
-                                        className={`${PLAN_COLORS[i % PLAN_COLORS.length]} transition-all`}
-                                        style={{ width: `${(p.count / totalPlanCount) * 100}%` }}
-                                    />
-                                ))}
-                            </div>
-                            {/* Legend */}
-                            <div className="space-y-2">
-                                {planDistribution.map((p, i) => (
-                                    <div key={p.plan} className="flex items-center justify-between text-sm">
-                                        <div className="flex items-center gap-2">
-                                            <span className={`inline-block h-2.5 w-2.5 rounded-full ${PLAN_COLORS[i % PLAN_COLORS.length]}`} />
-                                            <span>{p.plan}</span>
-                                        </div>
-                                        <div className="flex items-center gap-2">
-                                            <span className="font-medium">{p.count}</span>
-                                            <span className="text-muted-foreground text-xs">
-                                                ({Math.round((p.count / totalPlanCount) * 100)}%)
-                                            </span>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
+                        </CardContent>
+                    </Card>
                 </div>
 
                 {/* Recent Users */}
