@@ -150,12 +150,11 @@ export default function BillingIndex({
                 description={t('billing.description', 'Manage your subscription and billing information')}
                 fullWidth
             >
-                <div className="space-y-6">
-
-                    <div className="grid gap-6 lg:grid-cols-3">
+                <div className="space-y-8 pb-12">
+                    <div className="grid gap-8 lg:grid-cols-3">
                         {/* Current Plan */}
-                        <Card className="lg:col-span-2 overflow-hidden border-2 border-primary/10 transition-all hover:border-primary/20">
-                            <CardHeader className="bg-muted/50 pb-4">
+                        <Card className="lg:col-span-2 glass overflow-hidden border-2 border-primary/10 transition-all hover:border-primary/30 animate-fade-in-up">
+                            <CardHeader className="bg-muted/30 pb-6 border-b border-primary/5">
                                 <div className="flex items-center justify-between">
                                     <div>
                                         <CardTitle className="flex items-center gap-2">
@@ -273,7 +272,7 @@ export default function BillingIndex({
                         <div className="space-y-6 lg:col-span-1">
                             {/* Upcoming Invoice */}
                             {upcoming_invoice && (
-                                <Card className="bg-primary text-primary-foreground shadow-lg shadow-primary/20">
+                                <Card className="bg-primary text-primary-foreground shadow-lg shadow-primary/20 animate-fade-in-up delay-200 border-none">
                                     <CardHeader className="pb-2">
                                         <CardTitle className="text-lg font-bold flex items-center gap-2">
                                             <CreditCard className="h-4 w-4" />
@@ -291,7 +290,7 @@ export default function BillingIndex({
 
                             {/* Payment Method Quick Look */}
                             {subscription && isOwner && (
-                                <Card className="transition-all hover:bg-muted/30">
+                                <Card className="glass transition-all hover:bg-muted/30 animate-fade-in-up delay-300">
                                     <CardHeader className="pb-3 pt-4">
                                         <CardTitle className="text-sm font-bold flex items-center gap-2 uppercase tracking-tight text-muted-foreground">
                                             <CreditCard className="h-3.5 w-3.5" />
@@ -317,14 +316,14 @@ export default function BillingIndex({
 
                             {/* Trial Countdown or Help */}
                             {!subscription && workspace.plan === 'Free' && (
-                                <Card className="bg-muted/50 border-dashed">
-                                    <CardContent className="pt-6 pb-6 flex flex-col items-center text-center">
-                                        <Sparkles className="h-8 w-8 text-primary mb-3 opacity-50" />
-                                        <p className="text-sm font-semibold mb-1">Unlock more power</p>
-                                        <p className="text-xs text-muted-foreground mb-4 leading-relaxed px-4">
-                                            Get unlimited workspaces, priority support, and advanced analytics.
+                                <Card className="glass bg-muted/20 border-dashed animate-fade-in-up delay-300">
+                                    <CardContent className="pt-8 pb-8 flex flex-col items-center text-center">
+                                        <Sparkles className="h-10 w-10 text-primary mb-4 opacity-50" />
+                                        <p className="text-lg font-bold mb-2">Unlock more power</p>
+                                        <p className="text-sm text-muted-foreground mb-6 leading-relaxed px-6">
+                                            Get unlimited workspaces, priority support, and advanced analytics to supercharge your workflow.
                                         </p>
-                                        <Button asChild size="sm" className="rounded-full w-full max-w-[120px]">
+                                        <Button asChild size="lg" className="rounded-full w-full max-w-[180px] font-bold shadow-lg shadow-primary/20 transition-transform hover:scale-105 active:scale-95 animate-pulse-premium">
                                             <Link href="/billing/plans">Explore Plans</Link>
                                         </Button>
                                     </CardContent>
@@ -334,8 +333,8 @@ export default function BillingIndex({
                     </div>
 
                     {/* Usage Overview */}
-                    <Card className="overflow-hidden shadow-sm">
-                        <CardHeader className="border-b bg-muted/20">
+                    <Card className="glass overflow-hidden shadow-sm animate-fade-in-up delay-400">
+                        <CardHeader className="border-b bg-muted/10">
                             <div className="flex items-center justify-between">
                                 <div>
                                     <CardTitle className="flex items-center gap-2">
@@ -428,7 +427,7 @@ export default function BillingIndex({
 
                     {/* Invoices */}
                     {invoices.length > 0 && (
-                        <Card className="shadow-sm border-none bg-muted/10">
+                        <Card className="glass shadow-sm border-none animate-fade-in-up delay-500">
                             <CardHeader className="pb-4">
                                 <CardTitle className="text-lg font-bold flex items-center gap-2">
                                     <Receipt className="h-5 w-5 text-muted-foreground" />
