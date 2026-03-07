@@ -3,6 +3,11 @@
 use App\Models\LoginActivity;
 use App\Models\User;
 
+/**
+ * @var \Tests\TestCase $this
+ *
+ * @property User $admin
+ */
 beforeEach(function () {
     $this->admin = User::factory()->create(['is_superadmin' => true]);
 });
@@ -12,7 +17,7 @@ it('renders the user analytics page for superadmin', function () {
         ->get(route('admin.user-analytics.index'))
         ->assertOk()
         ->assertInertia(
-            fn($page) => $page
+            fn ($page) => $page
                 ->component('admin/user-analytics')
                 ->has('dailySignups')
                 ->has('monthlyGrowth')
@@ -35,7 +40,7 @@ it('calculates active users correctly', function () {
         ->get(route('admin.user-analytics.index'))
         ->assertOk()
         ->assertInertia(
-            fn($page) => $page
+            fn ($page) => $page
                 ->where('activeUsers.today', 1)
         );
 });

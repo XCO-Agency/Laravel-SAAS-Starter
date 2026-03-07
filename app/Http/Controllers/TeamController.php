@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\PermissionPreset;
 use App\Models\User;
-use App\Models\Workspace;
 use App\Models\WorkspaceInvitation;
 use App\Services\InvitationService;
 use App\Services\WorkspaceService;
@@ -40,7 +39,7 @@ class TeamController extends Controller
             'members' => $workspace->users()
                 ->select('users.id', 'users.name', 'users.email', 'users.bio', 'users.timezone')
                 ->get()
-                ->map(fn($member) => [
+                ->map(fn ($member) => [
                     'id' => $member->id,
                     'name' => $member->name,
                     'email' => $member->email,
@@ -58,7 +57,7 @@ class TeamController extends Controller
                 ->select('id', 'token', 'role', 'max_uses', 'uses_count', 'expires_at', 'created_at')
                 ->latest()
                 ->get()
-                ->map(fn($link) => [
+                ->map(fn ($link) => [
                     'id' => $link->id,
                     'token' => $link->token,
                     'role' => $link->role,
@@ -87,7 +86,7 @@ class TeamController extends Controller
 
         $validated = $request->validate([
             'email' => ['required', 'email', 'max:255'],
-            'role' => ['required', Rule::in([Workspace::ROLE_ADMIN, Workspace::ROLE_MEMBER, Workspace::ROLE_VIEWER])],
+            'role' => ['required', Rule::in(['admin', 'member'])],
         ]);
 
         if (! $this->invitationService->canInvite($workspace)) {
@@ -152,7 +151,7 @@ class TeamController extends Controller
         Gate::authorize('manageTeam', $workspace);
 
         $validated = $request->validate([
-            'role' => ['required', Rule::in([Workspace::ROLE_ADMIN, Workspace::ROLE_MEMBER, Workspace::ROLE_VIEWER])],
+            'role' => ['required', Rule::in(['admin', 'member'])],
         ]);
 
         // Cannot change owner's role

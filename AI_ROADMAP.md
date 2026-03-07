@@ -23,25 +23,36 @@ The AI agent is now continually managing and executing the roadmap autonomously.
 - **Stack**: Laravel 12, Inertia.js v2, React 19, Tailwind CSS v4, Stripe Cashier, Fortify.
 - **Completed Features**: Auth, 2FA, Workspaces, Teams, Stripe Billing, i18n, Dark Mode, Super Admin Panel, Feature Flags (Pennant), Announcements, Audit Logs, Command Palette.
 
-## 🚀 Active Sprint 27: Customer Experience & Granular Control
+## 🚀 Active Sprint 25: Admin Experience Completion
 
-- [ ] **Task 99**: Granular Workspace Roles & Permissions — Implement a robust role-based access control (RBAC) system within workspaces (Owner, Admin, Member, Viewer) using Laravel Policies and a dedicated UI for managing member permissions.
+- [x] **Task 93**: Localization Management UI Recovery — Re-enable superadmin translation management routes/navigation and validate existing localization workflows. ✅ (7 tests, 39 assertions)
+- [x] **Task 94**: Global Support Ticket System Recovery — Restore superadmin ticket management routes/navigation and validate ticket moderation workflows. ✅ (10 tests, 59 assertions)
+- [ ] **Task 95**: Admin Dashboard Analytics Widgets Recovery — Restore enhanced analytics widgets and validate dashboard data/visual contracts.
+- [ ] **Task 96**: Global Admin 2FA Enforcement Recovery — Reinstate admin 2FA enforcement wall and validate access guard behavior.
+- [ ] **Task 97**: Impersonation Audit Log Recovery — Restore impersonation audit routes/navigation and validate event visibility/security.
+- [ ] **Task 98**: Admin Broadcast Notifications Recovery — Restore broadcast messaging routes/navigation and validate dispatch flow.
 
 ## 🏁 Completed Sprints
 
-- **Sprint 26**: Admin Security & Broadcasting (Global Admin 2FA Enforcement, Impersonation Audit Log, Admin Broadcast Notifications).
-- **Sprint 25**: Admin Configuration & Growth (Localization Management UI, Global Support Ticket System, Admin Dashboard Analytics Widgets).
 - **Sprint 24**: Advanced Integrations & UX (Admin System Notifications, Workspace Data Import, API Rate Limiting Dashboard, User Session Management, Admin Application Log Viewer, User API Key Management UI).
+
+- **Sprint 23**: Operational Excellence & Growth (Admin Revenue Analytics, Admin Bulk User Actions, Workspace Member Activity Report, Workspace Analytics Dashboard).
+
 - **Sprint 22**: Communication & Conversion Reliability (Notification Delivery Analytics, Onboarding Completion Insights, Billing Reminder Notifications, Permission Preset Templates).
+
 - **Sprint 21**: Permissions Deepening & Onboarding Quality (Granular Team Permission Parity, Permission Matrix UI Polish, Onboarding Billing Step, Notification Channel Preferences).
+
 - **Sprint 20**: Resilience & Self-Service (Workspace Trash & Restore, Password Change History, Workspace Suspension, User Timezone & Date Format).
+
 - **Sprint 19**: Identity & Compliance (Magic Link Authentication, Cookie Consent Manager, Workspace IP Allowlist, Robust Avatar Management).
 - **Sprint 18**: Enterprise Security & Billing Polish (Invoice PDF, Webhook Dispatching, Maintenance IP Whitelist, Password Expiry).
 - **Sprint 17**: Collaboration & Admin Polish (Contextual Help Tooltips, Workspace Activity Feed, Admin User Analytics, Notification Preferences).
 - **Sprint 16**: Security & Customization (Shareable Invitation Links, Login Activity Log, Admin Maintenance Mode, Workspace Custom Branding).
 - **Sprint 15**: Engagement & User Success (Account Deletion, Usage Dashboard, Admin Impersonation UI, SEO Management).
 - **Sprint 14**: Developer Experience & Growth (API Documentation, Real-time Notifications, Data Export, Advanced Search).
+
 - **Sprint 13**: Platform Maturity & Visibility (System Health Monitor, Public Changelog, Workspace API Keys, Scheduled Tasks Monitor).
+
 - **Sprints 1-8**: Core SaaS Mechanics, Admin Dashboard, Webhooks, Sentry, Activity Logs, Settings, UI refinement.
 - **Sprint 9**: Developer Experience & Integration (Feature Flags, Announcements, Command Palette).
 - **Sprint 10**: Deep Review & Polish (Documentation generated: UI/Theming, Workspaces, I18N, Billing, Security; Landing Page enhanced).
@@ -50,13 +61,19 @@ The AI agent is now continually managing and executing the roadmap autonomously.
 
 ## 📝 Changelog
 
-- **2026-03-07**: Task 98 (Admin Broadcast Notifications): Implemented broadcast messaging UI, background dispatching job, and chunked delivery via Laravel Notifications. 4 tests/11 assertions.
-- **2026-03-07**: Task 97 (Impersonation Audit Log): Added dedicated `ImpersonationLog` model/migration, hooked into `ImpersonationController`, and created admin UI to view immutable session trails. 3 tests/11 assertions.
-- **2026-03-07**: Task 96 (Global Admin 2FA Enforcement): Implemented `RequireAdminTwoFactor` middleware, applied to all `/admin` routes, forcing a setup wall for super-admins without 2FA. 7 tests/19 assertions.
-- **2026-03-07**: Task 95 (Admin Dashboard Analytics Widgets): Implemented MRR and 30-day Churn calculations in `DashboardController`, added Recharts NPM dependency, replaced simple CSS sparklines with interactive `AreaChart` and `PieChart` components on the super-admin dashboard.
-- **2026-03-07**: Task 94 (Global Support Ticket System): Implement user ticket portal, admin ticket management dashboard, Ticket/TicketReply models, threaded conversation UI with Sonner toasts. 10 tests/59 assertions.
-- **2026-03-07**: Task 93 (Localization Management UI): Added TranslationController, admin UI (`translations.tsx`), and tests to directly edit and create translation JSON files dynamically. 7 tests/39 assertions.
-- **2026-03-06**: Task 90 (User Session Management for Admins): Controller and admin UI for viewing and terminating remote user sessions directly from the user management screen, 4 tests/22 assertions.
+- **2026-03-07**: Task 94 (Global Support Ticket System Recovery): restored admin ticket routes (`index/show/update/reply`), re-added support ticket navigation in admin and settings layouts, regenerated Wayfinder routes/actions, and validated end-to-end support ticket flows with focused Pest coverage. *(10 tests, 59 assertions)*
+
+- **2026-03-07**: Task 93 (Localization Management UI Recovery): restored admin translation routes and admin navigation entry for Translations, regenerated Wayfinder routes/actions, and validated localization flows with focused Pest coverage. *(7 tests, 39 assertions)*
+
+- **2026-03-07**: Task 92 (User API Key Management UI): added admin routes/controller/page for per-user API token listing, issuance, and revocation, linked access from admin users table actions, regenerated Wayfinder routes/actions, and validated both admin and settings token flows with focused Pest coverage. *(11 tests, 53 assertions)*
+
+- **2026-03-07**: Task 91 (Admin Application Log Viewer): wired admin log routes (`index/show/download/destroy`), restored System Logs navigation in admin layout, regenerated Wayfinder routes/actions, and validated log-viewer access/security/file-management behavior with focused Pest coverage. *(12 tests, 65 assertions)*
+
+- **2026-03-07**: Task 90 (User Session Management for Admins): wired admin session routes, added “Manage Sessions” action in admin users table, enabled per-user active session listing and revoke/revoke-all flows from admin panel, regenerated Wayfinder routes/actions, and added admin session authorization/termination coverage. *(15 tests, 41 assertions)*
+
+- **2026-03-05**: Sprint 22 complete. Task 82 (Permission Preset Templates): admin CRUD for reusable permission bundles, preset selector in team permissions dialog, 4 default presets seeded, 13 tests/54 assertions.
+- **2026-03-05**: Task 83 (Admin Revenue Analytics): admin dashboard with MRR calculation, churn rate, trial conversion rate, plan distribution, subscription flow chart, revenue-by-plan breakdown, status alerts, 12 tests/149 assertions.
+- **2026-03-05**: Task 84 (Admin Bulk User Actions): checkbox selection on admin users page, bulk verify email, bulk suspend with self-exclusion, CSV export with streamed download, 10 tests/27 assertions.
 - **2026-03-05**: Task 85 (Workspace Member Activity Report): per-member engagement dashboard with login frequency, action counts, engagement scores (0-100), online/recent/inactive status detection, 14-day daily activity chart, settings layout integration, 13 tests/128 assertions.
 - **2026-03-05**: Task 86 (Workspace Analytics Dashboard): per-workspace usage metrics with member growth (6mo chart), API key usage listing, webhook delivery stats (success/failed/pending), 8-week activity volume chart, recent activity feed, settings layout integration, 10 tests/123 assertions.
 - **2026-03-05**: Task 81 (Billing Reminder Notifications): TrialEndingNotification and SubscriptionRenewalNotification with channel/category preference respect, app:send-billing-reminders artisan command scheduled daily at 09:00 UTC, deduplication via billing_reminder_logs table, 19 tests/53 assertions.

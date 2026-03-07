@@ -19,11 +19,11 @@ import {
     Power,
     ScrollText,
     ShieldCheck,
+    Terminal,
+    Ticket,
     ToggleLeft,
     Users,
     Mail,
-    Terminal,
-    Ticket,
 } from 'lucide-react';
 import { type PropsWithChildren } from 'react';
 import { cn } from '@/lib/utils';
@@ -38,22 +38,20 @@ const adminNav = [
     { title: 'Workspaces', href: '/admin/workspaces', icon: Building2 },
     { title: 'Feature Flags', href: '/admin/feature-flags', icon: ToggleLeft },
     { title: 'Audit Logs', href: '/admin/audit-logs', icon: ScrollText },
-    { title: 'Impersonation Logs', href: '/admin/impersonation-logs', icon: ScrollText },
+    { title: 'System Logs', href: '/admin/logs', icon: Terminal },
     { title: 'Email Templates', href: '/admin/mail-templates', icon: Mail },
     { title: 'Announcements', href: '/admin/announcements', icon: Megaphone },
-    { title: 'Broadcasts', href: '/admin/broadcasts', icon: Megaphone },
     { title: 'Feedback', href: '/admin/feedback', icon: MessageSquare },
     { title: 'Data Retention', href: '/admin/retention', icon: ShieldCheck },
     { title: 'System Health', href: '/admin/system-health', icon: Activity },
     { title: 'Changelog', href: '/admin/changelog', icon: ListChecks },
     { title: 'Scheduled Tasks', href: '/admin/scheduled-tasks', icon: Clock },
     { title: 'SEO', href: '/admin/seo', icon: Globe },
+    { title: 'Translations', href: '/admin/translations', icon: Globe },
+    { title: 'Support Tickets', href: '/admin/tickets', icon: Ticket },
     { title: 'Permissions', href: '/admin/permission-presets', icon: KeyRound },
     { title: 'System Alerts', href: '/admin/system-notifications', icon: AlertTriangle },
     { title: 'Maintenance', href: '/admin/maintenance', icon: Power },
-    { title: 'System Logs', href: '/admin/logs', icon: Terminal },
-    { title: 'Translations', href: '/admin/translations', icon: Globe },
-    { title: 'Support Tickets', href: '/admin/tickets', icon: Ticket },
 ];
 
 export default function AdminLayout({

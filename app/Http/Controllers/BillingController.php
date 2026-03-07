@@ -23,6 +23,21 @@ class BillingController extends Controller
         $subscription = $workspace->subscription('default');
         $invoices = $workspace->invoices()->take(10);
 
+        $upcomingInvoice = null;
+        if ($subscription && $subscription->active()) {
+            try {
+                $invoice = $workspace->upcomingInvoice();
+                if ($invoice) {
+                    $upcomingInvoice = [
+                        'amount' => $invoice->total(),
+                        'date' => $invoice->date()->format('F j, Y'),
+                    ];
+                }
+            } catch (\Exception) {
+                // No upcoming invoice
+            }
+        }
+
         return Inertia::render('Billing/index', [
             'workspace' => [
                 'id' => $workspace->id,
@@ -39,6 +54,8 @@ class BillingController extends Controller
                 'on_grace_period' => $subscription->onGracePeriod(),
                 'cancelled' => $subscription->canceled(),
             ] : null,
+            'upcoming_invoice' => $upcomingInvoice,
+            'usage' => $workspace->usageOverview(),
             'invoices' => $invoices->map(fn ($invoice) => [
                 'id' => $invoice->id,
                 'date' => $invoice->date()->format('F j, Y'),

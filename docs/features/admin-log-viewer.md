@@ -24,9 +24,26 @@ Only users with the `superadmin` role can access the Log Viewer component.
 - **Storage Path**: Read access to `storage/logs/*.log`.
 - **Parsing**: A robust Regex pattern is used on the server side to detect the standard Laravel log entry format (`[YYYY-MM-DD HH:MM:SS] environment.LEVEL: Message`) and properly concatenate multi-line stack traces with the original error payload.
 
+### Routes
+
+| Method | URI | Route Name |
+|---|---|---|
+| GET | `/admin/logs` | `admin.logs.index` |
+| GET | `/admin/logs/{file}` | `admin.logs.show` |
+| GET | `/admin/logs/{file}/download` | `admin.logs.download` |
+| DELETE | `/admin/logs/{file}` | `admin.logs.destroy` |
+
+All routes are protected by the `superadmin` middleware.
+
 ## Usage
 
 1. Navigate to **Admin Panel > System Logs** (in the sidebar).
 2. The UI will load up all matched `.log` files. Select the target file (by default `laravel.log`).
 3. Scroll through log entries and use the top right filter array to drill down on issues.
 4. If a log file exceeds significant size, consider downloading a local copy or deleting it through the UI, allowing Laravel to start fresh.
+
+## Testing
+
+```bash
+php artisan test --compact tests/Feature/Admin/LogViewerTest.php
+```

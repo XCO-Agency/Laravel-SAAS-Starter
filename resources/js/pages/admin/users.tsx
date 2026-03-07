@@ -15,6 +15,8 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import {
     CheckCircle,
     Download,
+    KeyRound,
+    MonitorSmartphone,
     MoreHorizontal,
     RotateCcw,
     Search,
@@ -24,7 +26,6 @@ import {
     UserCog,
     Users,
     XCircle,
-    MonitorSmartphone,
 } from 'lucide-react';
 import { useState, type FormEvent } from 'react';
 
@@ -306,6 +307,12 @@ export default function AdminUsers({ users, filters }: AdminUsersProps) {
                                                         >
                                                             <MonitorSmartphone className="mr-2 h-4 w-4" />
                                                             Manage Sessions
+                                                        </DropdownMenuItem>
+                                                        <DropdownMenuItem
+                                                            onClick={() => router.get(`/admin/users/${user.id}/api-tokens`)}
+                                                        >
+                                                            <KeyRound className="mr-2 h-4 w-4" />
+                                                            Manage API Tokens
                                                         </DropdownMenuItem>
                                                         <DropdownMenuSeparator />
                                                         <DropdownMenuItem

@@ -17,7 +17,6 @@ import {
     type BreadcrumbItem,
     type Invoice,
     type Plan,
-    type Workspace,
     type WorkspaceRole,
 } from '@/types';
 import { Head, Link } from '@inertiajs/react';
@@ -40,16 +39,33 @@ interface Subscription {
     cancelled: boolean;
 }
 
-interface BillingWorkspace extends Workspace {
+interface BillingWorkspace {
+    id: string;
+    name: string;
+    plan: string;
     on_trial?: boolean;
     trial_ends_at?: string | null;
     seat_count: number;
-    seat_limit: number; // -1 = unlimited
+    seat_limit: number;
+}
+
+interface UsageMetric {
+    label: string;
+    count: number;
+    limit: number;
+    percentage: number;
+}
+
+interface UpcomingInvoice {
+    amount: string;
+    date: string;
 }
 
 interface BillingIndexProps {
     workspace: BillingWorkspace;
     subscription: Subscription | null;
+    upcoming_invoice: UpcomingInvoice | null;
+    usage: Record<string, UsageMetric>;
     invoices: Invoice[];
     plans: Plan[];
     userRole: WorkspaceRole;
@@ -60,6 +76,8 @@ const breadcrumbs: BreadcrumbItem[] = [{ title: 'Billing', href: '/billing' }];
 export default function BillingIndex({
     workspace,
     subscription,
+    upcoming_invoice,
+    usage,
     invoices,
     plans,
     userRole,
@@ -134,255 +152,332 @@ export default function BillingIndex({
             >
                 <div className="space-y-6">
 
-                    {/* Current Plan */}
-                    <Card>
-                        <CardHeader>
-                            <div className="flex items-center justify-between">
-                                <div>
-                                    <CardTitle className="flex items-center gap-2">
-                                        <Sparkles className="h-5 w-5 text-primary" />
-                                        {t('billing.current_plan', 'Current Plan')}
-                                    </CardTitle>
-                                    <CardDescription>
-                                        {t('billing.your_workspace_on', 'Your workspace is on the {{plan}} plan.', { plan: workspace.plan })}
-                                    </CardDescription>
+                    <div className="grid gap-6 lg:grid-cols-3">
+                        {/* Current Plan */}
+                        <Card className="lg:col-span-2 overflow-hidden border-2 border-primary/10 transition-all hover:border-primary/20">
+                            <CardHeader className="bg-muted/50 pb-4">
+                                <div className="flex items-center justify-between">
+                                    <div>
+                                        <CardTitle className="flex items-center gap-2">
+                                            <Sparkles className="h-5 w-5 text-primary" />
+                                            {t('billing.current_plan', 'Current Plan')}
+                                        </CardTitle>
+                                        <CardDescription>
+                                            {t('billing.your_workspace_on', 'Your workspace is on the {{plan}} plan.', { plan: workspace.plan })}
+                                        </CardDescription>
+                                    </div>
+                                    {getStatusBadge()}
                                 </div>
-                                {getStatusBadge()}
-                            </div>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-                                <div className="space-y-1">
-                                    <p className="text-3xl font-bold">
-                                        {workspace.plan}
-                                    </p>
-                                    {currentPlan && (
-                                        <p className="text-muted-foreground">
-                                            {currentPlan.price.monthly > 0
-                                                ? `$${currentPlan.price.monthly}/month`
-                                                : t('billing.free_forever', 'Free forever')}
+                            </CardHeader>
+                            <CardContent className="pt-6">
+                                <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+                                    <div className="space-y-1">
+                                        <p className="text-4xl font-extrabold tracking-tight">
+                                            {workspace.plan}
                                         </p>
-                                    )}
-                                    {workspace.on_trial &&
-                                        workspace.trial_ends_at && (
-                                            <p className="text-sm text-yellow-600 dark:text-yellow-400">
-                                                {t('billing.trial_ends', 'Trial ends on {{date}}', { date: new Date(workspace.trial_ends_at).toLocaleDateString() })}
+                                        {currentPlan && (
+                                            <p className="text-muted-foreground font-medium">
+                                                {currentPlan.price.monthly > 0
+                                                    ? `$${currentPlan.price.monthly}/month`
+                                                    : t('billing.free_forever', 'Free forever')}
                                             </p>
                                         )}
-                                    {subscription?.cancelled &&
-                                        subscription.ends_at && (
-                                            <div className="space-y-2">
-                                                <p className="text-sm text-destructive">
-                                                    {t('billing.subscription_ends', 'Your subscription will end on {{date}}', { date: new Date(subscription.ends_at).toLocaleDateString() })}
-                                                </p>
-                                                {subscription.on_grace_period &&
-                                                    isOwner && (
-                                                        <Button
-                                                            variant="outline"
-                                                            size="sm"
-                                                            onClick={
-                                                                handleResumeSubscription
-                                                            }
-                                                            disabled={resumeLoading}
-                                                        >
-                                                            {resumeLoading && (
-                                                                <Spinner className="mr-2" />
-                                                            )}
-                                                            {t('billing.resume_subscription', 'Resume Subscription')}
-                                                        </Button>
-                                                    )}
-                                            </div>
-                                        )}
-                                </div>
-                                <div className="flex gap-2">
-                                    {isOwner && (
-                                        <>
-                                            <Button asChild>
-                                                <Link href="/billing/plans">
-                                                    {workspace.plan === 'Free'
-                                                        ? t('billing.upgrade', 'Upgrade')
-                                                        : t('billing.change_plan', 'Change Plan')}
-                                                </Link>
-                                            </Button>
-                                            {subscription && (
-                                                <Button
-                                                    variant="outline"
-                                                    onClick={handlePortalRedirect}
-                                                    disabled={portalLoading}
-                                                >
-                                                    {portalLoading ? (
-                                                        <Spinner className="mr-2" />
-                                                    ) : (
-                                                        <ExternalLink className="mr-2 h-4 w-4" />
-                                                    )}
-                                                    {t('billing.manage_subscription', 'Manage Subscription')}
-                                                </Button>
+                                        {workspace.on_trial &&
+                                            workspace.trial_ends_at && (
+                                                <div className="flex items-center gap-1.5 mt-2 rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-700 dark:bg-amber-950/30 dark:text-amber-400 border border-amber-100 dark:border-amber-900/50 w-fit">
+                                                    <AlertCircle className="h-3.5 w-3.5" />
+                                                    {t('billing.trial_ends', 'Trial ends on {{date}}', { date: new Date(workspace.trial_ends_at).toLocaleDateString() })}
+                                                </div>
                                             )}
-                                        </>
-                                    )}
-                                </div>
-                            </div>
+                                        {subscription?.cancelled &&
+                                            subscription.ends_at && (
+                                                <div className="space-y-2 mt-2">
+                                                    <p className="text-sm font-medium text-destructive">
+                                                        {t('billing.subscription_ends', 'Your subscription will end on {{date}}', { date: new Date(subscription.ends_at).toLocaleDateString() })}
+                                                    </p>
+                                                    {subscription.on_grace_period &&
+                                                        isOwner && (
+                                                            <Button
+                                                                variant="outline"
+                                                                size="sm"
+                                                                onClick={
+                                                                    handleResumeSubscription
+                                                                }
+                                                                disabled={resumeLoading}
+                                                                className="rounded-full"
+                                                            >
+                                                                {resumeLoading && (
+                                                                    <Spinner className="mr-2" />
+                                                                )}
+                                                                {t('billing.resume_subscription', 'Resume Subscription')}
+                                                            </Button>
+                                                        )}
+                                                </div>
+                                            )}
+                                    </div>
 
-                            {/* Plan Features */}
-                            {currentPlan && (
-                                <div className="mt-6 border-t pt-6">
-                                    <h4 className="mb-3 text-sm font-medium">
-                                        {t('billing.plan_features', 'Plan Features')}
-                                    </h4>
-                                    <ul className="grid gap-2 md:grid-cols-2">
-                                        {currentPlan.features.map(
-                                            (feature, index) => (
-                                                <li
-                                                    key={index}
-                                                    className="flex items-center gap-2 text-sm"
-                                                >
-                                                    <CheckCircle className="h-4 w-4 text-green-500" />
-                                                    {feature}
-                                                </li>
-                                            ),
+                                    <div className="flex flex-col sm:flex-row gap-3">
+                                        {isOwner && (
+                                            <>
+                                                <Button asChild className="rounded-full px-8 shadow-sm transition-transform active:scale-95">
+                                                    <Link href="/billing/plans">
+                                                        {workspace.plan === 'Free'
+                                                            ? t('billing.upgrade', 'Upgrade Now')
+                                                            : t('billing.change_plan', 'Change Plan')}
+                                                    </Link>
+                                                </Button>
+                                                {subscription && (
+                                                    <Button
+                                                        variant="outline"
+                                                        onClick={handlePortalRedirect}
+                                                        disabled={portalLoading}
+                                                        className="rounded-full shadow-sm"
+                                                    >
+                                                        {portalLoading ? (
+                                                            <Spinner className="mr-2" />
+                                                        ) : (
+                                                            <ExternalLink className="mr-2 h-4 w-4" />
+                                                        )}
+                                                        {t('billing.manage_subscription', 'Manage')}
+                                                    </Button>
+                                                )}
+                                            </>
                                         )}
-                                    </ul>
-                                </div>
-                            )}
-                        </CardContent>
-                    </Card>
-
-                    {/* Seats */}
-                    <Card>
-                        <CardHeader>
-                            <CardTitle className="flex items-center gap-2">
-                                <Users className="h-5 w-5" />
-                                Seats
-                            </CardTitle>
-                            <CardDescription>
-                                {workspace.seat_limit === -1
-                                    ? `${workspace.seat_count} members — unlimited seats on your plan.`
-                                    : `${workspace.seat_count} of ${workspace.seat_limit} seats used on the ${workspace.plan} plan.`}
-                            </CardDescription>
-                        </CardHeader>
-                        <CardContent className="space-y-3">
-                            {workspace.seat_limit !== -1 && (() => {
-                                const pct = Math.min(100, Math.round((workspace.seat_count / workspace.seat_limit) * 100));
-                                const color = pct >= 100 ? 'bg-destructive' : pct >= 80 ? 'bg-amber-500' : 'bg-emerald-500';
-                                return (
-                                    <div className="space-y-1.5">
-                                        <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
-                                            <div
-                                                className={`h-full rounded-full transition-all ${color}`}
-                                                style={{ width: `${pct}%` }}
-                                            />
-                                        </div>
-                                        <p className="text-xs text-muted-foreground">{pct}% of seats used</p>
-                                    </div>
-                                );
-                            })()}
-                            {workspace.seat_limit !== -1 && workspace.seat_count >= workspace.seat_limit && isOwner && (
-                                <div className="flex items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 p-3 dark:border-amber-900 dark:bg-amber-950/30">
-                                    <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-amber-600" />
-                                    <div className="text-sm">
-                                        <p className="font-medium text-amber-800 dark:text-amber-400">Seat limit reached</p>
-                                        <p className="text-amber-700 dark:text-amber-500">Upgrade your plan to invite more team members.</p>
                                     </div>
                                 </div>
-                            )}
-                        </CardContent>
-                    </Card>
 
-                    {/* Payment Method */}
-                    {subscription && isOwner && (
-                        <Card>
-                            <CardHeader>
-                                <CardTitle className="flex items-center gap-2">
-                                    <CreditCard className="h-5 w-5" />
-                                    {t('billing.payment_method', 'Payment Method')}
-                                </CardTitle>
-                                <CardDescription>
-                                    {t('billing.payment_method_desc', 'Manage your payment method through the billing portal.')}
-                                </CardDescription>
-                            </CardHeader>
-                            <CardContent>
-                                <Button
-                                    variant="outline"
-                                    onClick={handlePortalRedirect}
-                                    disabled={portalLoading}
-                                >
-                                    {portalLoading ? (
-                                        <Spinner className="mr-2" />
-                                    ) : (
-                                        <CreditCard className="mr-2 h-4 w-4" />
-                                    )}
-                                    {t('billing.update_payment_method', 'Update Payment Method')}
-                                </Button>
+                                {/* Plan Features */}
+                                {currentPlan && (
+                                    <div className="mt-8 border-t bg-muted/30 -mx-6 px-6 py-6">
+                                        <h4 className="mb-4 text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                                            {t('billing.plan_includes', 'Included in your plan')}
+                                        </h4>
+                                        <ul className="grid gap-x-8 gap-y-3 md:grid-cols-2 lg:grid-cols-3">
+                                            {currentPlan.features.map(
+                                                (feature, index) => (
+                                                    <li
+                                                        key={index}
+                                                        className="flex items-center gap-2.5 text-sm font-medium text-foreground/80"
+                                                    >
+                                                        <CheckCircle className="h-4 w-4 text-primary shrink-0" />
+                                                        {feature}
+                                                    </li>
+                                                ),
+                                            )}
+                                        </ul>
+                                    </div>
+                                )}
                             </CardContent>
                         </Card>
-                    )}
 
-                    {/* Invoices */}
-                    {invoices.length > 0 && (
-                        <Card>
-                            <CardHeader>
-                                <CardTitle className="flex items-center gap-2">
-                                    <Receipt className="h-5 w-5" />
-                                    {t('billing.invoices', 'Invoices')}
-                                </CardTitle>
-                                <CardDescription>
-                                    {t('billing.invoices_desc', 'Download your past invoices for your records.')}
-                                </CardDescription>
-                            </CardHeader>
-                            <CardContent>
-                                <div className="space-y-3">
-                                    {invoices.map((invoice) => (
-                                        <div
-                                            key={invoice.id}
-                                            className="flex items-center justify-between rounded-lg border p-4"
-                                        >
-                                            <div>
-                                                <p className="font-medium">
-                                                    {invoice.date}
-                                                </p>
-                                                <p className="text-sm text-muted-foreground">
-                                                    {invoice.total}
-                                                </p>
-                                            </div>
+                        <div className="space-y-6 lg:col-span-1">
+                            {/* Upcoming Invoice */}
+                            {upcoming_invoice && (
+                                <Card className="bg-primary text-primary-foreground shadow-lg shadow-primary/20">
+                                    <CardHeader className="pb-2">
+                                        <CardTitle className="text-lg font-bold flex items-center gap-2">
+                                            <CreditCard className="h-4 w-4" />
+                                            Upcoming Payment
+                                        </CardTitle>
+                                    </CardHeader>
+                                    <CardContent>
+                                        <div className="space-y-1">
+                                            <p className="text-3xl font-black">{upcoming_invoice.amount}</p>
+                                            <p className="text-sm opacity-90 font-medium">Scheduled for {upcoming_invoice.date}</p>
+                                        </div>
+                                    </CardContent>
+                                </Card>
+                            )}
+
+                            {/* Payment Method Quick Look */}
+                            {subscription && isOwner && (
+                                <Card className="transition-all hover:bg-muted/30">
+                                    <CardHeader className="pb-3 pt-4">
+                                        <CardTitle className="text-sm font-bold flex items-center gap-2 uppercase tracking-tight text-muted-foreground">
+                                            <CreditCard className="h-3.5 w-3.5" />
+                                            {t('billing.payment_method', 'Payment Method')}
+                                        </CardTitle>
+                                    </CardHeader>
+                                    <CardContent className="pb-4">
+                                        <div className="flex items-center justify-between">
+                                            <p className="text-sm font-medium">Managed via Stripe</p>
                                             <Button
                                                 variant="ghost"
                                                 size="sm"
-                                                asChild
+                                                onClick={handlePortalRedirect}
+                                                disabled={portalLoading}
+                                                className="h-8 px-2 text-primary hover:text-primary hover:bg-primary/5"
                                             >
-                                                <a
-                                                    href={invoice.pdf_url}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                >
-                                                    <Download className="mr-2 h-4 w-4" />
-                                                    {t('billing.download', 'Download')}
-                                                </a>
+                                                Update
                                             </Button>
                                         </div>
-                                    ))}
-                                </div>
-                            </CardContent>
-                        </Card>
-                    )}
+                                    </CardContent>
+                                </Card>
+                            )}
 
-                    {/* No Subscription Notice */}
-                    {!subscription && workspace.plan === 'Free' && (
-                        <Card className="border-dashed">
-                            <CardContent className="flex flex-col items-center justify-center py-12">
-                                <AlertCircle className="mb-4 h-12 w-12 text-muted-foreground" />
-                                <h3 className="mb-2 text-lg font-medium">
-                                    {t('billing.no_subscription', 'No Active Subscription')}
-                                </h3>
-                                <p className="mb-4 text-center text-muted-foreground">
-                                    {t('billing.no_subscription_desc', 'Upgrade to a paid plan to unlock more features and team members.')}
-                                </p>
-                                {isOwner && (
-                                    <Button asChild>
-                                        <Link href="/billing/plans">
-                                            {t('billing.view_plans', 'View Plans')}
-                                        </Link>
-                                    </Button>
-                                )}
+                            {/* Trial Countdown or Help */}
+                            {!subscription && workspace.plan === 'Free' && (
+                                <Card className="bg-muted/50 border-dashed">
+                                    <CardContent className="pt-6 pb-6 flex flex-col items-center text-center">
+                                        <Sparkles className="h-8 w-8 text-primary mb-3 opacity-50" />
+                                        <p className="text-sm font-semibold mb-1">Unlock more power</p>
+                                        <p className="text-xs text-muted-foreground mb-4 leading-relaxed px-4">
+                                            Get unlimited workspaces, priority support, and advanced analytics.
+                                        </p>
+                                        <Button asChild size="sm" className="rounded-full w-full max-w-[120px]">
+                                            <Link href="/billing/plans">Explore Plans</Link>
+                                        </Button>
+                                    </CardContent>
+                                </Card>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Usage Overview */}
+                    <Card className="overflow-hidden shadow-sm">
+                        <CardHeader className="border-b bg-muted/20">
+                            <div className="flex items-center justify-between">
+                                <div>
+                                    <CardTitle className="flex items-center gap-2">
+                                        <Users className="h-5 w-5 text-muted-foreground" />
+                                        Workspace Usage
+                                    </CardTitle>
+                                    <CardDescription>
+                                        Real-time consumption metrics for your current plan.
+                                    </CardDescription>
+                                </div>
+                                <div className="text-right hidden sm:block">
+                                    <p className="text-sm font-bold">{workspace.plan} Limits</p>
+                                </div>
+                            </div>
+                        </CardHeader>
+                        <CardContent className="pt-8 pb-8">
+                            <div className="grid gap-10 md:grid-cols-3">
+                                {Object.entries(usage).map(([key, metric]) => {
+                                    const isCritical = metric.percentage >= 90;
+                                    const isHigh = metric.percentage >= 75;
+                                    const colorClass = isCritical
+                                        ? 'bg-destructive shadow-[0_0_8px_rgba(239,68,68,0.4)]'
+                                        : isHigh
+                                            ? 'bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.4)]'
+                                            : 'bg-primary shadow-[0_0_8px_rgba(var(--primary),0.4)]';
+
+                                    return (
+                                        <div key={key} className="space-y-4">
+                                            <div className="flex items-center justify-between">
+                                                <div className="flex items-center gap-2">
+                                                    <span className="text-sm font-bold uppercase tracking-wider text-muted-foreground/70">
+                                                        {metric.label}
+                                                    </span>
+                                                    {isCritical && (
+                                                        <Badge variant="destructive" className="h-4 px-1.5 text-[10px] uppercase font-bold tracking-tighter">
+                                                            Critical
+                                                        </Badge>
+                                                    )}
+                                                </div>
+                                                <p className="text-sm font-black tracking-tight">
+                                                    {metric.count} <span className="text-muted-foreground/50 font-medium">/</span> {metric.limit === -1 ? '∞' : metric.limit}
+                                                </p>
+                                            </div>
+
+                                            <div className="space-y-2">
+                                                <div className="h-2.5 w-full overflow-hidden rounded-full bg-muted shadow-inner">
+                                                    <div
+                                                        className={`h-full rounded-full transition-all duration-1000 ease-out ${colorClass}`}
+                                                        style={{ width: `${metric.percentage}%` }}
+                                                    />
+                                                </div>
+                                                <p className="text-[10px] font-bold text-muted-foreground flex justify-between">
+                                                    <span>{metric.percentage}% UTILIZED</span>
+                                                    {metric.limit !== -1 && metric.limit - metric.count <= 2 && metric.limit - metric.count > 0 && (
+                                                        <span className="text-amber-600 animate-pulse">ONLY {metric.limit - metric.count} REMAINING</span>
+                                                    )}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+
+                            {/* Limit Reached Warning */}
+                            {usage.team_members.limit !== -1 && usage.team_members.count >= usage.team_members.limit && isOwner && (
+                                <div className="mt-8 flex items-start gap-4 rounded-xl border-2 border-amber-200 bg-amber-50/50 p-5 dark:border-amber-900/50 dark:bg-amber-950/20">
+                                    <div className="rounded-full bg-amber-100 p-2 dark:bg-amber-900/40">
+                                        <AlertCircle className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+                                    </div>
+                                    <div className="space-y-1">
+                                        <p className="font-bold text-amber-900 dark:text-amber-200">Seat quota fully utilized</p>
+                                        <p className="text-sm text-amber-800/80 dark:text-amber-400/80 leading-relaxed">
+                                            Your workspace has reached its member limit for the <span className="font-bold">{workspace.plan}</span> plan.
+                                            New invitations cannot be sent until your plan is upgraded or members are removed.
+                                        </p>
+                                        <Button
+                                            variant="link"
+                                            asChild
+                                            className="h-auto p-0 text-amber-700 dark:text-amber-400 font-bold hover:no-underline underline-offset-4 decoration-2 hover:translate-x-1 transition-transform"
+                                        >
+                                            <Link href="/billing/plans">
+                                                Upgrade your subscription →
+                                            </Link>
+                                        </Button>
+                                    </div>
+                                </div>
+                            )}
+                        </CardContent>
+                    </Card>
+
+                    {/* Invoices */}
+                    {invoices.length > 0 && (
+                        <Card className="shadow-sm border-none bg-muted/10">
+                            <CardHeader className="pb-4">
+                                <CardTitle className="text-lg font-bold flex items-center gap-2">
+                                    <Receipt className="h-5 w-5 text-muted-foreground" />
+                                    {t('billing.invoice_history', 'Invoice History')}
+                                </CardTitle>
+                                <CardDescription>
+                                    {t('billing.invoices_desc', 'View and download your past billing records.')}
+                                </CardDescription>
+                            </CardHeader>
+                            <CardContent>
+                                <div className="overflow-hidden rounded-xl border bg-background">
+                                    <div className="divide-y">
+                                        {invoices.map((invoice) => (
+                                            <div
+                                                key={invoice.id}
+                                                className="group flex items-center justify-between p-4 transition-colors hover:bg-muted/30"
+                                            >
+                                                <div className="flex items-center gap-4">
+                                                    <div className="rounded-lg bg-muted p-2.5 text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary transition-colors">
+                                                        <Receipt className="h-4 w-4" />
+                                                    </div>
+                                                    <div>
+                                                        <p className="font-bold text-sm">
+                                                            {invoice.date}
+                                                        </p>
+                                                        <p className="text-xs font-semibold text-muted-foreground">
+                                                            {invoice.total}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <Button
+                                                    variant="ghost"
+                                                    size="sm"
+                                                    asChild
+                                                    className="h-9 rounded-lg hover:bg-primary/10 hover:text-primary"
+                                                >
+                                                    <a
+                                                        href={invoice.pdf_url}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                    >
+                                                        <Download className="mr-2 h-4 w-4" />
+                                                        {t('billing.download_pdf', 'PDF')}
+                                                    </a>
+                                                </Button>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
                             </CardContent>
                         </Card>
                     )}

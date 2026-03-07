@@ -184,7 +184,7 @@ export default function TeamIndex({
         reset: resetInvite,
     } = useForm({
         email: '',
-        role: 'member' as WorkspaceRole,
+        role: 'member' as 'admin' | 'member',
     });
 
     const handleInvite = (e: React.FormEvent) => {
@@ -198,7 +198,7 @@ export default function TeamIndex({
         });
     };
 
-    const updateRole = (member: TeamMember, role: WorkspaceRole) => {
+    const updateRole = (member: TeamMember, role: 'admin' | 'member') => {
         router.put(
             `/team/members/${member.id}/role`,
             { role },
@@ -249,7 +249,7 @@ export default function TeamIndex({
         processing: linkProcessing,
         reset: resetLink,
     } = useForm({
-        role: 'member' as WorkspaceRole,
+        role: 'member' as 'admin' | 'member',
         max_uses: '' as string | number,
         expires_in_days: '' as string | number,
     });
@@ -296,8 +296,6 @@ export default function TeamIndex({
                 return 'default';
             case 'admin':
                 return 'secondary';
-            case 'viewer':
-                return 'outline';
             default:
                 return 'outline';
         }
@@ -359,9 +357,9 @@ export default function TeamIndex({
                                                 <Select
                                                     value={inviteData.role}
                                                     onValueChange={(
-                                                        value: string,
+                                                        value: 'admin' | 'member',
                                                     ) =>
-                                                        setInviteData('role', value as WorkspaceRole)
+                                                        setInviteData('role', value)
                                                     }
                                                 >
                                                     <SelectTrigger>
@@ -373,9 +371,6 @@ export default function TeamIndex({
                                                         </SelectItem>
                                                         <SelectItem value="admin">
                                                             {t('team.admin', 'Admin')}
-                                                        </SelectItem>
-                                                        <SelectItem value="viewer">
-                                                            {t('team.viewer', 'Viewer')}
                                                         </SelectItem>
                                                     </SelectContent>
                                                 </Select>
@@ -509,14 +504,13 @@ export default function TeamIndex({
                                                                 }
                                                             >
                                                                 <Settings className="mr-2 h-4 w-4" />
-                                                                {member.role === 'admin'
+                                                                {member.role ===
+                                                                    'admin'
                                                                     ? t('team.demote_to_member', 'Demote to Member')
-                                                                    : member.role === 'member'
-                                                                        ? t('team.demote_to_viewer', 'Demote to Viewer')
-                                                                        : t('team.promote_to_admin', 'Promote to Admin')}
+                                                                    : t('team.promote_to_admin', 'Promote to Admin')}
                                                             </DropdownMenuItem>
                                                             <DropdownMenuSeparator />
-                                                            {['member', 'viewer'].includes(member.role) && (
+                                                            {member.role === 'member' && (
                                                                 <DropdownMenuItem
                                                                     onClick={() => {
                                                                         setSelectedMemberForPermissions(member);
@@ -599,8 +593,8 @@ export default function TeamIndex({
                                                         <Label htmlFor="link-role">{t('team.role', 'Role')}</Label>
                                                         <Select
                                                             value={linkData.role}
-                                                            onValueChange={(value: string) =>
-                                                                setLinkData('role', value as WorkspaceRole)
+                                                            onValueChange={(value: 'admin' | 'member') =>
+                                                                setLinkData('role', value)
                                                             }
                                                         >
                                                             <SelectTrigger>
@@ -609,7 +603,6 @@ export default function TeamIndex({
                                                             <SelectContent>
                                                                 <SelectItem value="member">{t('team.member', 'Member')}</SelectItem>
                                                                 <SelectItem value="admin">{t('team.admin', 'Admin')}</SelectItem>
-                                                                <SelectItem value="viewer">{t('team.viewer', 'Viewer')}</SelectItem>
                                                             </SelectContent>
                                                         </Select>
                                                     </div>

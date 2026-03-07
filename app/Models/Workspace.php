@@ -132,7 +132,7 @@ class Workspace extends Model
         $counter = 1;
 
         while (static::where('slug', $slug)->exists()) {
-            $slug = $originalSlug . '-' . $counter;
+            $slug = $originalSlug.'-'.$counter;
             $counter++;
         }
 
@@ -148,7 +148,7 @@ class Workspace extends Model
             return str_starts_with($this->logo, 'http') ? $this->logo : \Illuminate\Support\Facades\Storage::url($this->logo);
         }
 
-        return 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&color=7F9CF5&background=EBF4FF';
+        return 'https://ui-avatars.com/api/?name='.urlencode($this->name).'&color=7F9CF5&background=EBF4FF';
     }
 
     /**
@@ -290,7 +290,7 @@ class Workspace extends Model
 
         // 2. Viewers have NO write permissions by default, ONLY read-only if we define any
         if ($this->userIsViewer($user)) {
-            return in_array($permission, ['view_activity_logs']); // Only allow viewing logs for now if explicitly granted? 
+            return in_array($permission, ['view_activity_logs']); // Only allow viewing logs for now if explicitly granted?
             // Actually, let's keep it simple: Viewers can ONLY view.
         }
 
@@ -509,5 +509,43 @@ class Workspace extends Model
         } catch (\Exception) {
             // Fail silently — Stripe sync is best-effort
         }
+    }
+
+    /**
+     * Get a comprehensive usage overview for the workspace.
+     *
+     * @return array<string, array{label: string, count: int, limit: int|null, percentage: int}>
+     */
+    public function usageOverview(): array
+    {
+        $plan = $this->plan_key;
+        $limits = config("billing.plans.{$plan}.limits");
+
+        $usage = [];
+
+        foreach ($limits as $key => $limit) {
+            $count = match ($key) {
+                'team_members' => $this->activeSeatCount(),
+                'api_keys' => $this->apiKeys()->count(),
+                'webhooks' => $this->webhookEndpoints()->count(),
+                default => 0,
+            };
+
+            $label = match ($key) {
+                'team_members' => 'Team Members',
+                'api_keys' => 'API Keys',
+                'webhooks' => 'Webhooks',
+                default => ucfirst(str_replace('_', ' ', $key)),
+            };
+
+            $usage[$key] = [
+                'label' => $label,
+                'count' => $count,
+                'limit' => $limit,
+                'percentage' => $limit === -1 ? 0 : min(100, (int) round(($count / max(1, (int) $limit)) * 100)),
+            ];
+        }
+
+        return $usage;
     }
 }

@@ -9,7 +9,7 @@ import { show } from '@/routes/two-factor';
 import { edit as editPassword } from '@/routes/user-password';
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { BarChart3, Bell, Cookie, FileUp, Fingerprint, Activity, History, Lock, Monitor, Paintbrush, ShieldCheck, TrendingUp, User, Ticket } from 'lucide-react';
+import { BarChart3, Bell, Cookie, FileUp, Fingerprint, Activity, History, Lock, Monitor, Paintbrush, ShieldCheck, Ticket, TrendingUp, User } from 'lucide-react';
 import { type PropsWithChildren, useMemo } from 'react';
 import { type SharedData, type Workspace } from '@/types';
 

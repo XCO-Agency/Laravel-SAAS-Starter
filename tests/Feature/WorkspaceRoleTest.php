@@ -5,6 +5,15 @@ use App\Models\Workspace;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
 
+/**
+ * @var \Tests\TestCase $this
+ *
+ * @property Workspace $workspace
+ * @property User $owner
+ * @property User $admin
+ * @property User $member
+ * @property User $viewer
+ */
 uses(RefreshDatabase::class);
 
 beforeEach(function () {
