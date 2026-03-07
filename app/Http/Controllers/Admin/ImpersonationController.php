@@ -20,8 +20,22 @@ class ImpersonationController extends Controller
             return back()->with('error', 'You cannot impersonate yourself.');
         }
 
+        $impersonatorId = Auth::id();
+
         // Store the original superadmin ID
-        $request->session()->put('impersonated_by', Auth::id());
+        $request->session()->put('impersonated_by', $impersonatorId);
+
+        // Create the audit log
+        $log = \App\Models\ImpersonationLog::create([
+            'impersonator_id' => $impersonatorId,
+            'impersonated_id' => $user->id,
+            'ip_address' => $request->ip(),
+            'user_agent' => $request->userAgent(),
+            'started_at' => now(),
+        ]);
+
+        // Store the log ID so we can update the ended_at timestamp later
+        $request->session()->put('impersonation_log_id', $log->id);
 
         // Login as the target user
         Auth::login($user);
@@ -39,9 +53,17 @@ class ImpersonationController extends Controller
         }
 
         $originalId = $request->session()->get('impersonated_by');
+        $logId = $request->session()->get('impersonation_log_id');
 
-        // Remove the session key
+        // Remove the session keys
         $request->session()->forget('impersonated_by');
+        $request->session()->forget('impersonation_log_id');
+
+        if ($logId) {
+            \App\Models\ImpersonationLog::where('id', $logId)->update([
+                'ended_at' => now(),
+            ]);
+        }
 
         // Restore the original user
         Auth::loginUsingId($originalId);
