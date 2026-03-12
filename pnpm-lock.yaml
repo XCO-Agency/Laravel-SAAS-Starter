@@ -184,7 +184,7 @@ importers:
         specifier: ^3.4.2
         version: 3.7.1
       prettier-plugin-organize-imports:
-        specifier: ^4.1.0
+        specifier: ^4.3.0
         version: 4.3.0(prettier@3.7.1)(typescript@5.9.3)
       prettier-plugin-tailwindcss:
         specifier: ^0.7.2
