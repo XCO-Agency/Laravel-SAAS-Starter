@@ -24,6 +24,12 @@ function staticApplicationRoutes(?string $method = null): array
                 return false;
             }
 
+            // Exclude Scribe documentation routes (require generated files not present in CI)
+            // and Stripe webhook (requires external Stripe signature verification)
+            if (str_starts_with($uri, 'docs') || $uri === '/stripe/webhook') {
+                return false;
+            }
+
             if (! str_starts_with($action, 'App\\') && $action !== 'Closure') {
                 return false;
             }

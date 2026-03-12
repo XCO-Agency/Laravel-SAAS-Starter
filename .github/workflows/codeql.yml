@@ -35,6 +35,11 @@ jobs:
         with:
           languages: ${{ matrix.language }}
 
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -42,7 +47,9 @@ jobs:
           cache: 'npm'
 
       - name: Install Dependencies
-        run: npm ci
+        run: |
+          composer install --no-interaction --prefer-dist
+          npm ci
 
       - name: Build Frontend
         run: npm run build
