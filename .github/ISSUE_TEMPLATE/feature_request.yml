@@ -1,0 +1,51 @@
+name: Feature request
+description: Suggest an enhancement for Laravel SaaS Starter.
+title: '[Feature]: '
+labels:
+  - enhancement
+  - needs-triage
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for sharing your idea.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem statement
+      description: What problem are you trying to solve?
+      placeholder: Teams need per-workspace audit export for compliance.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: Describe the preferred solution.
+      placeholder: Add CSV export endpoint and UI button in workspace settings.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: What alternatives have you considered?
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Screenshots, links, similar issues, etc.
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Pre-flight checks
+      options:
+        - label: I have searched existing issues.
+          required: true
+        - label: This request is scoped and actionable.
+          required: true

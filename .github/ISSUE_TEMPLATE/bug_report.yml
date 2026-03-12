@@ -1,0 +1,84 @@
+name: Bug report
+description: Report a reproducible bug in Laravel SaaS Starter.
+title: '[Bug]: '
+labels:
+  - bug
+  - needs-triage
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report.
+
+  - type: input
+    id: summary
+    attributes:
+      label: Summary
+      description: One-line description of the issue.
+      placeholder: The billing portal fails to load for workspace owners.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: Include a minimal, deterministic reproduction.
+      placeholder: |
+        1. Go to Settings > Billing
+        2. Click "Manage subscription"
+        3. See error
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      placeholder: Billing portal should open in a new tab.
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      placeholder: A 500 error is thrown and no portal opens.
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs and screenshots
+      description: Paste stack traces, browser console errors, and screenshots.
+
+  - type: input
+    id: php
+    attributes:
+      label: PHP version
+      placeholder: 8.4.x
+    validations:
+      required: true
+
+  - type: input
+    id: node
+    attributes:
+      label: Node version
+      placeholder: 22.x
+
+  - type: input
+    id: database
+    attributes:
+      label: Database
+      placeholder: MySQL 8 / PostgreSQL 16 / SQLite
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Pre-flight checks
+      options:
+        - label: I have searched existing issues.
+          required: true
+        - label: I can reproduce this on the latest main branch.
+          required: true

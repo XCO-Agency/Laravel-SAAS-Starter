@@ -1,0 +1,19 @@
+# CODEOWNERS
+
+* @XCO-Agency
+
+/app/ @XCO-Agency
+/bootstrap/ @XCO-Agency
+/config/ @XCO-Agency
+/database/ @XCO-Agency
+/routes/ @XCO-Agency
+/tests/ @XCO-Agency
+
+/resources/js/ @XCO-Agency
+/resources/css/ @XCO-Agency
+
+/.github/ @XCO-Agency
+
+/docs/ @XCO-Agency
+/README.md @XCO-Agency
+/CONTRIBUTING.md @XCO-Agency
