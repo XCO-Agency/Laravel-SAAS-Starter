@@ -574,4 +574,11 @@ $this->app->singleton(Service::class, fn () => new Service(fn () => request()));
 ```
 
 - Never append to static properties, as they accumulate in memory across requests.
+
+=== spatie/boost-spatie-guidelines rules ===
+
+# Project Coding Guidelines
+
+- This codebase follows Spatie's Laravel & PHP guidelines.
+- Always activate the `spatie-laravel-php-standards` skill whenever writing, editing, reviewing, or formatting Laravel or PHP code.
 </laravel-boost-guidelines>

@@ -21,7 +21,8 @@
         "laravel/fortify",
         "inertiajs/inertia-laravel",
         "laravel/ai",
-        "laravel/octane"
+        "laravel/octane",
+        "spatie/boost-spatie-guidelines"
     ],
     "herd_mcp": true
 }
