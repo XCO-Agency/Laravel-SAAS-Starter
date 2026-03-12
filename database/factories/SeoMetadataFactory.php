@@ -2,10 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Models\SeoMetadata;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\SeoMetadata>
+ * @extends Factory<SeoMetadata>
  */
 class SeoMetadataFactory extends Factory
 {

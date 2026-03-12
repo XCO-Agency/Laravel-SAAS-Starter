@@ -1,12 +1,13 @@
 <?php
 
+use App\Http\Middleware\EnsurePasswordNotExpired;
 use App\Models\User;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Route;
 
 beforeEach(function () {
     // Set a dummy route to test the middleware
-    Route::middleware(['web', 'auth', \App\Http\Middleware\EnsurePasswordNotExpired::class])->group(function () {
+    Route::middleware(['web', 'auth', EnsurePasswordNotExpired::class])->group(function () {
         Route::get('/dashboard-test', function () {
             return 'dashboard content';
         })->name('dashboard.test');
@@ -76,7 +77,7 @@ it('allows access if expiry is disabled in config', function () {
 
 it('allows access to password reset routes even if expired', function () {
     // Define a dummy password route that uses the middleware
-    Route::middleware(['web', 'auth', \App\Http\Middleware\EnsurePasswordNotExpired::class])->group(function () {
+    Route::middleware(['web', 'auth', EnsurePasswordNotExpired::class])->group(function () {
         Route::get('/password/reset/test', function () {
             return 'password reset content';
         })->name('password.reset.test');

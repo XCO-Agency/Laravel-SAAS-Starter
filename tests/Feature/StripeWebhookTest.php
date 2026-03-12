@@ -24,7 +24,7 @@ it('handles customer subscription created event and logs workspace data', functi
     // 2. Mock the Log facade
     Log::shouldReceive('info')
         ->once()
-        ->with('Subscription created for workspace', \Mockery::on(function ($context) use ($workspace) {
+        ->with('Subscription created for workspace', Mockery::on(function ($context) use ($workspace) {
             return $context['workspace_id'] === $workspace->id
                 && $context['workspace_name'] === $workspace->name
                 && $context['stripe_subscription_id'] === 'sub_test123'
@@ -70,7 +70,7 @@ it('handles customer subscription updated event and logs workspace data', functi
 
     Log::shouldReceive('info')
         ->once()
-        ->with('Subscription updated for workspace', \Mockery::on(function ($context) use ($workspace) {
+        ->with('Subscription updated for workspace', Mockery::on(function ($context) use ($workspace) {
             return $context['workspace_id'] === $workspace->id
                 && $context['workspace_name'] === $workspace->name
                 && $context['status'] === 'active';
@@ -112,7 +112,7 @@ it('handles customer subscription deleted event and logs workspace data', functi
 
     Log::shouldReceive('info')
         ->once()
-        ->with('Subscription cancelled for workspace', \Mockery::on(function ($context) use ($workspace) {
+        ->with('Subscription cancelled for workspace', Mockery::on(function ($context) use ($workspace) {
             return $context['workspace_id'] === $workspace->id
                 && $context['workspace_name'] === $workspace->name;
         }));

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Database\Factories\WorkspaceApiKeyFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -9,7 +10,7 @@ use Illuminate\Support\Str;
 
 class WorkspaceApiKey extends Model
 {
-    /** @use HasFactory<\Database\Factories\WorkspaceApiKeyFactory> */
+    /** @use HasFactory<WorkspaceApiKeyFactory> */
     use HasFactory;
 
     /**

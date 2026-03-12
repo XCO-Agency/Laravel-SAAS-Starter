@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
 use Inertia\Inertia;
 use Inertia\Response;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class LogViewerController extends Controller
 {
@@ -97,7 +98,7 @@ class LogViewerController extends Controller
     /**
      * Download a specific log file.
      */
-    public function download(string $file): \Symfony\Component\HttpFoundation\BinaryFileResponse
+    public function download(string $file): BinaryFileResponse
     {
         if (str_contains($file, '..') || str_contains($file, '/')) {
             abort(403);

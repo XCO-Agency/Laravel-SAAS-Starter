@@ -4,6 +4,7 @@ use App\Models\Feedback;
 use App\Models\User;
 use App\Models\Workspace;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 use function Pest\Laravel\actingAs;
 
@@ -28,7 +29,7 @@ it('blocks regular users from the retention page', function () {
 it('prunes old read notifications via the command', function () {
     // Create an old read notification (91 days ago)
     DB::table('notifications')->insert([
-        'id' => \Illuminate\Support\Str::uuid(),
+        'id' => Str::uuid(),
         'type' => 'App\\Notifications\\SystemMessage',
         'notifiable_type' => User::class,
         'notifiable_id' => $this->user->id,
@@ -40,7 +41,7 @@ it('prunes old read notifications via the command', function () {
 
     // Create a recent read notification (5 days ago) — should survive
     DB::table('notifications')->insert([
-        'id' => \Illuminate\Support\Str::uuid(),
+        'id' => Str::uuid(),
         'type' => 'App\\Notifications\\SystemMessage',
         'notifiable_type' => User::class,
         'notifiable_id' => $this->user->id,
@@ -57,7 +58,7 @@ it('prunes old read notifications via the command', function () {
 
 it('does not delete anything during a dry run', function () {
     DB::table('notifications')->insert([
-        'id' => \Illuminate\Support\Str::uuid(),
+        'id' => Str::uuid(),
         'type' => 'App\\Notifications\\SystemMessage',
         'notifiable_type' => User::class,
         'notifiable_id' => $this->user->id,

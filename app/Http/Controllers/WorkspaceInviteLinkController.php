@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreInviteLinkRequest;
 use App\Models\WorkspaceInviteLink;
 use App\Services\InvitationService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class WorkspaceInviteLinkController extends Controller
 {
@@ -16,7 +18,7 @@ class WorkspaceInviteLinkController extends Controller
     /**
      * Generate a new invite link.
      */
-    public function store(StoreInviteLinkRequest $request): \Illuminate\Http\RedirectResponse
+    public function store(StoreInviteLinkRequest $request): RedirectResponse
     {
         $workspace = $request->user()->currentWorkspace;
 
@@ -42,7 +44,7 @@ class WorkspaceInviteLinkController extends Controller
     /**
      * Revoke an invite link.
      */
-    public function destroy(Request $request, int $id): \Illuminate\Http\RedirectResponse
+    public function destroy(Request $request, int $id): RedirectResponse
     {
         $workspace = $request->user()->currentWorkspace;
         Gate::authorize('manageTeam', $workspace);
@@ -58,7 +60,7 @@ class WorkspaceInviteLinkController extends Controller
     /**
      * Show the public invite link acceptance page.
      */
-    public function show(string $token): \Inertia\Response|\Illuminate\Http\RedirectResponse
+    public function show(string $token): Response|RedirectResponse
     {
         $link = WorkspaceInviteLink::with('workspace:id,name,slug')
             ->where('token', $token)
@@ -84,7 +86,7 @@ class WorkspaceInviteLinkController extends Controller
     /**
      * Accept the invite link and join the workspace.
      */
-    public function join(Request $request, string $token): \Illuminate\Http\RedirectResponse
+    public function join(Request $request, string $token): RedirectResponse
     {
         $link = WorkspaceInviteLink::with('workspace')
             ->where('token', $token)

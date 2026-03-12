@@ -2,14 +2,27 @@
 
 namespace Database\Seeders;
 
+use App\Models\Announcement;
+use App\Models\ChangelogEntry;
+use App\Models\FeatureFlag;
+use App\Models\Feedback;
+use App\Models\LoginActivity;
+use App\Models\NotificationDeliveryLog;
+use App\Models\OnboardingStepLog;
+use App\Models\PermissionPreset;
+use App\Models\SeoMetadata;
 use App\Models\User;
 use App\Models\WebhookEndpoint;
+use App\Models\WebhookLog;
 use App\Models\Workspace;
+use App\Models\WorkspaceApiKey;
 use App\Models\WorkspaceInvitation;
+use App\Models\WorkspaceInviteLink;
 use App\Services\WorkspaceService;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
@@ -128,7 +141,7 @@ class DatabaseSeeder extends Seeder
                         'url' => 'https://webhook.site/'.fake()->uuid(),
                         'events' => ['workspace.updated', 'member.added'],
                         'is_active' => true,
-                        'secret' => \Illuminate\Support\Str::random(32),
+                        'secret' => Str::random(32),
                     ]);
 
                     if ($index === 2) {
@@ -138,7 +151,7 @@ class DatabaseSeeder extends Seeder
                             'url' => 'https://legacy-crm.example.com/ingest',
                             'events' => ['member.removed'],
                             'is_active' => false,
-                            'secret' => \Illuminate\Support\Str::random(32),
+                            'secret' => Str::random(32),
                         ]);
                     }
                 }
@@ -284,7 +297,7 @@ class DatabaseSeeder extends Seeder
             }
             // 11. DEMO ACCOUNT: Seed dummy real-time notifications for the primary demo user
             $demo->notifications()->create([
-                'id' => \Illuminate\Support\Str::uuid(),
+                'id' => Str::uuid(),
                 'type' => 'App\Notifications\SystemMessage',
                 'data' => [
                     'title' => 'Welcome to the Platform',
@@ -294,7 +307,7 @@ class DatabaseSeeder extends Seeder
                 'read_at' => null,
             ]);
             $demo->notifications()->create([
-                'id' => \Illuminate\Support\Str::uuid(),
+                'id' => Str::uuid(),
                 'type' => 'App\Notifications\BillingAlert',
                 'data' => [
                     'title' => 'Trial Expiring Soon',
@@ -304,7 +317,7 @@ class DatabaseSeeder extends Seeder
                 'read_at' => null,
             ]);
             $demo->notifications()->create([
-                'id' => \Illuminate\Support\Str::uuid(),
+                'id' => Str::uuid(),
                 'type' => 'App\Notifications\SecurityAlert',
                 'data' => [
                     'title' => 'New Login Detected',
@@ -316,7 +329,7 @@ class DatabaseSeeder extends Seeder
 
             // Seed one for Admin just to have coverage
             $admin->notifications()->create([
-                'id' => \Illuminate\Support\Str::uuid(),
+                'id' => Str::uuid(),
                 'type' => 'App\Notifications\SystemMessage',
                 'data' => [
                     'title' => 'Admin Credentials Provisioned',
@@ -325,7 +338,7 @@ class DatabaseSeeder extends Seeder
                 'read_at' => null,
             ]);
             // Seed announcements
-            \App\Models\Announcement::create([
+            Announcement::create([
                 'title' => 'Welcome to v1.5!',
                 'body' => 'We just shipped seat-based billing, 2FA enforcement, and a new system health monitor. Check it out!',
                 'type' => 'info',
@@ -337,7 +350,7 @@ class DatabaseSeeder extends Seeder
                 'ends_at' => now()->addDays(14),
             ]);
 
-            \App\Models\Announcement::create([
+            Announcement::create([
                 'title' => 'Scheduled Maintenance',
                 'body' => 'We will be performing maintenance on March 5th from 2:00 AM to 4:00 AM UTC.',
                 'type' => 'warning',
@@ -349,7 +362,7 @@ class DatabaseSeeder extends Seeder
                 'ends_at' => now()->addDays(6),
             ]);
 
-            \App\Models\Announcement::create([
+            Announcement::create([
                 'title' => 'New: Dark Mode',
                 'body' => 'Dark mode is now available! Toggle it from your profile settings.',
                 'type' => 'success',
@@ -362,7 +375,7 @@ class DatabaseSeeder extends Seeder
             ]);
 
             // Seed feature flags
-            \App\Models\FeatureFlag::create([
+            FeatureFlag::create([
                 'key' => 'new-dashboard',
                 'name' => 'New Dashboard',
                 'description' => 'Enables the redesigned dashboard with analytics widgets.',
@@ -370,7 +383,7 @@ class DatabaseSeeder extends Seeder
                 'workspace_ids' => $demoWorkspaces->take(2)->pluck('id')->toArray(),
             ]);
 
-            \App\Models\FeatureFlag::create([
+            FeatureFlag::create([
                 'key' => 'ai-assistant',
                 'name' => 'AI Assistant',
                 'description' => 'Enables the AI-powered assistant in the command palette.',
@@ -378,7 +391,7 @@ class DatabaseSeeder extends Seeder
                 'workspace_ids' => [],
             ]);
 
-            \App\Models\FeatureFlag::create([
+            FeatureFlag::create([
                 'key' => 'advanced-analytics',
                 'name' => 'Advanced Analytics',
                 'description' => 'Unlocks advanced analytics and reporting for Pro+ workspaces.',
@@ -386,7 +399,7 @@ class DatabaseSeeder extends Seeder
                 'workspace_ids' => $demoWorkspaces->slice(1, 2)->pluck('id')->toArray(),
             ]);
 
-            \App\Models\FeatureFlag::create([
+            FeatureFlag::create([
                 'key' => 'beta-api-v2',
                 'name' => 'Beta API v2',
                 'description' => 'Grants access to the beta version of API v2 endpoints.',
@@ -399,7 +412,7 @@ class DatabaseSeeder extends Seeder
             foreach ($webhookEndpoints as $endpoint) {
                 // Successful deliveries
                 for ($i = 0; $i < 3; $i++) {
-                    \App\Models\WebhookLog::create([
+                    WebhookLog::create([
                         'workspace_id' => $endpoint->workspace_id,
                         'webhook_endpoint_id' => $endpoint->id,
                         'event_type' => $endpoint->events[array_rand($endpoint->events)],
@@ -413,7 +426,7 @@ class DatabaseSeeder extends Seeder
                 }
 
                 // One failed delivery
-                \App\Models\WebhookLog::create([
+                WebhookLog::create([
                     'workspace_id' => $endpoint->workspace_id,
                     'webhook_endpoint_id' => $endpoint->id,
                     'event_type' => 'member.added',
@@ -426,7 +439,7 @@ class DatabaseSeeder extends Seeder
                 ]);
 
                 // One timeout
-                \App\Models\WebhookLog::create([
+                WebhookLog::create([
                     'workspace_id' => $endpoint->workspace_id,
                     'webhook_endpoint_id' => $endpoint->id,
                     'event_type' => 'workspace.updated',
@@ -459,7 +472,7 @@ class DatabaseSeeder extends Seeder
             ];
 
             foreach ($feedbackSamples as $sample) {
-                \App\Models\Feedback::create([
+                Feedback::create([
                     'user_id' => $sample['user']->id,
                     'type' => $sample['type'],
                     'message' => $sample['message'],
@@ -483,7 +496,7 @@ class DatabaseSeeder extends Seeder
             ];
 
             foreach ($changelogSamples as $sample) {
-                \App\Models\ChangelogEntry::create([
+                ChangelogEntry::create([
                     'version' => $sample['version'],
                     'title' => $sample['title'],
                     'body' => $sample['body'],
@@ -494,7 +507,7 @@ class DatabaseSeeder extends Seeder
             }
 
             // Seed SEO metadata entries
-            \App\Models\SeoMetadata::create([
+            SeoMetadata::create([
                 'path' => null,
                 'title' => 'Laravel SaaS Starter - Build Your SaaS Faster',
                 'description' => 'A production-ready Laravel SaaS starter kit with billing, teams, workspaces, and more.',
@@ -506,7 +519,7 @@ class DatabaseSeeder extends Seeder
                 'is_global' => true,
             ]);
 
-            \App\Models\SeoMetadata::create([
+            SeoMetadata::create([
                 'path' => '/',
                 'title' => 'Home - Laravel SaaS Starter',
                 'description' => 'Welcome to the Laravel SaaS Starter. Get started with authentication, billing, and team management out of the box.',
@@ -518,7 +531,7 @@ class DatabaseSeeder extends Seeder
                 'is_global' => false,
             ]);
 
-            \App\Models\SeoMetadata::create([
+            SeoMetadata::create([
                 'path' => '/changelog',
                 'title' => 'Changelog - Laravel SaaS Starter',
                 'description' => 'See what\'s new in the Laravel SaaS Starter. Latest features, improvements, and bug fixes.',
@@ -533,25 +546,25 @@ class DatabaseSeeder extends Seeder
             // Seed workspace API keys for demo workspaces
             if ($demoWorkspaces->isNotEmpty()) {
                 $first = $demoWorkspaces->first();
-                \App\Models\WorkspaceApiKey::generateKey($first, $demo, 'Production API', ['read', 'write']);
-                \App\Models\WorkspaceApiKey::generateKey($first, $demo, 'CI/CD Pipeline', ['read', 'webhooks']);
-                \App\Models\WorkspaceApiKey::generateKey($first, $demo, 'Analytics Reader', ['read', 'billing:read'], now()->addMonths(3));
+                WorkspaceApiKey::generateKey($first, $demo, 'Production API', ['read', 'write']);
+                WorkspaceApiKey::generateKey($first, $demo, 'CI/CD Pipeline', ['read', 'webhooks']);
+                WorkspaceApiKey::generateKey($first, $demo, 'Analytics Reader', ['read', 'billing:read'], now()->addMonths(3));
 
                 // Seed invite links
-                \App\Models\WorkspaceInviteLink::create([
+                WorkspaceInviteLink::create([
                     'workspace_id' => $first->id,
                     'created_by' => $demo->id,
-                    'token' => \Illuminate\Support\Str::random(32),
+                    'token' => Str::random(32),
                     'role' => 'member',
                     'max_uses' => 10,
                     'uses' => 3,
                     'expires_at' => now()->addDays(14),
                 ]);
 
-                \App\Models\WorkspaceInviteLink::create([
+                WorkspaceInviteLink::create([
                     'workspace_id' => $first->id,
                     'created_by' => $demo->id,
-                    'token' => \Illuminate\Support\Str::random(32),
+                    'token' => Str::random(32),
                     'role' => 'admin',
                     'max_uses' => null,
                     'uses' => 0,
@@ -569,7 +582,7 @@ class DatabaseSeeder extends Seeder
             }
 
             // Seed login activities for demo user
-            \App\Models\LoginActivity::create([
+            LoginActivity::create([
                 'user_id' => $demo->id,
                 'ip_address' => '192.168.1.100',
                 'user_agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
@@ -577,7 +590,7 @@ class DatabaseSeeder extends Seeder
                 'login_at' => now()->subHours(2),
             ]);
 
-            \App\Models\LoginActivity::create([
+            LoginActivity::create([
                 'user_id' => $demo->id,
                 'ip_address' => '10.0.0.50',
                 'user_agent' => 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1',
@@ -585,7 +598,7 @@ class DatabaseSeeder extends Seeder
                 'login_at' => now()->subDay(),
             ]);
 
-            \App\Models\LoginActivity::create([
+            LoginActivity::create([
                 'user_id' => $demo->id,
                 'ip_address' => '203.0.113.42',
                 'user_agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
@@ -610,7 +623,7 @@ class DatabaseSeeder extends Seeder
                     $channel = rand(0, 1) ? 'email' : 'in_app';
                     $userId = $allSeededUsers[array_rand($allSeededUsers)];
 
-                    \App\Models\NotificationDeliveryLog::create([
+                    NotificationDeliveryLog::create([
                         'user_id' => $userId,
                         'notification_type' => $notifConfig['type'],
                         'channel' => $channel,
@@ -627,7 +640,7 @@ class DatabaseSeeder extends Seeder
 
             foreach ($onboardingUsers as $index => $u) {
                 // All users view welcome
-                \App\Models\OnboardingStepLog::create([
+                OnboardingStepLog::create([
                     'user_id' => $u->id,
                     'step' => 'welcome',
                     'action' => 'viewed',
@@ -636,7 +649,7 @@ class DatabaseSeeder extends Seeder
 
                 // Most complete welcome
                 if ($index < 15) {
-                    \App\Models\OnboardingStepLog::create([
+                    OnboardingStepLog::create([
                         'user_id' => $u->id,
                         'step' => 'welcome',
                         'action' => 'completed',
@@ -646,7 +659,7 @@ class DatabaseSeeder extends Seeder
 
                 // Fewer view workspace
                 if ($index < 14) {
-                    \App\Models\OnboardingStepLog::create([
+                    OnboardingStepLog::create([
                         'user_id' => $u->id,
                         'step' => 'workspace',
                         'action' => 'viewed',
@@ -656,7 +669,7 @@ class DatabaseSeeder extends Seeder
 
                 // Even fewer complete workspace
                 if ($index < 11) {
-                    \App\Models\OnboardingStepLog::create([
+                    OnboardingStepLog::create([
                         'user_id' => $u->id,
                         'step' => 'workspace',
                         'action' => 'completed',
@@ -666,7 +679,7 @@ class DatabaseSeeder extends Seeder
 
                 // Some view plan
                 if ($index < 10) {
-                    \App\Models\OnboardingStepLog::create([
+                    OnboardingStepLog::create([
                         'user_id' => $u->id,
                         'step' => 'plan',
                         'action' => 'viewed',
@@ -676,7 +689,7 @@ class DatabaseSeeder extends Seeder
 
                 // Fewer complete plan
                 if ($index < 8) {
-                    \App\Models\OnboardingStepLog::create([
+                    OnboardingStepLog::create([
                         'user_id' => $u->id,
                         'step' => 'plan',
                         'action' => 'completed',
@@ -694,7 +707,7 @@ class DatabaseSeeder extends Seeder
             ];
 
             foreach ($presets as $preset) {
-                \App\Models\PermissionPreset::firstOrCreate(
+                PermissionPreset::firstOrCreate(
                     ['name' => $preset['name']],
                     $preset,
                 );

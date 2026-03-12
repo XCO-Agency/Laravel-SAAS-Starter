@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -21,22 +22,6 @@ class BillingController extends Controller
         $workspace = $user->currentWorkspace;
 
         $subscription = $workspace->subscription('default');
-        $invoices = $workspace->invoices()->take(10);
-
-        $upcomingInvoice = null;
-        if ($subscription && $subscription->active()) {
-            try {
-                $invoice = $workspace->upcomingInvoice();
-                if ($invoice) {
-                    $upcomingInvoice = [
-                        'amount' => $invoice->total(),
-                        'date' => $invoice->date()->format('F j, Y'),
-                    ];
-                }
-            } catch (\Exception) {
-                // No upcoming invoice
-            }
-        }
 
         return Inertia::render('Billing/index', [
             'workspace' => [
@@ -54,14 +39,32 @@ class BillingController extends Controller
                 'on_grace_period' => $subscription->onGracePeriod(),
                 'cancelled' => $subscription->canceled(),
             ] : null,
-            'upcoming_invoice' => $upcomingInvoice,
-            'usage' => $workspace->usageOverview(),
-            'invoices' => $invoices->map(fn ($invoice) => [
-                'id' => $invoice->id,
-                'date' => $invoice->date()->format('F j, Y'),
-                'total' => $invoice->total(),
-                'pdf_url' => route('billing.invoice.download', $invoice->id),
-            ])->values(),
+            'upcoming_invoice' => Inertia::defer(function () use ($workspace, $subscription) {
+                if ($subscription && $subscription->active()) {
+                    try {
+                        $invoice = $workspace->upcomingInvoice();
+                        if ($invoice) {
+                            return [
+                                'amount' => $invoice->total(),
+                                'date' => $invoice->date()->format('F j, Y'),
+                            ];
+                        }
+                    } catch (\Exception) {
+                        // No upcoming invoice
+                    }
+                }
+
+                return null;
+            }),
+            'usage' => Inertia::defer(fn () => $workspace->usageOverview()),
+            'invoices' => Inertia::defer(function () use ($workspace) {
+                return $workspace->invoices()->take(10)->map(fn ($invoice) => [
+                    'id' => $invoice->id,
+                    'date' => $invoice->date()->format('F j, Y'),
+                    'total' => $invoice->total(),
+                    'pdf_url' => route('billing.invoice.download', $invoice->id),
+                ])->values();
+            }),
             'plans' => $this->getPlansForDisplay(),
             'userRole' => $workspace->getUserRole($user),
         ]);
@@ -104,7 +107,7 @@ class BillingController extends Controller
     /**
      * Subscribe the workspace to a plan.
      */
-    public function subscribe(Request $request): RedirectResponse|\Illuminate\Http\JsonResponse
+    public function subscribe(Request $request): RedirectResponse|JsonResponse
     {
         $validated = $request->validate([
             'plan' => ['required', 'string', 'in:pro,business'],
@@ -174,7 +177,7 @@ class BillingController extends Controller
     /**
      * Redirect to Stripe Customer Portal.
      */
-    public function portal(Request $request): RedirectResponse|\Illuminate\Http\JsonResponse
+    public function portal(Request $request): RedirectResponse|JsonResponse
     {
         $workspace = $request->user()->currentWorkspace;
         Gate::authorize('manageBilling', $workspace);
@@ -215,7 +218,7 @@ class BillingController extends Controller
     /**
      * Cancel the workspace subscription (downgrade to free).
      */
-    public function cancel(Request $request): \Illuminate\Http\JsonResponse
+    public function cancel(Request $request): JsonResponse
     {
         $workspace = $request->user()->currentWorkspace;
         Gate::authorize('manageBilling', $workspace);
@@ -246,7 +249,7 @@ class BillingController extends Controller
     /**
      * Resume a cancelled subscription during grace period.
      */
-    public function resume(Request $request): \Illuminate\Http\JsonResponse
+    public function resume(Request $request): JsonResponse
     {
         $workspace = $request->user()->currentWorkspace;
         Gate::authorize('manageBilling', $workspace);

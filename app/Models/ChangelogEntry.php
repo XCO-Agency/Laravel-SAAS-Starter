@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use Database\Factories\ChangelogEntryFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class ChangelogEntry extends Model
 {
-    /** @use HasFactory<\Database\Factories\ChangelogEntryFactory> */
+    /** @use HasFactory<ChangelogEntryFactory> */
     use HasFactory, \Laravel\Scout\Searchable;
 
     /**

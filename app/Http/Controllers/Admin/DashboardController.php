@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Workspace;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Inertia\Response;
 use Laravel\Cashier\Subscription;
@@ -137,14 +138,14 @@ class DashboardController extends Controller
             if ($monthlyPriceId) {
                 $count = Subscription::where('stripe_price', $monthlyPriceId)
                     ->whereIn('stripe_status', ['active', 'trialing'])
-                    ->sum(\Illuminate\Support\Facades\DB::raw('COALESCE(quantity, 1)'));
+                    ->sum(DB::raw('COALESCE(quantity, 1)'));
                 $mrr += $count * ($plan['price']['monthly'] ?? 0);
             }
 
             if ($yearlyPriceId) {
                 $count = Subscription::where('stripe_price', $yearlyPriceId)
                     ->whereIn('stripe_status', ['active', 'trialing'])
-                    ->sum(\Illuminate\Support\Facades\DB::raw('COALESCE(quantity, 1)'));
+                    ->sum(DB::raw('COALESCE(quantity, 1)'));
                 $mrr += $count * round(($plan['price']['yearly'] ?? 0) / 12, 2);
             }
         }

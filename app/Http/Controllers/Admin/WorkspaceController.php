@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Workspace;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -67,7 +68,7 @@ class WorkspaceController extends Controller
     /**
      * Suspend a workspace.
      */
-    public function suspend(Request $request, Workspace $workspace): \Illuminate\Http\RedirectResponse
+    public function suspend(Request $request, Workspace $workspace): RedirectResponse
     {
         $validated = $request->validate([
             'reason' => ['nullable', 'string', 'max:255'],
@@ -84,7 +85,7 @@ class WorkspaceController extends Controller
     /**
      * Unsuspend a workspace.
      */
-    public function unsuspend(Workspace $workspace): \Illuminate\Http\RedirectResponse
+    public function unsuspend(Workspace $workspace): RedirectResponse
     {
         $workspace->update([
             'suspended_at' => null,

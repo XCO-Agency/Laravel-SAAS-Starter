@@ -4,6 +4,7 @@ use App\Http\Middleware\EnsureWorkspaceAccess;
 use App\Models\User;
 use App\Models\Workspace;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 it('redirects unauthenticated users to login', function () {
     $request = Request::create('/test');
@@ -56,7 +57,7 @@ it('aborts 403 when user has no workspaces at all', function () {
 
     $middleware = new EnsureWorkspaceAccess;
     $middleware->handle($request, fn () => response('OK'));
-})->throws(\Symfony\Component\HttpKernel\Exception\HttpException::class);
+})->throws(HttpException::class);
 
 it('switches to another workspace when user does not belong to current', function () {
     $user = User::factory()->create();

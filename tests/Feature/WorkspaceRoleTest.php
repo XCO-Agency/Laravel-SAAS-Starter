@@ -4,9 +4,10 @@ use App\Models\User;
 use App\Models\Workspace;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
+use Tests\TestCase;
 
 /**
- * @var \Tests\TestCase $this
+ * @var TestCase $this
  *
  * @property Workspace $workspace
  * @property User $owner

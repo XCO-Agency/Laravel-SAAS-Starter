@@ -2,9 +2,10 @@
 
 use App\Models\LoginActivity;
 use App\Models\User;
+use Tests\TestCase;
 
 /**
- * @var \Tests\TestCase $this
+ * @var TestCase $this
  *
  * @property User $admin
  */

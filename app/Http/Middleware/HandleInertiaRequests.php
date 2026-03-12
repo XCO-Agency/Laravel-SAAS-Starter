@@ -7,6 +7,7 @@ use App\Models\SeoMetadata;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
+use Laravel\Pennant\Feature;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -97,7 +98,7 @@ class HandleInertiaRequests extends Middleware
                 'owner_id' => $currentWorkspace->owner_id,
                 'plan' => $currentWorkspace->plan_name,
                 'role' => $currentWorkspace->getUserRole($user),
-                'feature_flags' => \Laravel\Pennant\Feature::for($currentWorkspace)->all(),
+                'feature_flags' => Feature::for($currentWorkspace)->all(),
             ] : null,
             'workspaces' => $workspaces,
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',

@@ -1,6 +1,8 @@
 <?php
 
 use App\Models\User;
+use Illuminate\Support\Str;
+use Inertia\Testing\AssertableInertia;
 
 beforeEach(function () {
     $this->user = User::factory()->create();
@@ -19,7 +21,7 @@ describe('Notifications API', function () {
         $this->actingAs($this->user)
             ->get('/notifications')
             ->assertOk()
-            ->assertInertia(fn (\Inertia\Testing\AssertableInertia $page) => $page
+            ->assertInertia(fn (AssertableInertia $page) => $page
                 ->component('notifications/index')
                 ->has('notifications')
             );
@@ -28,14 +30,14 @@ describe('Notifications API', function () {
     it('returns unread notifications and count', function () {
         // Create 2 mock notifications for the user
         $this->user->notifications()->create([
-            'id' => \Illuminate\Support\Str::uuid(),
+            'id' => Str::uuid(),
             'type' => 'App\Notifications\MockNotification',
             'data' => ['title' => 'Test', 'message' => 'Hello'],
             'read_at' => null,
         ]);
 
         $this->user->notifications()->create([
-            'id' => \Illuminate\Support\Str::uuid(),
+            'id' => Str::uuid(),
             'type' => 'App\Notifications\MockNotification',
             'data' => ['title' => 'Test 2', 'message' => 'Hello 2'],
             'read_at' => null,
@@ -50,7 +52,7 @@ describe('Notifications API', function () {
 
     it('marks a single notification as read', function () {
         $notification = $this->user->notifications()->create([
-            'id' => \Illuminate\Support\Str::uuid(),
+            'id' => Str::uuid(),
             'type' => 'App\Notifications\MockNotification',
             'data' => ['title' => 'Test', 'message' => 'Hello'],
             'read_at' => null,
@@ -66,7 +68,7 @@ describe('Notifications API', function () {
 
     it('marks all notifications as read', function () {
         $this->user->notifications()->create([
-            'id' => \Illuminate\Support\Str::uuid(),
+            'id' => Str::uuid(),
             'type' => 'App\Notifications\MockNotification',
             'data' => ['title' => 'Test', 'message' => 'Hello'],
             'read_at' => null,
@@ -83,7 +85,7 @@ describe('Notifications API', function () {
     it('cannot mark another users notification as read', function () {
         $otherUser = User::factory()->create();
         $notification = $otherUser->notifications()->create([
-            'id' => \Illuminate\Support\Str::uuid(),
+            'id' => Str::uuid(),
             'type' => 'App\Notifications\MockNotification',
             'data' => ['title' => 'Test', 'message' => 'Hello'],
             'read_at' => null,

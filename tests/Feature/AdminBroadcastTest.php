@@ -3,6 +3,7 @@
 use App\Jobs\DispatchBroadcastMessage;
 use App\Models\BroadcastMessage;
 use App\Models\User;
+use App\Models\Workspace;
 use App\Notifications\PlatformBroadcast;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;
@@ -73,7 +74,7 @@ test('broadcast delivery job correctly chunks and filters target segments', func
     $regularUser = User::factory()->create();
 
     $workspaceOwner = User::factory()->create();
-    \App\Models\Workspace::factory()->create(['owner_id' => $workspaceOwner->id]);
+    Workspace::factory()->create(['owner_id' => $workspaceOwner->id]);
 
     $broadcast = BroadcastMessage::create([
         'sender_id' => $superadmin->id,

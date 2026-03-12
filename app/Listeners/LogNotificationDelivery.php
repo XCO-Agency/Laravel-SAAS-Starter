@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Models\NotificationDeliveryLog;
+use App\Models\User;
 use Illuminate\Notifications\Events\NotificationSent;
 
 class LogNotificationDelivery
@@ -28,7 +29,7 @@ class LogNotificationDelivery
         $notifiable = $event->notifiable;
 
         // Only track user notifications
-        if (! $notifiable instanceof \App\Models\User) {
+        if (! $notifiable instanceof User) {
             return;
         }
 

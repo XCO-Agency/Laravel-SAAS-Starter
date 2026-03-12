@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use Inertia\Testing\AssertableInertia;
 
 beforeEach(function () {
     $this->superadmin = User::factory()->create(['is_superadmin' => true]);
@@ -20,7 +21,7 @@ it('allows superadmins to view user api tokens', function () {
     $this->actingAs($this->superadmin)
         ->get(route('admin.users.api-tokens.index', $this->targetUser))
         ->assertSuccessful()
-        ->assertInertia(fn (\Inertia\Testing\AssertableInertia $page) => $page
+        ->assertInertia(fn (AssertableInertia $page) => $page
             ->component('admin/user-api-tokens')
             ->where('user.id', $this->targetUser->id)
             ->has('tokens', 1)

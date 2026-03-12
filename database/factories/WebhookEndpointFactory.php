@@ -5,9 +5,10 @@ namespace Database\Factories;
 use App\Models\WebhookEndpoint;
 use App\Models\Workspace;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\WebhookEndpoint>
+ * @extends Factory<WebhookEndpoint>
  */
 class WebhookEndpointFactory extends Factory
 {
@@ -23,7 +24,7 @@ class WebhookEndpointFactory extends Factory
         return [
             'workspace_id' => Workspace::factory(),
             'url' => fake()->url(),
-            'secret' => \Illuminate\Support\Str::random(32),
+            'secret' => Str::random(32),
             'events' => ['*'],
             'is_active' => true,
         ];

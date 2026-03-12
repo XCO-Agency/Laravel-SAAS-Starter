@@ -2,6 +2,7 @@
 
 use App\Models\LoginActivity;
 use App\Models\User;
+use Illuminate\Support\Carbon;
 
 it('belongs to a user', function () {
     $user = User::factory()->create();
@@ -18,7 +19,7 @@ it('casts is_successful to boolean', function () {
 
 it('casts login_at to datetime', function () {
     $activity = LoginActivity::factory()->create(['login_at' => '2025-01-01 12:00:00']);
-    expect($activity->login_at)->toBeInstanceOf(\Illuminate\Support\Carbon::class);
+    expect($activity->login_at)->toBeInstanceOf(Carbon::class);
 });
 
 it('parses Chrome on Windows user agent', function () {

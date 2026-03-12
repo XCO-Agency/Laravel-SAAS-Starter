@@ -6,7 +6,7 @@ use App\Models\AdminNotification;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\AdminNotification>
+ * @extends Factory<AdminNotification>
  */
 class AdminNotificationFactory extends Factory
 {

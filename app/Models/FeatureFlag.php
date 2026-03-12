@@ -2,8 +2,11 @@
 
 namespace App\Models;
 
+use App\Providers\AppServiceProvider;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
+use Laravel\Pennant\Feature;
 
 class FeatureFlag extends Model
 {
@@ -34,16 +37,16 @@ class FeatureFlag extends Model
     protected static function booted(): void
     {
         static::saved(function () {
-            \Illuminate\Support\Facades\Cache::forget('feature_flags_definitions');
-            \App\Providers\AppServiceProvider::registerFeatureFlags();
-            \Laravel\Pennant\Feature::flushCache();
+            Cache::forget('feature_flags_definitions');
+            AppServiceProvider::registerFeatureFlags();
+            Feature::flushCache();
         });
 
         static::deleted(function ($flag) {
-            \Illuminate\Support\Facades\Cache::forget('feature_flags_definitions');
-            \App\Providers\AppServiceProvider::registerFeatureFlags();
-            \Laravel\Pennant\Feature::purge($flag->key);
-            \Laravel\Pennant\Feature::flushCache();
+            Cache::forget('feature_flags_definitions');
+            AppServiceProvider::registerFeatureFlags();
+            Feature::purge($flag->key);
+            Feature::flushCache();
         });
     }
 }

@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use Database\Factories\AdminNotificationFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class AdminNotification extends Model
 {
-    /** @use HasFactory<\Database\Factories\AdminNotificationFactory> */
+    /** @use HasFactory<AdminNotificationFactory> */
     use HasFactory;
 
     public const TYPE_WEBHOOK_FAILURE = 'webhook_failure';

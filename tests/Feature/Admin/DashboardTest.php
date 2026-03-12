@@ -3,6 +3,7 @@
 use App\Models\User;
 use App\Models\Workspace;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Inertia\Testing\AssertableInertia;
 
 uses(RefreshDatabase::class);
 
@@ -41,11 +42,11 @@ it('allows superadmins to access the dashboard and see system metrics', function
 
     // In an Inertia test, you can test the Inertia page and passed props
     $response->assertInertia(
-        fn (\Inertia\Testing\AssertableInertia $page) => $page
+        fn (AssertableInertia $page) => $page
             ->component('admin/dashboard')
             ->has(
                 'metrics',
-                fn (\Inertia\Testing\AssertableInertia $metrics) => $metrics
+                fn (AssertableInertia $metrics) => $metrics
                     ->where('total_users', User::count())
                     ->where('total_workspaces', Workspace::count())
                     ->has('active_subscriptions')

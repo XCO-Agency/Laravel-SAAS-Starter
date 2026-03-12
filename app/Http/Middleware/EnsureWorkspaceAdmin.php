@@ -13,7 +13,7 @@ class EnsureWorkspaceAdmin
      *
      * Ensures the authenticated user is an admin (or owner) of the current workspace.
      *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     * @param  Closure(Request): (Response)  $next
      */
     public function handle(Request $request, Closure $next): Response
     {

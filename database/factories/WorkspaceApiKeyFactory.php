@@ -4,11 +4,12 @@ namespace Database\Factories;
 
 use App\Models\User;
 use App\Models\Workspace;
+use App\Models\WorkspaceApiKey;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\WorkspaceApiKey>
+ * @extends Factory<WorkspaceApiKey>
  */
 class WorkspaceApiKeyFactory extends Factory
 {

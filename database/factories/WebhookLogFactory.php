@@ -8,7 +8,7 @@ use App\Models\Workspace;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\WebhookLog>
+ * @extends Factory<WebhookLog>
  */
 class WebhookLogFactory extends Factory
 {

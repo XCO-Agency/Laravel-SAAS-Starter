@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Cron\CronExpression;
 use Illuminate\Console\Scheduling\Schedule;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -104,7 +105,7 @@ class ScheduledTaskController extends Controller
     protected function nextDue(string $expression, ?string $timezone): ?string
     {
         try {
-            $cron = new \Cron\CronExpression($expression);
+            $cron = new CronExpression($expression);
             $tz = $timezone ?? config('app.timezone');
 
             return $cron->getNextRunDate('now', 0, false, $tz)->format('Y-m-d H:i:s T');

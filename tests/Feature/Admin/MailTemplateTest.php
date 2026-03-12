@@ -1,5 +1,6 @@
 <?php
 
+use App\Mail\WorkspaceInvitation;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
@@ -19,7 +20,7 @@ test('superadmins can list mail templates', function () {
     $admin = User::factory()->create(['is_superadmin' => true]);
 
     MailTemplate::create([
-        'mailable' => \App\Mail\WorkspaceInvitation::class,
+        'mailable' => WorkspaceInvitation::class,
         'subject' => 'Initial Subject',
         'html_template' => '<p>Hello world</p>',
     ]);
@@ -37,7 +38,7 @@ test('superadmins can view the edit form for a mail template', function () {
     $admin = User::factory()->create(['is_superadmin' => true]);
 
     $template = MailTemplate::create([
-        'mailable' => \App\Mail\WorkspaceInvitation::class,
+        'mailable' => WorkspaceInvitation::class,
         'subject' => 'Initial Subject',
         'html_template' => '<p>Hello world</p>',
     ]);
@@ -56,7 +57,7 @@ test('superadmins can update a mail template', function () {
     $admin = User::factory()->create(['is_superadmin' => true]);
 
     $template = MailTemplate::create([
-        'mailable' => \App\Mail\WorkspaceInvitation::class,
+        'mailable' => WorkspaceInvitation::class,
         'subject' => 'Old Subject',
         'html_template' => '<p>Old Content</p>',
     ]);

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Workspace;
+use Spatie\Activitylog\Models\Activity;
 
 class WorkspaceExportService
 {
@@ -44,7 +45,7 @@ class WorkspaceExportService
                 'description' => $endpoint->description,
                 'created_at' => $endpoint->created_at->toIso8601String(),
             ])->toArray(),
-            'activity_logs' => \Spatie\Activitylog\Models\Activity::where('log_name', 'workspace')
+            'activity_logs' => Activity::where('log_name', 'workspace')
                 ->where('subject_id', $workspace->id)
                 ->where('subject_type', Workspace::class)
                 ->latest()

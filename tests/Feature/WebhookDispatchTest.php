@@ -5,6 +5,7 @@ use App\Models\User;
 use App\Models\WebhookEndpoint;
 use App\Models\Workspace;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Queue;
 use Spatie\WebhookServer\CallWebhookJob;
 
 beforeEach(function () {
@@ -28,21 +29,21 @@ beforeEach(function () {
 });
 
 it('dispatches to endpoints subscribed to the event', function () {
-    \Illuminate\Support\Facades\Queue::fake([CallWebhookJob::class]);
+    Queue::fake([CallWebhookJob::class]);
 
     $event = new WorkspaceUpdated($this->workspace);
     Event::dispatch($event);
 
-    \Illuminate\Support\Facades\Queue::assertPushed(CallWebhookJob::class, 1);
+    Queue::assertPushed(CallWebhookJob::class, 1);
 });
 
 it('does not dispatch to inactive endpoints', function () {
     $this->endpoint1->update(['is_active' => false]);
 
-    \Illuminate\Support\Facades\Queue::fake([CallWebhookJob::class]);
+    Queue::fake([CallWebhookJob::class]);
 
     $event = new WorkspaceUpdated($this->workspace);
     Event::dispatch($event);
 
-    \Illuminate\Support\Facades\Queue::assertNothingPushed();
+    Queue::assertNothingPushed();
 });

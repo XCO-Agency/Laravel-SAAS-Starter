@@ -1,12 +1,13 @@
 <?php
 
 use App\Http\Middleware\PreventRequestsDuringMaintenance;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
 it('allows requests when not in maintenance mode', function () {
     $middleware = app(PreventRequestsDuringMaintenance::class);
 
-    $request = \Illuminate\Http\Request::create('/test');
+    $request = Request::create('/test');
 
     $response = $middleware->handle($request, fn () => response('OK'));
 
@@ -22,7 +23,7 @@ it('allows whitelisted IPs during maintenance mode', function () {
     ]);
 
     $middleware = app(PreventRequestsDuringMaintenance::class);
-    $request = \Illuminate\Http\Request::create('/test', 'GET', [], [], [], ['REMOTE_ADDR' => '127.0.0.1']);
+    $request = Request::create('/test', 'GET', [], [], [], ['REMOTE_ADDR' => '127.0.0.1']);
 
     // When app is not actually down, the parent middleware won't block
     $response = $middleware->handle($request, fn () => response('OK'));

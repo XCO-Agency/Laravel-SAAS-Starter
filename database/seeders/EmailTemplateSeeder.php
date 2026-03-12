@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Mail\WorkspaceInvitation;
 use Illuminate\Database\Seeder;
 use Spatie\MailTemplates\Models\MailTemplate;
 
@@ -13,7 +14,7 @@ class EmailTemplateSeeder extends Seeder
     public function run(): void
     {
         MailTemplate::firstOrCreate(
-            ['mailable' => \App\Mail\WorkspaceInvitation::class],
+            ['mailable' => WorkspaceInvitation::class],
             [
                 'subject' => 'You have been invited to join {{ workspaceName }}',
                 'html_template' => '

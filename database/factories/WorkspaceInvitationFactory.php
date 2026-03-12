@@ -3,11 +3,12 @@
 namespace Database\Factories;
 
 use App\Models\Workspace;
+use App\Models\WorkspaceInvitation;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\WorkspaceInvitation>
+ * @extends Factory<WorkspaceInvitation>
  */
 class WorkspaceInvitationFactory extends Factory
 {

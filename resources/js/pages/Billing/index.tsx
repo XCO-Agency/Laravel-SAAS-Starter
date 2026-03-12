@@ -11,6 +11,7 @@ import { Spinner } from '@/components/ui/spinner';
 import { useToast } from '@/components/ui/toast';
 import { useTranslations } from '@/hooks/use-translations';
 import http from '@/lib/http';
+import { cn } from '@/lib/utils';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
 import {
@@ -19,7 +20,8 @@ import {
     type Plan,
     type WorkspaceRole,
 } from '@/types';
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, Deferred } from '@inertiajs/react';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
     AlertCircle,
     CheckCircle,
@@ -271,22 +273,28 @@ export default function BillingIndex({
 
                         <div className="space-y-6 lg:col-span-1">
                             {/* Upcoming Invoice */}
-                            {upcoming_invoice && (
-                                <Card className="bg-primary text-primary-foreground shadow-lg shadow-primary/20 animate-fade-in-up delay-200 border-none">
-                                    <CardHeader className="pb-2">
-                                        <CardTitle className="text-lg font-bold flex items-center gap-2">
-                                            <CreditCard className="h-4 w-4" />
-                                            Upcoming Payment
-                                        </CardTitle>
-                                    </CardHeader>
-                                    <CardContent>
-                                        <div className="space-y-1">
-                                            <p className="text-3xl font-black">{upcoming_invoice.amount}</p>
-                                            <p className="text-sm opacity-90 font-medium">Scheduled for {upcoming_invoice.date}</p>
-                                        </div>
-                                    </CardContent>
+                            <Deferred data="upcoming_invoice" fallback={
+                                <Card className="glass animate-fade-in-up delay-200 border-none">
+                                    <ViewSkeleton rows={2} />
                                 </Card>
-                            )}
+                            }>
+                                {upcoming_invoice && (
+                                    <Card className="bg-primary text-primary-foreground shadow-lg shadow-primary/20 animate-fade-in-up delay-200 border-none">
+                                        <CardHeader className="pb-2">
+                                            <CardTitle className="text-lg font-bold flex items-center gap-2">
+                                                <CreditCard className="h-4 w-4" />
+                                                Upcoming Payment
+                                            </CardTitle>
+                                        </CardHeader>
+                                        <CardContent>
+                                            <div className="flex items-baseline gap-1">
+                                                <span className="text-2xl font-bold">${(Number(upcoming_invoice.amount) / 100).toFixed(2)}</span>
+                                                <span className="text-xs opacity-70">on {upcoming_invoice.date}</span>
+                                            </div>
+                                        </CardContent>
+                                    </Card>
+                                )}
+                            </Deferred>
 
                             {/* Payment Method Quick Look */}
                             {subscription && isOwner && (
@@ -333,155 +341,143 @@ export default function BillingIndex({
                     </div>
 
                     {/* Usage Overview */}
-                    <Card className="glass overflow-hidden shadow-sm animate-fade-in-up delay-400">
-                        <CardHeader className="border-b bg-muted/10">
-                            <div className="flex items-center justify-between">
-                                <div>
-                                    <CardTitle className="flex items-center gap-2">
-                                        <Users className="h-5 w-5 text-muted-foreground" />
-                                        Workspace Usage
-                                    </CardTitle>
-                                    <CardDescription>
-                                        Real-time consumption metrics for your current plan.
-                                    </CardDescription>
-                                </div>
-                                <div className="text-right hidden sm:block">
-                                    <p className="text-sm font-bold">{workspace.plan} Limits</p>
-                                </div>
-                            </div>
-                        </CardHeader>
-                        <CardContent className="pt-8 pb-8">
-                            <div className="grid gap-10 md:grid-cols-3">
-                                {Object.entries(usage).map(([key, metric]) => {
-                                    const isCritical = metric.percentage >= 90;
-                                    const isHigh = metric.percentage >= 75;
-                                    const colorClass = isCritical
-                                        ? 'bg-destructive shadow-[0_0_8px_rgba(239,68,68,0.4)]'
-                                        : isHigh
-                                            ? 'bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.4)]'
-                                            : 'bg-primary shadow-[0_0_8px_rgba(var(--primary),0.4)]';
-
-                                    return (
-                                        <div key={key} className="space-y-4">
-                                            <div className="flex items-center justify-between">
-                                                <div className="flex items-center gap-2">
-                                                    <span className="text-sm font-bold uppercase tracking-wider text-muted-foreground/70">
-                                                        {metric.label}
-                                                    </span>
-                                                    {isCritical && (
-                                                        <Badge variant="destructive" className="h-4 px-1.5 text-[10px] uppercase font-bold tracking-tighter">
-                                                            Critical
-                                                        </Badge>
-                                                    )}
-                                                </div>
-                                                <p className="text-sm font-black tracking-tight">
-                                                    {metric.count} <span className="text-muted-foreground/50 font-medium">/</span> {metric.limit === -1 ? '∞' : metric.limit}
-                                                </p>
-                                            </div>
-
-                                            <div className="space-y-2">
-                                                <div className="h-2.5 w-full overflow-hidden rounded-full bg-muted shadow-inner">
-                                                    <div
-                                                        className={`h-full rounded-full transition-all duration-1000 ease-out ${colorClass}`}
-                                                        style={{ width: `${metric.percentage}%` }}
-                                                    />
-                                                </div>
-                                                <p className="text-[10px] font-bold text-muted-foreground flex justify-between">
-                                                    <span>{metric.percentage}% UTILIZED</span>
-                                                    {metric.limit !== -1 && metric.limit - metric.count <= 2 && metric.limit - metric.count > 0 && (
-                                                        <span className="text-amber-600 animate-pulse">ONLY {metric.limit - metric.count} REMAINING</span>
-                                                    )}
-                                                </p>
-                                            </div>
-                                        </div>
-                                    );
-                                })}
-                            </div>
-
-                            {/* Limit Reached Warning */}
-                            {usage.team_members.limit !== -1 && usage.team_members.count >= usage.team_members.limit && isOwner && (
-                                <div className="mt-8 flex items-start gap-4 rounded-xl border-2 border-amber-200 bg-amber-50/50 p-5 dark:border-amber-900/50 dark:bg-amber-950/20">
-                                    <div className="rounded-full bg-amber-100 p-2 dark:bg-amber-900/40">
-                                        <AlertCircle className="h-5 w-5 text-amber-600 dark:text-amber-400" />
-                                    </div>
-                                    <div className="space-y-1">
-                                        <p className="font-bold text-amber-900 dark:text-amber-200">Seat quota fully utilized</p>
-                                        <p className="text-sm text-amber-800/80 dark:text-amber-400/80 leading-relaxed">
-                                            Your workspace has reached its member limit for the <span className="font-bold">{workspace.plan}</span> plan.
-                                            New invitations cannot be sent until your plan is upgraded or members are removed.
-                                        </p>
-                                        <Button
-                                            variant="link"
-                                            asChild
-                                            className="h-auto p-0 text-amber-700 dark:text-amber-400 font-bold hover:no-underline underline-offset-4 decoration-2 hover:translate-x-1 transition-transform"
-                                        >
-                                            <Link href="/billing/plans">
-                                                Upgrade your subscription →
-                                            </Link>
-                                        </Button>
-                                    </div>
-                                </div>
-                            )}
-                        </CardContent>
-                    </Card>
-
-                    {/* Invoices */}
-                    {invoices.length > 0 && (
-                        <Card className="glass shadow-sm border-none animate-fade-in-up delay-500">
-                            <CardHeader className="pb-4">
-                                <CardTitle className="text-lg font-bold flex items-center gap-2">
-                                    <Receipt className="h-5 w-5 text-muted-foreground" />
-                                    {t('billing.invoice_history', 'Invoice History')}
-                                </CardTitle>
-                                <CardDescription>
-                                    {t('billing.invoices_desc', 'View and download your past billing records.')}
-                                </CardDescription>
+                    <Deferred data="usage" fallback={
+                        <Card className="glass overflow-hidden shadow-sm animate-fade-in-up delay-400">
+                            <CardHeader className="border-b bg-muted/10">
+                                <Skeleton className="h-6 w-32" />
                             </CardHeader>
-                            <CardContent>
-                                <div className="overflow-hidden rounded-xl border bg-background">
-                                    <div className="divide-y">
-                                        {invoices.map((invoice) => (
-                                            <div
-                                                key={invoice.id}
-                                                className="group flex items-center justify-between p-4 transition-colors hover:bg-muted/30"
-                                            >
-                                                <div className="flex items-center gap-4">
-                                                    <div className="rounded-lg bg-muted p-2.5 text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary transition-colors">
-                                                        <Receipt className="h-4 w-4" />
-                                                    </div>
-                                                    <div>
-                                                        <p className="font-bold text-sm">
-                                                            {invoice.date}
-                                                        </p>
-                                                        <p className="text-xs font-semibold text-muted-foreground">
-                                                            {invoice.total}
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                                <Button
-                                                    variant="ghost"
-                                                    size="sm"
-                                                    asChild
-                                                    className="h-9 rounded-lg hover:bg-primary/10 hover:text-primary"
-                                                >
-                                                    <a
-                                                        href={invoice.pdf_url}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                    >
-                                                        <Download className="mr-2 h-4 w-4" />
-                                                        {t('billing.download_pdf', 'PDF')}
-                                                    </a>
-                                                </Button>
-                                            </div>
-                                        ))}
+                            <CardContent className="p-6 space-y-6">
+                                <ViewSkeleton rows={3} />
+                            </CardContent>
+                        </Card>
+                    }>
+                        <Card className="glass overflow-hidden shadow-sm animate-fade-in-up delay-400">
+                            <CardHeader className="border-b bg-muted/10">
+                                <div className="flex items-center justify-between">
+                                    <div>
+                                        <CardTitle className="flex items-center gap-2">
+                                            <Users className="h-5 w-5 text-muted-foreground" />
+                                            {t('billing.usage_overview', 'Usage Overview')}
+                                        </CardTitle>
+                                        <CardDescription>
+                                            {t('billing.usage_description', 'Your current resource consumption')}
+                                        </CardDescription>
                                     </div>
+                                    <Badge variant="outline" className="font-mono bg-background/50">
+                                        {workspace.plan} Plan
+                                    </Badge>
+                                </div>
+                            </CardHeader>
+                            <CardContent className="p-6">
+                                <div className="grid gap-8 md:grid-cols-3">
+                                    {Object.entries(usage).map(([key, item]) => (
+                                        <div key={key} className="space-y-3">
+                                            <div className="flex justify-between items-end">
+                                                <span className="text-sm font-bold uppercase tracking-wider text-muted-foreground/70">
+                                                    {item.label}
+                                                </span>
+                                                <span className="text-sm font-mono font-bold">
+                                                    {item.count} / {item.limit === -1 ? '∞' : item.limit}
+                                                </span>
+                                            </div>
+                                            <div className="relative h-4 w-full overflow-hidden rounded-full bg-muted/50 border border-muted-foreground/10">
+                                                <div
+                                                    className={cn(
+                                                        "h-full transition-all duration-1000 ease-out rounded-full",
+                                                        item.percentage > 90 ? "bg-destructive shadow-[0_0_12px_rgba(239,68,68,0.4)]" :
+                                                            item.percentage > 75 ? "bg-orange-500 shadow-[0_0_12px_rgba(249,115,22,0.3)]" :
+                                                                "bg-primary shadow-[0_0_12px_rgba(var(--primary),0.3)]"
+                                                    )}
+                                                    style={{ width: `${item.percentage}%` }}
+                                                />
+                                            </div>
+                                            {item.limit !== -1 && item.percentage > 80 && (
+                                                <p className="text-[10px] font-bold text-destructive flex items-center gap-1 animate-pulse">
+                                                    <AlertCircle className="h-3 w-3" />
+                                                    {100 - item.percentage}% remaining
+                                                </p>
+                                            )}
+                                        </div>
+                                    ))}
                                 </div>
                             </CardContent>
                         </Card>
-                    )}
+                    </Deferred>
+
+                    {/* Invoices */}
+                    <Deferred data="invoices" fallback={
+                        <Card className="glass shadow-sm border-none animate-fade-in-up delay-500">
+                            <CardHeader className="pb-4">
+                                <Skeleton className="h-6 w-32" />
+                            </CardHeader>
+                            <CardContent>
+                                <ViewSkeleton rows={5} />
+                            </CardContent>
+                        </Card>
+                    }>
+                        {invoices.length > 0 && (
+                            <Card className="glass shadow-sm border-none animate-fade-in-up delay-500">
+                                <CardHeader className="pb-4">
+                                    <CardTitle className="text-lg font-bold flex items-center gap-2">
+                                        <Receipt className="h-5 w-5 text-muted-foreground" />
+                                        {t('billing.invoice_history', 'Invoice History')}
+                                    </CardTitle>
+                                    <CardDescription>
+                                        {t('billing.invoice_description', 'Download your past invoices and receipts')}
+                                    </CardDescription>
+                                </CardHeader>
+                                <CardContent>
+                                    <div className="rounded-xl border border-muted-foreground/10 overflow-hidden bg-background/30">
+                                        <table className="w-full text-sm">
+                                            <thead>
+                                                <tr className="bg-muted/30 border-b border-muted-foreground/10 text-muted-foreground uppercase text-[10px] font-bold tracking-widest">
+                                                    <th className="px-6 py-4 text-left">Date</th>
+                                                    <th className="px-6 py-4 text-left">Amount</th>
+                                                    <th className="px-6 py-4 text-right">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody className="divide-y divide-muted-foreground/10">
+                                                {invoices.map((invoice: Invoice) => (
+                                                    <tr key={invoice.id} className="hover:bg-muted/20 transition-colors group">
+                                                        <td className="px-6 py-4 font-medium">{invoice.date}</td>
+                                                        <td className="px-6 py-4 font-mono font-bold">${(Number(invoice.total) / 100).toFixed(2)}</td>
+                                                        <td className="px-6 py-4 text-right">
+                                                            <Button
+                                                                variant="ghost"
+                                                                size="sm"
+                                                                asChild
+                                                                className="opacity-0 group-hover:opacity-100 transition-opacity hover:bg-primary/10 hover:text-primary rounded-full px-4 h-8"
+                                                            >
+                                                                <a href={invoice.pdf_url}>
+                                                                    <Download className="mr-2 h-3.5 w-3.5" />
+                                                                    PDF
+                                                                </a>
+                                                            </Button>
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        )}
+                    </Deferred>
                 </div>
             </SettingsLayout>
         </AppLayout>
+    );
+}
+
+function ViewSkeleton({ rows = 3 }: { rows?: number }) {
+    return (
+        <div className="space-y-4">
+            {Array.from({ length: rows }).map((_, i) => (
+                <div key={i} className="space-y-2">
+                    <Skeleton className="h-4 w-[250px]" />
+                    <Skeleton className="h-4 w-[200px]" />
+                </div>
+            ))}
+        </div>
     );
 }

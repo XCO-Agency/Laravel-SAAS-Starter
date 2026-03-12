@@ -15,14 +15,14 @@ beforeEach(function () {
 
     // Ensure app is up before each test
     if (app()->isDownForMaintenance()) {
-        \Artisan::call('up');
+        Artisan::call('up');
     }
 });
 
 afterEach(function () {
     // Always bring app back up after tests
     if (app()->isDownForMaintenance()) {
-        \Artisan::call('up');
+        Artisan::call('up');
     }
     Cache::forget('maintenance_mode');
 });
