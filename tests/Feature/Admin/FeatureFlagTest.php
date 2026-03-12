@@ -3,6 +3,7 @@
 use App\Models\FeatureFlag;
 use App\Models\User;
 use App\Models\Workspace;
+use Inertia\Testing\AssertableInertia;
 
 it('redirects guests from admin feature flags', function () {
     $this->get('/admin/feature-flags')
@@ -23,7 +24,7 @@ it('allows superadmin to view feature flags', function () {
     $this->actingAs($admin)
         ->get('/admin/feature-flags')
         ->assertSuccessful()
-        ->assertInertia(fn (\Inertia\Testing\AssertableInertia $page) => $page
+        ->assertInertia(fn (AssertableInertia $page) => $page
             ->component('admin/feature-flags')
             ->has('flags')
             ->has('workspaces')
@@ -135,7 +136,7 @@ it('shares feature_flags globally for the current workspace via Inertia', functi
     $this->actingAs($user)
         ->get('/settings/profile')
         ->assertSuccessful()
-        ->assertInertia(fn (\Inertia\Testing\AssertableInertia $page) => $page
+        ->assertInertia(fn (AssertableInertia $page) => $page
             ->has('currentWorkspace.feature_flags')
             ->where('currentWorkspace.feature_flags.shared-flag', true)
         );

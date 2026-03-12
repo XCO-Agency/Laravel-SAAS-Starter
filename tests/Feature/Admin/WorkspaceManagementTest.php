@@ -2,6 +2,7 @@
 
 use App\Models\User;
 use App\Models\Workspace;
+use Inertia\Testing\AssertableInertia;
 
 it('redirects guests from admin workspaces', function () {
     $this->get('/admin/workspaces')
@@ -24,7 +25,7 @@ it('allows superadmin to view all workspaces', function () {
     $this->actingAs($admin)
         ->get('/admin/workspaces')
         ->assertSuccessful()
-        ->assertInertia(fn (\Inertia\Testing\AssertableInertia $page) => $page
+        ->assertInertia(fn (AssertableInertia $page) => $page
             ->component('admin/workspaces')
             ->has('workspaces')
             ->has('filters')
@@ -41,7 +42,7 @@ it('can search workspaces by name', function () {
     $this->actingAs($admin)
         ->get('/admin/workspaces?search=Alpha')
         ->assertSuccessful()
-        ->assertInertia(fn (\Inertia\Testing\AssertableInertia $page) => $page
+        ->assertInertia(fn (AssertableInertia $page) => $page
             ->component('admin/workspaces')
             ->where('filters.search', 'Alpha')
         );

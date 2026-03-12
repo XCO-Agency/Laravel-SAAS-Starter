@@ -2,10 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Models\ChangelogEntry;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ChangelogEntry>
+ * @extends Factory<ChangelogEntry>
  */
 class ChangelogEntryFactory extends Factory
 {

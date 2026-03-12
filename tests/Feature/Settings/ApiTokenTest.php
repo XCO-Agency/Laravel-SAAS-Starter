@@ -2,6 +2,7 @@
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Inertia\Testing\AssertableInertia;
 
 uses(RefreshDatabase::class);
 
@@ -18,7 +19,7 @@ it('allows an authenticated user to view the api tokens page', function () {
 
     $response->assertSuccessful();
 
-    $response->assertInertia(fn (\Inertia\Testing\AssertableInertia $page) => $page
+    $response->assertInertia(fn (AssertableInertia $page) => $page
         ->component('settings/api-tokens')
         ->has('tokens') // Verify it passes down the token collection
     );

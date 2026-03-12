@@ -3,13 +3,14 @@
 use App\Http\Middleware\EnsureSuperadmin;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 it('aborts when user is not authenticated', function () {
     $middleware = new EnsureSuperadmin;
     $request = Request::create('/test');
 
     $middleware->handle($request, fn () => response('ok'));
-})->throws(\Symfony\Component\HttpKernel\Exception\HttpException::class);
+})->throws(HttpException::class);
 
 it('aborts when user is not a superadmin', function () {
     $user = User::factory()->withoutTwoFactor()->create(['is_superadmin' => false]);
@@ -19,7 +20,7 @@ it('aborts when user is not a superadmin', function () {
     $request->setUserResolver(fn () => $user);
 
     $middleware->handle($request, fn () => response('ok'));
-})->throws(\Symfony\Component\HttpKernel\Exception\HttpException::class);
+})->throws(HttpException::class);
 
 it('allows superadmin users', function () {
     $admin = User::factory()->withoutTwoFactor()->create(['is_superadmin' => true]);

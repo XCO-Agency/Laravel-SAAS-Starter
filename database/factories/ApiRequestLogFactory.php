@@ -2,10 +2,13 @@
 
 namespace Database\Factories;
 
+use App\Models\ApiRequestLog;
+use App\Models\Workspace;
+use App\Models\WorkspaceApiKey;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ApiRequestLog>
+ * @extends Factory<ApiRequestLog>
  */
 class ApiRequestLogFactory extends Factory
 {
@@ -17,8 +20,8 @@ class ApiRequestLogFactory extends Factory
     public function definition(): array
     {
         return [
-            'workspace_id' => \App\Models\Workspace::factory(),
-            'api_key_id' => \App\Models\WorkspaceApiKey::factory(),
+            'workspace_id' => Workspace::factory(),
+            'api_key_id' => WorkspaceApiKey::factory(),
             'method' => fake()->randomElement(['GET', 'POST', 'PUT', 'DELETE']),
             'path' => '/api/v1/'.fake()->randomElement(['workspace', 'members']),
             'status_code' => fake()->randomElement([200, 200, 200, 201, 400, 401, 403, 429, 500]),

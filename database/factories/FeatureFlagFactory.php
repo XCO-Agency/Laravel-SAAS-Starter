@@ -6,7 +6,7 @@ use App\Models\FeatureFlag;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\FeatureFlag>
+ * @extends Factory<FeatureFlag>
  */
 class FeatureFlagFactory extends Factory
 {

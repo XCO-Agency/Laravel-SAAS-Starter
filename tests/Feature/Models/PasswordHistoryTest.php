@@ -2,6 +2,7 @@
 
 use App\Models\PasswordHistory;
 use App\Models\User;
+use Illuminate\Support\Carbon;
 
 it('belongs to a user', function () {
     $user = User::factory()->create();
@@ -27,7 +28,7 @@ it('casts changed_at to datetime', function () {
         'changed_at' => '2025-06-15 12:00:00',
     ]);
 
-    expect($history->changed_at)->toBeInstanceOf(\Illuminate\Support\Carbon::class);
+    expect($history->changed_at)->toBeInstanceOf(Carbon::class);
 });
 
 it('has correct fillable attributes', function () {

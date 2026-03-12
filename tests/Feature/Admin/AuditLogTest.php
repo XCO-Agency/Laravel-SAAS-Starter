@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use Inertia\Testing\AssertableInertia;
 
 it('redirects guests from admin audit logs', function () {
     $this->get('/admin/audit-logs')
@@ -21,7 +22,7 @@ it('allows superadmin to view audit logs', function () {
     $this->actingAs($admin)
         ->get('/admin/audit-logs')
         ->assertSuccessful()
-        ->assertInertia(fn (\Inertia\Testing\AssertableInertia $page) => $page
+        ->assertInertia(fn (AssertableInertia $page) => $page
             ->component('admin/audit-logs')
             ->has('activities')
             ->has('filters')
@@ -36,7 +37,7 @@ it('supports search and filter query params', function () {
     $this->actingAs($admin)
         ->get('/admin/audit-logs?search=user&event=created&log_name=default')
         ->assertSuccessful()
-        ->assertInertia(fn (\Inertia\Testing\AssertableInertia $page) => $page
+        ->assertInertia(fn (AssertableInertia $page) => $page
             ->where('filters.search', 'user')
             ->where('filters.event', 'created')
             ->where('filters.log_name', 'default')

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ImpersonationLog;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -26,7 +27,7 @@ class ImpersonationController extends Controller
         $request->session()->put('impersonated_by', $impersonatorId);
 
         // Create the audit log
-        $log = \App\Models\ImpersonationLog::create([
+        $log = ImpersonationLog::create([
             'impersonator_id' => $impersonatorId,
             'impersonated_id' => $user->id,
             'ip_address' => $request->ip(),
@@ -60,7 +61,7 @@ class ImpersonationController extends Controller
         $request->session()->forget('impersonation_log_id');
 
         if ($logId) {
-            \App\Models\ImpersonationLog::where('id', $logId)->update([
+            ImpersonationLog::where('id', $logId)->update([
                 'ended_at' => now(),
             ]);
         }

@@ -50,7 +50,7 @@ it('throws exception if user is already a member', function () {
     $this->workspace->users()->attach($member->id, ['role' => 'member']);
 
     $this->service->invite($this->workspace, $member->email);
-})->throws(\InvalidArgumentException::class, 'This user is already a member of the workspace.');
+})->throws(InvalidArgumentException::class, 'This user is already a member of the workspace.');
 
 it('can accept an invitation', function () {
     $invitedUser = User::factory()->create();

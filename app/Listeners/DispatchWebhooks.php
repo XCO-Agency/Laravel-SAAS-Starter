@@ -2,6 +2,9 @@
 
 namespace App\Listeners;
 
+use App\Models\WebhookEndpoint;
+use Spatie\WebhookServer\WebhookCall;
+
 class DispatchWebhooks
 {
     /**
@@ -38,7 +41,7 @@ class DispatchWebhooks
             }
         }
 
-        $endpoints = \App\Models\WebhookEndpoint::where('workspace_id', $workspace->id)
+        $endpoints = WebhookEndpoint::where('workspace_id', $workspace->id)
             ->where('is_active', true)
             ->get();
 
@@ -48,7 +51,7 @@ class DispatchWebhooks
                 continue;
             }
 
-            \Spatie\WebhookServer\WebhookCall::create()
+            WebhookCall::create()
                 ->url($endpoint->url)
                 ->payload($payload)
                 ->useSecret($endpoint->secret)

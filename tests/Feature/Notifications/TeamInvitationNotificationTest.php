@@ -52,5 +52,5 @@ it('creates a mailable for mail delivery', function () {
     $notification = new TeamInvitationNotification($invitation);
     $mail = $notification->toMail($user);
 
-    expect($mail)->toBeInstanceOf(\App\Mail\WorkspaceInvitation::class);
+    expect($mail)->toBeInstanceOf(App\Mail\WorkspaceInvitation::class);
 });

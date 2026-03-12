@@ -3,7 +3,7 @@
         "laravel-boost": {
             "command": "php",
             "args": [
-                "./Laravel-SAAS-Starter/artisan",
+                "artisan",
                 "boost:mcp"
             ]
         },

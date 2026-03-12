@@ -8,11 +8,12 @@ use Laravel\Socialite\Contracts\Provider;
 use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Two\User as SocialiteUser;
 use Mockery as m;
+use Mockery\MockInterface;
 
 uses(RefreshDatabase::class);
 
 beforeEach(function () {
-    /** @var \Mockery\MockInterface&Provider $mockProvider */
+    /** @var MockInterface&Provider $mockProvider */
     $mockProvider = m::mock(Provider::class);
     $this->mockProvider = $mockProvider;
 

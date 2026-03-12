@@ -3,6 +3,7 @@
 use App\Models\LoginActivity;
 use App\Models\User;
 use App\Models\Workspace;
+use Illuminate\Auth\Events\Login;
 
 beforeEach(function () {
     $this->user = User::factory()->create();
@@ -86,7 +87,7 @@ describe('Login Activity Model', function () {
 describe('Login Event Listeners', function () {
     it('records successful login', function () {
         // Directly dispatch the Login event to verify the listener works
-        event(new \Illuminate\Auth\Events\Login('web', $this->user, false));
+        event(new Login('web', $this->user, false));
 
         $this->assertDatabaseHas('login_activities', [
             'user_id' => $this->user->id,

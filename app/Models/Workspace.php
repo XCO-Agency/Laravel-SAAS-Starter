@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use Database\Factories\WorkspaceFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Laravel\Cashier\Billable;
 use Laravel\Cashier\Subscription;
@@ -28,7 +30,7 @@ class Workspace extends Model
 
     public const ROLE_VIEWER = 'viewer';
 
-    /** @use HasFactory<\Database\Factories\WorkspaceFactory> */
+    /** @use HasFactory<WorkspaceFactory> */
     use Billable, HasFactory, HasFeatures, \Laravel\Scout\Searchable, LogsActivity, SoftDeletes;
 
     /**
@@ -145,7 +147,7 @@ class Workspace extends Model
     public function getLogoUrlAttribute(): string
     {
         if ($this->logo) {
-            return str_starts_with($this->logo, 'http') ? $this->logo : \Illuminate\Support\Facades\Storage::url($this->logo);
+            return str_starts_with($this->logo, 'http') ? $this->logo : Storage::url($this->logo);
         }
 
         return 'https://ui-avatars.com/api/?name='.urlencode($this->name).'&color=7F9CF5&background=EBF4FF';

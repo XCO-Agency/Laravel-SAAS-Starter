@@ -3,6 +3,7 @@
 use App\Jobs\ExportPersonalDataJob;
 use App\Models\User;
 use App\Notifications\DataExportCompleted;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 
@@ -74,5 +75,5 @@ it('includes personal data JSON in the zip', function () {
 
 it('implements ShouldQueue interface', function () {
     expect(ExportPersonalDataJob::class)
-        ->toImplement(\Illuminate\Contracts\Queue\ShouldQueue::class);
+        ->toImplement(ShouldQueue::class);
 });

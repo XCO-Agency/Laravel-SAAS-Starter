@@ -1,17 +1,19 @@
 <?php
 
 use App\Models\Feedback;
+use App\Models\User;
 use App\Models\WebhookEndpoint;
 use App\Models\WebhookLog;
 use App\Models\Workspace;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 it('prunes old notifications', function () {
-    $user = \App\Models\User::factory()->withoutTwoFactor()->create();
+    $user = User::factory()->withoutTwoFactor()->create();
 
     // Create an old read notification
     DB::table('notifications')->insert([
-        'id' => \Illuminate\Support\Str::uuid(),
+        'id' => Str::uuid(),
         'type' => 'App\\Notifications\\TestNotification',
         'notifiable_type' => 'App\\Models\\User',
         'notifiable_id' => $user->id,

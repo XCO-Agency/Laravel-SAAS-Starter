@@ -3,6 +3,7 @@
 use Stripe\Collection;
 use Stripe\Price;
 use Stripe\Product;
+use Stripe\SearchResult;
 use Stripe\Service\PriceService;
 use Stripe\Service\ProductService;
 use Stripe\StripeClient;
@@ -94,7 +95,7 @@ it('skips creation if products and prices already exist', function () {
 
     // Mock existing product
     $product = new Product(['id' => 'prod_existing']);
-    $productCollection = \Stripe\SearchResult::constructFrom([
+    $productCollection = SearchResult::constructFrom([
         'object' => 'search_result',
         'data' => [$product],
     ]);
@@ -107,7 +108,7 @@ it('skips creation if products and prices already exist', function () {
 
     // Mock existing price
     $price = new Price(['id' => 'price_existing']);
-    $priceCollection = \Stripe\SearchResult::constructFrom([
+    $priceCollection = SearchResult::constructFrom([
         'object' => 'search_result',
         'data' => [$price],
     ]);

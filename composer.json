@@ -26,7 +26,7 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^8.2",
+        "php": "^8.4",
         "inertiajs/inertia-laravel": "^2.0",
         "laravel/ai": "^0.2.1",
         "laravel/cashier": "^16.0",
@@ -56,7 +56,8 @@
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.6",
         "pestphp/pest": "^4.1",
-        "pestphp/pest-plugin-laravel": "^4.0"
+        "pestphp/pest-plugin-laravel": "^4.0",
+        "spatie/boost-spatie-guidelines": "^1.1"
     },
     "autoload": {
         "psr-4": {

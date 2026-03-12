@@ -4,13 +4,14 @@ use App\Http\Middleware\EnsureWorkspaceAdmin;
 use App\Models\User;
 use App\Models\Workspace;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 it('aborts when user is not authenticated', function () {
     $middleware = new EnsureWorkspaceAdmin;
     $request = Request::create('/test');
 
     $middleware->handle($request, fn () => response('ok'));
-})->throws(\Symfony\Component\HttpKernel\Exception\HttpException::class);
+})->throws(HttpException::class);
 
 it('aborts when user has no current workspace', function () {
     $user = User::factory()->withoutTwoFactor()->create();
@@ -20,7 +21,7 @@ it('aborts when user has no current workspace', function () {
     $request->setUserResolver(fn () => $user);
 
     $middleware->handle($request, fn () => response('ok'));
-})->throws(\Symfony\Component\HttpKernel\Exception\HttpException::class);
+})->throws(HttpException::class);
 
 it('aborts when user is a regular member', function () {
     $user = User::factory()->withoutTwoFactor()->create();
@@ -35,7 +36,7 @@ it('aborts when user is a regular member', function () {
     $request->setUserResolver(fn () => $member->fresh());
 
     $middleware->handle($request, fn () => response('ok'));
-})->throws(\Symfony\Component\HttpKernel\Exception\HttpException::class);
+})->throws(HttpException::class);
 
 it('allows workspace admins', function () {
     $owner = User::factory()->withoutTwoFactor()->create();

@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\ChangelogEntry;
+use Illuminate\Support\Carbon;
 
 it('casts is_published to boolean', function () {
     $entry = new ChangelogEntry(['is_published' => '1']);
@@ -11,7 +12,7 @@ it('casts published_at to datetime', function () {
     $entry = ChangelogEntry::factory()->create([
         'published_at' => '2025-06-15 12:00:00',
     ]);
-    expect($entry->published_at)->toBeInstanceOf(\Illuminate\Support\Carbon::class);
+    expect($entry->published_at)->toBeInstanceOf(Carbon::class);
 });
 
 it('scopes published entries', function () {

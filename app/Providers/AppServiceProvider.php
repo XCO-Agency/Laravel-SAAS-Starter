@@ -2,12 +2,25 @@
 
 namespace App\Providers;
 
+use App\Events\SubscriptionUpdated;
+use App\Events\WorkspaceMemberAdded;
+use App\Events\WorkspaceMemberRemoved;
+use App\Events\WorkspaceMemberRoleUpdated;
+use App\Events\WorkspaceUpdated;
+use App\Listeners\DispatchWebhooks;
+use App\Listeners\LogFailedLogin;
+use App\Listeners\LogNotificationDelivery;
+use App\Listeners\LogSuccessfulLogin;
 use App\Listeners\LogWebhookCall;
 use App\Models\FeatureFlag;
 use App\Models\Workspace;
+use App\Observers\ActivityLogObserver;
 use App\Policies\WorkspacePolicy;
+use Illuminate\Auth\Events\Failed;
+use Illuminate\Auth\Events\Login;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
+use Illuminate\Notifications\Events\NotificationSent;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
@@ -16,8 +29,10 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Cashier\Cashier;
 use Laravel\Pennant\Feature;
+use Spatie\Activitylog\Models\Activity;
 use Spatie\WebhookServer\Events\WebhookCallFailedEvent;
 use Spatie\WebhookServer\Events\WebhookCallSucceededEvent;
+use Stripe\StripeClient;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -52,8 +67,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton(\Stripe\StripeClient::class, function ($app) {
-            return new \Stripe\StripeClient(config('services.stripe.secret'));
+        $this->app->singleton(StripeClient::class, function ($app) {
+            return new StripeClient(config('services.stripe.secret'));
         });
     }
 
@@ -62,25 +77,25 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        \Spatie\Activitylog\Models\Activity::observe(\App\Observers\ActivityLogObserver::class);
+        Activity::observe(ActivityLogObserver::class);
 
         Gate::policy(Workspace::class, WorkspacePolicy::class);
 
         Event::listen(WebhookCallSucceededEvent::class, [LogWebhookCall::class, 'handleSuccessfulCall']);
         Event::listen(WebhookCallFailedEvent::class, [LogWebhookCall::class, 'handleFailedCall']);
 
-        Event::listen(\Illuminate\Auth\Events\Login::class, \App\Listeners\LogSuccessfulLogin::class);
-        Event::listen(\Illuminate\Auth\Events\Failed::class, \App\Listeners\LogFailedLogin::class);
-        Event::listen(\Illuminate\Notifications\Events\NotificationSent::class, \App\Listeners\LogNotificationDelivery::class);
+        Event::listen(Login::class, LogSuccessfulLogin::class);
+        Event::listen(Failed::class, LogFailedLogin::class);
+        Event::listen(NotificationSent::class, LogNotificationDelivery::class);
 
         // Core App Webhook Dispatches
         Event::listen([
-            \App\Events\WorkspaceUpdated::class,
-            \App\Events\WorkspaceMemberAdded::class,
-            \App\Events\WorkspaceMemberRemoved::class,
-            \App\Events\WorkspaceMemberRoleUpdated::class,
-            \App\Events\SubscriptionUpdated::class,
-        ], \App\Listeners\DispatchWebhooks::class);
+            WorkspaceUpdated::class,
+            WorkspaceMemberAdded::class,
+            WorkspaceMemberRemoved::class,
+            WorkspaceMemberRoleUpdated::class,
+            SubscriptionUpdated::class,
+        ], DispatchWebhooks::class);
 
         // Tell Cashier to use Workspace as the billable model instead of User
         Cashier::useCustomerModel(Workspace::class);

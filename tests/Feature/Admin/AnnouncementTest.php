@@ -2,6 +2,7 @@
 
 use App\Models\Announcement;
 use App\Models\User;
+use Inertia\Testing\AssertableInertia;
 
 it('redirects guests from admin announcements', function () {
     $this->get('/admin/announcements')
@@ -22,7 +23,7 @@ it('allows superadmin to view announcements', function () {
     $this->actingAs($admin)
         ->get('/admin/announcements')
         ->assertSuccessful()
-        ->assertInertia(fn (\Inertia\Testing\AssertableInertia $page) => $page
+        ->assertInertia(fn (AssertableInertia $page) => $page
             ->component('admin/announcements')
             ->has('announcements')
         );
@@ -108,7 +109,7 @@ it('shares active announcement globally via Inertia', function () {
     $this->actingAs($user)
         ->get('/settings/profile')
         ->assertSuccessful()
-        ->assertInertia(fn (\Inertia\Testing\AssertableInertia $page) => $page
+        ->assertInertia(fn (AssertableInertia $page) => $page
             ->has('announcement')
             ->where('announcement.title', 'Global Banner')
         );
