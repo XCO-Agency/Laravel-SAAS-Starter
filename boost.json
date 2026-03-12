@@ -18,7 +18,10 @@
         "vscode"
     ],
     "guidelines": [
-        "laravel/fortify"
+        "laravel/fortify",
+        "inertiajs/inertia-laravel",
+        "laravel/ai",
+        "laravel/octane"
     ],
     "herd_mcp": true
 }
