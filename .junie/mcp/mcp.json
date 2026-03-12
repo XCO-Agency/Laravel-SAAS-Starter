@@ -1,14 +1,14 @@
 {
     "mcpServers": {
         "laravel-boost": {
-            "command": "/Users/anass/.config/herd-lite/bin/php",
+            "command": "php",
             "args": [
-                "./Laravel-SAAS-Starter/artisan",
+                "artisan",
                 "boost:mcp"
             ]
         },
         "herd": {
-            "command": "/Users/anass/.config/herd-lite/bin/php",
+            "command": "php",
             "args": [
                 "/Applications/Herd.app/Contents/Resources/herd-mcp.phar"
             ],

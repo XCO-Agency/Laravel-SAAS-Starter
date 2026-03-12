@@ -24,7 +24,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [javascript-typescript, php]
+        language: [javascript-typescript]
 
     steps:
       - name: Checkout
@@ -35,23 +35,14 @@ jobs:
         with:
           languages: ${{ matrix.language }}
 
-      - name: Setup PHP
-        if: matrix.language == 'php'
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.4'
-
       - name: Setup Node
-        if: matrix.language == 'javascript-typescript'
         uses: actions/setup-node@v4
         with:
           node-version: '22'
           cache: 'npm'
 
       - name: Install Dependencies
-        run: |
-          composer install --no-interaction --prefer-dist
-          npm ci
+        run: npm ci
 
       - name: Build Frontend
         run: npm run build

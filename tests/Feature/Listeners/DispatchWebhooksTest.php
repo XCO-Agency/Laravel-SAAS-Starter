@@ -4,9 +4,12 @@ use App\Listeners\DispatchWebhooks;
 use App\Models\User;
 use App\Models\WebhookEndpoint;
 use App\Models\Workspace;
+use Illuminate\Support\Facades\Queue;
 use Spatie\WebhookServer\WebhookCall;
 
 it('dispatches webhooks for active endpoints', function () {
+    Queue::fake();
+
     $user = User::factory()->create();
     $workspace = Workspace::factory()->create(['owner_id' => $user->id]);
 
@@ -45,6 +48,8 @@ it('skips dispatch when no workspace is found on event', function () {
 });
 
 it('skips endpoints that filter on events not matching', function () {
+    Queue::fake();
+
     $user = User::factory()->create();
     $workspace = Workspace::factory()->create(['owner_id' => $user->id]);
 

@@ -4,6 +4,7 @@ use App\Models\User;
 use App\Models\Workspace;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Queue;
 use Spatie\WebhookServer\Events\DispatchingWebhookCallEvent;
 
 uses(RefreshDatabase::class);
@@ -78,7 +79,7 @@ it('allows workspace admins to delete a webhook endpoint', function () {
 });
 
 it('dispatches a ping event via spatie webhook server', function () {
-    // We can fake the Event bus to ensure the underlying DispatchingWebhookCall event is fired.
+    Queue::fake();
     Event::fake([DispatchingWebhookCallEvent::class]);
 
     $user = User::factory()->create();
