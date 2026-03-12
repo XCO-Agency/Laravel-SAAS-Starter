@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "eb2a490c9a0f03475b944249a4203897",
+    "content-hash": "4778fc1d3c92cbcd107e37ddd391e5e0",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -1618,16 +1618,16 @@
         },
         {
             "name": "laravel/ai",
-            "version": "v0.2.8",
+            "version": "v0.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/ai.git",
-                "reference": "8c35ed04ebdec3bd1cdfff13ee735608fb65c3d7"
+                "reference": "83782933abebaa9cb0e2ccaf84b867252f1a031c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/ai/zipball/8c35ed04ebdec3bd1cdfff13ee735608fb65c3d7",
-                "reference": "8c35ed04ebdec3bd1cdfff13ee735608fb65c3d7",
+                "url": "https://api.github.com/repos/laravel/ai/zipball/83782933abebaa9cb0e2ccaf84b867252f1a031c",
+                "reference": "83782933abebaa9cb0e2ccaf84b867252f1a031c",
                 "shasum": ""
             },
             "require": {
@@ -1645,7 +1645,7 @@
             "require-dev": {
                 "laravel/pint": "^1.26",
                 "mockery/mockery": "^1.6.12",
-                "orchestra/testbench": "^10.6"
+                "orchestra/testbench": "^10.6|^11.0"
             },
             "type": "library",
             "extra": {
@@ -1680,7 +1680,7 @@
                 "issues": "https://github.com/laravel/ai/issues",
                 "source": "https://github.com/laravel/ai"
             },
-            "time": "2026-03-10T19:58:47+00:00"
+            "time": "2026-03-12T19:36:02+00:00"
         },
         {
             "name": "laravel/cashier",
@@ -2498,16 +2498,16 @@
         },
         {
             "name": "laravel/scout",
-            "version": "v10.25.0",
+            "version": "v11.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/scout.git",
-                "reference": "f28630dca44a63d80c15e596bedc5af42c8985d5"
+                "reference": "7a1dbbeb01cf4653c5ce4311fdc42a866e1e5187"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/scout/zipball/f28630dca44a63d80c15e596bedc5af42c8985d5",
-                "reference": "f28630dca44a63d80c15e596bedc5af42c8985d5",
+                "url": "https://api.github.com/repos/laravel/scout/zipball/7a1dbbeb01cf4653c5ce4311fdc42a866e1e5187",
+                "reference": "7a1dbbeb01cf4653c5ce4311fdc42a866e1e5187",
                 "shasum": ""
             },
             "require": {
@@ -2546,7 +2546,7 @@
                     ]
                 },
                 "branch-alias": {
-                    "dev-master": "10.x-dev"
+                    "dev-master": "11.x-dev"
                 }
             },
             "autoload": {
@@ -2574,7 +2574,7 @@
                 "issues": "https://github.com/laravel/scout/issues",
                 "source": "https://github.com/laravel/scout"
             },
-            "time": "2026-03-10T16:16:46+00:00"
+            "time": "2026-03-10T19:16:37+00:00"
         },
         {
             "name": "laravel/serializable-closure",
