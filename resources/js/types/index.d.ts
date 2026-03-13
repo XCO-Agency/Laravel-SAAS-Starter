@@ -128,6 +128,7 @@ export interface User {
     bio?: string | null;
     timezone?: string;
     date_format?: string;
+    profile_completeness?: { score: number; missing: string[] };
     [key: string]: unknown;
 }
 

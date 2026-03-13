@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import {
     ChevronDown,
     ChevronRight,
+    Download,
     ScrollText,
     Search,
 } from 'lucide-react';
@@ -116,6 +117,13 @@ export default function AuditLogs({ activities, filters, logNames, events }: Aud
                     </div>
 
                     <div className="flex items-center gap-2 flex-wrap">
+                        <a
+                            href={`/admin/audit-logs/export?search=${encodeURIComponent(search)}&log_name=${encodeURIComponent(logName)}&event=${encodeURIComponent(event)}`}
+                            className="inline-flex items-center gap-2 rounded-md border border-input bg-background px-3 py-2 text-sm font-medium shadow-sm hover:bg-accent hover:text-accent-foreground"
+                        >
+                            <Download className="h-4 w-4" />
+                            Export CSV
+                        </a>
                         <form onSubmit={handleSearch} className="flex items-center gap-2">
                             <div className="relative">
                                 <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />

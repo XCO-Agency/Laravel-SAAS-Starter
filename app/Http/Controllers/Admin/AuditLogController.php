@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 use Spatie\Activitylog\Models\Activity;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class AuditLogController extends Controller
 {
@@ -59,5 +60,50 @@ class AuditLogController extends Controller
             'logNames' => $logNames,
             'events' => $events,
         ]);
+    }
+
+    /**
+     * Export audit logs as a CSV file with the current filters applied.
+     */
+    public function export(Request $request): StreamedResponse
+    {
+        $search = $request->input('search', '');
+        $logName = $request->input('log_name', '');
+        $event = $request->input('event', '');
+
+        $query = Activity::query()
+            ->with('causer:id,name,email')
+            ->when($search, fn ($q) => $q
+                ->where('description', 'like', "%{$search}%")
+                ->orWhere('subject_type', 'like', "%{$search}%")
+            )
+            ->when($logName, fn ($q) => $q->where('log_name', $logName))
+            ->when($event, fn ($q) => $q->where('event', $event))
+            ->latest();
+
+        $filename = 'audit-logs-'.now()->format('Y-m-d').'.csv';
+
+        return response()->streamDownload(function () use ($query) {
+            $handle = fopen('php://output', 'w');
+
+            fputcsv($handle, ['ID', 'Log Name', 'Description', 'Event', 'Subject Type', 'Subject ID', 'Causer', 'Created At']);
+
+            $query->chunk(500, function ($activities) use ($handle) {
+                foreach ($activities as $activity) {
+                    fputcsv($handle, [
+                        $activity->id,
+                        $activity->log_name ?? '',
+                        $activity->description ?? '',
+                        $activity->event ?? '',
+                        $activity->subject_type ? class_basename($activity->subject_type) : '',
+                        $activity->subject_id ?? '',
+                        $activity->causer?->name ?? '',
+                        $activity->created_at?->toISOString() ?? '',
+                    ]);
+                }
+            });
+
+            fclose($handle);
+        }, $filename, ['Content-Type' => 'text/csv']);
     }
 }

@@ -56,6 +56,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'notification_preferences',
         'onboarding_checklist_dismissed_at',
         'tour_completed_at',
+        'changelog_read_at',
         'password_updated_at',
     ];
 
@@ -96,6 +97,7 @@ class User extends Authenticatable implements MustVerifyEmail
             'notification_preferences' => 'array',
             'onboarding_checklist_dismissed_at' => 'datetime',
             'tour_completed_at' => 'datetime',
+            'changelog_read_at' => 'datetime',
             'password_updated_at' => 'datetime',
         ];
     }
@@ -140,6 +142,14 @@ class User extends Authenticatable implements MustVerifyEmail
     public function passwordHistories(): HasMany
     {
         return $this->hasMany(PasswordHistory::class);
+    }
+
+    /**
+     * Get the admin notes written about this user.
+     */
+    public function notes(): HasMany
+    {
+        return $this->hasMany(UserNote::class);
     }
 
     /**
@@ -297,6 +307,42 @@ class User extends Authenticatable implements MustVerifyEmail
     public function tickets(): HasMany
     {
         return $this->hasMany(Ticket::class);
+    }
+
+    /**
+     * Calculate the user's profile completeness score.
+     *
+     * Returns an array with:
+     *   - score: integer 0–100
+     *   - missing: list of human-readable fields the user hasn't filled in
+     *
+     * @return array{score: int, missing: list<string>}
+     */
+    public function profileCompletenessScore(): array
+    {
+        $checks = [
+            ['label' => 'Profile photo', 'filled' => ! empty($this->avatar_url)],
+            ['label' => 'Bio', 'filled' => ! empty($this->bio)],
+            ['label' => 'Timezone', 'filled' => ! empty($this->timezone) && $this->timezone !== 'UTC'],
+            ['label' => 'Two-factor authentication', 'filled' => ! is_null($this->two_factor_confirmed_at)],
+        ];
+
+        $total = count($checks);
+        $completed = 0;
+        $missing = [];
+
+        foreach ($checks as $check) {
+            if ($check['filled']) {
+                $completed++;
+            } else {
+                $missing[] = $check['label'];
+            }
+        }
+
+        return [
+            'score' => (int) round(($completed / $total) * 100),
+            'missing' => $missing,
+        ];
     }
 
     /**

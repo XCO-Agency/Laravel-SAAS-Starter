@@ -1,10 +1,11 @@
+import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
 import { type BreadcrumbItem } from '@/types';
-import { Head, router } from '@inertiajs/react';
-import { Activity, AlertTriangle, Clock, Gauge, ShieldAlert, Zap } from 'lucide-react';
+import { Head, Link, router } from '@inertiajs/react';
+import { Activity, AlertTriangle, Clock, List, ShieldAlert, Zap } from 'lucide-react';
 
 interface DailyVolumeItem {
     date: string;
@@ -91,8 +92,16 @@ export default function ApiUsage({ overview, dailyVolume, perKeyUsage, statusDis
                 fullWidth
             >
                 <div className="space-y-6">
-                    {/* Period Selector */}
-                    <div className="flex justify-end">
+                    {/* Header Actions */}
+                    <div className="flex items-center justify-between">
+                        <Button variant="outline" size="sm" asChild>
+                            <Link href="/workspaces/api-usage/logs">
+                                <List className="mr-2 h-4 w-4" />
+                                {t('api_usage.view_logs', 'View Request Logs')}
+                            </Link>
+                        </Button>
+
+                        {/* Period Selector */}
                         <div className="inline-flex items-center gap-1 rounded-lg border p-1">
                             {periodOptions.map((opt) => (
                                 <button

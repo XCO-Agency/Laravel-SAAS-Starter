@@ -20,6 +20,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
+import { Progress } from '@/components/ui/progress';
 import { Separator } from '@/components/ui/separator';
 import { type ChangeEvent } from 'react';
 import AvatarUpload from '@/components/avatar-upload';
@@ -56,6 +57,30 @@ export default function Profile({
                 fullWidth
             >
                 <div className="space-y-6">
+
+                    {/* Profile Completeness */}
+                    {(() => {
+                        const completeness = auth.user?.profile_completeness;
+                        if (!completeness || completeness.score >= 100) return null;
+                        return (
+                            <div className="rounded-lg border border-amber-200 bg-amber-50 p-4 dark:border-amber-800 dark:bg-amber-950/30">
+                                <div className="mb-2 flex items-center justify-between">
+                                    <p className="text-sm font-medium text-amber-900 dark:text-amber-300">
+                                        Profile {completeness.score}% complete
+                                    </p>
+                                    <span className="text-xs text-amber-700 dark:text-amber-400">
+                                        {completeness.score}/100
+                                    </span>
+                                </div>
+                                <Progress value={completeness.score} className="h-1.5 bg-amber-200 dark:bg-amber-900" />
+                                {completeness.missing.length > 0 && (
+                                    <p className="mt-2 text-xs text-amber-700 dark:text-amber-400">
+                                        Still missing: {completeness.missing.join(', ')}
+                                    </p>
+                                )}
+                            </div>
+                        );
+                    })()}
 
                     <Form
                         {...ProfileController.update.form()}

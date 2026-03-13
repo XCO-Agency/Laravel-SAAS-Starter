@@ -15,7 +15,7 @@ import {
     DialogTitle,
 } from '@/components/ui/dialog';
 import { formatDistanceToNow, format } from 'date-fns';
-import { ArrowLeft, CheckCircle2, XCircle, Search, Eye } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, Eye, RefreshCw, Search, XCircle } from 'lucide-react';
 
 interface WebhookEndpoint {
     id: number;
@@ -50,6 +50,19 @@ interface WebhookLogsProps {
 export default function WorkspaceWebhookLogs({ workspace, logs }: WebhookLogsProps) {
     const { t } = useTranslations();
     const [selectedLog, setSelectedLog] = useState<WebhookLog | null>(null);
+    const [retrying, setRetrying] = useState<string | null>(null);
+
+    const handleRetry = (log: WebhookLog) => {
+        setRetrying(log.id);
+        router.post(
+            `/workspaces/${workspace.id}/webhooks/logs/${log.id}/retry`,
+            {},
+            {
+                onFinish: () => setRetrying(null),
+                preserveScroll: true,
+            },
+        );
+    };
 
     return (
         <AppLayout
@@ -119,6 +132,15 @@ export default function WorkspaceWebhookLogs({ workspace, logs }: WebhookLogsPro
                                                 </div>
                                             </div>
                                             <div className="flex items-center gap-2 shrink-0">
+                                                <Button
+                                                    size="sm"
+                                                    variant="outline"
+                                                    disabled={retrying === log.id}
+                                                    onClick={() => handleRetry(log)}
+                                                >
+                                                    <RefreshCw className={`mr-2 h-4 w-4 ${retrying === log.id ? 'animate-spin' : ''}`} />
+                                                    Retry
+                                                </Button>
                                                 <Button size="sm" variant="secondary" onClick={() => setSelectedLog(log)}>
                                                     <Eye className="mr-2 h-4 w-4" />
                                                     Inspect

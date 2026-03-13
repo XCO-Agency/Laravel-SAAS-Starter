@@ -53,6 +53,7 @@ import {
     Clock,
     Copy,
     Crown,
+    Download,
     Link2,
     Mail,
     MoreHorizontal,
@@ -311,7 +312,19 @@ export default function TeamIndex({
                 fullWidth
             >
                 <div className="space-y-6">
-                    <div className="flex items-center justify-end">
+                    <div className="flex items-center justify-end gap-2">
+                        {isAdmin && (
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => {
+                                    window.location.href = '/team/export-members';
+                                }}
+                            >
+                                <Download className="mr-2 h-4 w-4" />
+                                Export CSV
+                            </Button>
+                        )}
                         {isAdmin && (
                             <Dialog open={inviteOpen} onOpenChange={setInviteOpen}>
                                 <DialogTrigger asChild>

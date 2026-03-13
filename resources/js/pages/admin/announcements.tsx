@@ -6,9 +6,11 @@ import { Input } from '@/components/ui/input';
 import {
     AlertCircle,
     CheckCircle,
+    Clock,
     Info,
     Megaphone,
     Plus,
+    Radio,
     ToggleLeft,
     ToggleRight,
     Trash2,
@@ -26,6 +28,7 @@ interface AnnouncementItem {
     starts_at: string | null;
     ends_at: string | null;
     created_at: string;
+    status: 'live' | 'scheduled' | 'expired' | 'inactive';
 }
 
 interface PaginationLink {
@@ -41,6 +44,7 @@ interface Props {
         total: number;
         last_page: number;
     };
+    filter: string;
 }
 
 const TYPE_ICONS: Record<string, typeof Info> = {
@@ -57,7 +61,49 @@ const TYPE_COLORS: Record<string, string> = {
     danger: 'text-red-600 dark:text-red-400',
 };
 
-export default function AdminAnnouncements({ announcements }: Props) {
+const STATUS_CONFIG: Record<
+    string,
+    { label: string; className: string; icon: typeof Radio }
+> = {
+    live: {
+        label: 'Live',
+        className: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400',
+        icon: Radio,
+    },
+    scheduled: {
+        label: 'Scheduled',
+        className: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400',
+        icon: Clock,
+    },
+    expired: {
+        label: 'Expired',
+        className: 'bg-muted text-muted-foreground',
+        icon: XCircle,
+    },
+    inactive: {
+        label: 'Inactive',
+        className: 'bg-muted text-muted-foreground',
+        icon: ToggleLeft,
+    },
+};
+
+const STATUS_TABS = [
+    { value: 'all', label: 'All' },
+    { value: 'live', label: 'Live' },
+    { value: 'scheduled', label: 'Scheduled' },
+    { value: 'expired', label: 'Expired' },
+    { value: 'inactive', label: 'Inactive' },
+];
+
+/** Decode HTML entities in Laravel paginator labels (e.g. &laquo;, &raquo;). */
+function decodePaginationLabel(label: string): string {
+    return label
+        .replace(/&laquo;/g, '«')
+        .replace(/&raquo;/g, '»')
+        .replace(/&amp;/g, '&');
+}
+
+export default function AdminAnnouncements({ announcements, filter }: Props) {
     const [showForm, setShowForm] = useState(false);
 
     const form = useForm({
@@ -93,6 +139,13 @@ export default function AdminAnnouncements({ announcements }: Props) {
         }
     };
 
+    const handleFilterChange = (value: string) => {
+        router.get('/admin/announcements', value !== 'all' ? { status: value } : {}, {
+            preserveState: true,
+            replace: true,
+        });
+    };
+
     return (
         <AdminLayout>
             <Head title="Announcements" />
@@ -111,6 +164,23 @@ export default function AdminAnnouncements({ announcements }: Props) {
                         <Plus className="mr-1.5 h-4 w-4" />
                         New Announcement
                     </Button>
+                </div>
+
+                {/* Status Filter Tabs */}
+                <div className="flex gap-1 border-b">
+                    {STATUS_TABS.map(tab => (
+                        <button
+                            key={tab.value}
+                            onClick={() => handleFilterChange(tab.value)}
+                            className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
+                                filter === tab.value
+                                    ? 'border-primary text-primary'
+                                    : 'border-transparent text-muted-foreground hover:text-foreground'
+                            }`}
+                        >
+                            {tab.label}
+                        </button>
+                    ))}
                 </div>
 
                 {/* Create Form */}
@@ -134,10 +204,10 @@ export default function AdminAnnouncements({ announcements }: Props) {
                                     onChange={e => form.setData('type', e.target.value)}
                                     className="mt-1 flex h-9 w-full rounded-md border border-input bg-background px-3 text-sm"
                                 >
-                                    <option value="info">ℹ️ Info</option>
-                                    <option value="warning">⚠️ Warning</option>
-                                    <option value="success">✅ Success</option>
-                                    <option value="danger">🚨 Danger</option>
+                                    <option value="info">Info</option>
+                                    <option value="warning">Warning</option>
+                                    <option value="success">Success</option>
+                                    <option value="danger">Danger</option>
                                 </select>
                             </div>
                         </div>
@@ -181,6 +251,7 @@ export default function AdminAnnouncements({ announcements }: Props) {
                                     onChange={e => form.setData('starts_at', e.target.value)}
                                     className="mt-1"
                                 />
+                                {form.errors.starts_at && <p className="text-xs text-destructive mt-1">{form.errors.starts_at}</p>}
                             </div>
                             <div>
                                 <label className="text-sm font-medium">Ends At (optional)</label>
@@ -190,6 +261,7 @@ export default function AdminAnnouncements({ announcements }: Props) {
                                     onChange={e => form.setData('ends_at', e.target.value)}
                                     className="mt-1"
                                 />
+                                {form.errors.ends_at && <p className="text-xs text-destructive mt-1">{form.errors.ends_at}</p>}
                             </div>
                         </div>
                         <div className="flex items-center gap-6">
@@ -227,31 +299,36 @@ export default function AdminAnnouncements({ announcements }: Props) {
                 <div className="space-y-3">
                     {announcements.data.length === 0 ? (
                         <div className="rounded-xl border bg-card p-12 text-center text-muted-foreground">
-                            No announcements yet. Create one to display a banner to all users.
+                            {filter === 'all'
+                                ? 'No announcements yet. Create one to display a banner to all users.'
+                                : `No ${filter} announcements.`}
                         </div>
                     ) : (
                         announcements.data.map(a => {
                             const Icon = TYPE_ICONS[a.type] || Info;
+                            const statusConfig = STATUS_CONFIG[a.status] || STATUS_CONFIG.inactive;
+                            const StatusIcon = statusConfig.icon;
                             return (
                                 <div
                                     key={a.id}
-                                    className={`flex items-center gap-4 rounded-xl border bg-card p-4 transition-opacity ${!a.is_active ? 'opacity-50' : ''}`}
+                                    className={`flex items-center gap-4 rounded-xl border bg-card p-4 transition-opacity ${a.status === 'inactive' || a.status === 'expired' ? 'opacity-60' : ''}`}
                                 >
                                     <Icon className={`h-5 w-5 shrink-0 ${TYPE_COLORS[a.type] || ''}`} />
                                     <div className="flex-1 min-w-0">
-                                        <div className="flex items-center gap-2">
+                                        <div className="flex items-center gap-2 flex-wrap">
                                             <span className="font-medium">{a.title}</span>
-                                            <Badge variant={a.is_active ? 'default' : 'outline'} className="text-[10px]">
-                                                {a.is_active ? 'Active' : 'Inactive'}
-                                            </Badge>
+                                            <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-medium ${statusConfig.className}`}>
+                                                <StatusIcon className="h-2.5 w-2.5" />
+                                                {statusConfig.label}
+                                            </span>
                                             <Badge variant="outline" className="text-[10px]">{a.type}</Badge>
                                         </div>
                                         <p className="text-sm text-muted-foreground truncate">{a.body}</p>
                                         {(a.starts_at || a.ends_at) && (
                                             <p className="text-xs text-muted-foreground mt-0.5">
-                                                {a.starts_at && `From ${new Date(a.starts_at).toLocaleDateString()}`}
+                                                {a.starts_at && `From ${new Date(a.starts_at).toLocaleString()}`}
                                                 {a.starts_at && a.ends_at && ' — '}
-                                                {a.ends_at && `Until ${new Date(a.ends_at).toLocaleDateString()}`}
+                                                {a.ends_at && `Until ${new Date(a.ends_at).toLocaleString()}`}
                                             </p>
                                         )}
                                     </div>
@@ -293,8 +370,9 @@ export default function AdminAnnouncements({ announcements }: Props) {
                                 size="sm"
                                 disabled={!link.url}
                                 onClick={() => link.url && router.get(link.url, {}, { preserveState: true })}
-                                dangerouslySetInnerHTML={{ __html: link.label }}
-                            />
+                            >
+                                {decodePaginationLabel(link.label)}
+                            </Button>
                         ))}
                     </div>
                 )}

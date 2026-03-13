@@ -1,5 +1,6 @@
 import { ImpersonationBanner } from '@/components/impersonation-banner';
-import { Link } from '@inertiajs/react';
+import { cn } from '@/lib/utils';
+import { Link, router } from '@inertiajs/react';
 import {
     Activity,
     AlertTriangle,
@@ -15,19 +16,19 @@ import {
     KeyRound,
     LayoutDashboard,
     ListChecks,
+    Mail,
     Megaphone,
     MessageSquare,
     Power,
     ScrollText,
+    Search,
     ShieldCheck,
     Terminal,
     Ticket,
     ToggleLeft,
     Users,
-    Mail,
 } from 'lucide-react';
-import { type PropsWithChildren } from 'react';
-import { cn } from '@/lib/utils';
+import { type PropsWithChildren, useCallback, useEffect, useRef, useState } from 'react';
 
 const adminNav = [
     { title: 'Overview', href: '/admin/dashboard', icon: LayoutDashboard },
@@ -59,6 +60,139 @@ const adminNav = [
     { title: 'Maintenance', href: '/admin/maintenance', icon: Power },
 ];
 
+interface SearchResult {
+    id: number;
+    name?: string;
+    email?: string;
+    slug?: string;
+    workspace_name?: string;
+    stripe_status?: string;
+    url: string;
+}
+
+interface SearchResults {
+    users: SearchResult[];
+    workspaces: SearchResult[];
+    subscriptions: SearchResult[];
+}
+
+function AdminSearchBar() {
+    const [query, setQuery] = useState('');
+    const [results, setResults] = useState<SearchResults | null>(null);
+    const [open, setOpen] = useState(false);
+    const containerRef = useRef<HTMLDivElement>(null);
+
+    const fetchResults = useCallback(async (q: string) => {
+        if (q.length < 2) {
+            setResults(null);
+            return;
+        }
+        const res = await fetch(`/admin/search?q=${encodeURIComponent(q)}`, {
+            headers: { 'X-Requested-With': 'XMLHttpRequest' },
+        });
+        if (res.ok) {
+            setResults(await res.json());
+        }
+    }, []);
+
+    useEffect(() => {
+        const timer = setTimeout(() => fetchResults(query), 300);
+        return () => clearTimeout(timer);
+    }, [query, fetchResults]);
+
+    useEffect(() => {
+        const handleClick = (e: MouseEvent) => {
+            if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+                setOpen(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClick);
+        return () => document.removeEventListener('mousedown', handleClick);
+    }, []);
+
+    const hasResults = results && (
+        results.users.length > 0 || results.workspaces.length > 0 || results.subscriptions.length > 0
+    );
+
+    const navigate = (url: string) => {
+        setOpen(false);
+        setQuery('');
+        setResults(null);
+        router.visit(url);
+    };
+
+    return (
+        <div ref={containerRef} className="relative px-3 py-2">
+            <div className="flex items-center gap-2 rounded-md border border-sidebar-border bg-sidebar-accent/30 px-2.5 py-1.5">
+                <Search className="size-3.5 shrink-0 text-sidebar-foreground/50" />
+                <input
+                    className="w-full bg-transparent text-xs text-sidebar-foreground placeholder:text-sidebar-foreground/50 outline-none"
+                    placeholder="Search users, workspaces…"
+                    value={query}
+                    onChange={(e) => { setQuery(e.target.value); setOpen(true); }}
+                    onFocus={() => setOpen(true)}
+                />
+            </div>
+
+            {open && query.length >= 2 && (
+                <div className="absolute left-3 right-3 top-full z-50 mt-1 rounded-md border border-border bg-popover shadow-lg">
+                    {!hasResults ? (
+                        <p className="px-3 py-2 text-xs text-muted-foreground">No results found.</p>
+                    ) : (
+                        <div className="max-h-80 overflow-y-auto">
+                            {results.users.length > 0 && (
+                                <div>
+                                    <p className="px-3 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Users</p>
+                                    {results.users.map((u) => (
+                                        <button
+                                            key={u.id}
+                                            onClick={() => navigate(u.url)}
+                                            className="flex w-full flex-col px-3 py-2 text-left text-sm hover:bg-accent"
+                                        >
+                                            <span className="font-medium">{u.name}</span>
+                                            <span className="text-xs text-muted-foreground">{u.email}</span>
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
+                            {results.workspaces.length > 0 && (
+                                <div>
+                                    <p className="px-3 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Workspaces</p>
+                                    {results.workspaces.map((w) => (
+                                        <button
+                                            key={w.id}
+                                            onClick={() => navigate(w.url)}
+                                            className="flex w-full flex-col px-3 py-2 text-left text-sm hover:bg-accent"
+                                        >
+                                            <span className="font-medium">{w.name}</span>
+                                            <span className="text-xs text-muted-foreground">{w.slug}</span>
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
+                            {results.subscriptions.length > 0 && (
+                                <div>
+                                    <p className="px-3 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Subscriptions</p>
+                                    {results.subscriptions.map((s) => (
+                                        <button
+                                            key={s.id}
+                                            onClick={() => navigate(s.url)}
+                                            className="flex w-full flex-col px-3 py-2 text-left text-sm hover:bg-accent"
+                                        >
+                                            <span className="font-medium">{s.workspace_name}</span>
+                                            <span className="text-xs text-muted-foreground">{s.stripe_status}</span>
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    )}
+                </div>
+            )}
+        </div>
+    );
+}
+
 export default function AdminLayout({
     children,
 }: PropsWithChildren) {
@@ -75,7 +209,9 @@ export default function AdminLayout({
                     <span className="font-semibold text-sm">Admin Panel</span>
                 </div>
 
-                <nav className="flex flex-1 flex-col gap-1 p-3">
+                <AdminSearchBar />
+
+                <nav className="flex flex-1 flex-col gap-1 overflow-y-auto p-3">
                     {adminNav.map((item) => (
                         <Link
                             key={item.href}

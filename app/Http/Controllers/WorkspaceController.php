@@ -177,6 +177,54 @@ class WorkspaceController extends Controller
     }
 
     /**
+     * Show the Danger Zone settings page.
+     */
+    public function dangerZone(Request $request): Response
+    {
+        $user = $request->user();
+        $workspace = $user->currentWorkspace;
+
+        return Inertia::render('settings/workspace-danger-zone', [
+            'workspace' => [
+                'id' => $workspace->id,
+                'name' => $workspace->name,
+                'personal_workspace' => $workspace->personal_workspace,
+                'owner_id' => $workspace->owner_id,
+            ],
+            'userRole' => $workspace->getUserRole($user),
+        ]);
+    }
+
+    /**
+     * Leave the current workspace (non-owners only).
+     */
+    public function leave(Request $request): RedirectResponse
+    {
+        $user = $request->user();
+        $workspace = $user->currentWorkspace;
+
+        if ($workspace->personal_workspace) {
+            return redirect()->back()
+                ->with('error', 'You cannot leave your personal workspace.');
+        }
+
+        if ($workspace->owner_id === $user->id) {
+            return redirect()->back()
+                ->with('error', 'Workspace owners cannot leave. Transfer ownership first or delete the workspace.');
+        }
+
+        $workspace->removeUser($user);
+
+        $personalWorkspace = $user->personalWorkspace();
+        if ($personalWorkspace) {
+            $user->switchWorkspace($personalWorkspace);
+        }
+
+        return redirect()->route('dashboard')
+            ->with('success', 'You have left the workspace.');
+    }
+
+    /**
      * Switch to another workspace.
      */
     public function switch(Request $request, Workspace $workspace): RedirectResponse

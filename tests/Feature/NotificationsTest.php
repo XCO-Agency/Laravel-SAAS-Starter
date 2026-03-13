@@ -97,4 +97,100 @@ describe('Notifications API', function () {
 
         expect($notification->fresh()->read_at)->toBeNull();
     });
+
+    it('filters notifications page to unread only', function () {
+        $this->user->notifications()->create([
+            'id' => Str::uuid(),
+            'type' => 'App\Notifications\MockNotification',
+            'data' => ['title' => 'Unread', 'message' => 'Not read'],
+            'read_at' => null,
+        ]);
+
+        $this->user->notifications()->create([
+            'id' => Str::uuid(),
+            'type' => 'App\Notifications\MockNotification',
+            'data' => ['title' => 'Read', 'message' => 'Already read'],
+            'read_at' => now(),
+        ]);
+
+        $this->actingAs($this->user)
+            ->get('/notifications?filter=unread')
+            ->assertOk()
+            ->assertInertia(fn (AssertableInertia $page) => $page
+                ->where('filter', 'unread')
+                ->where('notifications.total', 1)
+            );
+    });
+
+    it('page includes unread count', function () {
+        $this->user->notifications()->create([
+            'id' => Str::uuid(),
+            'type' => 'App\Notifications\MockNotification',
+            'data' => ['title' => 'Unread', 'message' => 'Not read'],
+            'read_at' => null,
+        ]);
+
+        $this->actingAs($this->user)
+            ->get('/notifications')
+            ->assertOk()
+            ->assertInertia(fn (AssertableInertia $page) => $page
+                ->where('unreadCount', 1)
+            );
+    });
+
+    it('deletes a single notification', function () {
+        $notification = $this->user->notifications()->create([
+            'id' => Str::uuid(),
+            'type' => 'App\Notifications\MockNotification',
+            'data' => ['title' => 'To Delete', 'message' => 'Gone'],
+            'read_at' => null,
+        ]);
+
+        $this->actingAs($this->user)
+            ->deleteJson('/api/notifications/'.$notification->id)
+            ->assertOk()
+            ->assertJsonPath('success', true);
+
+        expect($this->user->notifications()->where('id', $notification->id)->exists())->toBeFalse();
+    });
+
+    it('cannot delete another users notification', function () {
+        $otherUser = User::factory()->create();
+        $notification = $otherUser->notifications()->create([
+            'id' => Str::uuid(),
+            'type' => 'App\Notifications\MockNotification',
+            'data' => ['title' => 'Other', 'message' => 'Theirs'],
+            'read_at' => null,
+        ]);
+
+        $this->actingAs($this->user)
+            ->deleteJson('/api/notifications/'.$notification->id)
+            ->assertNotFound();
+
+        expect($otherUser->notifications()->where('id', $notification->id)->exists())->toBeTrue();
+    });
+
+    it('clears all read notifications', function () {
+        $this->user->notifications()->create([
+            'id' => Str::uuid(),
+            'type' => 'App\Notifications\MockNotification',
+            'data' => ['title' => 'Read', 'message' => 'Already read'],
+            'read_at' => now(),
+        ]);
+
+        $this->user->notifications()->create([
+            'id' => Str::uuid(),
+            'type' => 'App\Notifications\MockNotification',
+            'data' => ['title' => 'Unread', 'message' => 'Keep me'],
+            'read_at' => null,
+        ]);
+
+        $this->actingAs($this->user)
+            ->deleteJson('/api/notifications/read')
+            ->assertOk()
+            ->assertJsonPath('success', true);
+
+        expect($this->user->notifications()->count())->toBe(1);
+        expect($this->user->notifications()->first()->data['title'])->toBe('Unread');
+    });
 });

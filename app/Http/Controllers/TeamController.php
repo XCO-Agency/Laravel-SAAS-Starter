@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Inertia\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class TeamController extends Controller
 {
@@ -252,6 +253,40 @@ class TeamController extends Controller
             return redirect()->back()
                 ->with('error', $e->getMessage());
         }
+    }
+
+    /**
+     * Export workspace members as a CSV file.
+     */
+    public function exportMembers(Request $request): StreamedResponse
+    {
+        $user = $request->user();
+        $workspace = $user->currentWorkspace;
+
+        Gate::authorize('manageTeam', $workspace);
+
+        $members = $workspace->users()
+            ->select('users.id', 'users.name', 'users.email', 'users.timezone')
+            ->get()
+            ->map(fn ($member) => [
+                $member->id,
+                $member->name,
+                $member->email,
+                $member->pivot->role,
+                $member->timezone ?? '',
+                $member->pivot->created_at?->toDateTimeString() ?? '',
+            ]);
+
+        return response()->streamDownload(function () use ($members) {
+            $handle = fopen('php://output', 'w');
+            fputcsv($handle, ['ID', 'Name', 'Email', 'Role', 'Timezone', 'Joined At']);
+            foreach ($members as $row) {
+                fputcsv($handle, $row);
+            }
+            fclose($handle);
+        }, 'members-'.now()->format('Y-m-d').'.csv', [
+            'Content-Type' => 'text/csv',
+        ]);
     }
 
     /**

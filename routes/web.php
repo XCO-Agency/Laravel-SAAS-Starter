@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminNotificationController;
+use App\Http\Controllers\Admin\AdminSearchController;
 use App\Http\Controllers\Admin\AnnouncementController;
 use App\Http\Controllers\Admin\AuditLogController;
 use App\Http\Controllers\Admin\BroadcastController;
@@ -27,12 +28,14 @@ use App\Http\Controllers\Admin\TranslationController;
 use App\Http\Controllers\Admin\UserAnalyticsController;
 use App\Http\Controllers\Admin\UserApiTokenController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\UserNoteController;
 use App\Http\Controllers\Admin\UserSessionController;
 use App\Http\Controllers\ApiUsageController;
 use App\Http\Controllers\Auth\MagicLinkController;
 use App\Http\Controllers\Auth\SocialiteController;
 use App\Http\Controllers\BillingController;
 use App\Http\Controllers\ChangelogController;
+use App\Http\Controllers\ChangelogWidgetController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\LocaleController;
@@ -41,6 +44,7 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OnboardingChecklistController;
 use App\Http\Controllers\OnboardingController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\Settings\ConnectedAccountController;
 use App\Http\Controllers\Settings\WorkspaceLogoController;
 use App\Http\Controllers\Settings\WorkspaceSecurityController;
 use App\Http\Controllers\StatusPageController;
@@ -57,6 +61,7 @@ use App\Http\Controllers\WorkspaceApiKeyController;
 use App\Http\Controllers\WorkspaceController;
 use App\Http\Controllers\WorkspaceExportController;
 use App\Http\Controllers\WorkspaceInviteLinkController;
+use App\Http\Controllers\WorkspaceRetentionController;
 use App\Http\Controllers\WorkspaceTrashController;
 use App\Http\Middleware\RequireAdminTwoFactor;
 use Illuminate\Http\Request;
@@ -140,6 +145,7 @@ Route::middleware(['auth', 'verified', 'onboarded', 'workspace', 'require2fa', '
 
         // API Usage Dashboard
         Route::get('/api-usage', [ApiUsageController::class, 'index'])->name('api-usage.index');
+        Route::get('/api-usage/logs', [ApiUsageController::class, 'logs'])->name('api-usage.logs');
 
         // Webhook routes
         Route::prefix('{workspace}/webhooks')->name('webhooks.')->group(function () {
@@ -150,6 +156,8 @@ Route::middleware(['auth', 'verified', 'onboarded', 'workspace', 'require2fa', '
             Route::post('/{webhookEndpoint}/ping', [WebhookEndpointController::class, 'ping'])->name('ping');
 
             Route::get('/logs', [WebhookLogController::class, 'index'])->name('logs.index');
+            Route::post('/logs/{webhookLog}/retry', [WebhookLogController::class, 'retry'])->name('logs.retry');
+            Route::get('/verification-guide', [WebhookEndpointController::class, 'verificationGuide'])->name('verification-guide');
         });
     });
 
@@ -163,6 +171,7 @@ Route::middleware(['auth', 'verified', 'onboarded', 'workspace', 'require2fa', '
         Route::post('/transfer-ownership/{user}', [TeamController::class, 'transferOwnership'])->name('transfer-ownership');
         Route::delete('/invitations/{invitation}', [TeamController::class, 'cancelInvitation'])->name('cancel-invitation');
         Route::get('/activity-report', [MemberActivityController::class, 'index'])->name('activity-report');
+        Route::get('/export-members', [TeamController::class, 'exportMembers'])->name('export-members');
 
         // CSV Import
         Route::get('/import', [TeamImportController::class, 'index'])->name('import');
@@ -188,12 +197,30 @@ Route::middleware(['auth', 'verified', 'onboarded', 'workspace', 'require2fa', '
     Route::get('/settings/workspace-security', [WorkspaceSecurityController::class, 'index'])->name('workspace.security');
     Route::put('/settings/workspace-security', [WorkspaceSecurityController::class, 'update'])->name('workspace.security.update');
 
+    // Workspace Danger Zone
+    Route::get('/settings/workspace-danger-zone', [WorkspaceController::class, 'dangerZone'])->name('workspace.danger-zone');
+    Route::delete('/workspaces/leave', [WorkspaceController::class, 'leave'])->name('workspaces.leave');
+
+    // Connected Social Accounts
+    Route::get('/settings/connected-accounts', [ConnectedAccountController::class, 'index'])->name('connected-accounts.index');
+    Route::delete('/settings/connected-accounts/{provider}', [ConnectedAccountController::class, 'destroy'])->name('connected-accounts.destroy');
+
     // Onboarding Checklist
     Route::get('/onboarding-checklist', [OnboardingChecklistController::class, 'index'])->name('onboarding-checklist.index');
     Route::post('/onboarding-checklist/dismiss', [OnboardingChecklistController::class, 'dismiss'])->name('onboarding-checklist.dismiss');
 
     // Product Tour
     Route::post('/tour/complete', [TourController::class, 'complete'])->name('tour.complete');
+
+    // Changelog Widget
+    Route::get('/changelog-widget', [ChangelogWidgetController::class, 'index'])->name('changelog-widget.index');
+    Route::post('/changelog-widget/mark-read', [ChangelogWidgetController::class, 'markRead'])->name('changelog-widget.mark-read');
+
+    // Workspace Activity Feed Widget
+    Route::get('/workspace-activity-feed', [WorkspaceActivityController::class, 'feed'])->name('workspace-activity-feed');
+
+    // Workspace Retention Insights Widget
+    Route::get('/workspace-retention-insights', [WorkspaceRetentionController::class, 'index'])->name('workspace-retention-insights');
 
     // Usage Dashboard
     Route::get('/usage', [UsageController::class, 'index'])->name('usage.index');
@@ -239,7 +266,9 @@ Route::middleware(['auth'])->group(function () {
         Route::prefix('api/notifications')->middleware('throttle:api')->name('notifications.')->group(function () {
             Route::get('/', [NotificationController::class, 'index'])->name('index');
             Route::post('/mark-all-read', [NotificationController::class, 'markAllAsRead'])->name('mark-all-read');
+            Route::delete('/read', [NotificationController::class, 'clearRead'])->name('clear-read');
             Route::patch('/{id}/read', [NotificationController::class, 'markAsRead'])->name('mark-read');
+            Route::delete('/{id}', [NotificationController::class, 'destroy'])->name('destroy');
         });
     });
 
@@ -279,6 +308,7 @@ Route::middleware(['auth', 'superadmin'])->prefix('admin')->name('admin.')->grou
 
     Route::middleware([RequireAdminTwoFactor::class])->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        Route::get('/search', [AdminSearchController::class, 'search'])->name('search');
         Route::post('/impersonate/{user}', [ImpersonationController::class, 'impersonate'])->name('impersonate');
 
         // User Management
@@ -296,6 +326,11 @@ Route::middleware(['auth', 'superadmin'])->prefix('admin')->name('admin.')->grou
         Route::post('/users/{user}/api-tokens', [UserApiTokenController::class, 'store'])->name('users.api-tokens.store');
         Route::delete('/users/{user}/api-tokens/{tokenId}', [UserApiTokenController::class, 'destroy'])->name('users.api-tokens.destroy');
 
+        // User Notes
+        Route::get('/users/{user}/notes', [UserNoteController::class, 'index'])->name('users.notes.index');
+        Route::post('/users/{user}/notes', [UserNoteController::class, 'store'])->name('users.notes.store');
+        Route::delete('/users/{user}/notes/{note}', [UserNoteController::class, 'destroy'])->name('users.notes.destroy');
+
         // Workspace Management
         Route::get('/workspaces', [App\Http\Controllers\Admin\WorkspaceController::class, 'index'])->name('workspaces.index');
         Route::post('/workspaces/{workspace}/suspend', [App\Http\Controllers\Admin\WorkspaceController::class, 'suspend'])->name('workspaces.suspend');
@@ -303,6 +338,7 @@ Route::middleware(['auth', 'superadmin'])->prefix('admin')->name('admin.')->grou
 
         // Audit Logs
         Route::get('/audit-logs', [AuditLogController::class, 'index'])->name('audit-logs.index');
+        Route::get('/audit-logs/export', [AuditLogController::class, 'export'])->name('audit-logs.export');
         Route::get('/impersonation-logs', [ImpersonationLogController::class, 'index'])->name('impersonation-logs.index');
 
         // Broadcasts
@@ -381,6 +417,7 @@ Route::middleware(['auth', 'superadmin'])->prefix('admin')->name('admin.')->grou
 
         // Revenue Analytics
         Route::get('/revenue-analytics', [RevenueAnalyticsController::class, 'index'])->name('revenue-analytics.index');
+        Route::get('/revenue-analytics/export', [RevenueAnalyticsController::class, 'export'])->name('revenue-analytics.export');
 
         // Notification Analytics
         Route::get('/notification-analytics', [NotificationAnalyticsController::class, 'index'])->name('notification-analytics.index');

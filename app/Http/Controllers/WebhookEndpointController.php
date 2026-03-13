@@ -87,6 +87,20 @@ class WebhookEndpointController extends Controller
     }
 
     /**
+     * Display the webhook signature verification guide.
+     */
+    public function verificationGuide(Request $request, Workspace $workspace): Response
+    {
+        Gate::authorize('viewAny', [WebhookEndpoint::class, $workspace]);
+
+        return Inertia::render('workspaces/webhooks/verification-guide', [
+            'workspace' => $workspace,
+            'signatureHeader' => config('webhook-server.signature_header_name', 'Signature'),
+            'algorithm' => 'sha256',
+        ]);
+    }
+
+    /**
      * Dispatch a test string event via the spatie/laravel-webhook-server.
      */
     public function ping(Workspace $workspace, WebhookEndpoint $webhookEndpoint): RedirectResponse

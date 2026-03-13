@@ -6,17 +6,37 @@ use App\Http\Controllers\Controller;
 use App\Models\Announcement;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class AnnouncementController extends Controller
 {
     /**
-     * Display all announcements.
+     * Display all announcements, optionally filtered by computed status.
      */
-    public function index(): Response
+    public function index(Request $request): Response
     {
-        $announcements = Announcement::latest()
+        $status = $request->input('status', 'all');
+        $now = Carbon::now();
+
+        $query = Announcement::latest();
+
+        match ($status) {
+            'live' => $query
+                ->where('is_active', true)
+                ->where(fn ($q) => $q->whereNull('starts_at')->orWhere('starts_at', '<=', $now))
+                ->where(fn ($q) => $q->whereNull('ends_at')->orWhere('ends_at', '>=', $now)),
+            'scheduled' => $query
+                ->where('is_active', true)
+                ->whereNotNull('starts_at')
+                ->where('starts_at', '>', $now),
+            'expired' => $query->whereNotNull('ends_at')->where('ends_at', '<', $now),
+            'inactive' => $query->where('is_active', false),
+            default => null,
+        };
+
+        $announcements = $query
             ->paginate(15)
             ->through(fn (Announcement $a) => [
                 'id' => $a->id,
@@ -28,11 +48,36 @@ class AnnouncementController extends Controller
                 'starts_at' => $a->starts_at?->toISOString(),
                 'ends_at' => $a->ends_at?->toISOString(),
                 'created_at' => $a->created_at?->toISOString(),
-            ]);
+                'status' => $this->computeStatus($a, $now),
+            ])
+            ->withQueryString();
 
         return Inertia::render('admin/announcements', [
             'announcements' => $announcements,
+            'filter' => $status,
         ]);
+    }
+
+    /**
+     * Compute a human-readable status for an announcement.
+     *
+     * @return 'live'|'scheduled'|'expired'|'inactive'
+     */
+    private function computeStatus(Announcement $a, Carbon $now): string
+    {
+        if (! $a->is_active) {
+            return 'inactive';
+        }
+
+        if ($a->ends_at !== null && $a->ends_at->lt($now)) {
+            return 'expired';
+        }
+
+        if ($a->starts_at !== null && $a->starts_at->gt($now)) {
+            return 'scheduled';
+        }
+
+        return 'live';
     }
 
     /**

@@ -43,3 +43,32 @@ it('supports search and filter query params', function () {
             ->where('filters.log_name', 'default')
         );
 });
+
+it('superadmin can export audit logs as csv', function () {
+    $admin = User::factory()->create(['is_superadmin' => true]);
+
+    activity()->log('Test export entry');
+
+    $this->actingAs($admin)
+        ->get('/admin/audit-logs/export')
+        ->assertOk()
+        ->assertHeader('Content-Type', 'text/csv; charset=UTF-8');
+});
+
+it('csv export contains audit log headers', function () {
+    $admin = User::factory()->create(['is_superadmin' => true]);
+
+    $response = $this->actingAs($admin)->get('/admin/audit-logs/export');
+
+    $response->assertOk();
+    expect($response->streamedContent())->toContain('ID')
+        ->and($response->streamedContent())->toContain('Description')
+        ->and($response->streamedContent())->toContain('Event')
+        ->and($response->streamedContent())->toContain('Causer');
+});
+
+it('non-superadmin cannot export audit logs', function () {
+    $user = User::factory()->create(['is_superadmin' => false]);
+
+    $this->actingAs($user)->get('/admin/audit-logs/export')->assertForbidden();
+});

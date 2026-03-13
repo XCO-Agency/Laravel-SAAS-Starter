@@ -9,7 +9,7 @@ import { show } from '@/routes/two-factor';
 import { edit as editPassword } from '@/routes/user-password';
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { BarChart3, Bell, Cookie, FileUp, Fingerprint, Activity, History, Lock, Monitor, Paintbrush, ShieldCheck, Ticket, TrendingUp, User } from 'lucide-react';
+import { Activity, BarChart3, Bell, Cookie, FileUp, Fingerprint, History, Link2, Lock, Monitor, Paintbrush, ShieldAlert, ShieldCheck, Ticket, TrendingUp, User } from 'lucide-react';
 import { type PropsWithChildren, useMemo } from 'react';
 import { type SharedData, type Workspace } from '@/types';
 
@@ -61,6 +61,11 @@ const getNavSections = (t: (key: string, fallback: string) => string, workspace?
                 title: t('navigation.security', 'Security'),
                 href: '/settings/workspace-security',
                 icon: null,
+            },
+            {
+                title: t('navigation.danger_zone', 'Danger Zone'),
+                href: '/settings/workspace-danger-zone',
+                icon: ShieldAlert,
             },
             {
                 title: t('navigation.activity', 'Activity'),
@@ -121,6 +126,11 @@ const getNavSections = (t: (key: string, fallback: string) => string, workspace?
                 title: t('navigation.login_history', 'Login History'),
                 href: '/settings/login-history',
                 icon: History,
+            },
+            {
+                title: t('navigation.connected_accounts', 'Connected Accounts'),
+                href: '/settings/connected-accounts',
+                icon: Link2,
             },
             {
                 title: t('navigation.support_tickets', 'Support Tickets'),

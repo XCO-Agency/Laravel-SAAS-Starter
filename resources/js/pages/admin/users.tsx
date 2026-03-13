@@ -5,6 +5,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+} from '@/components/ui/dialog';
+import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
@@ -16,6 +22,7 @@ import {
     CheckCircle,
     Download,
     KeyRound,
+    MessageSquare,
     MonitorSmartphone,
     MoreHorizontal,
     RotateCcw,
@@ -27,7 +34,125 @@ import {
     Users,
     XCircle,
 } from 'lucide-react';
-import { useState, type FormEvent } from 'react';
+import { useEffect, useState, type FormEvent } from 'react';
+
+interface UserNote {
+    id: number;
+    note: string;
+    admin: { id: number; name: string } | null;
+    created_at: string;
+}
+
+function UserNotesDialog({ userId, userName, open, onClose }: {
+    userId: number;
+    userName: string;
+    open: boolean;
+    onClose: () => void;
+}) {
+    const [notes, setNotes] = useState<UserNote[]>([]);
+    const [newNote, setNewNote] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [submitting, setSubmitting] = useState(false);
+
+    useEffect(() => {
+        if (!open) {
+            return;
+        }
+        setLoading(true);
+        fetch(`/admin/users/${userId}/notes`, {
+            headers: { Accept: 'application/json' },
+        })
+            .then(r => r.json())
+            .then(data => setNotes(data.notes ?? []))
+            .finally(() => setLoading(false));
+    }, [open, userId]);
+
+    const submitNote = async (e: FormEvent) => {
+        e.preventDefault();
+        if (!newNote.trim()) {
+            return;
+        }
+        setSubmitting(true);
+        const csrf = document.querySelector<HTMLMetaElement>('meta[name="csrf-token"]')?.content ?? '';
+        const res = await fetch(`/admin/users/${userId}/notes`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+                'X-CSRF-TOKEN': csrf,
+            },
+            body: JSON.stringify({ note: newNote.trim() }),
+        });
+        if (res.ok) {
+            const data = await res.json();
+            setNotes(prev => [data.note, ...prev]);
+            setNewNote('');
+        }
+        setSubmitting(false);
+    };
+
+    const deleteNote = async (noteId: number) => {
+        if (!confirm('Delete this note?')) {
+            return;
+        }
+        const csrf = document.querySelector<HTMLMetaElement>('meta[name="csrf-token"]')?.content ?? '';
+        const res = await fetch(`/admin/users/${userId}/notes/${noteId}`, {
+            method: 'DELETE',
+            headers: { Accept: 'application/json', 'X-CSRF-TOKEN': csrf },
+        });
+        if (res.ok) {
+            setNotes(prev => prev.filter(n => n.id !== noteId));
+        }
+    };
+
+    return (
+        <Dialog open={open} onOpenChange={v => !v && onClose()}>
+            <DialogContent className="max-w-lg">
+                <DialogHeader>
+                    <DialogTitle className="flex items-center gap-2">
+                        <MessageSquare className="h-4 w-4" />
+                        Notes — {userName}
+                    </DialogTitle>
+                </DialogHeader>
+                <form onSubmit={submitNote} className="flex gap-2">
+                    <Input
+                        placeholder="Add a private note..."
+                        value={newNote}
+                        onChange={e => setNewNote(e.target.value)}
+                        disabled={submitting}
+                        className="flex-1"
+                    />
+                    <Button type="submit" size="sm" disabled={submitting || !newNote.trim()}>
+                        {submitting ? 'Saving...' : 'Add'}
+                    </Button>
+                </form>
+                <div className="max-h-80 overflow-y-auto space-y-3">
+                    {loading ? (
+                        <p className="text-sm text-muted-foreground text-center py-4">Loading notes...</p>
+                    ) : notes.length === 0 ? (
+                        <p className="text-sm text-muted-foreground text-center py-4">No notes yet.</p>
+                    ) : (
+                        notes.map(note => (
+                            <div key={note.id} className="rounded-lg border bg-muted/30 p-3">
+                                <p className="text-sm">{note.note}</p>
+                                <div className="mt-1.5 flex items-center justify-between text-xs text-muted-foreground">
+                                    <span>{note.admin?.name ?? 'Unknown'} · {new Date(note.created_at).toLocaleDateString()}</span>
+                                    <button
+                                        type="button"
+                                        onClick={() => deleteNote(note.id)}
+                                        className="text-destructive hover:underline"
+                                    >
+                                        Delete
+                                    </button>
+                                </div>
+                            </div>
+                        ))
+                    )}
+                </div>
+            </DialogContent>
+        </Dialog>
+    );
+}
 
 interface PaginatedUser {
     id: number;
@@ -60,6 +185,7 @@ interface AdminUsersProps {
 export default function AdminUsers({ users, filters }: AdminUsersProps) {
     const [search, setSearch] = useState(filters.search || '');
     const [selectedIds, setSelectedIds] = useState<number[]>([]);
+    const [notesTarget, setNotesTarget] = useState<{ id: number; name: string } | null>(null);
 
     const handleSearch = (e: FormEvent) => {
         e.preventDefault();
@@ -314,6 +440,12 @@ export default function AdminUsers({ users, filters }: AdminUsersProps) {
                                                             <KeyRound className="mr-2 h-4 w-4" />
                                                             Manage API Tokens
                                                         </DropdownMenuItem>
+                                                        <DropdownMenuItem
+                                                            onClick={() => setNotesTarget({ id: user.id, name: user.name })}
+                                                        >
+                                                            <MessageSquare className="mr-2 h-4 w-4" />
+                                                            View Notes
+                                                        </DropdownMenuItem>
                                                         <DropdownMenuSeparator />
                                                         <DropdownMenuItem
                                                             className="text-destructive"
@@ -349,6 +481,14 @@ export default function AdminUsers({ users, filters }: AdminUsersProps) {
                     </div>
                 )}
             </div>
+            {notesTarget && (
+                <UserNotesDialog
+                    userId={notesTarget.id}
+                    userName={notesTarget.name}
+                    open={!!notesTarget}
+                    onClose={() => setNotesTarget(null)}
+                />
+            )}
         </AdminLayout>
     );
 }

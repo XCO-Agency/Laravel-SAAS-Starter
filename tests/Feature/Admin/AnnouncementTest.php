@@ -95,6 +95,150 @@ it('validates required fields when creating announcement', function () {
         ->assertSessionHasErrors(['title', 'body', 'type']);
 });
 
+it('includes filter prop in index response', function () {
+    $admin = User::factory()->create(['is_superadmin' => true]);
+
+    $this->actingAs($admin)
+        ->get('/admin/announcements?status=live')
+        ->assertSuccessful()
+        ->assertInertia(fn (AssertableInertia $page) => $page
+            ->where('filter', 'live')
+        );
+});
+
+it('returns computed status field for each announcement', function () {
+    $admin = User::factory()->create(['is_superadmin' => true]);
+
+    Announcement::create([
+        'title' => 'Live Banner',
+        'body' => 'Currently live',
+        'type' => 'info',
+        'is_active' => true,
+        'is_dismissible' => true,
+    ]);
+
+    $this->actingAs($admin)
+        ->get('/admin/announcements')
+        ->assertSuccessful()
+        ->assertInertia(fn (AssertableInertia $page) => $page
+            ->has('announcements.data.0.status')
+        );
+});
+
+it('filters announcements by scheduled status', function () {
+    $admin = User::factory()->create(['is_superadmin' => true]);
+
+    Announcement::create([
+        'title' => 'Future Banner',
+        'body' => 'Starts tomorrow',
+        'type' => 'info',
+        'is_active' => true,
+        'is_dismissible' => true,
+        'starts_at' => now()->addDay(),
+    ]);
+
+    Announcement::create([
+        'title' => 'Live Now',
+        'body' => 'Already active',
+        'type' => 'info',
+        'is_active' => true,
+        'is_dismissible' => true,
+    ]);
+
+    $this->actingAs($admin)
+        ->get('/admin/announcements?status=scheduled')
+        ->assertSuccessful()
+        ->assertInertia(fn (AssertableInertia $page) => $page
+            ->has('announcements.data', 1)
+            ->where('announcements.data.0.title', 'Future Banner')
+        );
+});
+
+it('filters announcements by expired status', function () {
+    $admin = User::factory()->create(['is_superadmin' => true]);
+
+    Announcement::create([
+        'title' => 'Old Banner',
+        'body' => 'Already ended',
+        'type' => 'info',
+        'is_active' => true,
+        'is_dismissible' => true,
+        'ends_at' => now()->subDay(),
+    ]);
+
+    Announcement::create([
+        'title' => 'Active Banner',
+        'body' => 'Still running',
+        'type' => 'info',
+        'is_active' => true,
+        'is_dismissible' => true,
+    ]);
+
+    $this->actingAs($admin)
+        ->get('/admin/announcements?status=expired')
+        ->assertSuccessful()
+        ->assertInertia(fn (AssertableInertia $page) => $page
+            ->has('announcements.data', 1)
+            ->where('announcements.data.0.title', 'Old Banner')
+        );
+});
+
+it('computes live status for active announcement with no dates', function () {
+    $admin = User::factory()->create(['is_superadmin' => true]);
+
+    Announcement::create([
+        'title' => 'Always On',
+        'body' => 'No schedule',
+        'type' => 'info',
+        'is_active' => true,
+        'is_dismissible' => true,
+    ]);
+
+    $this->actingAs($admin)
+        ->get('/admin/announcements')
+        ->assertInertia(fn (AssertableInertia $page) => $page
+            ->where('announcements.data.0.status', 'live')
+        );
+});
+
+it('computes scheduled status for future active announcement', function () {
+    $admin = User::factory()->create(['is_superadmin' => true]);
+
+    Announcement::create([
+        'title' => 'Future',
+        'body' => 'Not yet',
+        'type' => 'info',
+        'is_active' => true,
+        'is_dismissible' => true,
+        'starts_at' => now()->addDays(2),
+    ]);
+
+    $this->actingAs($admin)
+        ->get('/admin/announcements')
+        ->assertInertia(fn (AssertableInertia $page) => $page
+            ->where('announcements.data.0.status', 'scheduled')
+        );
+});
+
+it('computes expired status for past ended announcement', function () {
+    $admin = User::factory()->create(['is_superadmin' => true]);
+
+    Announcement::create([
+        'title' => 'Done',
+        'body' => 'Already ended',
+        'type' => 'info',
+        'is_active' => true,
+        'is_dismissible' => true,
+        'ends_at' => now()->subDay(),
+    ]);
+
+    $this->actingAs($admin)
+        ->get('/admin/announcements')
+        ->assertInertia(fn (AssertableInertia $page) => $page
+            ->where('announcements.data.0.status', 'expired')
+        );
+});
+
 it('shares active announcement globally via Inertia', function () {
     Announcement::create([
         'title' => 'Global Banner',

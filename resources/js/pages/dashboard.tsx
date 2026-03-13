@@ -11,6 +11,8 @@ import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import { OnboardingChecklist } from '@/components/onboarding-checklist';
 import { ProductTour } from '@/components/product-tour';
+import { WorkspaceActivityFeed } from '@/components/workspace-activity-feed';
+import { WorkspaceRetentionWidget } from '@/components/workspace-retention-widget';
 import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
 import {
@@ -242,6 +244,12 @@ export default function Dashboard() {
                             </p>
                         </CardContent>
                     </Card>
+                </div>
+
+                {/* Activity Feed & Retention */}
+                <div className="grid gap-4 lg:grid-cols-2">
+                    <WorkspaceActivityFeed />
+                    <WorkspaceRetentionWidget />
                 </div>
 
                 {/* Quick Actions */}

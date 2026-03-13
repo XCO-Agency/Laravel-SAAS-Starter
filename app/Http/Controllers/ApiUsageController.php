@@ -128,4 +128,52 @@ class ApiUsageController extends Controller
             'period' => (string) $periodDays,
         ]);
     }
+
+    /**
+     * Display paginated raw request logs for the current workspace.
+     */
+    public function logs(Request $request): Response
+    {
+        $user = $request->user();
+        $workspace = $user->currentWorkspace;
+
+        Gate::authorize('update', $workspace);
+
+        $method = $request->input('method');
+        $status = $request->input('status');
+        $path = $request->input('path');
+
+        $query = ApiRequestLog::where('workspace_id', $workspace->id)
+            ->orderByDesc('requested_at')
+            ->orderByDesc('id');
+
+        if ($method && in_array($method, ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])) {
+            $query->where('method', $method);
+        }
+
+        if ($status) {
+            match ($status) {
+                '2xx' => $query->whereBetween('status_code', [200, 299]),
+                '3xx' => $query->whereBetween('status_code', [300, 399]),
+                '4xx' => $query->whereBetween('status_code', [400, 499]),
+                '5xx' => $query->where('status_code', '>=', 500),
+                default => null,
+            };
+        }
+
+        if ($path) {
+            $query->where('path', 'like', '%'.ltrim($path, '/').'%');
+        }
+
+        $logs = $query->paginate(15)->withQueryString();
+
+        return Inertia::render('workspaces/api-usage/logs', [
+            'logs' => $logs,
+            'filters' => [
+                'method' => $method,
+                'status' => $status,
+                'path' => $path,
+            ],
+        ]);
+    }
 }

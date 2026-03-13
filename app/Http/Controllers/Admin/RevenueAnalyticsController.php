@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Inertia\Response;
 use Laravel\Cashier\Subscription;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class RevenueAnalyticsController extends Controller
 {
@@ -160,6 +161,87 @@ class RevenueAnalyticsController extends Controller
             'dailyNewSubs' => $dailyNewSubs,
             'revenueByPlan' => $revenueByPlan,
         ]);
+    }
+
+    /**
+     * Export subscription revenue data as a CSV download.
+     */
+    public function export(): StreamedResponse
+    {
+        $plans = config('billing.plans', []);
+        $priceToplan = $this->buildPriceMap($plans);
+        $priceToPlanPrice = $this->buildPriceAmountMap($plans);
+
+        $subscriptions = Subscription::query()
+            ->with('owner')
+            ->orderByDesc('created_at')
+            ->get();
+
+        $filename = 'revenue-export-'.now()->format('Y-m-d').'.csv';
+
+        return response()->streamDownload(function () use ($subscriptions, $priceToplan, $priceToPlanPrice) {
+            $handle = fopen('php://output', 'w');
+
+            fputcsv($handle, [
+                'Workspace ID',
+                'Workspace Name',
+                'Plan',
+                'Billing Interval',
+                'Status',
+                'Estimated MRR ($)',
+                'Quantity',
+                'Trial Ends At',
+                'Ends At',
+                'Started At',
+            ]);
+
+            foreach ($subscriptions as $sub) {
+                $planLabel = $priceToplan[$sub->stripe_price] ?? 'Unknown';
+                $interval = str_contains(strtolower($planLabel), 'yearly') ? 'Yearly' : 'Monthly';
+                $monthlyAmount = $priceToPlanPrice[$sub->stripe_price] ?? 0;
+                $quantity = max(1, (int) $sub->quantity);
+
+                fputcsv($handle, [
+                    $sub->billable_id,
+                    $sub->owner?->name ?? 'N/A',
+                    $planLabel,
+                    $interval,
+                    $sub->stripe_status,
+                    number_format($monthlyAmount * $quantity, 2),
+                    $quantity,
+                    $sub->trial_ends_at?->toDateString(),
+                    $sub->ends_at?->toDateString(),
+                    $sub->created_at?->toDateTimeString(),
+                ]);
+            }
+
+            fclose($handle);
+        }, $filename, [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="'.$filename.'"',
+        ]);
+    }
+
+    /**
+     * Build a map of stripe_price_id => estimated monthly amount.
+     *
+     * @param  array<string, array<string, mixed>>  $plans
+     * @return array<string, float>
+     */
+    private function buildPriceAmountMap(array $plans): array
+    {
+        $map = [];
+        foreach ($plans as $plan) {
+            foreach (['monthly', 'yearly'] as $interval) {
+                $priceId = $plan['stripe_price_id'][$interval] ?? null;
+                if ($priceId) {
+                    $raw = $plan['price'][$interval] ?? 0;
+                    $map[$priceId] = $interval === 'yearly' ? round($raw / 12, 2) : (float) $raw;
+                }
+            }
+        }
+
+        return $map;
     }
 
     /**

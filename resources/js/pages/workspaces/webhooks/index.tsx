@@ -13,7 +13,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Spinner } from '@/components/ui/spinner';
 import InputError from '@/components/input-error';
 import { formatDistanceToNow } from 'date-fns';
-import { Trash2, Activity, Plus } from 'lucide-react';
+import { Trash2, Activity, Plus, Shield } from 'lucide-react';
 
 interface WebhookEndpoint {
     id: number;
@@ -75,6 +75,10 @@ export default function WorkspaceWebhooks({ workspace, endpoints }: WebhookLogsP
             >
                 <div className="space-y-6">
                     <div className="flex justify-end gap-2">
+                        <Button variant="outline" onClick={() => router.visit(`/workspaces/${workspace.id}/webhooks/verification-guide`)}>
+                            <Shield className="mr-2 h-4 w-4" />
+                            {t('workspace.webhooks.verification_guide', 'Verification Guide')}
+                        </Button>
                         <Button variant="secondary" onClick={() => router.visit(`/workspaces/${workspace.id}/webhooks/logs`)}>
                             <Activity className="mr-2 h-4 w-4" />
                             {t('workspace.webhooks.view_logs', 'Delivery Logs')}

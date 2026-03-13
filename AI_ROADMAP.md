@@ -23,7 +23,39 @@ The AI agent is now continually managing and executing the roadmap autonomously.
 - **Stack**: Laravel 12, Inertia.js v2, React 19, Tailwind CSS v4, Stripe Cashier, Fortify.
 - **Completed Features**: Auth, 2FA, Workspaces, Teams, Stripe Billing, i18n, Dark Mode, Super Admin Panel, Feature Flags (Pennant), Announcements, Audit Logs, Command Palette.
 
-## 🚀 Active Sprint 27: Enterprise & Growth Hardening
+## 🚀 Active Sprint 30: Engagement & Observability
+
+- [x] **Task 123**: In-App Changelog Widget — `changelog_read_at` on users, `ChangelogWidgetController` (index + mark-read), `ChangelogWidget` popover component with unread badge, mounted in app header. ✅ (9 tests, 20 assertions)
+- [x] **Task 124**: Workspace Activity Feed — `WorkspaceActivityController::feed()` at `GET /workspace-activity-feed` returns last 5 workspace activities as JSON, `WorkspaceActivityFeed` card widget mounted on dashboard with loading skeleton and empty state. ✅ (8 tests, 25 assertions)
+- [x] **Task 125**: Admin Revenue Export CSV — `RevenueAnalyticsController::export()` at `GET /admin/revenue-analytics/export` streams CSV with workspace name, plan, billing interval, status, MRR, quantity, dates. Export CSV button added to revenue analytics page. ✅ (7 tests, 17 assertions)
+- [x] **Task 126**: Webhook Signature Verification Guide — `WebhookEndpointController::verificationGuide()` at `GET /workspaces/{workspace}/webhooks/verification-guide`, Inertia page with step-by-step explanation, PHP/Node.js/Python code samples with copy buttons, link from webhooks index. ✅ (6 tests, 41 assertions)
+- [x] **Task 127**: User Profile Completeness Score — `User::profileCompletenessScore()` checks avatar, bio, non-UTC timezone, 2FA (4 checks × 25 pts each), shared as `auth.user.profile_completeness` via Inertia middleware, progress bar card on profile settings page when < 100%. ✅ (8 tests, 29 assertions)
+
+## 🚀 Active Sprint 31: Retention, Insights & Developer Tools
+
+- [x] **Task 128**: Workspace Retention Insights Widget — `WorkspaceRetentionController::index()` at `GET /workspace-retention-insights`, returns total_members/active_last_30_days/retention_rate JSON, `WorkspaceRetentionWidget` card with progress bar and color-coded rate, placed alongside Activity Feed on dashboard in a 2-column grid. ✅ (8 tests, 19 assertions)
+- [x] **Task 129**: API Request Log Viewer — `ApiUsageController::logs()` at `GET /workspaces/api-usage/logs`, paginated (15/page) Inertia page with method/status-group/path filters, color-coded method badges and status codes, throttled indicator, "View Request Logs" button added to api-usage dashboard. ✅ (10 tests, 112 assertions)
+- [x] **Task 130**: Workspace Danger Zone — `WorkspaceController::dangerZone()` + `leave()`, `GET /settings/workspace-danger-zone` page with delete workspace (owners, name-confirm guard), leave workspace (non-owners, confirm step), transfer ownership link, personal workspace notice. "Danger Zone" added to settings sidebar. ✅ (10 tests, 52 assertions)
+- [x] **Task 131**: Global Search (Admin) — `AdminSearchController::search()` at `GET /admin/search?q=`, returns users (name/email match), workspaces (name/slug match), subscriptions (owner/status/price match), max 5 per category. `AdminSearchBar` component with debounce + click-outside dismiss mounted in admin sidebar. ✅ (10 tests, 24 assertions)
+- [x] **Task 132**: Notification Digest Preview Command — `app:preview-weekly-digest {workspace}` Artisan command, accepts workspace ID or slug, prints subject, greeting, email body lines, action button, and stats summary (members, delta, activity count) to terminal without sending. ✅ (6 tests, 12 assertions)
+
+## 🏁 Completed Sprint 29: User Trust & Admin Control
+
+- [x] **Task 118**: Connected Social Accounts Settings — `ConnectedAccountController` with `index()` / `destroy()`, nullable `password` migration, provider cards (GitHub/Google) with connect/disconnect UI, safety guard preventing disconnect of last login method, settings nav entry. ✅ (9 tests, 60 assertions)
+- [x] **Task 119**: Admin User Notes — `user_notes` table + `UserNote` model, `UserNoteController` (index/store/destroy), notes dialog in admin users page with inline fetch, add/delete UI. ✅ (9 tests, 22 assertions)
+- [x] **Task 120**: Workspace Slug Edit — dedicated slug edit tests, slug normalisation via `Str::slug()`, uniqueness guard, member permission check, warning banner in settings UI when slug changes. ✅ (7 tests, 24 assertions)
+- [x] **Task 121**: API Key Expiry Alerts — `ApiKeyExpiryNotification` (security category, email+in-app), `app:send-api-key-expiry-alerts` command with 1/3/7-day warning thresholds + `--dry-run`, scheduled daily at 08:00 UTC. ✅ (8 tests, 16 assertions)
+- [x] **Task 122**: Workspace Member CSV Export — `TeamController::exportMembers()` at `GET /team/export-members`, CSV columns (ID, Name, Email, Role, Timezone, Joined At), admin/owner-only gate, Export CSV button in team page. ✅ (7 tests, 18 assertions)
+
+## 🏁 Completed Sprint 28: Platform Polish & Developer Experience
+
+- [x] **Task 113**: Webhook Log Redelivery
+- [x] **Task 114**: Audit Log CSV Export
+- [x] **Task 115**: Workspace Plan Usage Alerts
+- [x] **Task 116**: Announcement Scheduling
+- [x] **Task 117**: Full Notification History Page
+
+## 🏁 Completed Sprint 27: Enterprise & Growth Hardening
 
 - [x] **Task 108**: Workspace Email Domain Restriction — `allowed_email_domains` JSON column, `Workspace::isEmailDomainAllowed()` helper, enforcement on invitation acceptance and invite-link joins, domain restriction card in security settings UI. ✅ (11 tests, 18 assertions)
 - [x] **Task 109**: Weekly Workspace Activity Digest Email — `WeeklyWorkspaceDigestNotification` with team category + channel preference enforcement, `app:send-weekly-digests` command scheduled Monday 08:00 UTC with `--dry-run` support. ✅ (7 tests, 14 assertions)
@@ -73,6 +105,20 @@ The AI agent is now continually managing and executing the roadmap autonomously.
 - **Sprint 12**: Enterprise Mechanics (Seat-Based Billing, Data Retention, 2FA Enforcement).
 
 ## 📝 Changelog
+
+- **2026-03-13**: Task 117 (Full Notification History Page): added `?filter=unread` support to notifications page (backend query + Inertia prop), `unreadCount` shared prop, `DELETE /api/notifications/{id}` to remove a single notification, `DELETE /api/notifications/read` to bulk-clear all read notifications; updated notifications page with All/Unread filter tabs, per-notification delete button, and "Clear read" action. *(6 new tests, 58 assertions total)*
+
+- **2026-03-13**: Task 116 (Announcement Scheduling): enhanced `AnnouncementController::index()` with computed `status` field (`live`/`scheduled`/`expired`/`inactive`) per announcement and `?status` filter query param, updated announcements admin page with status filter tabs and colour-coded status badges (Live/Scheduled/Expired/Inactive) replacing the binary Active/Inactive badge. *(7 new tests, 77 assertions total)*
+
+- **2026-03-13**: Task 115 (Workspace Plan Usage Alerts): added `PlanUsageLimitNotification` (mail + database with billing-category/channel-preference guard), `app:send-plan-usage-alerts` Artisan command computing team_members/api_keys/webhooks usage % per workspace against `PlanLimitService` limits, notifying owners when any dimension ≥80%, scheduled daily at 10:00 UTC with `--dry-run` support. *(9 tests, 16 assertions)*
+
+- **2026-03-13**: Task 114 (Audit Log CSV Export): added `export()` action on `AuditLogController` streaming chunked CSV with current filter params applied, Export CSV button on the admin audit-logs page, route at `GET /admin/audit-logs/export`. *(3 tests, 5 assertions)*
+
+- **2026-03-13**: Task 113 (Webhook Log Redelivery): added `retry()` action on `WebhookLogController` re-dispatching `WebhookCall` with original URL/payload/secret, Retry button with spinner on webhook logs page, route at `POST /workspaces/{workspace}/webhooks/logs/{webhookLog}/retry`. *(4 tests, 8 assertions)*
+
+- **2026-03-12**: Task 112 (In-App Product Tour): added `tour_completed_at` timestamp column on users, `TourController::complete()` at `POST /tour/complete`, `use-tour.ts` hook with 4 steps (Dashboard → Team → Billing → Settings), `ProductTour` + `TourTooltip` components with backdrop/highlight ring/progress dots/Next+Skip+Done, mounted on dashboard for users without `tour_completed_at`. *(3 tests, 4 assertions)*
+
+- **2026-03-12**: Task 111 (Public Status Page): added `StatusIncident` model with `scopeRecent()`/`isActive()`/`isResolved()`, public `/status` page with overall status banner (operational/degraded/outage/maintenance), admin CRUD at `/admin/status` with inline create/edit form and auto-resolve logic, admin nav entry, 3 seeded sample incidents. *(17 tests, 114 assertions)*
 
 - **2026-03-12**: Task 110 (Admin Cohort Retention Analysis): added `CohortAnalysisController` with 6-month cohort table (3 retention months per cohort, colour-coded cells, average row), React triangular table page, route and admin nav entry. *(5 tests, 72 assertions)*
 

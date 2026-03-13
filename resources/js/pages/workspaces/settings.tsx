@@ -146,6 +146,12 @@ export default function WorkspaceSettings({
                                         />
                                     </div>
                                     <InputError message={errors.slug} />
+                                    {data.slug !== workspace.slug && (
+                                        <p className="flex items-center gap-1.5 text-xs text-amber-600 dark:text-amber-400">
+                                            <AlertTriangle className="h-3.5 w-3.5 shrink-0" />
+                                            Changing the slug will break any existing links to this workspace.
+                                        </p>
+                                    )}
                                 </div>
 
                                 {isAdmin && (

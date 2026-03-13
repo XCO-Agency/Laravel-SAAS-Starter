@@ -1,4 +1,5 @@
 import { HelpTooltip } from '@/components/help-tooltip';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import AdminLayout from '@/layouts/admin-layout';
 import { Head } from '@inertiajs/react';
@@ -8,6 +9,7 @@ import {
     ArrowUpRight,
     CreditCard,
     DollarSign,
+    Download,
     TrendingUp,
     Users,
 } from 'lucide-react';
@@ -85,14 +87,24 @@ export default function RevenueAnalytics({
         <AdminLayout>
             <Head title="Revenue Analytics" />
             <div className="flex h-full flex-1 flex-col gap-6 rounded-xl border border-sidebar-border/70 p-4 md:p-6 lg:p-8">
-                <div>
-                    <h2 className="flex items-center gap-2 text-2xl font-bold tracking-tight">
-                        <DollarSign className="h-6 w-6" />
-                        Revenue Analytics
-                    </h2>
-                    <p className="text-sm text-muted-foreground">
-                        Monitor subscription metrics, revenue, and billing health across the platform.
-                    </p>
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                    <div>
+                        <h2 className="flex items-center gap-2 text-2xl font-bold tracking-tight">
+                            <DollarSign className="h-6 w-6" />
+                            Revenue Analytics
+                        </h2>
+                        <p className="text-sm text-muted-foreground">
+                            Monitor subscription metrics, revenue, and billing health across the platform.
+                        </p>
+                    </div>
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => { window.location.href = '/admin/revenue-analytics/export'; }}
+                    >
+                        <Download className="mr-2 h-4 w-4" />
+                        Export CSV
+                    </Button>
                 </div>
 
                 {/* Key Metrics */}
