@@ -11,6 +11,7 @@ use App\Models\NotificationDeliveryLog;
 use App\Models\OnboardingStepLog;
 use App\Models\PermissionPreset;
 use App\Models\SeoMetadata;
+use App\Models\StatusIncident;
 use App\Models\User;
 use App\Models\WebhookEndpoint;
 use App\Models\WebhookLog;
@@ -128,7 +129,7 @@ class DatabaseSeeder extends Seeder
 
                 // Set different trial/plan scenarios for demo workspaces
                 match ($index) {
-                    0 => null, // Free plan - no trial
+                    0 => $workspace->update(['allowed_email_domains' => ['acme.com', 'acmecorp.com']]), // Free plan – domain restricted to Acme
                     1 => $workspace->update(['trial_ends_at' => now()->addDays(10)]), // Pro plan with active trial
                     2 => $workspace->update(['trial_ends_at' => now()->addDays(5)]), // Business plan with shorter trial
                     default => $workspace->update(['trial_ends_at' => now()->addDays(14)]), // Others with full trial
@@ -711,6 +712,35 @@ class DatabaseSeeder extends Seeder
                     ['name' => $preset['name']],
                     $preset,
                 );
+            }
+
+            // Seed sample status page incidents
+            $statusIncidents = [
+                [
+                    'title' => 'Elevated API response times',
+                    'message' => 'We are investigating increased latency on API endpoints. Engineers are working on identifying the root cause.',
+                    'status' => 'degraded',
+                    'resolved_at' => now()->subDays(10),
+                    'created_at' => now()->subDays(10)->subHours(2),
+                ],
+                [
+                    'title' => 'Scheduled database maintenance',
+                    'message' => 'Routine database maintenance window from 02:00–04:00 UTC. Expect brief interruptions to write operations.',
+                    'status' => 'operational',
+                    'resolved_at' => now()->subDays(5),
+                    'created_at' => now()->subDays(5)->subHours(3),
+                ],
+                [
+                    'title' => 'Webhook delivery delays',
+                    'message' => 'Some webhook deliveries are being delayed by up to 10 minutes due to a queue backlog. Deliveries are not being lost.',
+                    'status' => 'degraded',
+                    'resolved_at' => null,
+                    'created_at' => now()->subHours(4),
+                ],
+            ];
+
+            foreach ($statusIncidents as $incident) {
+                StatusIncident::create($incident);
             }
         });
     }

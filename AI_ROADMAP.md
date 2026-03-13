@@ -23,7 +23,15 @@ The AI agent is now continually managing and executing the roadmap autonomously.
 - **Stack**: Laravel 12, Inertia.js v2, React 19, Tailwind CSS v4, Stripe Cashier, Fortify.
 - **Completed Features**: Auth, 2FA, Workspaces, Teams, Stripe Billing, i18n, Dark Mode, Super Admin Panel, Feature Flags (Pennant), Announcements, Audit Logs, Command Palette.
 
-## 🚀 Active Sprint 26: Team Role UX Reliability
+## 🚀 Active Sprint 27: Enterprise & Growth Hardening
+
+- [x] **Task 108**: Workspace Email Domain Restriction — `allowed_email_domains` JSON column, `Workspace::isEmailDomainAllowed()` helper, enforcement on invitation acceptance and invite-link joins, domain restriction card in security settings UI. ✅ (11 tests, 18 assertions)
+- [x] **Task 109**: Weekly Workspace Activity Digest Email — `WeeklyWorkspaceDigestNotification` with team category + channel preference enforcement, `app:send-weekly-digests` command scheduled Monday 08:00 UTC with `--dry-run` support. ✅ (7 tests, 14 assertions)
+- [x] **Task 110**: Admin Cohort Retention Analysis — triangular cohort table at `/admin/cohort-analysis` with 6-month history, 3 retention months, colour-coded cells (green/amber/red), average row, admin nav entry. ✅ (5 tests, 72 assertions)
+- [x] **Task 111**: Public Status Page — `StatusIncident` model with `scopeRecent()` / `isActive()` / `isResolved()`, public `/status` page with overall status banner (operational/degraded/outage/maintenance), admin CRUD at `/admin/status` with inline create/edit form and auto-resolve logic, 3 seeded sample incidents. ✅ (17 tests, 114 assertions)
+- [x] **Task 112**: In-App Product Tour — `tour_completed_at` column on users, `TourController::complete()` at `POST /tour/complete`, `use-tour.ts` hook with 4 steps, `ProductTour` + `TourTooltip` components with backdrop, highlight ring, progress dots, Next/Skip/Done, mounted on dashboard for users with `!tour_completed_at`. ✅ (3 tests, 4 assertions)
+
+## 🏁 Completed Sprint 26: Team Role UX Reliability
 
 - [x] **Task 99**: Team Role Action Parity & Viewer Flow Coverage — Replace ambiguous role toggle actions with explicit role transitions in Team UI and validate viewer-role transitions across member updates and invite links. ✅ (4 tests, 20 assertions)
 - [x] **Task 100**: Team Permission Input Guardrails — Enforce allowed granular permission identifiers on team member permission updates and validate accepted/rejected payload paths. ✅ (2 tests, 4 assertions)
@@ -65,6 +73,12 @@ The AI agent is now continually managing and executing the roadmap autonomously.
 - **Sprint 12**: Enterprise Mechanics (Seat-Based Billing, Data Retention, 2FA Enforcement).
 
 ## 📝 Changelog
+
+- **2026-03-12**: Task 110 (Admin Cohort Retention Analysis): added `CohortAnalysisController` with 6-month cohort table (3 retention months per cohort, colour-coded cells, average row), React triangular table page, route and admin nav entry. *(5 tests, 72 assertions)*
+
+- **2026-03-12**: Task 109 (Weekly Workspace Activity Digest): added `WeeklyWorkspaceDigestNotification` (mail + database with team-category/channel-preference guard), `app:send-weekly-digests` Artisan command computing member delta, activity count, and 3 most recent events per workspace, scheduled Monday 08:00 UTC. *(7 tests, 14 assertions)*
+
+- **2026-03-12**: Task 108 (Workspace Email Domain Restriction): added `allowed_email_domains` JSON column to workspaces, `isEmailDomainAllowed()` helper on Workspace model, domain enforcement in InvitationService and WorkspaceInviteLinkController, domain restriction card in workspace security settings UI, Acme Corporation demo workspace seeded with `acme.com` / `acmecorp.com` domains. *(11 tests, 18 assertions)*
 
 - **2026-03-07**: Task 107 (Team Invite-Link Capacity UX Sync): disabled Team invite-link creation action when `canInvite` is false so customers get immediate UI feedback at capacity, and added feature coverage validating `canInvite=false` at seat limit. *(1 test, 1 assertion)*
 

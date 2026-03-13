@@ -20,6 +20,7 @@ class WorkspaceSecurityController extends Controller
         return Inertia::render('settings/workspace-security', [
             'require_two_factor' => (bool) $workspace->require_two_factor,
             'allowed_ips' => $workspace->allowed_ips ?? [],
+            'allowed_email_domains' => $workspace->allowed_email_domains ?? [],
         ]);
     }
 
@@ -31,6 +32,7 @@ class WorkspaceSecurityController extends Controller
         $request->validate([
             'require_two_factor' => ['required', 'boolean'],
             'allowed_ips' => ['nullable', 'string'],
+            'allowed_email_domains' => ['nullable', 'string'],
         ]);
 
         $workspace = $request->user()->currentWorkspace;
@@ -50,9 +52,20 @@ class WorkspaceSecurityController extends Controller
             }
         }
 
+        $domains = [];
+        if ($request->filled('allowed_email_domains')) {
+            $domains = array_filter(array_map('trim', explode(',', $request->allowed_email_domains)));
+            foreach ($domains as $domain) {
+                if (! preg_match('/^[a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?(\.[a-zA-Z]{2,})+$/', $domain)) {
+                    return back()->withErrors(['allowed_email_domains' => 'The domain "'.$domain.'" is invalid.'])->withInput();
+                }
+            }
+        }
+
         $workspace->update([
             'require_two_factor' => $request->boolean('require_two_factor'),
             'allowed_ips' => empty($ips) ? null : array_values($ips),
+            'allowed_email_domains' => empty($domains) ? null : array_values($domains),
         ]);
 
         return back()->with('success', 'Workspace security settings updated.');

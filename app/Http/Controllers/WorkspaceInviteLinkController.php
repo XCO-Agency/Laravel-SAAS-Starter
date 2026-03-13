@@ -110,6 +110,12 @@ class WorkspaceInviteLinkController extends Controller
                 ->with('error', 'This workspace has reached its team member limit.');
         }
 
+        if (! $workspace->isEmailDomainAllowed($user->email)) {
+            return redirect()
+                ->route('invite-links.show', $token)
+                ->with('error', 'Your email domain is not permitted to join this workspace.');
+        }
+
         $workspace->addUser($user, $link->role);
         $link->incrementUses();
         $user->switchWorkspace($workspace);

@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AdminNotificationController;
 use App\Http\Controllers\Admin\AnnouncementController;
 use App\Http\Controllers\Admin\AuditLogController;
 use App\Http\Controllers\Admin\BroadcastController;
+use App\Http\Controllers\Admin\CohortAnalysisController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\FeatureFlagController;
 use App\Http\Controllers\Admin\ImpersonationController;
@@ -19,6 +20,7 @@ use App\Http\Controllers\Admin\RevenueAnalyticsController;
 use App\Http\Controllers\Admin\ScheduledTaskController;
 use App\Http\Controllers\Admin\SecurityController;
 use App\Http\Controllers\Admin\SeoMetadataController;
+use App\Http\Controllers\Admin\StatusIncidentController;
 use App\Http\Controllers\Admin\SystemHealthController;
 use App\Http\Controllers\Admin\TicketController;
 use App\Http\Controllers\Admin\TranslationController;
@@ -41,9 +43,11 @@ use App\Http\Controllers\OnboardingController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\Settings\WorkspaceLogoController;
 use App\Http\Controllers\Settings\WorkspaceSecurityController;
+use App\Http\Controllers\StatusPageController;
 use App\Http\Controllers\StripeWebhookController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\TeamImportController;
+use App\Http\Controllers\TourController;
 use App\Http\Controllers\UsageController;
 use App\Http\Controllers\WebhookEndpointController;
 use App\Http\Controllers\WebhookLogController;
@@ -77,6 +81,9 @@ Route::middleware('guest')->group(function () {
 
 // Public changelog
 Route::get('/changelog', [ChangelogController::class, 'index'])->name('changelog');
+
+// Public status page
+Route::get('/status', [StatusPageController::class, 'index'])->name('status');
 
 // Public invitation acceptance route
 Route::get('/invitations/{token}', [InvitationController::class, 'show'])
@@ -184,6 +191,9 @@ Route::middleware(['auth', 'verified', 'onboarded', 'workspace', 'require2fa', '
     // Onboarding Checklist
     Route::get('/onboarding-checklist', [OnboardingChecklistController::class, 'index'])->name('onboarding-checklist.index');
     Route::post('/onboarding-checklist/dismiss', [OnboardingChecklistController::class, 'dismiss'])->name('onboarding-checklist.dismiss');
+
+    // Product Tour
+    Route::post('/tour/complete', [TourController::class, 'complete'])->name('tour.complete');
 
     // Usage Dashboard
     Route::get('/usage', [UsageController::class, 'index'])->name('usage.index');
@@ -344,6 +354,12 @@ Route::middleware(['auth', 'superadmin'])->prefix('admin')->name('admin.')->grou
         Route::put('/changelog/{changelogEntry}', [App\Http\Controllers\Admin\ChangelogController::class, 'update'])->name('changelog.update');
         Route::delete('/changelog/{changelogEntry}', [App\Http\Controllers\Admin\ChangelogController::class, 'destroy'])->name('changelog.destroy');
 
+        // Status Page Incidents
+        Route::get('/status', [StatusIncidentController::class, 'index'])->name('status.index');
+        Route::post('/status', [StatusIncidentController::class, 'store'])->name('status.store');
+        Route::put('/status/{status}', [StatusIncidentController::class, 'update'])->name('status.update');
+        Route::delete('/status/{status}', [StatusIncidentController::class, 'destroy'])->name('status.destroy');
+
         // Scheduled Tasks
         Route::get('/scheduled-tasks', [ScheduledTaskController::class, 'index'])->name('scheduled-tasks.index');
 
@@ -359,6 +375,9 @@ Route::middleware(['auth', 'superadmin'])->prefix('admin')->name('admin.')->grou
 
         // User Analytics
         Route::get('/user-analytics', [UserAnalyticsController::class, 'index'])->name('user-analytics.index');
+
+        // Cohort Retention Analysis
+        Route::get('/cohort-analysis', [CohortAnalysisController::class, 'index'])->name('cohort-analysis.index');
 
         // Revenue Analytics
         Route::get('/revenue-analytics', [RevenueAnalyticsController::class, 'index'])->name('revenue-analytics.index');

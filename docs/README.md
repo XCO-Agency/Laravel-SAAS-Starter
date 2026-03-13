@@ -51,6 +51,7 @@ This repository contains comprehensive documentation for the architecture, featu
 - [SEO Management](./features/seo-management.md)
 - [Onboarding Checklist](./features/onboarding-checklist.md)
 - [Onboarding Wizard](./features/onboarding-wizard.md)
+- [In-App Product Tour](./features/product-tour.md)
 - [API Authentication](./features/api-authentication.md)
 - [Session Management](./features/session-management.md)
 - [Internationalization (i18n)](./features/internationalization.md)
@@ -65,6 +66,9 @@ This repository contains comprehensive documentation for the architecture, featu
 - [Password Change History](./features/password-change-history.md)
 - [User Timezone & Date Format](./features/user-timezone-date-format.md)
 - [Granular Roles & Permissions](./features/granular-roles-permissions.md)
+- [Workspace Email Domain Restriction](./features/workspace-domain-restriction.md)
+- [Weekly Workspace Activity Digest](./features/weekly-workspace-digest.md)
+- [Admin Cohort Retention Analysis](./features/admin-cohort-analysis.md)
 
 ## Development Directives
 

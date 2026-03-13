@@ -13,20 +13,22 @@ import { Switch } from '@/components/ui/switch';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
 import { Head, useForm, usePage } from '@inertiajs/react';
-import { AlertTriangle, ShieldCheck, ShieldOff } from 'lucide-react';
+import { AlertTriangle, AtSign, ShieldCheck, ShieldOff } from 'lucide-react';
 
 interface WorkspaceSecurityProps {
     require_two_factor: boolean;
     allowed_ips: string[];
+    allowed_email_domains: string[];
 }
 
-export default function WorkspaceSecurity({ require_two_factor, allowed_ips }: WorkspaceSecurityProps) {
+export default function WorkspaceSecurity({ require_two_factor, allowed_ips, allowed_email_domains }: WorkspaceSecurityProps) {
     const { props } = usePage();
     const flash = props.flash as { success?: string } | undefined;
 
     const { data, setData, put, processing, errors } = useForm({
         require_two_factor,
         allowed_ips: allowed_ips ? allowed_ips.join(', ') : '',
+        allowed_email_domains: allowed_email_domains ? allowed_email_domains.join(', ') : '',
     });
 
     const save = () => {
@@ -127,6 +129,44 @@ export default function WorkspaceSecurity({ require_two_factor, allowed_ips }: W
                                 <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-amber-600" />
                                 <p className="text-sm text-amber-700 dark:text-amber-400">
                                     <strong>Warning:</strong> Ensure your current IP address is included, or you will be immediately locked out of this workspace upon saving.
+                                </p>
+                            </div>
+
+                            <Button onClick={save} disabled={processing}>
+                                {processing ? 'Saving…' : 'Save Settings'}
+                            </Button>
+                        </CardContent>
+                    </Card>
+                    {/* Email Domain Restriction Card */}
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className="flex items-center gap-2">
+                                <AtSign className="h-5 w-5 text-violet-500" />
+                                Email Domain Restriction
+                            </CardTitle>
+                            <CardDescription>
+                                Restrict workspace membership to specific email domains (e.g. <code className="rounded bg-muted px-1 py-0.5 text-xs">acme.com</code>). Enter multiple domains separated by commas. Leave empty to allow all domains.
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                            <div className="space-y-2">
+                                <Label htmlFor="allowed_email_domains">Allowed Email Domains</Label>
+                                <textarea
+                                    id="allowed_email_domains"
+                                    className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                    placeholder="e.g., acme.com, corp.example.com"
+                                    value={data.allowed_email_domains}
+                                    onChange={(e) => setData('allowed_email_domains', e.target.value)}
+                                />
+                                {errors.allowed_email_domains && (
+                                    <p className="text-[0.8rem] font-medium text-destructive">{errors.allowed_email_domains}</p>
+                                )}
+                            </div>
+
+                            <div className="flex items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 p-3 dark:border-amber-900 dark:bg-amber-950/30">
+                                <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-amber-600" />
+                                <p className="text-sm text-amber-700 dark:text-amber-400">
+                                    When set, invitations and invite links will be blocked for users whose email does not match an allowed domain.
                                 </p>
                             </div>
 

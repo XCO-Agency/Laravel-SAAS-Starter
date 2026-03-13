@@ -10,6 +10,7 @@ import {
 import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import { OnboardingChecklist } from '@/components/onboarding-checklist';
+import { ProductTour } from '@/components/product-tour';
 import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
 import {
@@ -46,6 +47,7 @@ export default function Dashboard() {
             icon: Users,
             href: '/team',
             color: 'text-blue-500',
+            id: 'nav-team',
         },
         {
             title: t('dashboard.manage_billing_title', 'Manage Billing'),
@@ -53,6 +55,7 @@ export default function Dashboard() {
             icon: CreditCard,
             href: '/billing',
             color: 'text-green-500',
+            id: 'nav-billing',
         },
         {
             title: t('dashboard.workspace_settings', 'Workspace Settings'),
@@ -60,6 +63,7 @@ export default function Dashboard() {
             icon: Settings,
             href: '/workspaces/settings',
             color: 'text-purple-500',
+            id: 'nav-settings',
         },
         {
             title: t('dashboard.create_workspace', 'Create Workspace'),
@@ -67,6 +71,7 @@ export default function Dashboard() {
             icon: Plus,
             href: '/workspaces/create',
             color: 'text-orange-500',
+            id: undefined,
         },
     ];
 
@@ -99,9 +104,12 @@ export default function Dashboard() {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('dashboard.title', 'Dashboard')} />
 
-            <div className="flex h-full flex-1 flex-col gap-6 p-4 lg:p-6">
+            <div id="dashboard-main" className="flex h-full flex-1 flex-col gap-6 p-4 lg:p-6">
                 {/* Onboarding Checklist */}
                 <OnboardingChecklist />
+
+                {/* Product Tour */}
+                {!auth.user?.tour_completed_at && <ProductTour />}
 
                 {/* Welcome Section */}
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -250,6 +258,7 @@ export default function Dashboard() {
                                 <Link
                                     key={action.title}
                                     href={action.href}
+                                    id={action.id}
                                     className="group flex items-start gap-4 rounded-lg border p-4 transition-colors hover:bg-muted/50"
                                 >
                                     <div

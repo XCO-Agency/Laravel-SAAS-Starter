@@ -83,6 +83,7 @@ class HandleInertiaRequests extends Middleware
                     'date_format' => $user->date_format ?? 'Y-m-d',
                     'notification_preferences' => $user->normalizedNotificationPreferences(),
                     'two_factor_confirmed_at' => $user->two_factor_confirmed_at,
+                    'tour_completed_at' => $user->tour_completed_at,
                     'created_at' => $user->created_at,
                 ] : null,
                 'is_impersonating' => $request->session()->has('impersonated_by'),

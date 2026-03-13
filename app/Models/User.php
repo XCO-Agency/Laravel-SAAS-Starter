@@ -55,6 +55,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'date_format',
         'notification_preferences',
         'onboarding_checklist_dismissed_at',
+        'tour_completed_at',
         'password_updated_at',
     ];
 
@@ -94,6 +95,7 @@ class User extends Authenticatable implements MustVerifyEmail
             'onboarded_at' => 'datetime',
             'notification_preferences' => 'array',
             'onboarding_checklist_dismissed_at' => 'datetime',
+            'tour_completed_at' => 'datetime',
             'password_updated_at' => 'datetime',
         ];
     }

@@ -64,6 +64,10 @@ class InvitationService
 
         $workspace = $invitation->workspace;
 
+        if (! $workspace->isEmailDomainAllowed($user->email)) {
+            throw new \InvalidArgumentException('Your email domain is not permitted to join this workspace.');
+        }
+
         // Add user to workspace
         if (! $workspace->hasUser($user)) {
             $workspace->addUser($user, $invitation->role);
