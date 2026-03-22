@@ -8,6 +8,13 @@ import {
     CardTitle,
 } from '@/components/ui/card';
 import { Spinner } from '@/components/ui/spinner';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { useToast } from '@/components/ui/toast';
 import { useTranslations } from '@/hooks/use-translations';
 import http from '@/lib/http';
@@ -24,15 +31,20 @@ import { Head, Link, Deferred } from '@inertiajs/react';
 import { Skeleton } from '@/components/ui/skeleton';
 import {
     AlertCircle,
+    Ban,
     CheckCircle,
+    ChevronDown,
     CreditCard,
     Download,
     ExternalLink,
+    History,
+    Layers,
     Receipt,
     Sparkles,
     Users,
 } from 'lucide-react';
 import { useState } from 'react';
+import CancellationFlow from '@/components/cancellation-flow';
 
 interface Subscription {
     status: string;
@@ -85,10 +97,11 @@ export default function BillingIndex({
     userRole,
 }: BillingIndexProps) {
     const { t } = useTranslations();
-    const isOwner = userRole === 'owner';
+    const isOwner = userRole === 'owner' || userRole === 'admin';
     const currentPlan = plans.find((p) => p.name === workspace.plan);
     const [portalLoading, setPortalLoading] = useState(false);
     const [resumeLoading, setResumeLoading] = useState(false);
+    const [showCancelFlow, setShowCancelFlow] = useState(false);
     const { addToast } = useToast();
 
     const handleResumeSubscription = async () => {
@@ -197,7 +210,7 @@ export default function BillingIndex({
                                                         {t('billing.subscription_ends', 'Your subscription will end on {{date}}', { date: new Date(subscription.ends_at).toLocaleDateString() })}
                                                     </p>
                                                     {subscription.on_grace_period &&
-                                                        isOwner && (
+                                                        (userRole === 'owner' || userRole === 'admin') && (
                                                             <Button
                                                                 variant="outline"
                                                                 size="sm"
@@ -217,34 +230,64 @@ export default function BillingIndex({
                                             )}
                                     </div>
 
-                                    <div className="flex flex-col sm:flex-row gap-3">
-                                        {isOwner && (
-                                            <>
-                                                <Button asChild className="rounded-full px-8 shadow-sm transition-transform active:scale-95">
-                                                    <Link href="/billing/plans">
-                                                        {workspace.plan === 'Free'
-                                                            ? t('billing.upgrade', 'Upgrade Now')
-                                                            : t('billing.change_plan', 'Change Plan')}
-                                                    </Link>
-                                                </Button>
-                                                {subscription && (
-                                                    <Button
-                                                        variant="outline"
-                                                        onClick={handlePortalRedirect}
-                                                        disabled={portalLoading}
-                                                        className="rounded-full shadow-sm"
-                                                    >
-                                                        {portalLoading ? (
-                                                            <Spinner className="mr-2" />
-                                                        ) : (
-                                                            <ExternalLink className="mr-2 h-4 w-4" />
-                                                        )}
-                                                        {t('billing.manage_subscription', 'Manage')}
+                                    {isOwner && (
+                                        <div className="flex flex-wrap items-center gap-2">
+                                            {/* Primary Action */}
+                                            <Button asChild className="rounded-full px-6 shadow-sm transition-transform active:scale-95">
+                                                <Link href="/billing/plans">
+                                                    {workspace.plan === 'Free'
+                                                        ? t('billing.upgrade', 'Upgrade Now')
+                                                        : t('billing.change_plan', 'Change Plan')}
+                                                </Link>
+                                            </Button>
+                                            
+                                            {/* Secondary Actions Dropdown */}
+                                            <DropdownMenu>
+                                                <DropdownMenuTrigger asChild>
+                                                    <Button variant="outline" className="rounded-full gap-1">
+                                                        Actions
+                                                        <ChevronDown className="h-4 w-4" />
                                                     </Button>
-                                                )}
-                                            </>
-                                        )}
-                                    </div>
+                                                </DropdownMenuTrigger>
+                                                <DropdownMenuContent align="end" className="w-48">
+                                                    <DropdownMenuItem asChild>
+                                                        <Link href="/billing/compare" className="flex items-center gap-2 cursor-pointer">
+                                                            <Layers className="h-4 w-4" />
+                                                            Compare Plans
+                                                        </Link>
+                                                    </DropdownMenuItem>
+                                                    <DropdownMenuItem asChild>
+                                                        <Link href="/billing/history" className="flex items-center gap-2 cursor-pointer">
+                                                            <History className="h-4 w-4" />
+                                                            View History
+                                                        </Link>
+                                                    </DropdownMenuItem>
+                                                    {subscription && (
+                                                        <>
+                                                            <DropdownMenuSeparator />
+                                                            <DropdownMenuItem 
+                                                                onClick={handlePortalRedirect}
+                                                                disabled={portalLoading}
+                                                                className="flex items-center gap-2 cursor-pointer"
+                                                            >
+                                                                <ExternalLink className="h-4 w-4" />
+                                                                Manage Subscription
+                                                            </DropdownMenuItem>
+                                                            {!subscription.cancelled && (
+                                                                <DropdownMenuItem 
+                                                                    onClick={() => setShowCancelFlow(true)}
+                                                                    className="flex items-center gap-2 cursor-pointer text-destructive focus:text-destructive"
+                                                                >
+                                                                    <Ban className="h-4 w-4" />
+                                                                    Cancel Subscription
+                                                                </DropdownMenuItem>
+                                                            )}
+                                                        </>
+                                                    )}
+                                                </DropdownMenuContent>
+                                            </DropdownMenu>
+                                        </div>
+                                    )}
                                 </div>
 
                                 {/* Plan Features */}
@@ -369,36 +412,57 @@ export default function BillingIndex({
                                 </div>
                             </CardHeader>
                             <CardContent className="p-6">
-                                <div className="grid gap-8 md:grid-cols-3">
-                                    {usage && Object.entries(usage).map(([key, item]) => (
-                                        <div key={key} className="space-y-3">
-                                            <div className="flex justify-between items-end">
-                                                <span className="text-sm font-bold uppercase tracking-wider text-muted-foreground/70">
-                                                    {item.label}
-                                                </span>
-                                                <span className="text-sm font-mono font-bold">
-                                                    {item.count} / {item.limit === -1 ? '∞' : item.limit}
-                                                </span>
+                                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                                    {usage && Object.entries(usage).map(([key, item]) => {
+                                        const isUnlimited = item.limit === -1 || item.limit === null || item.limit === undefined;
+                                        const percentage = isUnlimited ? 0 : Math.min(100, Math.round((item.count / item.limit) * 100));
+                                        const isOverLimit = !isUnlimited && item.count > item.limit;
+                                        
+                                        return (
+                                            <div key={key} className="space-y-2">
+                                                <div className="flex justify-between items-center">
+                                                    <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                                                        {item.label}
+                                                    </span>
+                                                </div>
+                                                <div className="flex items-baseline gap-1">
+                                                    <span className={cn(
+                                                        "text-2xl font-bold",
+                                                        isOverLimit && "text-destructive"
+                                                    )}>
+                                                        {item.count}
+                                                    </span>
+                                                    <span className="text-sm text-muted-foreground">
+                                                        {isUnlimited ? '' : `/ ${item.limit}`}
+                                                    </span>
+                                                </div>
+                                                {!isUnlimited && (
+                                                    <div className="relative h-2 w-full overflow-hidden rounded-full bg-muted">
+                                                        <div
+                                                            className={cn(
+                                                                "h-full transition-all duration-700 ease-out rounded-full",
+                                                                isOverLimit ? "bg-destructive" :
+                                                                    percentage > 90 ? "bg-destructive/80" :
+                                                                        percentage > 75 ? "bg-orange-500" :
+                                                                            percentage > 50 ? "bg-primary" :
+                                                                                "bg-emerald-500"
+                                                            )}
+                                                            style={{ width: `${Math.min(100, percentage)}%` }}
+                                                        />
+                                                    </div>
+                                                )}
+                                                {!isUnlimited && percentage > 75 && (
+                                                    <p className={cn(
+                                                        "text-[10px] font-medium flex items-center gap-1",
+                                                        percentage > 90 ? "text-destructive" : "text-orange-500"
+                                                    )}>
+                                                        <AlertCircle className="h-3 w-3" />
+                                                        {isOverLimit ? 'Over limit' : `${100 - percentage}% remaining`}
+                                                    </p>
+                                                )}
                                             </div>
-                                            <div className="relative h-4 w-full overflow-hidden rounded-full bg-muted/50 border border-muted-foreground/10">
-                                                <div
-                                                    className={cn(
-                                                        "h-full transition-all duration-1000 ease-out rounded-full",
-                                                        item.percentage > 90 ? "bg-destructive shadow-[0_0_12px_rgba(239,68,68,0.4)]" :
-                                                            item.percentage > 75 ? "bg-orange-500 shadow-[0_0_12px_rgba(249,115,22,0.3)]" :
-                                                                "bg-primary shadow-[0_0_12px_rgba(var(--primary),0.3)]"
-                                                    )}
-                                                    style={{ width: `${item.percentage}%` }}
-                                                />
-                                            </div>
-                                            {item.limit !== -1 && item.percentage > 80 && (
-                                                <p className="text-[10px] font-bold text-destructive flex items-center gap-1 animate-pulse">
-                                                    <AlertCircle className="h-3 w-3" />
-                                                    {100 - item.percentage}% remaining
-                                                </p>
-                                            )}
-                                        </div>
-                                    ))}
+                                        );
+                                    })}
                                 </div>
                             </CardContent>
                         </Card>
@@ -463,6 +527,15 @@ export default function BillingIndex({
                             </Card>
                         )}
                     </Deferred>
+
+                    {/* Cancellation Flow */}
+                    <CancellationFlow
+                        isOpen={showCancelFlow}
+                        onClose={() => setShowCancelFlow(false)}
+                        onCancelled={() => window.location.reload()}
+                        planName={workspace.plan}
+                        endsAt={subscription?.ends_at || null}
+                    />
                 </div>
             </WorkspaceLayout>
         </AppLayout>

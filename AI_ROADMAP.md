@@ -41,6 +41,18 @@ The AI agent is now continually managing and executing the roadmap autonomously.
 - [x] **Task 158**: User Login Methods Summary — `SecuritySummaryController` at `GET /settings/security-summary` returns JSON with password status, 2FA status, connected social accounts, security score (0-100), and recommendations; `SecuritySummaryCard` React component displays on profile settings with visual indicators and quick action links. ✅ (12 tests, 48 assertions)
 - [x] **Task 159**: Session Activity Summary — `SessionSummaryController` at `GET /settings/session-summary` returns session count, current device info, and other sessions summary; `SessionSummaryCard` component on profile settings shows active sessions with "Sign Out All Other Devices" action; integrates with existing `SessionController` revoke functionality. ✅ (8 tests, 24 assertions)
 
+## 🚀 Active Sprint 38: Customer-Facing Billing Experience
+
+- [x] **Task 163**: Plan Comparison Table — Created `/billing/compare` page with side-by-side feature comparison for all plans (Free, Pro, Business). Includes monthly/yearly billing toggle with 20% savings indicator. Shows team member limits, workspace limits, storage, and feature matrix. Highlights current plan. FAQ section with common questions. "Compare Plans" button added to billing index page. 6 Pest tests with 61 assertions. ✅
+- [x] **Task 164**: Enhanced Billing History — Created `/billing/history` page with full invoice history. Features date filtering (30/90/365 days), search by date/amount/invoice ID, stats cards showing total invoices, filtered amount, and last invoice date. Clean list view with PDF download buttons. "View History" link from billing page. 5 Pest tests with 46 assertions. ✅
+- [x] **Task 165**: Self-Service Cancellation with Retention — Created `CancellationFlow` component with 4-step process: 1) Reason selection with feedback, 2) Contextual retention offer based on reason (discount, downgrade suggestion, feature roadmap), 3) Final confirmation with impact details, 4) Success state. Integrated into billing page with "Cancel Subscription" button. Collects cancellation analytics. 5 Pest tests with 6 assertions. ✅
+
+## 🏁 Completed Sprint 37: Settings Architecture & UX Refinement
+
+- [x] **Task 160**: Profile Settings Reorganization — Reorganized profile settings from 11 flat items into 4 logical sections (Profile, Security, Privacy, Support). Merged Password + 2FA into combined "Authentication" page. Moved Appearance (theme toggle) into General/Profile page. Renamed "Privacy & Cookies" to "Cookies". Moved Security Summary and Session Summary cards from Profile to Authentication page for better logical grouping. Updated all layouts (profile-layout.tsx, workspace-layout.tsx) with new navigation structure. Added redirects for backward compatibility. ✅
+- [x] **Task 161**: Workspace Settings Menu Enhancement — Added "Workspace Settings" link to main sidebar for quick access. Improved workspace settings layout organization with consistent icons for all menu items. Added test users (superadmin, admin, demo) as admins to "Startup Hub" workspace in seeder for full feature testing. ✅
+- [x] **Task 162**: Settings Menu Navigation Fixes — Fixed user menu dropdown to have clear separation between "Workspace Settings" and "Profile Settings". Removed redundant menu items. Ensured all menu items have proper icons. ✅
+
 ## 🏁 Completed Sprint 35: Security, Observability & Quality-of-Life
 
 - [x] **Task 148**: Workspace Audit Log Export — `WorkspaceActivityController::export()` at `GET /workspaces/{workspace}/activity/export` streams CSV (Date, Event, Causer, Subject Type, Description); "Export CSV" button added to workspace activity page. ✅ (7 tests, 24 assertions)
@@ -147,6 +159,18 @@ The AI agent is now continually managing and executing the roadmap autonomously.
 - **Sprint 12**: Enterprise Mechanics (Seat-Based Billing, Data Retention, 2FA Enforcement).
 
 ## 📝 Changelog
+
+- **2026-03-22**: Task 165 (Self-Service Cancellation): Created `CancellationFlow` component with multi-step cancellation process. Step 1: Reason selection with optional feedback. Step 2: Contextual retention offers (discount, downgrade suggestion, pause option). Step 3: Final confirmation with clear impact details. Step 4: Success confirmation. Integrated into billing page. Helps reduce churn with targeted offers. 5 Pest tests with 6 assertions.
+
+- **2026-03-22**: Task 164 (Enhanced Billing History): Created `/billing/history` page with complete invoice history. Features date filtering (30/90/365 days), search functionality, stats cards (total invoices, filtered amount, last invoice). Clean responsive list view with PDF download. "View History" link from billing page. 5 Pest tests with 46 assertions.
+
+- **2026-03-22**: Task 163 (Plan Comparison Table): Created `/billing/compare` page with side-by-side plan comparison showing all features, limits, and pricing. Added monthly/yearly toggle with 20% savings indicator. Highlights current plan with comparison matrix. FAQ section included. "Compare Plans" button added to billing page. 6 Pest tests with 61 assertions.
+
+- **2026-03-22**: Task 162 (Settings Menu Navigation): Fixed user menu dropdown with clear separation between Workspace Settings and Profile Settings. Removed redundant menu items. Ensured all menu items have proper icons. Updated seeder to add test users as admins to "Startup Hub" workspace.
+
+- **2026-03-22**: Task 161 (Workspace Settings Menu Enhancement): Added "Workspace Settings" link to main sidebar (app-sidebar.tsx) for quick access. Improved workspace settings layout organization with consistent icons for all menu items.
+
+- **2026-03-22**: Task 160 (Profile Settings Reorganization): Reorganized profile settings from 11 flat items into 4 logical sections (Profile: General + Connected Accounts; Security: Authentication + Sessions + Login History; Privacy: Cookies + Notifications + API Tokens; Support: Tickets). Merged Password + 2FA into combined "Authentication" page at `/settings/security/authentication`. Moved Appearance (theme toggle) into General/Profile page. Renamed "Privacy & Cookies" to "Cookies". Moved Security Summary and Session Summary cards to Authentication page. Added redirects for backward compatibility.
 
 - **2026-03-22**: Fixed Help Center Page: Created `/help` page component with search bar, help categories (Getting Started, Account & Billing, Support Tickets, API Documentation), quick links, and contact support CTA; added route `GET /help` in web.php; page linked from sidebar footer.
 

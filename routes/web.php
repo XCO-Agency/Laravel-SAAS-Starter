@@ -191,6 +191,8 @@ Route::middleware(['auth', 'verified', 'onboarded', 'workspace', 'require2fa', '
     Route::prefix('billing')->name('billing.')->group(function () {
         Route::get('/', [BillingController::class, 'index'])->name('index');
         Route::get('/plans', [BillingController::class, 'plans'])->name('plans');
+        Route::get('/compare', [BillingController::class, 'compare'])->name('compare');
+        Route::get('/history', [BillingController::class, 'history'])->name('history');
         Route::post('/subscribe', [BillingController::class, 'subscribe'])->name('subscribe');
         Route::post('/cancel', [BillingController::class, 'cancel'])->name('cancel');
         Route::post('/resume', [BillingController::class, 'resume'])->name('resume');

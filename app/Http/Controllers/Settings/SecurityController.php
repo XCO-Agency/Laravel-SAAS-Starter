@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Settings\TwoFactorAuthenticationRequest;
 use App\Jobs\ExportPersonalDataJob;
 use App\Models\PasswordHistory;
 use Illuminate\Http\RedirectResponse;

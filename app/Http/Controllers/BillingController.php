@@ -105,6 +105,39 @@ class BillingController extends Controller
     }
 
     /**
+     * Display plan comparison table.
+     */
+    public function compare(Request $request): Response
+    {
+        $user = $request->user();
+        $workspace = $user->currentWorkspace;
+
+        return Inertia::render('Billing/compare', [
+            'plans' => $this->getPlansForDisplay(),
+            'currentPlan' => $workspace->plan_key,
+            'userRole' => $workspace->getUserRole($user),
+        ]);
+    }
+
+    /**
+     * Display billing history with all invoices.
+     */
+    public function history(Request $request): Response
+    {
+        $user = $request->user();
+        $workspace = $user->currentWorkspace;
+
+        return Inertia::render('Billing/history', [
+            'invoices' => $workspace->invoices()->map(fn ($invoice) => [
+                'id' => $invoice->id,
+                'date' => $invoice->date()->format('F j, Y'),
+                'total' => $invoice->total(),
+                'pdf_url' => route('billing.invoice.download', $invoice->id),
+            ])->values(),
+        ]);
+    }
+
+    /**
      * Subscribe the workspace to a plan.
      */
     public function subscribe(Request $request): RedirectResponse|JsonResponse
