@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 use Laravel\Fortify\Features;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class SecurityController extends Controller implements HasMiddleware
 {

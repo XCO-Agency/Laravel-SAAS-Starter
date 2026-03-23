@@ -241,6 +241,7 @@ export default function WorkspaceSettings({
                                     <Button
                                         type="submit"
                                         disabled={processing || !isDirty}
+                                        className={!isDirty ? 'opacity-50' : ''}
                                     >
                                         {processing && (
                                             <Spinner className="mr-2" />
@@ -339,8 +340,11 @@ export default function WorkspaceSettings({
                                                     key={color}
                                                     type="button"
                                                     onClick={() => setData('accent_color', color)}
-                                                    className={`h-8 w-8 rounded-full border-2 transition-transform hover:scale-110 ${data.accent_color === color ? 'border-foreground scale-110' : 'border-transparent'
-                                                        }`}
+                                                    className={`h-8 w-8 rounded-full border-2 transition-all hover:scale-110 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+                                                        data.accent_color === color 
+                                                            ? 'border-foreground scale-110 shadow-md ring-2 ring-primary ring-offset-2' 
+                                                            : 'border-transparent hover:border-foreground/50'
+                                                    }`}
                                                     style={{ backgroundColor: color }}
                                                     title={color}
                                                 />
@@ -382,6 +386,7 @@ export default function WorkspaceSettings({
                                             });
                                         }}
                                         disabled={processing || !isDirty}
+                                        className={!isDirty ? 'opacity-50' : ''}
                                     >
                                         {processing && <Spinner className="mr-2" />}
                                         {t('workspace.settings.save_branding', 'Save Branding')}

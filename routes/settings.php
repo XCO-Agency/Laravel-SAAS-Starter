@@ -45,9 +45,10 @@ Route::middleware('auth')->group(function () {
     Route::get('settings/security/authentication', [SecurityController::class, 'authentication'])
         ->name('security.authentication');
 
-    // Redirect old URLs to new structure
-    Route::redirect('settings/password', '/settings/security/authentication');
-    Route::redirect('settings/two-factor', '/settings/security/authentication');
+    // Redirect old password URL to new structure (GET only)
+    Route::get('settings/password', function () {
+        return redirect('/settings/security/authentication');
+    });
 
     // API Tokens
     Route::get('settings/api-tokens', [ApiTokenController::class, 'index'])->name('api-tokens.index');

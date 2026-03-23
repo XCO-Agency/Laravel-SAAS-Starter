@@ -13,7 +13,7 @@ beforeEach(function () {
 it('allows owner to cancel subscription', function () {
     // Note: This test assumes the workspace has an active subscription
     // In a real test, you'd need to set up a subscription using Stripe test mode
-    
+
     $response = $this->actingAs($this->owner)
         ->postJson('/billing/cancel', [
             'reason' => 'too_expensive',

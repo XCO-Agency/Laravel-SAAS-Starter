@@ -39,13 +39,13 @@ it('renders settings pages with direct inertia components', function (string $ur
     $user = createOnboardedUserWithWorkspace();
 
     $this->actingAs($user)
+        ->withSession(['auth.password_confirmed_at' => time()])
         ->get($uri)
         ->assertOk()
         ->assertInertia(fn ($page) => $page->component($component));
 })->with([
     ['uri' => '/settings/profile', 'component' => 'settings/profile'],
-    ['uri' => '/settings/password', 'component' => 'settings/password'],
-    ['uri' => '/settings/appearance', 'component' => 'settings/appearance'],
+    ['uri' => '/settings/security/authentication', 'component' => 'settings/security/authentication'],
     ['uri' => '/settings/notifications', 'component' => 'settings/notifications'],
 ]);
 

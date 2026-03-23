@@ -148,7 +148,7 @@ export default function AvatarUpload({
                     <p className="text-sm text-muted-foreground">{description}</p>
                 </div>
 
-                <div className="flex flex-wrap items-center gap-3">
+                <div className="flex flex-wrap items-center gap-2">
                     <input
                         type="file"
                         ref={fileInputRef}
@@ -171,10 +171,11 @@ export default function AvatarUpload({
                     {currentUrl && (
                         <Button
                             type="button"
-                            variant="destructive"
+                            variant="outline"
                             size="sm"
                             onClick={handleDelete}
                             disabled={isUploading || isDeleting}
+                            className="text-destructive hover:bg-destructive/10 hover:text-destructive border-destructive/20"
                         >
                             {isDeleting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                             <Trash2 className="h-4 w-4" />

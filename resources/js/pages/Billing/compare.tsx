@@ -45,7 +45,7 @@ export default function ComparePlans({ plans, currentPlan, userRole }: ComparePa
     const [billingPeriod, setBillingPeriod] = useState<'monthly' | 'yearly'>('monthly');
     const [processing, setProcessing] = useState<string | null>(null);
     const { addToast } = useToast();
-    const isOwner = userRole === 'owner';
+    const isOwner = userRole === 'owner' || userRole === 'admin';
 
     const breadcrumbs: BreadcrumbItem[] = [
         { title: t('billing.title', 'Billing'), href: '/billing' },
@@ -193,10 +193,10 @@ export default function ComparePlans({ plans, currentPlan, userRole }: ComparePa
                                             <td className="p-4 font-medium">Team Members</td>
                                             {plans.map(plan => (
                                                 <td key={plan.id} className="p-4 text-center">
-                                                    {plan.limits.members === -1 ? (
+                                                    {plan.limits?.members === -1 ? (
                                                         <span className="font-bold text-primary">Unlimited</span>
                                                     ) : (
-                                                        <span className="font-bold">Up to {plan.limits.members}</span>
+                                                        <span className="font-bold text-foreground">{plan.limits?.members || 0}</span>
                                                     )}
                                                 </td>
                                             ))}
@@ -205,10 +205,10 @@ export default function ComparePlans({ plans, currentPlan, userRole }: ComparePa
                                             <td className="p-4 font-medium">Workspaces</td>
                                             {plans.map(plan => (
                                                 <td key={plan.id} className="p-4 text-center">
-                                                    {plan.limits.workspaces === -1 ? (
+                                                    {plan.limits?.workspaces === -1 ? (
                                                         <span className="font-bold text-primary">Unlimited</span>
                                                     ) : (
-                                                        <span className="font-bold">{plan.limits.workspaces}</span>
+                                                        <span className="font-bold text-foreground">{plan.limits?.workspaces || 1}</span>
                                                     )}
                                                 </td>
                                             ))}
@@ -217,7 +217,7 @@ export default function ComparePlans({ plans, currentPlan, userRole }: ComparePa
                                             <td className="p-4 font-medium">Storage</td>
                                             {plans.map(plan => (
                                                 <td key={plan.id} className="p-4 text-center">
-                                                    <span className="font-bold">{plan.limits.storage}</span>
+                                                    <span className="font-bold text-foreground">{plan.limits?.storage || '1GB'}</span>
                                                 </td>
                                             ))}
                                         </tr>

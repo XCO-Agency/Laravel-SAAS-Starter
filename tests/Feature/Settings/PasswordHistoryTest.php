@@ -40,7 +40,8 @@ it('displays password history on the settings page', function () {
     ]);
 
     $response = $this->actingAs($this->user)
-        ->get('/settings/password');
+        ->withSession(['auth.password_confirmed_at' => time()])
+        ->get(route('security.authentication'));
 
     $response->assertSuccessful();
     $response->assertInertia(
@@ -60,7 +61,8 @@ it('limits history to 10 entries', function () {
     }
 
     $response = $this->actingAs($this->user)
-        ->get('/settings/password');
+        ->withSession(['auth.password_confirmed_at' => time()])
+        ->get(route('security.authentication'));
 
     $response->assertInertia(
         fn ($page) => $page
@@ -80,7 +82,8 @@ it('does not show other users password history', function () {
     ]);
 
     $response = $this->actingAs($this->user)
-        ->get('/settings/password');
+        ->withSession(['auth.password_confirmed_at' => time()])
+        ->get(route('security.authentication'));
 
     $response->assertInertia(
         fn ($page) => $page
@@ -89,5 +92,5 @@ it('does not show other users password history', function () {
 });
 
 it('restricts password history to authenticated users', function () {
-    $this->get('/settings/password')->assertRedirect('/login');
+    $this->get(route('security.authentication'))->assertRedirect('/login');
 });

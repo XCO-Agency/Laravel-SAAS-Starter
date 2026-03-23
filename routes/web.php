@@ -325,14 +325,14 @@ Route::middleware(['auth', 'superadmin'])->prefix('admin')->name('admin.')->grou
 
         // User Management
         Route::get('/users', [UserController::class, 'index'])->name('users.index');
+        Route::get('/users/export', [UserController::class, 'export'])->name('users.export');
+        Route::post('/users/bulk-export', [UserController::class, 'bulkExport'])->name('users.bulk-export');
+        Route::post('/users/bulk-verify-email', [UserController::class, 'bulkVerifyEmail'])->name('users.bulk-verify-email');
+        Route::post('/users/bulk-suspend', [UserController::class, 'bulkSuspend'])->name('users.bulk-suspend');
         Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
         Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
         Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
         Route::post('/users/{user}/restore', [UserController::class, 'restore'])->name('users.restore');
-        Route::post('/users/bulk-verify-email', [UserController::class, 'bulkVerifyEmail'])->name('users.bulk-verify-email');
-        Route::post('/users/bulk-suspend', [UserController::class, 'bulkSuspend'])->name('users.bulk-suspend');
-        Route::get('/users/export', [UserController::class, 'export'])->name('users.export');
-        Route::post('/users/bulk-export', [UserController::class, 'bulkExport'])->name('users.bulk-export');
         Route::get('/users/{user}/sessions', [UserSessionController::class, 'index'])->name('users.sessions.index');
         Route::delete('/users/{user}/sessions/{sessionId}', [UserSessionController::class, 'destroy'])->name('users.sessions.destroy');
         Route::delete('/users/{user}/sessions', [UserSessionController::class, 'destroyAll'])->name('users.sessions.destroy-all');

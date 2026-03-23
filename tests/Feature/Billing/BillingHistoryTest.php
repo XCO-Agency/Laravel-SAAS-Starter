@@ -26,13 +26,11 @@ it('shows invoice data in correct format', function () {
         ->assertInertia(fn ($page) => $page
             ->component('Billing/history')
             ->has('invoices')
-            ->where('invoices', fn ($invoices) => 
-                collect($invoices)->every(fn ($inv) => 
-                    isset($inv['id']) && 
-                    isset($inv['date']) && 
-                    isset($inv['total']) && 
+            ->where('invoices', fn ($invoices) => collect($invoices)->every(fn ($inv) => isset($inv['id']) &&
+                    isset($inv['date']) &&
+                    isset($inv['total']) &&
                     isset($inv['pdf_url'])
-                )
+            )
             )
         );
 });
