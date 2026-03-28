@@ -17,14 +17,18 @@ import {
     type BreadcrumbItem,
     type Workspace,
     type WorkspaceRole,
+    type Tag as TagType,
+    type CustomField,
 } from '@/types';
 import { Head, router, useForm } from '@inertiajs/react';
-import { AlertTriangle, CalendarDays, CheckCircle2, Circle, Crown, Download, Key, Palette, Users } from 'lucide-react';
+import { AlertTriangle, CalendarDays, CheckCircle2, Circle, Crown, Download, Key, Palette, Users, Tag, FileText, Save, Plus } from 'lucide-react';
 import { useState } from 'react';
 import AvatarUpload from '@/components/avatar-upload';
 import AppLayout from '@/layouts/app-layout';
 import WorkspaceLayout from '@/layouts/settings/workspace-layout';
 import { update as updateLogo, destroy as destroyLogo } from '@/routes/workspaces/logo';
+import { TagManager } from '@/components/tags/TagManager';
+import { CustomFieldsManager } from '@/components/custom-fields/CustomFieldsManager';
 
 interface OnboardingStep {
     key: string;
@@ -43,6 +47,8 @@ interface WorkspaceSettingsProps {
         score: number;
         steps: OnboardingStep[];
     };
+    tags?: TagType[];
+    customFields?: CustomField[];
 }
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -54,6 +60,8 @@ export default function WorkspaceSettings({
     userRole,
     stats,
     onboardingProgress,
+    tags = [],
+    customFields = [],
 }: WorkspaceSettingsProps) {
     const { t } = useTranslations();
     const { data, setData, errors, processing, isDirty } = useForm({
@@ -395,6 +403,53 @@ export default function WorkspaceSettings({
                             </div>
                         </CardContent>
                     </Card>
+
+                    {/* Tags */}
+                    <TagManager
+                        workspaceId={workspace.id}
+                        tags={tags}
+                        isAdmin={isAdmin}
+                    />
+
+                    {/* Custom Fields */}
+                    {isAdmin && (
+                        <CustomFieldsManager
+                            workspaceId={workspace.id}
+                            fields={customFields}
+                            isAdmin={isAdmin}
+                        />
+                    )}
+
+                    {/* Save as Template */}
+                    {isOwner && (
+                        <Card>
+                            <CardHeader>
+                                <CardTitle className="flex items-center gap-2">
+                                    <Save className="h-5 w-5" />
+                                    Workspace Template
+                                </CardTitle>
+                                <CardDescription>
+                                    Save this workspace configuration as a reusable template.
+                                </CardDescription>
+                            </CardHeader>
+                            <CardContent>
+                                <div className="flex items-center justify-between">
+                                    <div className="space-y-1">
+                                        <p className="text-sm font-medium">
+                                            Save as Template
+                                        </p>
+                                        <p className="text-sm text-muted-foreground">
+                                            Create a template from this workspace to quickly set up similar workspaces.
+                                        </p>
+                                    </div>
+                                    <Button variant="outline" onClick={() => router.visit('/workspace-templates/create')}>
+                                        <Plus className="mr-2 h-4 w-4" />
+                                        Create Template
+                                    </Button>
+                                </div>
+                            </CardContent>
+                        </Card>
+                    )}
 
                     {/* Billing Email */}
                     {isAdmin && (

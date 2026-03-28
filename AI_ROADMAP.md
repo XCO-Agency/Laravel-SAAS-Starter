@@ -41,7 +41,21 @@ The AI agent is now continually managing and executing the roadmap autonomously.
 - [x] **Task 158**: User Login Methods Summary — `SecuritySummaryController` at `GET /settings/security-summary` returns JSON with password status, 2FA status, connected social accounts, security score (0-100), and recommendations; `SecuritySummaryCard` React component displays on profile settings with visual indicators and quick action links. ✅ (12 tests, 48 assertions)
 - [x] **Task 159**: Session Activity Summary — `SessionSummaryController` at `GET /settings/session-summary` returns session count, current device info, and other sessions summary; `SessionSummaryCard` component on profile settings shows active sessions with "Sign Out All Other Devices" action; integrates with existing `SessionController` revoke functionality. ✅ (8 tests, 24 assertions)
 
-## 🚀 Active Sprint 38: Customer-Facing Billing Experience
+## 🚀 Active Sprint 40: Advanced Workspace Features & Automation
+
+- [x] **Task 170**: Workspace Templates — Template system for rapid workspace creation. `WorkspaceTemplate` model with JSON configuration storage. `WorkspaceTemplateController` with index/store/show/update/destroy/use/duplicate endpoints. `WorkspaceTemplateService` extracts configuration from source workspaces and applies to new workspaces. Supports public/private templates, categories, and usage tracking. 12 Pest tests. ✅
+- [x] **Task 171**: Advanced Workspace Search — Unified search across workspace content. `WorkspaceSearchController` searches activities, comments, announcements, and members. Faceted results with type filtering. Suggestions endpoint for autocomplete. 5 Pest tests. ✅
+- [x] **Task 172**: Workspace Tags/Labels — Polymorphic tagging system with `tags` and `taggables` tables. Color-coded labels with preset palette. `TagController` with CRUD, attach/detach, and available tags endpoints. Global and workspace-specific tags supported. 13 Pest tests. ✅
+- [x] **Task 173**: Custom Workspace Fields — Extensible custom field system with `custom_field_definitions` and `custom_field_values` tables. Supports 7 field types: text, textarea, number, date, boolean, select, url. Field validation, type casting, and reordering. 12 Pest tests. ✅
+
+## 🏁 Completed Sprint 39: Team Collaboration & Communication
+
+- [x] **Task 166**: Workspace Comments/Discussions — Created polymorphic comment system with `workspace_comments` table supporting threaded replies. `WorkspaceCommentController` with index/store/update/destroy/replies endpoints. `MentionService` to extract @username mentions from content. 12 Pest tests with comprehensive coverage for CRUD, authorization, and nested replies. ✅
+- [x] **Task 167**: @Mentions System with Notifications — `UserMentioned` notification with email+database channels respecting user preferences. `MentionService::processMentions()` automatically extracts and notifies mentioned users when comments are created. Excludes self-mentions. Integrated into comment creation flow. ✅
+- [x] **Task 168**: Workspace-Level Announcements — `WorkspaceAnnouncement` model with types (info/warning/success), pinning, dismissal tracking, and expiry dates. `WorkspaceAnnouncementController` with full CRUD, dismiss, and pin endpoints. `workspace_announcement_reads` pivot table tracks per-user read status. 14 Pest tests with coverage for permissions, expiry, and read tracking. ✅
+- [x] **Task 169**: Activity Reactions (Emoji) — `ActivityReaction` model with toggle functionality. `ActivityReactionController` with store/destroy/index endpoints. `getGroupedForActivity()` aggregates reactions by emoji with counts and user IDs. Real-time broadcast via Reverb on reaction changes. 12 Pest tests covering toggle behavior and grouping. ✅
+
+## 🏁 Completed Sprint 38: Customer-Facing Billing Experience
 
 - [x] **Task 163**: Plan Comparison Table — Created `/billing/compare` page with side-by-side feature comparison for all plans (Free, Pro, Business). Includes monthly/yearly billing toggle with 20% savings indicator. Shows team member limits, workspace limits, storage, and feature matrix. Highlights current plan. FAQ section with common questions. "Compare Plans" button added to billing index page. 6 Pest tests with 61 assertions. ✅
 - [x] **Task 164**: Enhanced Billing History — Created `/billing/history` page with full invoice history. Features date filtering (30/90/365 days), search by date/amount/invoice ID, stats cards showing total invoices, filtered amount, and last invoice date. Clean list view with PDF download buttons. "View History" link from billing page. 5 Pest tests with 46 assertions. ✅
@@ -159,6 +173,10 @@ The AI agent is now continually managing and executing the roadmap autonomously.
 - **Sprint 12**: Enterprise Mechanics (Seat-Based Billing, Data Retention, 2FA Enforcement).
 
 ## 📝 Changelog
+
+- **2026-03-23**: Sprint 40 (Advanced Workspace Features): Task 170 (Workspace Templates) — template system for rapid workspace creation with JSON configuration, public/private visibility, categories. Task 171 (Advanced Search) — unified search across activities, comments, announcements, members with faceted results. Task 172 (Workspace Tags) — color-coded labels with polymorphic tagging system. Task 173 (Custom Fields) — extensible field system with 7 field types, validation, and reordering. 42 Pest tests with 91 assertions. ✅
+
+- **2026-03-23**: Sprint 39 (Team Collaboration & Communication): Task 166 (Workspace Comments) — polymorphic comment system with threaded replies, `MentionService` for @username extraction, full CRUD endpoints. Task 167 (@Mentions) — `UserMentioned` notification with email+database channels. Task 168 (Workspace Announcements) — announcement system with pinning, dismissal tracking, expiry dates, and read status. Task 169 (Activity Reactions) — emoji reactions with toggle functionality and real-time broadcasts. 38 Pest tests with 90 assertions. ✅
 
 - **2026-03-22**: Task 165 (Self-Service Cancellation): Created `CancellationFlow` component with multi-step cancellation process. Step 1: Reason selection with optional feedback. Step 2: Contextual retention offers (discount, downgrade suggestion, pause option). Step 3: Final confirmation with clear impact details. Step 4: Success confirmation. Integrated into billing page. Helps reduce churn with targeted offers. 5 Pest tests with 6 assertions.
 

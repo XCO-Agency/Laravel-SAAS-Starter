@@ -12,7 +12,7 @@ import {
 import { WorkspaceSwitcher } from '@/components/workspace-switcher';
 import { useTranslations } from '@/hooks/use-translations';
 import { type NavItem, type SharedData } from '@/types';
-import { BarChart3, BookOpen, LayoutGrid, Settings, ShieldAlert } from 'lucide-react';
+import { BarChart3, BookOpen, LayoutGrid, Save, Settings, ShieldAlert } from 'lucide-react';
 import { usePage } from '@inertiajs/react';
 import { useMemo } from 'react';
 
@@ -32,6 +32,11 @@ const getMainNavItems = (t: (key: string, fallback: string) => string, isSuperad
             title: t('navigation.workspace_settings', 'Workspace Settings'),
             href: '/workspaces/settings',
             icon: Settings,
+        },
+        {
+            title: t('navigation.templates', 'Templates'),
+            href: '/workspace-templates',
+            icon: Save,
         },
     ];
 

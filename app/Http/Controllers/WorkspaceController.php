@@ -119,6 +119,12 @@ class WorkspaceController extends Controller
                 'api_keys_count' => $workspace->apiKeys()->count(),
             ],
             'onboardingProgress' => $this->computeOnboardingProgress($workspace, $user),
+            'tags' => $workspace->tags()
+                ->orderBy('tags.name')
+                ->get(['tags.id', 'tags.name', 'tags.slug', 'tags.color', 'tags.description']),
+            'customFields' => $workspace->customFieldDefinitions()
+                ->orderBy('custom_field_definitions.order')
+                ->get(['custom_field_definitions.id', 'name', 'type as field_type', 'options', 'required as is_required', 'order as sort_order']),
         ]);
     }
 
