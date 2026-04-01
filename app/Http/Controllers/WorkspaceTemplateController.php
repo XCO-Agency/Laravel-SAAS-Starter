@@ -6,6 +6,7 @@ use App\Models\Workspace;
 use App\Models\WorkspaceTemplate;
 use App\Services\WorkspaceTemplateService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 
 class WorkspaceTemplateController extends Controller
@@ -232,7 +233,7 @@ class WorkspaceTemplateController extends Controller
             $template,
             [
                 'name' => $template->name.' Copy',
-                'slug' => \Illuminate\Support\Str::slug($template->name.'-'.uniqid()),
+                'slug' => Str::slug($template->name.'-'.uniqid()),
             ]
         );
 

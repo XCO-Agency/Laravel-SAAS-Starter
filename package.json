@@ -16,7 +16,8 @@
         "format": "prettier --write resources/",
         "format:check": "prettier --check resources/",
         "lint": "eslint . --fix",
-        "types": "tsc --noEmit"
+        "types": "tsc --noEmit",
+        "fix": "npm run format && npm run lint && npm run types"
     },
     "devDependencies": {
         "@eslint/js": "^9.19.0",

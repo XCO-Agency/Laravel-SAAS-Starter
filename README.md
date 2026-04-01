@@ -21,11 +21,14 @@
 - **🚩 Feature Flags (Pennant)** - Database-driven feature flagging with targeted, workspace-specific rollout mechanisms.
 - **📜 System Audit Logs** - Complete change history and system-wide visibility via Spatie Activitylog tracking.
 - **🌙 Elegant UI Components** - Beautiful React 19 light/dark themes powered by Shadcn/UI and smooth Tailwind CSS v4 styling.
-- **⚡ Modern Architecture** - Laravel 12 + Inertia.js v2, strictly typed via Pest tests (1,000+ tests out-of-the-box).
+- **🏷️ Custom Fields & Tags** - Extensible workspace metadata with custom field definitions, tagging system, and color-coded labels.
+- **📋 Workspace Templates** - Save and reuse workspace configurations for rapid setup of new workspaces.
+- **💬 Workspace Comments & Announcements** - Collaborative commenting on activities and internal workspace announcements.
+- **⚡ Modern Architecture** - Laravel 12 + Inertia.js v2, strictly typed via Pest tests (1,400+ tests out-of-the-box).
 
 ## 📋 Requirements
 
-- PHP 8.2 or higher
+- PHP 8.4 or higher
 - Composer
 - Node.js 22+ and npm/pnpm
 - SQLite, MySQL, or PostgreSQL
@@ -149,16 +152,16 @@ For a comprehensive review of the project's internal architecture, component str
 [Authentication](./docs/features/authentication.md) | [Workspaces](./docs/features/workspaces.md) | [Team Management](./docs/features/team-management.md) | [Session Management](./docs/features/session-management.md)
 
 **Billing & Usage**
-[Billing](./docs/features/billing.md) | [Seat-Based Billing](./docs/features/seat-billing.md) | [Usage Dashboard](./docs/features/usage-dashboard.md)
+[Billing](./docs/features/billing.md) | [Seat-Based Billing](./docs/features/seat-billing.md) | [Usage Dashboard](./docs/features/usage-dashboard.md) | [Plan Comparison](./docs/features/plan-comparison.md) | [Billing History](./docs/features/billing-history.md) | [Cancellation Flow](./docs/features/cancellation-flow.md)
 
 **Admin**
 [Admin Panel](./docs/features/admin-panel.md) | [Impersonation](./docs/features/impersonation.md) | [System Health](./docs/features/system-health.md) | [Scheduled Tasks](./docs/features/scheduled-tasks.md) | [Data Retention](./docs/features/data-retention.md) | [SEO Management](./docs/features/seo-management.md)
 
 **Platform Features**
-[Announcements](./docs/features/announcements.md) | [Feature Flags](./docs/features/feature-flags.md) | [Audit Logs](./docs/features/audit-logs.md) | [Changelog](./docs/features/changelog.md) | [Email Templates](./docs/features/email-templates.md) | [Webhooks](./docs/features/webhooks.md) | [Real-time Notifications](./docs/features/real-time-notifications.md) | [Feedback](./docs/features/feedback.md) | [Onboarding Checklist](./docs/features/onboarding-checklist.md) | [Advanced Search](./docs/features/advanced-search.md)
+[Global Announcements](./docs/features/global-announcements.md) | [Feature Flags](./docs/features/feature-flags.md) | [Audit Logs](./docs/features/audit-logs.md) | [Changelog](./docs/features/changelog.md) | [Email Templates](./docs/features/email-templates.md) | [Webhooks](./docs/features/webhooks.md) | [Real-time Notifications](./docs/features/real-time-notifications.md) | [Feedback](./docs/features/feedback.md) | [Onboarding Checklist](./docs/features/onboarding-checklist.md) | [Advanced Search](./docs/features/advanced-search.md) | [Custom Fields](./docs/features/custom-fields.md) | [Workspace Tags](./docs/features/workspace-tags.md) | [Workspace Templates](./docs/features/workspace-templates.md) | [Workspace Comments](./docs/features/workspace-comments.md) | [Workspace Announcements](./docs/features/workspace-announcements.md) | [Activity Reactions](./docs/features/activity-reactions.md) | [Public Status Page](./docs/features/public-status-page.md)
 
 **Security & Compliance**
-[2FA Enforcement](./docs/features/2fa-enforcement.md) | [GDPR Data Export](./docs/features/gdpr-data-export.md) | [Account Deletion](./docs/features/account-deletion.md) | [Security](./docs/features/security.md)
+[2FA Enforcement](./docs/features/2fa-enforcement.md) | [GDPR Data Export](./docs/features/gdpr-data-export.md) | [Account Deletion](./docs/features/account-deletion.md) | [Security](./docs/features/security.md) | [Connected Accounts](./docs/features/connected-accounts.md)
 
 **API & Integrations**
 [Workspace API Keys](./docs/features/workspace-api-keys.md) | [API Authentication](./docs/features/api-authentication.md) | [API Documentation](./docs/features/api-documentation.md) | [API Usage Dashboard](./docs/features/api-usage-dashboard.md)
@@ -180,7 +183,7 @@ For a comprehensive review of the project's internal architecture, component str
 │   │   ├── components/    # Reusable shadcn/ui & generic ui components
 │   │   ├── layouts/       # Strict domain boundaries (admin vs customer ui)
 │   │   └── pages/         # Inertia frontend pages
-└── tests/                 # Standardized Pest tests (1,000+ available)
+└── tests/                 # Standardized Pest tests (1,400+ available)
 ```
 
 ## 🔧 Configuration

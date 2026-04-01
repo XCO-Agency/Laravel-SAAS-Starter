@@ -236,7 +236,7 @@ it('casts values to correct types', function () {
 });
 
 it('gets custom field values', function () {
-    $field = CustomFieldDefinition::factory()->forWorkspace($this->workspace)->create([
+    $field = CustomFieldDefinition::factory()->type('text')->forWorkspace($this->workspace)->create([
         'key' => 'project_code',
     ]);
     CustomFieldValue::factory()->create([
