@@ -18,9 +18,14 @@ export default function ForgotPassword({ status }: { status?: string }) {
     return (
         <AuthLayout
             title={t('auth.forgot_password.title', 'Forgot your password?')}
-            description={t('auth.forgot_password.description', 'No problem. Just let us know your email address and we will email you a password reset link.')}
+            description={t(
+                'auth.forgot_password.description',
+                'No problem. Just let us know your email address and we will email you a password reset link.',
+            )}
         >
-            <Head title={t('auth.forgot_password.page_title', 'Forgot Password')} />
+            <Head
+                title={t('auth.forgot_password.page_title', 'Forgot Password')}
+            />
 
             {status && (
                 <div className="mb-4 text-center text-sm font-medium text-green-600">
@@ -33,14 +38,19 @@ export default function ForgotPassword({ status }: { status?: string }) {
                     {({ processing, errors }) => (
                         <>
                             <div className="grid gap-2">
-                                <Label htmlFor="email">{t('auth.email', 'Email address')}</Label>
+                                <Label htmlFor="email">
+                                    {t('auth.email', 'Email address')}
+                                </Label>
                                 <Input
                                     id="email"
                                     type="email"
                                     name="email"
                                     autoComplete="off"
                                     autoFocus
-                                    placeholder={t('auth.email', 'Email address')}
+                                    placeholder={t(
+                                        'auth.email',
+                                        'Email address',
+                                    )}
                                 />
 
                                 <InputError message={errors.email} />
@@ -56,7 +66,10 @@ export default function ForgotPassword({ status }: { status?: string }) {
                                     {processing && (
                                         <LoaderCircle className="h-4 w-4 animate-spin" />
                                     )}
-                                    {t('auth.forgot_password.button', 'Send Reset Link')}
+                                    {t(
+                                        'auth.forgot_password.button',
+                                        'Send Reset Link',
+                                    )}
                                 </Button>
                             </div>
                         </>
@@ -64,8 +77,12 @@ export default function ForgotPassword({ status }: { status?: string }) {
                 </Form>
 
                 <div className="space-x-1 text-center text-sm text-muted-foreground">
-                    <span>{t('auth.reset_password.or_return', 'Or, return to')}</span>
-                    <TextLink href={login()} className="font-semibold">{t('auth.log_in', 'Sign in')}</TextLink>
+                    <span>
+                        {t('auth.reset_password.or_return', 'Or, return to')}
+                    </span>
+                    <TextLink href={login()} className="font-semibold">
+                        {t('auth.log_in', 'Sign in')}
+                    </TextLink>
                 </div>
             </div>
         </AuthLayout>

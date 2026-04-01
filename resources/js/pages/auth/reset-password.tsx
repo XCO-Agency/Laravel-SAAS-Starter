@@ -20,9 +20,14 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
     return (
         <AuthLayout
             title={t('auth.reset_password.title', 'Reset Password')}
-            description={t('auth.reset_password.description', 'Please enter your new password below')}
+            description={t(
+                'auth.reset_password.description',
+                'Please enter your new password below',
+            )}
         >
-            <Head title={t('auth.reset_password.page_title', 'Reset Password')} />
+            <Head
+                title={t('auth.reset_password.page_title', 'Reset Password')}
+            />
 
             <Form
                 {...update.form()}
@@ -32,7 +37,9 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
                 {({ processing, errors }) => (
                     <div className="grid gap-6">
                         <div className="grid gap-2">
-                            <Label htmlFor="email">{t('auth.reset_password.email', 'Email')}</Label>
+                            <Label htmlFor="email">
+                                {t('auth.reset_password.email', 'Email')}
+                            </Label>
                             <Input
                                 id="email"
                                 type="email"
@@ -49,7 +56,9 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
                         </div>
 
                         <div className="grid gap-2">
-                            <Label htmlFor="password">{t('auth.password', 'Password')}</Label>
+                            <Label htmlFor="password">
+                                {t('auth.password', 'Password')}
+                            </Label>
                             <Input
                                 id="password"
                                 type="password"
@@ -64,7 +73,10 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
 
                         <div className="grid gap-2">
                             <Label htmlFor="password_confirmation">
-                                {t('auth.reset_password.confirm_password', 'Confirm password')}
+                                {t(
+                                    'auth.reset_password.confirm_password',
+                                    'Confirm password',
+                                )}
                             </Label>
                             <Input
                                 id="password_confirmation"
@@ -72,7 +84,10 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
                                 name="password_confirmation"
                                 autoComplete="new-password"
                                 className="mt-1 block w-full"
-                                placeholder={t('auth.reset_password.confirm_password', 'Confirm password')}
+                                placeholder={t(
+                                    'auth.reset_password.confirm_password',
+                                    'Confirm password',
+                                )}
                             />
                             <InputError
                                 message={errors.password_confirmation}

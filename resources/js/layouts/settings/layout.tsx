@@ -4,7 +4,12 @@ import { Separator } from '@/components/ui/separator';
 import { useTranslations } from '@/hooks/use-translations';
 import { cn, isSameUrl, resolveUrl } from '@/lib/utils';
 import { edit } from '@/routes/profile';
-import { type NavItem, type WorkspaceRole } from '@/types';
+import {
+    type NavItem,
+    type SharedData,
+    type Workspace,
+    type WorkspaceRole,
+} from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import {
     Activity,
@@ -21,7 +26,6 @@ import {
     Lock,
     Monitor,
     Shield,
-    ShieldAlert,
     Ticket,
     TrendingUp,
     User,
@@ -29,7 +33,6 @@ import {
     Webhook,
 } from 'lucide-react';
 import { type PropsWithChildren, useMemo } from 'react';
-import { type SharedData, type Workspace } from '@/types';
 
 interface NavSection {
     title: string;
@@ -41,13 +44,10 @@ interface NavItemWithRole extends NavItem {
 }
 
 const getNavSections = (
-    t: (key: string, fallback: string) => string, 
+    t: (key: string, fallback: string) => string,
     workspace?: Workspace | null,
-    userRole?: WorkspaceRole | null
+    userRole?: WorkspaceRole | null,
 ): NavSection[] => {
-    const isOwner = userRole === 'owner';
-    const isAdmin = userRole === 'owner' || userRole === 'admin';
-
     const workspaceItems: NavItemWithRole[] = [
         {
             title: t('navigation.general', 'General'),
@@ -173,7 +173,7 @@ const getNavSections = (
 
     // Filter items based on role
     const filterItems = (items: NavItemWithRole[]): NavItem[] => {
-        return items.filter(item => {
+        return items.filter((item) => {
             if (!item.allowedRoles) return true;
             if (!userRole) return false;
             return item.allowedRoles.includes(userRole);
@@ -232,10 +232,15 @@ export default function SettingsLayout({
     const { t, i18n } = useTranslations();
     const { currentWorkspace } = usePage<SharedData>().props;
     const userRole = currentWorkspace?.role;
-    const navSections = useMemo(() => getNavSections(t, currentWorkspace, userRole), [t, currentWorkspace, userRole]);
+    const navSections = useMemo(
+        () => getNavSections(t, currentWorkspace, userRole),
+        [t, currentWorkspace, userRole],
+    );
 
     const defaultTitle = title ?? t('settings.title', 'Settings');
-    const defaultDescription = description ?? t('settings.description', 'Manage your workspace and account settings');
+    const defaultDescription =
+        description ??
+        t('settings.description', 'Manage your workspace and account settings');
 
     if (typeof window === 'undefined') {
         return null;
@@ -249,12 +254,24 @@ export default function SettingsLayout({
         <div className="px-4 py-6" dir={isRTL ? 'rtl' : 'ltr'}>
             <Heading title={defaultTitle} description={defaultDescription} />
 
-            <div className={cn('flex flex-col lg:flex-row lg:gap-12 settings-layout-container', {
-                'lg:flex-row-reverse': isRTL,
-            })} data-rtl={isRTL}>
-                <aside className={cn('w-full max-w-xl lg:w-48 settings-layout-sidebar', {
-                    'lg:order-2': isRTL,
-                })} data-rtl={isRTL}>
+            <div
+                className={cn(
+                    'settings-layout-container flex flex-col lg:flex-row lg:gap-12',
+                    {
+                        'lg:flex-row-reverse': isRTL,
+                    },
+                )}
+                data-rtl={isRTL}
+            >
+                <aside
+                    className={cn(
+                        'settings-layout-sidebar w-full max-w-xl lg:w-48',
+                        {
+                            'lg:order-2': isRTL,
+                        },
+                    )}
+                    data-rtl={isRTL}
+                >
                     <nav className="flex flex-col space-y-6">
                         {navSections.map((section) => (
                             <div key={section.title}>
@@ -294,14 +311,19 @@ export default function SettingsLayout({
 
                 <Separator className="my-6 lg:hidden" />
 
-                <div className={cn('flex-1 settings-layout-content', {
-                    'md:max-w-2xl': !fullWidth,
-                    'lg:order-1': isRTL,
-                })} data-rtl={isRTL}>
-                    <section className={cn('space-y-12', {
-                        'max-w-xl': !fullWidth,
-                        'w-full': fullWidth,
-                    })}>
+                <div
+                    className={cn('settings-layout-content flex-1', {
+                        'md:max-w-2xl': !fullWidth,
+                        'lg:order-1': isRTL,
+                    })}
+                    data-rtl={isRTL}
+                >
+                    <section
+                        className={cn('space-y-12', {
+                            'max-w-xl': !fullWidth,
+                            'w-full': fullWidth,
+                        })}
+                    >
                         {children}
                     </section>
                 </div>

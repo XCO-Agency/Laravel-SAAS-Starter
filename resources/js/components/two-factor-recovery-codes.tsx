@@ -59,10 +59,16 @@ export default function TwoFactorRecoveryCodes({
             <CardHeader>
                 <CardTitle className="flex gap-3">
                     <LockKeyhole className="size-4" aria-hidden="true" />
-                    {t('settings.two_factor.recovery_codes.title', '2FA Recovery Codes')}
+                    {t(
+                        'settings.two_factor.recovery_codes.title',
+                        '2FA Recovery Codes',
+                    )}
                 </CardTitle>
                 <CardDescription>
-                    {t('settings.two_factor.recovery_codes.description', 'Recovery codes let you regain access if you lose your 2FA device. Store them in a secure password manager.')}
+                    {t(
+                        'settings.two_factor.recovery_codes.description',
+                        'Recovery codes let you regain access if you lose your 2FA device. Store them in a secure password manager.',
+                    )}
                 </CardDescription>
             </CardHeader>
             <CardContent>
@@ -77,9 +83,15 @@ export default function TwoFactorRecoveryCodes({
                             className="size-4"
                             aria-hidden="true"
                         />
-                        {codesAreVisible 
-                            ? t('settings.two_factor.recovery_codes.hide', 'Hide Recovery Codes')
-                            : t('settings.two_factor.recovery_codes.view', 'View Recovery Codes')}
+                        {codesAreVisible
+                            ? t(
+                                  'settings.two_factor.recovery_codes.hide',
+                                  'Hide Recovery Codes',
+                              )
+                            : t(
+                                  'settings.two_factor.recovery_codes.view',
+                                  'View Recovery Codes',
+                              )}
                     </Button>
 
                     {canRegenerateCodes && (
@@ -95,7 +107,11 @@ export default function TwoFactorRecoveryCodes({
                                     disabled={processing}
                                     aria-describedby="regenerate-warning"
                                 >
-                                    <RefreshCw /> {t('settings.two_factor.recovery_codes.regenerate', 'Regenerate Codes')}
+                                    <RefreshCw />{' '}
+                                    {t(
+                                        'settings.two_factor.recovery_codes.regenerate',
+                                        'Regenerate Codes',
+                                    )}
                                 </Button>
                             )}
                         </Form>
@@ -115,7 +131,10 @@ export default function TwoFactorRecoveryCodes({
                                     ref={codesSectionRef}
                                     className="grid gap-1 rounded-lg bg-muted p-4 font-mono text-sm"
                                     role="list"
-                                    aria-label={t('settings.two_factor.recovery_codes.title', '2FA Recovery Codes')}
+                                    aria-label={t(
+                                        'settings.two_factor.recovery_codes.title',
+                                        '2FA Recovery Codes',
+                                    )}
                                 >
                                     {recoveryCodesList.length ? (
                                         recoveryCodesList.map((code, index) => (
@@ -130,7 +149,10 @@ export default function TwoFactorRecoveryCodes({
                                     ) : (
                                         <div
                                             className="space-y-2"
-                                            aria-label={t('common.loading', 'Loading...')}
+                                            aria-label={t(
+                                                'common.loading',
+                                                'Loading...',
+                                            )}
                                         >
                                             {Array.from(
                                                 { length: 8 },
@@ -148,7 +170,10 @@ export default function TwoFactorRecoveryCodes({
 
                                 <div className="text-xs text-muted-foreground select-none">
                                     <p id="regenerate-warning">
-                                        {t('settings.two_factor.recovery_codes.warning', 'Each recovery code can be used once to access your account and will be removed after use. If you need more, click Regenerate Codes above.')}
+                                        {t(
+                                            'settings.two_factor.recovery_codes.warning',
+                                            'Each recovery code can be used once to access your account and will be removed after use. If you need more, click Regenerate Codes above.',
+                                        )}
                                     </p>
                                 </div>
                             </>

@@ -3,9 +3,15 @@ import { Head } from '@inertiajs/react';
 
 import { HelpTooltip } from '@/components/help-tooltip';
 
-import { useTranslations } from '@/hooks/use-translations';
 import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
+import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import ProfileLayout from '@/layouts/settings/profile-layout';
 import { CheckCircle, Clock, Globe, Monitor, XCircle } from 'lucide-react';
@@ -25,7 +31,11 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function LoginActivity({ activities }: { activities: LoginActivityItem[] }) {
+export default function LoginActivity({
+    activities,
+}: {
+    activities: LoginActivityItem[];
+}) {
     const { t } = useTranslations();
 
     const formatDate = (dateStr: string) => {
@@ -47,7 +57,10 @@ export default function LoginActivity({ activities }: { activities: LoginActivit
         return date.toLocaleDateString(undefined, {
             month: 'short',
             day: 'numeric',
-            year: date.getFullYear() !== now.getFullYear() ? 'numeric' : undefined,
+            year:
+                date.getFullYear() !== now.getFullYear()
+                    ? 'numeric'
+                    : undefined,
         });
     };
 
@@ -57,14 +70,20 @@ export default function LoginActivity({ activities }: { activities: LoginActivit
 
             <ProfileLayout
                 title={t('login_history.title', 'Login History')}
-                description={t('login_history.description', 'Review recent sign-in activity on your account.')}
+                description={t(
+                    'login_history.description',
+                    'Review recent sign-in activity on your account.',
+                )}
                 fullWidth
             >
                 <Card>
                     <CardHeader>
                         <CardTitle className="flex items-center gap-2">
                             <Clock className="h-5 w-5" />
-                            {t('login_history.recent_activity', 'Recent Sign-in Activity')}
+                            {t(
+                                'login_history.recent_activity',
+                                'Recent Sign-in Activity',
+                            )}
                             <HelpTooltip content="This log tracks every sign-in attempt to your account, including the IP address, device, and whether it was successful. Use this to detect unauthorized access." />
                         </CardTitle>
                         <CardDescription>
@@ -77,7 +96,10 @@ export default function LoginActivity({ activities }: { activities: LoginActivit
                     <CardContent>
                         {activities.length === 0 ? (
                             <p className="py-8 text-center text-sm text-muted-foreground">
-                                {t('login_history.no_activity', 'No sign-in activity recorded yet.')}
+                                {t(
+                                    'login_history.no_activity',
+                                    'No sign-in activity recorded yet.',
+                                )}
                             </p>
                         ) : (
                             <div className="space-y-3">
@@ -96,14 +118,26 @@ export default function LoginActivity({ activities }: { activities: LoginActivit
                                                         {activity.device}
                                                     </span>
                                                     {activity.is_successful ? (
-                                                        <Badge variant="default" className="gap-1 text-xs">
+                                                        <Badge
+                                                            variant="default"
+                                                            className="gap-1 text-xs"
+                                                        >
                                                             <CheckCircle className="h-3 w-3" />
-                                                            {t('login_history.success', 'Success')}
+                                                            {t(
+                                                                'login_history.success',
+                                                                'Success',
+                                                            )}
                                                         </Badge>
                                                     ) : (
-                                                        <Badge variant="destructive" className="gap-1 text-xs">
+                                                        <Badge
+                                                            variant="destructive"
+                                                            className="gap-1 text-xs"
+                                                        >
                                                             <XCircle className="h-3 w-3" />
-                                                            {t('login_history.failed', 'Failed')}
+                                                            {t(
+                                                                'login_history.failed',
+                                                                'Failed',
+                                                            )}
                                                         </Badge>
                                                     )}
                                                 </div>
@@ -111,10 +145,16 @@ export default function LoginActivity({ activities }: { activities: LoginActivit
                                                     {activity.ip_address && (
                                                         <span className="flex items-center gap-1">
                                                             <Globe className="h-3 w-3" />
-                                                            {activity.ip_address}
+                                                            {
+                                                                activity.ip_address
+                                                            }
                                                         </span>
                                                     )}
-                                                    <span>{formatDate(activity.login_at)}</span>
+                                                    <span>
+                                                        {formatDate(
+                                                            activity.login_at,
+                                                        )}
+                                                    </span>
                                                 </div>
                                             </div>
                                         </div>

@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
-import { type TourStep } from '@/hooks/use-tour';
 import { Button } from '@/components/ui/button';
+import { type TourStep } from '@/hooks/use-tour';
 import { X } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 
 interface TourTooltipProps {
     step: TourStep;
@@ -16,7 +16,13 @@ interface Position {
     left: number;
 }
 
-export function TourTooltip({ step, stepIndex, totalSteps, onNext, onSkip }: TourTooltipProps) {
+export function TourTooltip({
+    step,
+    stepIndex,
+    totalSteps,
+    onNext,
+    onSkip,
+}: TourTooltipProps) {
     const tooltipRef = useRef<HTMLDivElement>(null);
     const [position, setPosition] = useState<Position>({ top: 0, left: 0 });
     const [targetRect, setTargetRect] = useState<DOMRect | null>(null);
@@ -25,6 +31,7 @@ export function TourTooltip({ step, stepIndex, totalSteps, onNext, onSkip }: Tou
 
     // Reset state when step changes
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setTargetFound(false);
         setTargetRect(null);
         setRetryCount(0);
@@ -38,7 +45,7 @@ export function TourTooltip({ step, stepIndex, totalSteps, onNext, onSkip }: Tou
             if (!target) {
                 // Retry up to 10 times with 100ms delay
                 if (retryCount < 10) {
-                    setTimeout(() => setRetryCount(c => c + 1), 100);
+                    setTimeout(() => setRetryCount((c) => c + 1), 100);
                 }
                 return;
             }
@@ -65,12 +72,15 @@ export function TourTooltip({ step, stepIndex, totalSteps, onNext, onSkip }: Tou
             }
 
             // If tooltip would go below viewport, position it above the target
-            if (top + tooltipHeight > window.scrollY + window.innerHeight - gap) {
+            if (
+                top + tooltipHeight >
+                window.scrollY + window.innerHeight - gap
+            ) {
                 top = rect.top - tooltipHeight - gap + window.scrollY;
             }
 
             setPosition({ top, left });
-            
+
             // Smooth scroll to target
             target.scrollIntoView({ behavior: 'smooth', block: 'center' });
         };
@@ -95,22 +105,33 @@ export function TourTooltip({ step, stepIndex, totalSteps, onNext, onSkip }: Tou
                     >
                         <div className="mb-3 flex items-center justify-between">
                             <div className="flex gap-1.5">
-                                {Array.from({ length: totalSteps }).map((_, i) => (
-                                    <div
-                                        key={i}
-                                        className={`h-1.5 w-1.5 rounded-full transition-colors ${
-                                            i === stepIndex ? 'bg-primary' : 'bg-muted-foreground/30'
-                                        }`}
-                                    />
-                                ))}
+                                {Array.from({ length: totalSteps }).map(
+                                    (_, i) => (
+                                        <div
+                                            key={i}
+                                            className={`h-1.5 w-1.5 rounded-full transition-colors ${
+                                                i === stepIndex
+                                                    ? 'bg-primary'
+                                                    : 'bg-muted-foreground/30'
+                                            }`}
+                                        />
+                                    ),
+                                )}
                             </div>
-                            <Button variant="ghost" size="icon" className="h-6 w-6" onClick={onSkip}>
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-6 w-6"
+                                onClick={onSkip}
+                            >
                                 <X className="h-4 w-4" />
                             </Button>
                         </div>
 
                         <h3 className="mb-1 font-semibold">{step.title}</h3>
-                        <p className="mb-4 text-sm text-muted-foreground">{step.description}</p>
+                        <p className="mb-4 text-sm text-muted-foreground">
+                            {step.description}
+                        </p>
 
                         <div className="flex items-center justify-between">
                             <button
@@ -160,7 +181,9 @@ export function TourTooltip({ step, stepIndex, totalSteps, onNext, onSkip }: Tou
                             <div
                                 key={i}
                                 className={`h-1.5 w-1.5 rounded-full transition-colors ${
-                                    i === stepIndex ? 'bg-primary' : 'bg-muted-foreground/30'
+                                    i === stepIndex
+                                        ? 'bg-primary'
+                                        : 'bg-muted-foreground/30'
                                 }`}
                             />
                         ))}
@@ -171,7 +194,9 @@ export function TourTooltip({ step, stepIndex, totalSteps, onNext, onSkip }: Tou
                 </div>
 
                 <h3 className="mb-1 font-semibold">{step.title}</h3>
-                <p className="mb-4 text-sm text-muted-foreground">{step.description}</p>
+                <p className="mb-4 text-sm text-muted-foreground">
+                    {step.description}
+                </p>
 
                 <div className="flex items-center justify-between">
                     <button

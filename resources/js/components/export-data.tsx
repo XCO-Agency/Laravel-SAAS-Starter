@@ -1,4 +1,3 @@
-import { useTranslations } from '@/hooks/use-translations';
 import { Button } from '@/components/ui/button';
 import {
     Card,
@@ -7,9 +6,10 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
+import { Spinner } from '@/components/ui/spinner';
+import { useTranslations } from '@/hooks/use-translations';
 import { useForm } from '@inertiajs/react';
 import { DownloadCloud } from 'lucide-react';
-import { Spinner } from '@/components/ui/spinner';
 
 export default function ExportData() {
     const { t } = useTranslations();
@@ -28,7 +28,10 @@ export default function ExportData() {
                     {t('settings.export.title', 'Export Account Data')}
                 </CardTitle>
                 <CardDescription>
-                    {t('settings.export.description', 'Download a copy of your personal data, workspaces, and activity logs. The export process runs in the background. You will receive an email with a secure download link once it is ready.')}
+                    {t(
+                        'settings.export.description',
+                        'Download a copy of your personal data, workspaces, and activity logs. The export process runs in the background. You will receive an email with a secure download link once it is ready.',
+                    )}
                 </CardDescription>
             </CardHeader>
             <CardContent>

@@ -1,3 +1,4 @@
+import CancellationFlow from '@/components/cancellation-flow';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -7,7 +8,6 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
-import { Spinner } from '@/components/ui/spinner';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -15,20 +15,21 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Spinner } from '@/components/ui/spinner';
 import { useToast } from '@/components/ui/toast';
 import { useTranslations } from '@/hooks/use-translations';
-import http from '@/lib/http';
-import { cn } from '@/lib/utils';
 import AppLayout from '@/layouts/app-layout';
 import WorkspaceLayout from '@/layouts/settings/workspace-layout';
+import http from '@/lib/http';
+import { cn } from '@/lib/utils';
 import {
     type BreadcrumbItem,
     type Invoice,
     type Plan,
     type WorkspaceRole,
 } from '@/types';
-import { Head, Link, Deferred } from '@inertiajs/react';
-import { Skeleton } from '@/components/ui/skeleton';
+import { Deferred, Head, Link } from '@inertiajs/react';
 import {
     AlertCircle,
     Ban,
@@ -44,7 +45,6 @@ import {
     Users,
 } from 'lucide-react';
 import { useState } from 'react';
-import CancellationFlow from '@/components/cancellation-flow';
 
 interface Subscription {
     status: string;
@@ -107,7 +107,10 @@ export default function BillingIndex({
     const handleResumeSubscription = async () => {
         setResumeLoading(true);
         try {
-            const { data } = await http.post<{ success?: boolean; error?: string }>('/billing/resume');
+            const { data } = await http.post<{
+                success?: boolean;
+                error?: string;
+            }>('/billing/resume');
             if (data.success) {
                 window.location.reload();
             } else {
@@ -126,7 +129,9 @@ export default function BillingIndex({
     const handlePortalRedirect = async () => {
         setPortalLoading(true);
         try {
-            const { data } = await http.get<{ portal_url?: string }>('/billing/portal');
+            const { data } = await http.get<{ portal_url?: string }>(
+                '/billing/portal',
+            );
             if (data.portal_url) {
                 window.location.href = data.portal_url;
             }
@@ -138,19 +143,29 @@ export default function BillingIndex({
 
     const getStatusBadge = () => {
         if (!subscription) {
-            return <Badge variant="secondary">{t('billing.free', 'Free')}</Badge>;
+            return (
+                <Badge variant="secondary">{t('billing.free', 'Free')}</Badge>
+            );
         }
 
         if (subscription.cancelled && subscription.on_grace_period) {
-            return <Badge variant="destructive">{t('billing.cancelling', 'Cancelling')}</Badge>;
+            return (
+                <Badge variant="destructive">
+                    {t('billing.cancelling', 'Cancelling')}
+                </Badge>
+            );
         }
 
         if (subscription.status === 'trialing') {
-            return <Badge variant="outline">{t('billing.trial', 'Trial')}</Badge>;
+            return (
+                <Badge variant="outline">{t('billing.trial', 'Trial')}</Badge>
+            );
         }
 
         if (subscription.status === 'active') {
-            return <Badge variant="default">{t('billing.active', 'Active')}</Badge>;
+            return (
+                <Badge variant="default">{t('billing.active', 'Active')}</Badge>
+            );
         }
 
         return <Badge variant="destructive">{subscription.status}</Badge>;
@@ -162,22 +177,32 @@ export default function BillingIndex({
 
             <WorkspaceLayout
                 title={t('billing.title', 'Billing')}
-                description={t('billing.description', 'Manage your subscription and billing information')}
+                description={t(
+                    'billing.description',
+                    'Manage your subscription and billing information',
+                )}
                 fullWidth
             >
                 <div className="space-y-8 pb-12">
                     <div className="grid gap-8 lg:grid-cols-3">
                         {/* Current Plan */}
-                        <Card className="lg:col-span-2 glass overflow-hidden border-2 border-primary/10 transition-all hover:border-primary/30 animate-fade-in-up">
-                            <CardHeader className="bg-muted/30 pb-6 border-b border-primary/5">
+                        <Card className="glass animate-fade-in-up overflow-hidden border-2 border-primary/10 transition-all hover:border-primary/30 lg:col-span-2">
+                            <CardHeader className="border-b border-primary/5 bg-muted/30 pb-6">
                                 <div className="flex items-center justify-between">
                                     <div>
                                         <CardTitle className="flex items-center gap-2">
                                             <Sparkles className="h-5 w-5 text-primary" />
-                                            {t('billing.current_plan', 'Current Plan')}
+                                            {t(
+                                                'billing.current_plan',
+                                                'Current Plan',
+                                            )}
                                         </CardTitle>
                                         <CardDescription>
-                                            {t('billing.your_workspace_on', 'Your workspace is on the {{plan}} plan.', { plan: workspace.plan })}
+                                            {t(
+                                                'billing.your_workspace_on',
+                                                'Your workspace is on the {{plan}} plan.',
+                                                { plan: workspace.plan },
+                                            )}
                                         </CardDescription>
                                     </div>
                                     {getStatusBadge()}
@@ -190,40 +215,66 @@ export default function BillingIndex({
                                             {workspace.plan}
                                         </p>
                                         {currentPlan && (
-                                            <p className="text-muted-foreground font-medium">
+                                            <p className="font-medium text-muted-foreground">
                                                 {currentPlan.price.monthly > 0
                                                     ? `$${currentPlan.price.monthly}/month`
-                                                    : t('billing.free_forever', 'Free forever')}
+                                                    : t(
+                                                          'billing.free_forever',
+                                                          'Free forever',
+                                                      )}
                                             </p>
                                         )}
                                         {workspace.on_trial &&
                                             workspace.trial_ends_at && (
-                                                <div className="flex items-center gap-1.5 mt-2 rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-700 dark:bg-amber-950/30 dark:text-amber-400 border border-amber-100 dark:border-amber-900/50 w-fit">
+                                                <div className="mt-2 flex w-fit items-center gap-1.5 rounded-full border border-amber-100 bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-700 dark:border-amber-900/50 dark:bg-amber-950/30 dark:text-amber-400">
                                                     <AlertCircle className="h-3.5 w-3.5" />
-                                                    {t('billing.trial_ends', 'Trial ends on {{date}}', { date: new Date(workspace.trial_ends_at).toLocaleDateString() })}
+                                                    {t(
+                                                        'billing.trial_ends',
+                                                        'Trial ends on {{date}}',
+                                                        {
+                                                            date: new Date(
+                                                                workspace.trial_ends_at,
+                                                            ).toLocaleDateString(),
+                                                        },
+                                                    )}
                                                 </div>
                                             )}
                                         {subscription?.cancelled &&
                                             subscription.ends_at && (
-                                                <div className="space-y-2 mt-2">
+                                                <div className="mt-2 space-y-2">
                                                     <p className="text-sm font-medium text-destructive">
-                                                        {t('billing.subscription_ends', 'Your subscription will end on {{date}}', { date: new Date(subscription.ends_at).toLocaleDateString() })}
+                                                        {t(
+                                                            'billing.subscription_ends',
+                                                            'Your subscription will end on {{date}}',
+                                                            {
+                                                                date: new Date(
+                                                                    subscription.ends_at,
+                                                                ).toLocaleDateString(),
+                                                            },
+                                                        )}
                                                     </p>
                                                     {subscription.on_grace_period &&
-                                                        (userRole === 'owner' || userRole === 'admin') && (
+                                                        (userRole === 'owner' ||
+                                                            userRole ===
+                                                                'admin') && (
                                                             <Button
                                                                 variant="outline"
                                                                 size="sm"
                                                                 onClick={
                                                                     handleResumeSubscription
                                                                 }
-                                                                disabled={resumeLoading}
+                                                                disabled={
+                                                                    resumeLoading
+                                                                }
                                                                 className="rounded-full"
                                                             >
                                                                 {resumeLoading && (
                                                                     <Spinner className="mr-2" />
                                                                 )}
-                                                                {t('billing.resume_subscription', 'Resume Subscription')}
+                                                                {t(
+                                                                    'billing.resume_subscription',
+                                                                    'Resume Subscription',
+                                                                )}
                                                             </Button>
                                                         )}
                                                 </div>
@@ -233,31 +284,52 @@ export default function BillingIndex({
                                     {isOwner && (
                                         <div className="flex flex-wrap items-center gap-2">
                                             {/* Primary Action */}
-                                            <Button asChild className="rounded-full px-6 shadow-sm transition-transform active:scale-95">
+                                            <Button
+                                                asChild
+                                                className="rounded-full px-6 shadow-sm transition-transform active:scale-95"
+                                            >
                                                 <Link href="/billing/plans">
                                                     {workspace.plan === 'Free'
-                                                        ? t('billing.upgrade', 'Upgrade Now')
-                                                        : t('billing.change_plan', 'Change Plan')}
+                                                        ? t(
+                                                              'billing.upgrade',
+                                                              'Upgrade Now',
+                                                          )
+                                                        : t(
+                                                              'billing.change_plan',
+                                                              'Change Plan',
+                                                          )}
                                                 </Link>
                                             </Button>
-                                            
+
                                             {/* Secondary Actions Dropdown */}
                                             <DropdownMenu>
                                                 <DropdownMenuTrigger asChild>
-                                                    <Button variant="outline" className="rounded-full gap-1">
+                                                    <Button
+                                                        variant="outline"
+                                                        className="gap-1 rounded-full"
+                                                    >
                                                         Actions
                                                         <ChevronDown className="h-4 w-4" />
                                                     </Button>
                                                 </DropdownMenuTrigger>
-                                                <DropdownMenuContent align="end" className="w-48">
+                                                <DropdownMenuContent
+                                                    align="end"
+                                                    className="w-48"
+                                                >
                                                     <DropdownMenuItem asChild>
-                                                        <Link href="/billing/compare" className="flex items-center gap-2 cursor-pointer">
+                                                        <Link
+                                                            href="/billing/compare"
+                                                            className="flex cursor-pointer items-center gap-2"
+                                                        >
                                                             <Layers className="h-4 w-4" />
                                                             Compare Plans
                                                         </Link>
                                                     </DropdownMenuItem>
                                                     <DropdownMenuItem asChild>
-                                                        <Link href="/billing/history" className="flex items-center gap-2 cursor-pointer">
+                                                        <Link
+                                                            href="/billing/history"
+                                                            className="flex cursor-pointer items-center gap-2"
+                                                        >
                                                             <History className="h-4 w-4" />
                                                             View History
                                                         </Link>
@@ -265,21 +337,31 @@ export default function BillingIndex({
                                                     {subscription && (
                                                         <>
                                                             <DropdownMenuSeparator />
-                                                            <DropdownMenuItem 
-                                                                onClick={handlePortalRedirect}
-                                                                disabled={portalLoading}
-                                                                className="flex items-center gap-2 cursor-pointer"
+                                                            <DropdownMenuItem
+                                                                onClick={
+                                                                    handlePortalRedirect
+                                                                }
+                                                                disabled={
+                                                                    portalLoading
+                                                                }
+                                                                className="flex cursor-pointer items-center gap-2"
                                                             >
                                                                 <ExternalLink className="h-4 w-4" />
-                                                                Manage Subscription
+                                                                Manage
+                                                                Subscription
                                                             </DropdownMenuItem>
                                                             {!subscription.cancelled && (
-                                                                <DropdownMenuItem 
-                                                                    onClick={() => setShowCancelFlow(true)}
-                                                                    className="flex items-center gap-2 cursor-pointer text-destructive focus:text-destructive"
+                                                                <DropdownMenuItem
+                                                                    onClick={() =>
+                                                                        setShowCancelFlow(
+                                                                            true,
+                                                                        )
+                                                                    }
+                                                                    className="flex cursor-pointer items-center gap-2 text-destructive focus:text-destructive"
                                                                 >
                                                                     <Ban className="h-4 w-4" />
-                                                                    Cancel Subscription
+                                                                    Cancel
+                                                                    Subscription
                                                                 </DropdownMenuItem>
                                                             )}
                                                         </>
@@ -292,9 +374,12 @@ export default function BillingIndex({
 
                                 {/* Plan Features */}
                                 {currentPlan && (
-                                    <div className="mt-8 border-t bg-muted/30 -mx-6 px-6 py-6">
-                                        <h4 className="mb-4 text-xs font-bold uppercase tracking-wider text-muted-foreground">
-                                            {t('billing.plan_includes', 'Included in your plan')}
+                                    <div className="-mx-6 mt-8 border-t bg-muted/30 px-6 py-6">
+                                        <h4 className="mb-4 text-xs font-bold tracking-wider text-muted-foreground uppercase">
+                                            {t(
+                                                'billing.plan_includes',
+                                                'Included in your plan',
+                                            )}
                                         </h4>
                                         <ul className="grid gap-x-8 gap-y-3 md:grid-cols-2 lg:grid-cols-3">
                                             {currentPlan.features.map(
@@ -303,7 +388,7 @@ export default function BillingIndex({
                                                         key={index}
                                                         className="flex items-center gap-2.5 text-sm font-medium text-foreground/80"
                                                     >
-                                                        <CheckCircle className="h-4 w-4 text-primary shrink-0" />
+                                                        <CheckCircle className="h-4 w-4 shrink-0 text-primary" />
                                                         {feature}
                                                     </li>
                                                 ),
@@ -316,23 +401,35 @@ export default function BillingIndex({
 
                         <div className="space-y-6 lg:col-span-1">
                             {/* Upcoming Invoice */}
-                            <Deferred data="upcoming_invoice" fallback={
-                                <Card className="glass animate-fade-in-up delay-200 border-none">
-                                    <ViewSkeleton rows={2} />
-                                </Card>
-                            }>
+                            <Deferred
+                                data="upcoming_invoice"
+                                fallback={
+                                    <Card className="glass animate-fade-in-up border-none delay-200">
+                                        <ViewSkeleton rows={2} />
+                                    </Card>
+                                }
+                            >
                                 {upcoming_invoice && (
-                                    <Card className="bg-primary text-primary-foreground shadow-lg shadow-primary/20 animate-fade-in-up delay-200 border-none">
+                                    <Card className="animate-fade-in-up border-none bg-primary text-primary-foreground shadow-lg shadow-primary/20 delay-200">
                                         <CardHeader className="pb-2">
-                                            <CardTitle className="text-lg font-bold flex items-center gap-2">
+                                            <CardTitle className="flex items-center gap-2 text-lg font-bold">
                                                 <CreditCard className="h-4 w-4" />
                                                 Upcoming Payment
                                             </CardTitle>
                                         </CardHeader>
                                         <CardContent>
                                             <div className="flex items-baseline gap-1">
-                                                <span className="text-2xl font-bold">${(Number(upcoming_invoice.amount) / 100).toFixed(2)}</span>
-                                                <span className="text-xs opacity-70">on {upcoming_invoice.date}</span>
+                                                <span className="text-2xl font-bold">
+                                                    $
+                                                    {(
+                                                        Number(
+                                                            upcoming_invoice.amount,
+                                                        ) / 100
+                                                    ).toFixed(2)}
+                                                </span>
+                                                <span className="text-xs opacity-70">
+                                                    on {upcoming_invoice.date}
+                                                </span>
                                             </div>
                                         </CardContent>
                                     </Card>
@@ -341,22 +438,27 @@ export default function BillingIndex({
 
                             {/* Payment Method Quick Look */}
                             {subscription && isOwner && (
-                                <Card className="glass transition-all hover:bg-muted/30 animate-fade-in-up delay-300">
-                                    <CardHeader className="pb-3 pt-4">
-                                        <CardTitle className="text-sm font-bold flex items-center gap-2 uppercase tracking-tight text-muted-foreground">
+                                <Card className="glass animate-fade-in-up transition-all delay-300 hover:bg-muted/30">
+                                    <CardHeader className="pt-4 pb-3">
+                                        <CardTitle className="flex items-center gap-2 text-sm font-bold tracking-tight text-muted-foreground uppercase">
                                             <CreditCard className="h-3.5 w-3.5" />
-                                            {t('billing.payment_method', 'Payment Method')}
+                                            {t(
+                                                'billing.payment_method',
+                                                'Payment Method',
+                                            )}
                                         </CardTitle>
                                     </CardHeader>
                                     <CardContent className="pb-4">
                                         <div className="flex items-center justify-between">
-                                            <p className="text-sm font-medium">Managed via Stripe</p>
+                                            <p className="text-sm font-medium">
+                                                Managed via Stripe
+                                            </p>
                                             <Button
                                                 variant="ghost"
                                                 size="sm"
                                                 onClick={handlePortalRedirect}
                                                 disabled={portalLoading}
-                                                className="h-8 px-2 text-primary hover:text-primary hover:bg-primary/5"
+                                                className="h-8 px-2 text-primary hover:bg-primary/5 hover:text-primary"
                                             >
                                                 Update
                                             </Button>
@@ -367,15 +469,25 @@ export default function BillingIndex({
 
                             {/* Trial Countdown or Help */}
                             {!subscription && workspace.plan === 'Free' && (
-                                <Card className="glass bg-muted/20 border-dashed animate-fade-in-up delay-300">
-                                    <CardContent className="pt-8 pb-8 flex flex-col items-center text-center">
-                                        <Sparkles className="h-10 w-10 text-primary mb-4 opacity-50" />
-                                        <p className="text-lg font-bold mb-2">Unlock more power</p>
-                                        <p className="text-sm text-muted-foreground mb-6 leading-relaxed px-6">
-                                            Get unlimited workspaces, priority support, and advanced analytics to supercharge your workflow.
+                                <Card className="glass animate-fade-in-up border-dashed bg-muted/20 delay-300">
+                                    <CardContent className="flex flex-col items-center pt-8 pb-8 text-center">
+                                        <Sparkles className="mb-4 h-10 w-10 text-primary opacity-50" />
+                                        <p className="mb-2 text-lg font-bold">
+                                            Unlock more power
                                         </p>
-                                        <Button asChild size="lg" className="rounded-full w-full max-w-[180px] font-bold shadow-lg shadow-primary/20 transition-transform hover:scale-105 active:scale-95 animate-pulse-premium">
-                                            <Link href="/billing/plans">Explore Plans</Link>
+                                        <p className="mb-6 px-6 text-sm leading-relaxed text-muted-foreground">
+                                            Get unlimited workspaces, priority
+                                            support, and advanced analytics to
+                                            supercharge your workflow.
+                                        </p>
+                                        <Button
+                                            asChild
+                                            size="lg"
+                                            className="animate-pulse-premium w-full max-w-[180px] rounded-full font-bold shadow-lg shadow-primary/20 transition-transform hover:scale-105 active:scale-95"
+                                        >
+                                            <Link href="/billing/plans">
+                                                Explore Plans
+                                            </Link>
                                         </Button>
                                     </CardContent>
                                 </Card>
@@ -384,142 +496,229 @@ export default function BillingIndex({
                     </div>
 
                     {/* Usage Overview */}
-                    <Deferred data="usage" fallback={
-                        <Card className="glass overflow-hidden shadow-sm animate-fade-in-up delay-400">
-                            <CardHeader className="border-b bg-muted/10">
-                                <Skeleton className="h-6 w-32" />
-                            </CardHeader>
-                            <CardContent className="p-6 space-y-6">
-                                <ViewSkeleton rows={3} />
-                            </CardContent>
-                        </Card>
-                    }>
-                        <Card className="glass overflow-hidden shadow-sm animate-fade-in-up delay-400">
+                    <Deferred
+                        data="usage"
+                        fallback={
+                            <Card className="glass animate-fade-in-up overflow-hidden shadow-sm delay-400">
+                                <CardHeader className="border-b bg-muted/10">
+                                    <Skeleton className="h-6 w-32" />
+                                </CardHeader>
+                                <CardContent className="space-y-6 p-6">
+                                    <ViewSkeleton rows={3} />
+                                </CardContent>
+                            </Card>
+                        }
+                    >
+                        <Card className="glass animate-fade-in-up overflow-hidden shadow-sm delay-400">
                             <CardHeader className="border-b bg-muted/10">
                                 <div className="flex items-center justify-between">
                                     <div>
                                         <CardTitle className="flex items-center gap-2">
                                             <Users className="h-5 w-5 text-muted-foreground" />
-                                            {t('billing.usage_overview', 'Usage Overview')}
+                                            {t(
+                                                'billing.usage_overview',
+                                                'Usage Overview',
+                                            )}
                                         </CardTitle>
                                         <CardDescription>
-                                            {t('billing.usage_description', 'Your current resource consumption')}
+                                            {t(
+                                                'billing.usage_description',
+                                                'Your current resource consumption',
+                                            )}
                                         </CardDescription>
                                     </div>
-                                    <Badge variant="outline" className="font-mono bg-background/50">
+                                    <Badge
+                                        variant="outline"
+                                        className="bg-background/50 font-mono"
+                                    >
                                         {workspace.plan} Plan
                                     </Badge>
                                 </div>
                             </CardHeader>
                             <CardContent className="p-6">
                                 <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                                    {usage && Object.entries(usage).map(([key, item]) => {
-                                        const isUnlimited = item.limit === -1 || item.limit === null || item.limit === undefined;
-                                        const percentage = isUnlimited ? 0 : Math.min(100, Math.round((item.count / item.limit) * 100));
-                                        const isOverLimit = !isUnlimited && item.count > item.limit;
-                                        
-                                        return (
-                                            <div key={key} className="space-y-2">
-                                                <div className="flex justify-between items-center">
-                                                    <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                                                        {item.label}
-                                                    </span>
-                                                </div>
-                                                <div className="flex items-baseline gap-1">
-                                                    <span className={cn(
-                                                        "text-2xl font-bold",
-                                                        isOverLimit && "text-destructive"
-                                                    )}>
-                                                        {item.count}
-                                                    </span>
-                                                    <span className="text-sm text-muted-foreground">
-                                                        {isUnlimited ? '' : `/ ${item.limit}`}
-                                                    </span>
-                                                </div>
-                                                {!isUnlimited && (
-                                                    <div className="relative h-2 w-full overflow-hidden rounded-full bg-muted">
-                                                        <div
-                                                            className={cn(
-                                                                "h-full transition-all duration-700 ease-out rounded-full",
-                                                                isOverLimit ? "bg-destructive" :
-                                                                    percentage > 90 ? "bg-destructive/80" :
-                                                                        percentage > 75 ? "bg-orange-500" :
-                                                                            percentage > 50 ? "bg-primary" :
-                                                                                "bg-emerald-500"
+                                    {usage &&
+                                        Object.entries(usage).map(
+                                            ([key, item]) => {
+                                                const isUnlimited =
+                                                    item.limit === -1 ||
+                                                    item.limit === null ||
+                                                    item.limit === undefined;
+                                                const percentage = isUnlimited
+                                                    ? 0
+                                                    : Math.min(
+                                                          100,
+                                                          Math.round(
+                                                              (item.count /
+                                                                  item.limit) *
+                                                                  100,
+                                                          ),
+                                                      );
+                                                const isOverLimit =
+                                                    !isUnlimited &&
+                                                    item.count > item.limit;
+
+                                                return (
+                                                    <div
+                                                        key={key}
+                                                        className="space-y-2"
+                                                    >
+                                                        <div className="flex items-center justify-between">
+                                                            <span className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">
+                                                                {item.label}
+                                                            </span>
+                                                        </div>
+                                                        <div className="flex items-baseline gap-1">
+                                                            <span
+                                                                className={cn(
+                                                                    'text-2xl font-bold',
+                                                                    isOverLimit &&
+                                                                        'text-destructive',
+                                                                )}
+                                                            >
+                                                                {item.count}
+                                                            </span>
+                                                            <span className="text-sm text-muted-foreground">
+                                                                {isUnlimited
+                                                                    ? ''
+                                                                    : `/ ${item.limit}`}
+                                                            </span>
+                                                        </div>
+                                                        {!isUnlimited && (
+                                                            <div className="relative h-2 w-full overflow-hidden rounded-full bg-muted">
+                                                                <div
+                                                                    className={cn(
+                                                                        'h-full rounded-full transition-all duration-700 ease-out',
+                                                                        isOverLimit
+                                                                            ? 'bg-destructive'
+                                                                            : percentage >
+                                                                                90
+                                                                              ? 'bg-destructive/80'
+                                                                              : percentage >
+                                                                                  75
+                                                                                ? 'bg-orange-500'
+                                                                                : percentage >
+                                                                                    50
+                                                                                  ? 'bg-primary'
+                                                                                  : 'bg-emerald-500',
+                                                                    )}
+                                                                    style={{
+                                                                        width: `${Math.min(100, percentage)}%`,
+                                                                    }}
+                                                                />
+                                                            </div>
+                                                        )}
+                                                        {!isUnlimited &&
+                                                            percentage > 75 && (
+                                                                <p
+                                                                    className={cn(
+                                                                        'flex items-center gap-1 text-[10px] font-medium',
+                                                                        percentage >
+                                                                            90
+                                                                            ? 'text-destructive'
+                                                                            : 'text-orange-500',
+                                                                    )}
+                                                                >
+                                                                    <AlertCircle className="h-3 w-3" />
+                                                                    {isOverLimit
+                                                                        ? 'Over limit'
+                                                                        : `${100 - percentage}% remaining`}
+                                                                </p>
                                                             )}
-                                                            style={{ width: `${Math.min(100, percentage)}%` }}
-                                                        />
                                                     </div>
-                                                )}
-                                                {!isUnlimited && percentage > 75 && (
-                                                    <p className={cn(
-                                                        "text-[10px] font-medium flex items-center gap-1",
-                                                        percentage > 90 ? "text-destructive" : "text-orange-500"
-                                                    )}>
-                                                        <AlertCircle className="h-3 w-3" />
-                                                        {isOverLimit ? 'Over limit' : `${100 - percentage}% remaining`}
-                                                    </p>
-                                                )}
-                                            </div>
-                                        );
-                                    })}
+                                                );
+                                            },
+                                        )}
                                 </div>
                             </CardContent>
                         </Card>
                     </Deferred>
 
                     {/* Invoices */}
-                    <Deferred data="invoices" fallback={
-                        <Card className="glass shadow-sm border-none animate-fade-in-up delay-500">
-                            <CardHeader className="pb-4">
-                                <Skeleton className="h-6 w-32" />
-                            </CardHeader>
-                            <CardContent>
-                                <ViewSkeleton rows={5} />
-                            </CardContent>
-                        </Card>
-                    }>
-                        {invoices?.length > 0 && (
-                            <Card className="glass shadow-sm border-none animate-fade-in-up delay-500">
+                    <Deferred
+                        data="invoices"
+                        fallback={
+                            <Card className="glass animate-fade-in-up border-none shadow-sm delay-500">
                                 <CardHeader className="pb-4">
-                                    <CardTitle className="text-lg font-bold flex items-center gap-2">
+                                    <Skeleton className="h-6 w-32" />
+                                </CardHeader>
+                                <CardContent>
+                                    <ViewSkeleton rows={5} />
+                                </CardContent>
+                            </Card>
+                        }
+                    >
+                        {invoices?.length > 0 && (
+                            <Card className="glass animate-fade-in-up border-none shadow-sm delay-500">
+                                <CardHeader className="pb-4">
+                                    <CardTitle className="flex items-center gap-2 text-lg font-bold">
                                         <Receipt className="h-5 w-5 text-muted-foreground" />
-                                        {t('billing.invoice_history', 'Invoice History')}
+                                        {t(
+                                            'billing.invoice_history',
+                                            'Invoice History',
+                                        )}
                                     </CardTitle>
                                     <CardDescription>
-                                        {t('billing.invoice_description', 'Download your past invoices and receipts')}
+                                        {t(
+                                            'billing.invoice_description',
+                                            'Download your past invoices and receipts',
+                                        )}
                                     </CardDescription>
                                 </CardHeader>
                                 <CardContent>
-                                    <div className="rounded-xl border border-muted-foreground/10 overflow-hidden bg-background/30">
+                                    <div className="overflow-hidden rounded-xl border border-muted-foreground/10 bg-background/30">
                                         <table className="w-full text-sm">
                                             <thead>
-                                                <tr className="bg-muted/30 border-b border-muted-foreground/10 text-muted-foreground uppercase text-[10px] font-bold tracking-widest">
-                                                    <th className="px-6 py-4 text-left">Date</th>
-                                                    <th className="px-6 py-4 text-left">Amount</th>
-                                                    <th className="px-6 py-4 text-right">Action</th>
+                                                <tr className="border-b border-muted-foreground/10 bg-muted/30 text-[10px] font-bold tracking-widest text-muted-foreground uppercase">
+                                                    <th className="px-6 py-4 text-left">
+                                                        Date
+                                                    </th>
+                                                    <th className="px-6 py-4 text-left">
+                                                        Amount
+                                                    </th>
+                                                    <th className="px-6 py-4 text-right">
+                                                        Action
+                                                    </th>
                                                 </tr>
                                             </thead>
                                             <tbody className="divide-y divide-muted-foreground/10">
-                                                {invoices.map((invoice: Invoice) => (
-                                                    <tr key={invoice.id} className="hover:bg-muted/20 transition-colors group">
-                                                        <td className="px-6 py-4 font-medium">{invoice.date}</td>
-                                                        <td className="px-6 py-4 font-mono font-bold">${(Number(invoice.total) / 100).toFixed(2)}</td>
-                                                        <td className="px-6 py-4 text-right">
-                                                            <Button
-                                                                variant="ghost"
-                                                                size="sm"
-                                                                asChild
-                                                                className="opacity-0 group-hover:opacity-100 transition-opacity hover:bg-primary/10 hover:text-primary rounded-full px-4 h-8"
-                                                            >
-                                                                <a href={invoice.pdf_url}>
-                                                                    <Download className="mr-2 h-3.5 w-3.5" />
-                                                                    PDF
-                                                                </a>
-                                                            </Button>
-                                                        </td>
-                                                    </tr>
-                                                ))}
+                                                {invoices.map(
+                                                    (invoice: Invoice) => (
+                                                        <tr
+                                                            key={invoice.id}
+                                                            className="group transition-colors hover:bg-muted/20"
+                                                        >
+                                                            <td className="px-6 py-4 font-medium">
+                                                                {invoice.date}
+                                                            </td>
+                                                            <td className="px-6 py-4 font-mono font-bold">
+                                                                $
+                                                                {(
+                                                                    Number(
+                                                                        invoice.total,
+                                                                    ) / 100
+                                                                ).toFixed(2)}
+                                                            </td>
+                                                            <td className="px-6 py-4 text-right">
+                                                                <Button
+                                                                    variant="ghost"
+                                                                    size="sm"
+                                                                    asChild
+                                                                    className="h-8 rounded-full px-4 opacity-0 transition-opacity group-hover:opacity-100 hover:bg-primary/10 hover:text-primary"
+                                                                >
+                                                                    <a
+                                                                        href={
+                                                                            invoice.pdf_url
+                                                                        }
+                                                                    >
+                                                                        <Download className="mr-2 h-3.5 w-3.5" />
+                                                                        PDF
+                                                                    </a>
+                                                                </Button>
+                                                            </td>
+                                                        </tr>
+                                                    ),
+                                                )}
                                             </tbody>
                                         </table>
                                     </div>

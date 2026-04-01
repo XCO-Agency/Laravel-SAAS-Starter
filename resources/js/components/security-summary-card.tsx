@@ -1,21 +1,27 @@
-import { useEffect, useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
 import {
-    CheckCircle,
-    XCircle,
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
+import { Progress } from '@/components/ui/progress';
+import { Spinner } from '@/components/ui/spinner';
+import {
     AlertCircle,
-    Key,
-    Shield,
-    Lock,
-    Github,
-    Chrome,
     AlertTriangle,
     ArrowRight,
+    CheckCircle,
+    Chrome,
+    Github,
+    Key,
+    Lock,
+    Shield,
+    XCircle,
 } from 'lucide-react';
-import { Spinner } from '@/components/ui/spinner';
+import { useEffect, useState } from 'react';
 
 interface SecuritySummaryData {
     authentication: {
@@ -42,7 +48,10 @@ interface SecuritySummaryData {
     }>;
 }
 
-const ProviderIcons: Record<string, React.ComponentType<{ className?: string }>> = {
+const ProviderIcons: Record<
+    string,
+    React.ComponentType<{ className?: string }>
+> = {
     github: Github,
     google: Chrome,
 };
@@ -122,7 +131,9 @@ export function SecuritySummaryCard() {
                 <CardContent className="p-6">
                     <div className="flex items-center gap-2 text-red-600">
                         <AlertCircle className="h-5 w-5" />
-                        <p className="text-sm">Failed to load security summary</p>
+                        <p className="text-sm">
+                            Failed to load security summary
+                        </p>
                     </div>
                 </CardContent>
             </Card>
@@ -150,37 +161,60 @@ export function SecuritySummaryCard() {
                         <div className={`text-2xl font-bold ${scoreColor}`}>
                             {security_score}
                         </div>
-                        <div className="text-xs text-muted-foreground">Security Score</div>
+                        <div className="text-xs text-muted-foreground">
+                            Security Score
+                        </div>
                     </div>
                 </div>
-                <Progress value={security_score} className={`h-2 ${scoreBgColor}`} />
+                <Progress
+                    value={security_score}
+                    className={`h-2 ${scoreBgColor}`}
+                />
             </CardHeader>
             <CardContent className="space-y-6">
                 {/* Password */}
                 <div className="flex items-start gap-4">
-                    <div className={`rounded-full p-2 ${authentication.password.enabled ? 'bg-green-100 dark:bg-green-950' : 'bg-red-100 dark:bg-red-950'}`}>
-                        <Lock className={`h-4 w-4 ${authentication.password.enabled ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`} />
+                    <div
+                        className={`rounded-full p-2 ${authentication.password.enabled ? 'bg-green-100 dark:bg-green-950' : 'bg-red-100 dark:bg-red-950'}`}
+                    >
+                        <Lock
+                            className={`h-4 w-4 ${authentication.password.enabled ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}
+                        />
                     </div>
                     <div className="flex-1">
                         <div className="flex items-center gap-2">
                             <span className="font-medium">Password</span>
                             {authentication.password.enabled ? (
-                                <Badge variant="outline" className="text-green-600 border-green-200 dark:border-green-800">
+                                <Badge
+                                    variant="outline"
+                                    className="border-green-200 text-green-600 dark:border-green-800"
+                                >
                                     <CheckCircle className="mr-1 h-3 w-3" />
                                     Set
                                 </Badge>
                             ) : (
-                                <Badge variant="outline" className="text-red-600 border-red-200 dark:border-red-800">
+                                <Badge
+                                    variant="outline"
+                                    className="border-red-200 text-red-600 dark:border-red-800"
+                                >
                                     <XCircle className="mr-1 h-3 w-3" />
                                     Not set
                                 </Badge>
                             )}
                         </div>
-                        <p className="text-xs text-muted-foreground mt-1">
-                            Last changed: {formatDate(authentication.password.last_changed_at)}
+                        <p className="mt-1 text-xs text-muted-foreground">
+                            Last changed:{' '}
+                            {formatDate(
+                                authentication.password.last_changed_at,
+                            )}
                         </p>
                         {!authentication.password.enabled && (
-                            <Button variant="link" size="sm" className="h-auto p-0 mt-1" asChild>
+                            <Button
+                                variant="link"
+                                size="sm"
+                                className="mt-1 h-auto p-0"
+                                asChild
+                            >
                                 <a href="/settings/password">Set password →</a>
                             </Button>
                         )}
@@ -189,31 +223,48 @@ export function SecuritySummaryCard() {
 
                 {/* Two-Factor Authentication */}
                 <div className="flex items-start gap-4">
-                    <div className={`rounded-full p-2 ${authentication.two_factor.enabled ? 'bg-green-100 dark:bg-green-950' : 'bg-amber-100 dark:bg-amber-950'}`}>
-                        <Key className={`h-4 w-4 ${authentication.two_factor.enabled ? 'text-green-600 dark:text-green-400' : 'text-amber-600 dark:text-amber-400'}`} />
+                    <div
+                        className={`rounded-full p-2 ${authentication.two_factor.enabled ? 'bg-green-100 dark:bg-green-950' : 'bg-amber-100 dark:bg-amber-950'}`}
+                    >
+                        <Key
+                            className={`h-4 w-4 ${authentication.two_factor.enabled ? 'text-green-600 dark:text-green-400' : 'text-amber-600 dark:text-amber-400'}`}
+                        />
                     </div>
                     <div className="flex-1">
                         <div className="flex items-center gap-2">
-                            <span className="font-medium">Two-Factor Authentication</span>
+                            <span className="font-medium">
+                                Two-Factor Authentication
+                            </span>
                             {authentication.two_factor.enabled ? (
-                                <Badge variant="outline" className="text-green-600 border-green-200 dark:border-green-800">
+                                <Badge
+                                    variant="outline"
+                                    className="border-green-200 text-green-600 dark:border-green-800"
+                                >
                                     <CheckCircle className="mr-1 h-3 w-3" />
                                     Enabled
                                 </Badge>
                             ) : (
-                                <Badge variant="outline" className="text-amber-600 border-amber-200 dark:border-amber-800">
+                                <Badge
+                                    variant="outline"
+                                    className="border-amber-200 text-amber-600 dark:border-amber-800"
+                                >
                                     <AlertTriangle className="mr-1 h-3 w-3" />
                                     Disabled
                                 </Badge>
                             )}
                         </div>
-                        <p className="text-xs text-muted-foreground mt-1">
+                        <p className="mt-1 text-xs text-muted-foreground">
                             {authentication.two_factor.enabled
                                 ? `Enabled on ${formatDate(authentication.two_factor.confirmed_at)}`
                                 : 'Add an extra layer of security to your account'}
                         </p>
                         {!authentication.two_factor.enabled && (
-                            <Button variant="link" size="sm" className="h-auto p-0 mt-1" asChild>
+                            <Button
+                                variant="link"
+                                size="sm"
+                                className="mt-1 h-auto p-0"
+                                asChild
+                            >
                                 <a href="/settings/two-factor">Enable 2FA →</a>
                             </Button>
                         )}
@@ -222,39 +273,55 @@ export function SecuritySummaryCard() {
 
                 {/* Social Accounts */}
                 <div className="flex items-start gap-4">
-                    <div className={`rounded-full p-2 ${authentication.social_accounts.length > 0 ? 'bg-green-100 dark:bg-green-950' : 'bg-muted'}`}>
-                        <Shield className={`h-4 w-4 ${authentication.social_accounts.length > 0 ? 'text-green-600 dark:text-green-400' : 'text-muted-foreground'}`} />
+                    <div
+                        className={`rounded-full p-2 ${authentication.social_accounts.length > 0 ? 'bg-green-100 dark:bg-green-950' : 'bg-muted'}`}
+                    >
+                        <Shield
+                            className={`h-4 w-4 ${authentication.social_accounts.length > 0 ? 'text-green-600 dark:text-green-400' : 'text-muted-foreground'}`}
+                        />
                     </div>
                     <div className="flex-1">
                         <div className="flex items-center gap-2">
                             <span className="font-medium">Social Accounts</span>
                             <Badge variant="secondary">
-                                {authentication.social_accounts.length} connected
+                                {authentication.social_accounts.length}{' '}
+                                connected
                             </Badge>
                         </div>
                         {authentication.social_accounts.length > 0 ? (
-                            <div className="flex flex-wrap gap-2 mt-2">
-                                {authentication.social_accounts.map((account) => {
-                                    const Icon = ProviderIcons[account.provider] || Shield;
-                                    return (
-                                        <div
-                                            key={account.id}
-                                            className="flex items-center gap-1.5 rounded-md border px-2 py-1 text-xs"
-                                        >
-                                            <Icon className="h-3.5 w-3.5" />
-                                            {account.provider_name}
-                                        </div>
-                                    );
-                                })}
+                            <div className="mt-2 flex flex-wrap gap-2">
+                                {authentication.social_accounts.map(
+                                    (account) => {
+                                        const Icon =
+                                            ProviderIcons[account.provider] ||
+                                            Shield;
+                                        return (
+                                            <div
+                                                key={account.id}
+                                                className="flex items-center gap-1.5 rounded-md border px-2 py-1 text-xs"
+                                            >
+                                                <Icon className="h-3.5 w-3.5" />
+                                                {account.provider_name}
+                                            </div>
+                                        );
+                                    },
+                                )}
                             </div>
                         ) : (
-                            <p className="text-xs text-muted-foreground mt-1">
+                            <p className="mt-1 text-xs text-muted-foreground">
                                 No social accounts connected
                             </p>
                         )}
-                        <Button variant="link" size="sm" className="h-auto p-0 mt-1" asChild>
+                        <Button
+                            variant="link"
+                            size="sm"
+                            className="mt-1 h-auto p-0"
+                            asChild
+                        >
                             <a href="/settings/connected-accounts">
-                                {authentication.social_accounts.length > 0 ? 'Manage connections →' : 'Connect accounts →'}
+                                {authentication.social_accounts.length > 0
+                                    ? 'Manage connections →'
+                                    : 'Connect accounts →'}
                             </a>
                         </Button>
                     </div>
@@ -262,19 +329,27 @@ export function SecuritySummaryCard() {
 
                 {/* Recommendations */}
                 {recommendations.length > 0 && (
-                    <div className="rounded-lg border bg-muted/50 p-4 space-y-3">
+                    <div className="space-y-3 rounded-lg border bg-muted/50 p-4">
                         <p className="text-sm font-medium">Recommendations</p>
                         {recommendations.map((rec, index) => (
                             <div key={index} className="flex items-start gap-3">
-                                <Badge className={`${getPriorityColor(rec.priority)} shrink-0 text-xs capitalize`}>
+                                <Badge
+                                    className={`${getPriorityColor(rec.priority)} shrink-0 text-xs capitalize`}
+                                >
                                     {rec.priority}
                                 </Badge>
                                 <div className="flex-1">
                                     <p className="text-sm">{rec.text}</p>
                                     {rec.action && (
-                                        <Button variant="link" size="sm" className="h-auto p-0 mt-0.5" asChild>
+                                        <Button
+                                            variant="link"
+                                            size="sm"
+                                            className="mt-0.5 h-auto p-0"
+                                            asChild
+                                        >
                                             <a href={rec.action}>
-                                                Take action <ArrowRight className="ml-1 h-3 w-3" />
+                                                Take action{' '}
+                                                <ArrowRight className="ml-1 h-3 w-3" />
                                             </a>
                                         </Button>
                                     )}

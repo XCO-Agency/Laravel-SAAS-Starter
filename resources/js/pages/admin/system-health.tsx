@@ -59,14 +59,25 @@ interface SystemHealthProps {
     stats: Stats;
 }
 
-function StatCard({ title, value, icon: Icon, description, variant = 'default' }: {
+function StatCard({
+    title,
+    value,
+    icon: Icon,
+    description,
+    variant = 'default',
+}: {
     title: string;
     value: string | number;
     icon: typeof Activity;
     description?: string;
     variant?: 'default' | 'warning' | 'success';
 }) {
-    const iconColor = variant === 'warning' ? 'text-amber-500' : variant === 'success' ? 'text-emerald-500' : 'text-muted-foreground';
+    const iconColor =
+        variant === 'warning'
+            ? 'text-amber-500'
+            : variant === 'success'
+              ? 'text-emerald-500'
+              : 'text-muted-foreground';
 
     return (
         <Card>
@@ -77,7 +88,9 @@ function StatCard({ title, value, icon: Icon, description, variant = 'default' }
             <CardContent>
                 <div className="text-2xl font-bold">{value}</div>
                 {description && (
-                    <p className="mt-1 text-xs text-muted-foreground">{description}</p>
+                    <p className="mt-1 text-xs text-muted-foreground">
+                        {description}
+                    </p>
                 )}
             </CardContent>
         </Card>
@@ -108,7 +121,11 @@ export default function SystemHealth({ failedJobs, stats }: SystemHealthProps) {
     };
 
     const flushAll = async () => {
-        if (!confirm('Are you sure you want to delete all failed jobs? This cannot be undone.')) {
+        if (
+            !confirm(
+                'Are you sure you want to delete all failed jobs? This cannot be undone.',
+            )
+        ) {
             return;
         }
         setActionLoading('flush');
@@ -124,15 +141,16 @@ export default function SystemHealth({ failedJobs, stats }: SystemHealthProps) {
         <AdminLayout>
             <Head title="System Health" />
 
-            <div className="p-4 md:p-6 lg:p-8 space-y-6">
+            <div className="space-y-6 p-4 md:p-6 lg:p-8">
                 <div className="flex items-center justify-between">
                     <div>
-                        <h1 className="text-2xl font-bold flex items-center gap-2">
+                        <h1 className="flex items-center gap-2 text-2xl font-bold">
                             <Activity className="h-6 w-6 text-primary" />
                             System Health
                         </h1>
-                        <p className="text-muted-foreground mt-1">
-                            Monitor queue health, storage, and infrastructure status.
+                        <p className="mt-1 text-muted-foreground">
+                            Monitor queue health, storage, and infrastructure
+                            status.
                         </p>
                     </div>
                     <Button
@@ -152,7 +170,9 @@ export default function SystemHealth({ failedJobs, stats }: SystemHealthProps) {
                         value={stats.pending_jobs}
                         icon={Clock}
                         description="Jobs waiting in queue"
-                        variant={stats.pending_jobs > 100 ? 'warning' : 'default'}
+                        variant={
+                            stats.pending_jobs > 100 ? 'warning' : 'default'
+                        }
                     />
                     <StatCard
                         title="Failed Jobs"
@@ -188,13 +208,30 @@ export default function SystemHealth({ failedJobs, stats }: SystemHealthProps) {
                         <CardContent>
                             <div className="space-y-3">
                                 {[
-                                    { label: 'Cache', value: stats.cache_driver },
-                                    { label: 'Queue', value: stats.queue_driver },
-                                    { label: 'Session', value: stats.session_driver },
+                                    {
+                                        label: 'Cache',
+                                        value: stats.cache_driver,
+                                    },
+                                    {
+                                        label: 'Queue',
+                                        value: stats.queue_driver,
+                                    },
+                                    {
+                                        label: 'Session',
+                                        value: stats.session_driver,
+                                    },
                                 ].map((item) => (
-                                    <div key={item.label} className="flex items-center justify-between text-sm">
-                                        <span className="text-muted-foreground">{item.label}</span>
-                                        <Badge variant="secondary" className="font-mono text-xs">
+                                    <div
+                                        key={item.label}
+                                        className="flex items-center justify-between text-sm"
+                                    >
+                                        <span className="text-muted-foreground">
+                                            {item.label}
+                                        </span>
+                                        <Badge
+                                            variant="secondary"
+                                            className="font-mono text-xs"
+                                        >
                                             {item.value}
                                         </Badge>
                                     </div>
@@ -214,13 +251,29 @@ export default function SystemHealth({ failedJobs, stats }: SystemHealthProps) {
                         <CardContent>
                             <div className="space-y-3">
                                 {[
-                                    { label: 'storage/app', value: stats.storage.app },
-                                    { label: 'storage/logs', value: stats.storage.logs },
-                                    { label: 'storage/framework', value: stats.storage.framework },
+                                    {
+                                        label: 'storage/app',
+                                        value: stats.storage.app,
+                                    },
+                                    {
+                                        label: 'storage/logs',
+                                        value: stats.storage.logs,
+                                    },
+                                    {
+                                        label: 'storage/framework',
+                                        value: stats.storage.framework,
+                                    },
                                 ].map((item) => (
-                                    <div key={item.label} className="flex items-center justify-between text-sm">
-                                        <span className="font-mono text-xs text-muted-foreground">{item.label}</span>
-                                        <span className="font-medium">{item.value}</span>
+                                    <div
+                                        key={item.label}
+                                        className="flex items-center justify-between text-sm"
+                                    >
+                                        <span className="font-mono text-xs text-muted-foreground">
+                                            {item.label}
+                                        </span>
+                                        <span className="font-medium">
+                                            {item.value}
+                                        </span>
                                     </div>
                                 ))}
                             </div>
@@ -259,46 +312,78 @@ export default function SystemHealth({ failedJobs, stats }: SystemHealthProps) {
                     <CardContent>
                         {failedJobs.length === 0 ? (
                             <div className="flex flex-col items-center justify-center py-12 text-center text-muted-foreground">
-                                <Activity className="h-10 w-10 mb-3 text-emerald-500/50" />
+                                <Activity className="mb-3 h-10 w-10 text-emerald-500/50" />
                                 <p className="font-medium">All clear</p>
-                                <p className="text-sm">No failed jobs in the queue.</p>
+                                <p className="text-sm">
+                                    No failed jobs in the queue.
+                                </p>
                             </div>
                         ) : (
                             <div className="overflow-x-auto">
                                 <table className="w-full text-sm">
                                     <thead>
                                         <tr className="border-b text-left text-muted-foreground">
-                                            <th className="pb-3 font-medium">Job</th>
-                                            <th className="pb-3 font-medium">Queue</th>
-                                            <th className="pb-3 font-medium">Error</th>
-                                            <th className="pb-3 font-medium">Failed At</th>
-                                            <th className="pb-3 font-medium text-right">Actions</th>
+                                            <th className="pb-3 font-medium">
+                                                Job
+                                            </th>
+                                            <th className="pb-3 font-medium">
+                                                Queue
+                                            </th>
+                                            <th className="pb-3 font-medium">
+                                                Error
+                                            </th>
+                                            <th className="pb-3 font-medium">
+                                                Failed At
+                                            </th>
+                                            <th className="pb-3 text-right font-medium">
+                                                Actions
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody className="divide-y">
                                         {failedJobs.map((job) => (
-                                            <tr key={job.id} className="align-top">
-                                                <td className="py-3 font-medium">{job.job_name}</td>
+                                            <tr
+                                                key={job.id}
+                                                className="align-top"
+                                            >
+                                                <td className="py-3 font-medium">
+                                                    {job.job_name}
+                                                </td>
                                                 <td className="py-3">
-                                                    <Badge variant="outline" className="font-mono text-xs">
+                                                    <Badge
+                                                        variant="outline"
+                                                        className="font-mono text-xs"
+                                                    >
                                                         {job.queue}
                                                     </Badge>
                                                 </td>
-                                                <td className="py-3 max-w-xs">
-                                                    <p className="text-xs text-muted-foreground truncate" title={job.exception_summary}>
+                                                <td className="max-w-xs py-3">
+                                                    <p
+                                                        className="truncate text-xs text-muted-foreground"
+                                                        title={
+                                                            job.exception_summary
+                                                        }
+                                                    >
                                                         {job.exception_summary}
                                                     </p>
                                                 </td>
-                                                <td className="py-3 text-muted-foreground whitespace-nowrap">
-                                                    {new Date(job.failed_at).toLocaleString()}
+                                                <td className="py-3 whitespace-nowrap text-muted-foreground">
+                                                    {new Date(
+                                                        job.failed_at,
+                                                    ).toLocaleString()}
                                                 </td>
                                                 <td className="py-3 text-right">
                                                     <div className="flex items-center justify-end gap-1">
                                                         <Button
                                                             variant="ghost"
                                                             size="sm"
-                                                            onClick={() => retryJob(job.id)}
-                                                            disabled={actionLoading === `retry-${job.id}`}
+                                                            onClick={() =>
+                                                                retryJob(job.id)
+                                                            }
+                                                            disabled={
+                                                                actionLoading ===
+                                                                `retry-${job.id}`
+                                                            }
                                                             title="Retry"
                                                         >
                                                             <RotateCcw className="h-4 w-4" />
@@ -306,8 +391,15 @@ export default function SystemHealth({ failedJobs, stats }: SystemHealthProps) {
                                                         <Button
                                                             variant="ghost"
                                                             size="sm"
-                                                            onClick={() => deleteJob(job.id)}
-                                                            disabled={actionLoading === `delete-${job.id}`}
+                                                            onClick={() =>
+                                                                deleteJob(
+                                                                    job.id,
+                                                                )
+                                                            }
+                                                            disabled={
+                                                                actionLoading ===
+                                                                `delete-${job.id}`
+                                                            }
                                                             title="Delete"
                                                             className="text-destructive hover:text-destructive"
                                                         >

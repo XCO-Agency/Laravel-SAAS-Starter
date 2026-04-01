@@ -1,5 +1,5 @@
-import { ImpersonationBanner } from '@/components/impersonation-banner';
 import { AdminSidebarGroup } from '@/components/admin/admin-sidebar-group';
+import { ImpersonationBanner } from '@/components/impersonation-banner';
 import { FeatureProvider } from '@/contexts/feature-context';
 import { cn } from '@/lib/utils';
 import { Link, router } from '@inertiajs/react';
@@ -34,7 +34,13 @@ import {
     Users,
     X,
 } from 'lucide-react';
-import { type PropsWithChildren, useCallback, useEffect, useRef, useState } from 'react';
+import {
+    type PropsWithChildren,
+    useCallback,
+    useEffect,
+    useRef,
+    useState,
+} from 'react';
 
 interface QuickStats {
     total_users: number;
@@ -49,8 +55,8 @@ function AdminQuickStatsWidget() {
     const fetchStats = useCallback(async () => {
         setLoading(true);
         try {
-            const res = await fetch('/admin/quick-stats', { 
-                headers: { 'X-Requested-With': 'XMLHttpRequest' } 
+            const res = await fetch('/admin/quick-stats', {
+                headers: { 'X-Requested-With': 'XMLHttpRequest' },
             });
             if (res.ok) {
                 const data = await res.json();
@@ -79,9 +85,21 @@ function AdminQuickStatsWidget() {
     }
 
     const items = [
-        { label: 'Users', value: stats.total_users.toLocaleString(), trend: null },
-        { label: 'Spaces', value: stats.total_workspaces.toLocaleString(), trend: null },
-        { label: 'MRR', value: `$${stats.mrr.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`, trend: null },
+        {
+            label: 'Users',
+            value: stats.total_users.toLocaleString(),
+            trend: null,
+        },
+        {
+            label: 'Spaces',
+            value: stats.total_workspaces.toLocaleString(),
+            trend: null,
+        },
+        {
+            label: 'MRR',
+            value: `$${stats.mrr.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`,
+            trend: null,
+        },
     ];
 
     return (
@@ -89,16 +107,25 @@ function AdminQuickStatsWidget() {
             <button
                 onClick={fetchStats}
                 disabled={loading}
-                className="absolute top-1 right-1 p-1 rounded hover:bg-sidebar-accent/50 transition-colors"
+                className="absolute top-1 right-1 rounded p-1 transition-colors hover:bg-sidebar-accent/50"
                 title="Refresh stats"
             >
-                <TrendingUp className={cn("size-3", loading && "animate-spin")} />
+                <TrendingUp
+                    className={cn('size-3', loading && 'animate-spin')}
+                />
             </button>
             <div className="grid grid-cols-3 gap-1">
                 {items.map((item) => (
-                    <div key={item.label} className="flex flex-col items-center gap-0.5">
-                        <span className="text-sm font-semibold text-sidebar-foreground">{item.value}</span>
-                        <span className="text-[10px] text-sidebar-foreground/50">{item.label}</span>
+                    <div
+                        key={item.label}
+                        className="flex flex-col items-center gap-0.5"
+                    >
+                        <span className="text-sm font-semibold text-sidebar-foreground">
+                            {item.value}
+                        </span>
+                        <span className="text-[10px] text-sidebar-foreground/50">
+                            {item.label}
+                        </span>
                     </div>
                 ))}
             </div>
@@ -114,8 +141,16 @@ const adminNavGroups = [
         storageKey: 'dashboard',
         defaultExpanded: true,
         items: [
-            { title: 'Overview', href: '/admin/dashboard', icon: LayoutDashboard },
-            { title: 'System Health', href: '/admin/system-health', icon: Activity },
+            {
+                title: 'Overview',
+                href: '/admin/dashboard',
+                icon: LayoutDashboard,
+            },
+            {
+                title: 'System Health',
+                href: '/admin/system-health',
+                icon: Activity,
+            },
         ],
     },
     {
@@ -124,13 +159,37 @@ const adminNavGroups = [
         storageKey: 'analytics',
         defaultExpanded: false,
         items: [
-            { title: 'User Analytics', href: '/admin/user-analytics', icon: Users },
-            { title: 'Revenue', href: '/admin/revenue-analytics', icon: DollarSign },
-            { title: 'Cohort Analysis', href: '/admin/cohort-analysis', icon: Grid3X3 },
+            {
+                title: 'User Analytics',
+                href: '/admin/user-analytics',
+                icon: Users,
+            },
+            {
+                title: 'Revenue',
+                href: '/admin/revenue-analytics',
+                icon: DollarSign,
+            },
+            {
+                title: 'Cohort Analysis',
+                href: '/admin/cohort-analysis',
+                icon: Grid3X3,
+            },
             { title: 'Retention', href: '/admin/retention', icon: Compass },
-            { title: 'Activity Heatmap', href: '/admin/workspace-activity-heatmap', icon: Activity },
-            { title: 'Onboarding', href: '/admin/onboarding-insights', icon: Compass },
-            { title: 'Notifications', href: '/admin/notification-analytics', icon: Bell },
+            {
+                title: 'Activity Heatmap',
+                href: '/admin/workspace-activity-heatmap',
+                icon: Activity,
+            },
+            {
+                title: 'Onboarding',
+                href: '/admin/onboarding-insights',
+                icon: Compass,
+            },
+            {
+                title: 'Notifications',
+                href: '/admin/notification-analytics',
+                icon: Bell,
+            },
         ],
     },
     {
@@ -141,7 +200,12 @@ const adminNavGroups = [
         items: [
             { title: 'All Users', href: '/admin/users', icon: Users },
             { title: 'Workspaces', href: '/admin/workspaces', icon: Building2 },
-            { title: 'Impersonation Logs', href: '/admin/impersonation-logs', icon: ScrollText, feature: 'admin.impersonation' },
+            {
+                title: 'Impersonation Logs',
+                href: '/admin/impersonation-logs',
+                icon: ScrollText,
+                feature: 'admin.impersonation',
+            },
         ],
     },
     {
@@ -150,15 +214,60 @@ const adminNavGroups = [
         storageKey: 'content',
         defaultExpanded: false,
         items: [
-            { title: 'Announcements', href: '/admin/announcements', icon: Megaphone, feature: 'admin.announcements' },
-            { title: 'Broadcasts', href: '/admin/broadcasts', icon: Megaphone, feature: 'admin.broadcasts' },
-            { title: 'Changelog', href: '/admin/changelog', icon: ListChecks, feature: 'admin.changelog' },
-            { title: 'Email Templates', href: '/admin/mail-templates', icon: Mail, feature: 'admin.mail_templates' },
-            { title: 'Feedback', href: '/admin/feedback', icon: MessageSquare, feature: 'admin.feedback' },
-            { title: 'SEO', href: '/admin/seo', icon: Globe, feature: 'admin.seo' },
-            { title: 'Status Page', href: '/admin/status', icon: Activity, feature: 'admin.status_page' },
-            { title: 'Support Tickets', href: '/admin/tickets', icon: Ticket, feature: 'user.support_tickets' },
-            { title: 'Translations', href: '/admin/translations', icon: Globe, feature: 'admin.translations' },
+            {
+                title: 'Announcements',
+                href: '/admin/announcements',
+                icon: Megaphone,
+                feature: 'admin.announcements',
+            },
+            {
+                title: 'Broadcasts',
+                href: '/admin/broadcasts',
+                icon: Megaphone,
+                feature: 'admin.broadcasts',
+            },
+            {
+                title: 'Changelog',
+                href: '/admin/changelog',
+                icon: ListChecks,
+                feature: 'admin.changelog',
+            },
+            {
+                title: 'Email Templates',
+                href: '/admin/mail-templates',
+                icon: Mail,
+                feature: 'admin.mail_templates',
+            },
+            {
+                title: 'Feedback',
+                href: '/admin/feedback',
+                icon: MessageSquare,
+                feature: 'admin.feedback',
+            },
+            {
+                title: 'SEO',
+                href: '/admin/seo',
+                icon: Globe,
+                feature: 'admin.seo',
+            },
+            {
+                title: 'Status Page',
+                href: '/admin/status',
+                icon: Activity,
+                feature: 'admin.status_page',
+            },
+            {
+                title: 'Support Tickets',
+                href: '/admin/tickets',
+                icon: Ticket,
+                feature: 'user.support_tickets',
+            },
+            {
+                title: 'Translations',
+                href: '/admin/translations',
+                icon: Globe,
+                feature: 'admin.translations',
+            },
         ],
     },
     {
@@ -167,14 +276,54 @@ const adminNavGroups = [
         storageKey: 'system',
         defaultExpanded: false,
         items: [
-            { title: 'Audit Logs', href: '/admin/audit-logs', icon: ScrollText, feature: 'admin.audit_logs' },
-            { title: 'System Logs', href: '/admin/logs', icon: Terminal, feature: 'admin.audit_logs' },
-            { title: 'Feature Flags', href: '/admin/feature-flags', icon: ToggleLeft, feature: 'workspace.feature_flags' },
-            { title: 'Permission Presets', href: '/admin/permission-presets', icon: KeyRound, feature: 'admin.permission_presets' },
-            { title: 'Scheduled Tasks', href: '/admin/scheduled-tasks', icon: Clock, feature: 'admin.scheduled_tasks' },
-            { title: 'Data Retention', href: '/admin/retention', icon: ShieldCheck, feature: 'admin.retention' },
-            { title: 'System Alerts', href: '/admin/system-notifications', icon: AlertTriangle, feature: 'admin.system_notifications' },
-            { title: 'Maintenance', href: '/admin/maintenance', icon: Power, feature: 'admin.maintenance_mode' },
+            {
+                title: 'Audit Logs',
+                href: '/admin/audit-logs',
+                icon: ScrollText,
+                feature: 'admin.audit_logs',
+            },
+            {
+                title: 'System Logs',
+                href: '/admin/logs',
+                icon: Terminal,
+                feature: 'admin.audit_logs',
+            },
+            {
+                title: 'Feature Flags',
+                href: '/admin/feature-flags',
+                icon: ToggleLeft,
+                feature: 'workspace.feature_flags',
+            },
+            {
+                title: 'Permission Presets',
+                href: '/admin/permission-presets',
+                icon: KeyRound,
+                feature: 'admin.permission_presets',
+            },
+            {
+                title: 'Scheduled Tasks',
+                href: '/admin/scheduled-tasks',
+                icon: Clock,
+                feature: 'admin.scheduled_tasks',
+            },
+            {
+                title: 'Data Retention',
+                href: '/admin/retention',
+                icon: ShieldCheck,
+                feature: 'admin.retention',
+            },
+            {
+                title: 'System Alerts',
+                href: '/admin/system-notifications',
+                icon: AlertTriangle,
+                feature: 'admin.system_notifications',
+            },
+            {
+                title: 'Maintenance',
+                href: '/admin/maintenance',
+                icon: Power,
+                feature: 'admin.maintenance_mode',
+            },
         ],
     },
 ];
@@ -221,7 +370,10 @@ function AdminSearchBar() {
 
     useEffect(() => {
         const handleClick = (e: MouseEvent) => {
-            if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+            if (
+                containerRef.current &&
+                !containerRef.current.contains(e.target as Node)
+            ) {
                 setOpen(false);
             }
         };
@@ -229,9 +381,11 @@ function AdminSearchBar() {
         return () => document.removeEventListener('mousedown', handleClick);
     }, []);
 
-    const hasResults = results && (
-        results.users.length > 0 || results.workspaces.length > 0 || results.subscriptions.length > 0
-    );
+    const hasResults =
+        results &&
+        (results.users.length > 0 ||
+            results.workspaces.length > 0 ||
+            results.subscriptions.length > 0);
 
     const navigate = (url: string) => {
         setOpen(false);
@@ -245,61 +399,84 @@ function AdminSearchBar() {
             <div className="flex items-center gap-2 rounded-md border border-sidebar-border bg-sidebar-accent/30 px-2.5 py-1.5">
                 <Search className="size-3.5 shrink-0 text-sidebar-foreground/50" />
                 <input
-                    className="w-full bg-transparent text-xs text-sidebar-foreground placeholder:text-sidebar-foreground/50 outline-none"
+                    className="w-full bg-transparent text-xs text-sidebar-foreground outline-none placeholder:text-sidebar-foreground/50"
                     placeholder="Search users, workspaces…"
                     value={query}
-                    onChange={(e) => { setQuery(e.target.value); setOpen(true); }}
+                    onChange={(e) => {
+                        setQuery(e.target.value);
+                        setOpen(true);
+                    }}
                     onFocus={() => setOpen(true)}
                 />
             </div>
 
             {open && query.length >= 2 && (
-                <div className="absolute left-3 right-3 top-full z-50 mt-1 rounded-md border border-border bg-popover shadow-lg">
+                <div className="absolute top-full right-3 left-3 z-50 mt-1 rounded-md border border-border bg-popover shadow-lg">
                     {!hasResults ? (
-                        <p className="px-3 py-2 text-xs text-muted-foreground">No results found.</p>
+                        <p className="px-3 py-2 text-xs text-muted-foreground">
+                            No results found.
+                        </p>
                     ) : (
                         <div className="max-h-80 overflow-y-auto">
                             {results.users.length > 0 && (
                                 <div>
-                                    <p className="px-3 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Users</p>
+                                    <p className="px-3 py-1.5 text-[10px] font-semibold tracking-wider text-muted-foreground uppercase">
+                                        Users
+                                    </p>
                                     {results.users.map((u) => (
                                         <button
                                             key={u.id}
                                             onClick={() => navigate(u.url)}
                                             className="flex w-full flex-col px-3 py-2 text-left text-sm hover:bg-accent"
                                         >
-                                            <span className="font-medium">{u.name}</span>
-                                            <span className="text-xs text-muted-foreground">{u.email}</span>
+                                            <span className="font-medium">
+                                                {u.name}
+                                            </span>
+                                            <span className="text-xs text-muted-foreground">
+                                                {u.email}
+                                            </span>
                                         </button>
                                     ))}
                                 </div>
                             )}
                             {results.workspaces.length > 0 && (
                                 <div>
-                                    <p className="px-3 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Workspaces</p>
+                                    <p className="px-3 py-1.5 text-[10px] font-semibold tracking-wider text-muted-foreground uppercase">
+                                        Workspaces
+                                    </p>
                                     {results.workspaces.map((w) => (
                                         <button
                                             key={w.id}
                                             onClick={() => navigate(w.url)}
                                             className="flex w-full flex-col px-3 py-2 text-left text-sm hover:bg-accent"
                                         >
-                                            <span className="font-medium">{w.name}</span>
-                                            <span className="text-xs text-muted-foreground">{w.slug}</span>
+                                            <span className="font-medium">
+                                                {w.name}
+                                            </span>
+                                            <span className="text-xs text-muted-foreground">
+                                                {w.slug}
+                                            </span>
                                         </button>
                                     ))}
                                 </div>
                             )}
                             {results.subscriptions.length > 0 && (
                                 <div>
-                                    <p className="px-3 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Subscriptions</p>
+                                    <p className="px-3 py-1.5 text-[10px] font-semibold tracking-wider text-muted-foreground uppercase">
+                                        Subscriptions
+                                    </p>
                                     {results.subscriptions.map((s) => (
                                         <button
                                             key={s.id}
                                             onClick={() => navigate(s.url)}
                                             className="flex w-full flex-col px-3 py-2 text-left text-sm hover:bg-accent"
                                         >
-                                            <span className="font-medium">{s.workspace_name}</span>
-                                            <span className="text-xs text-muted-foreground">{s.stripe_status}</span>
+                                            <span className="font-medium">
+                                                {s.workspace_name}
+                                            </span>
+                                            <span className="text-xs text-muted-foreground">
+                                                {s.stripe_status}
+                                            </span>
                                         </button>
                                     ))}
                                 </div>
@@ -313,13 +490,13 @@ function AdminSearchBar() {
 }
 
 // Mobile drawer component
-function MobileAdminDrawer({ 
-    currentPath, 
-    isOpen, 
-    onClose 
-}: { 
-    currentPath: string; 
-    isOpen: boolean; 
+function MobileAdminDrawer({
+    currentPath,
+    isOpen,
+    onClose,
+}: {
+    currentPath: string;
+    isOpen: boolean;
     onClose: () => void;
 }) {
     if (!isOpen) return null;
@@ -327,20 +504,25 @@ function MobileAdminDrawer({
     return (
         <>
             {/* Backdrop */}
-            <div 
-                className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+            <div
+                className="fixed inset-0 z-40 bg-black/50 lg:hidden"
                 onClick={onClose}
             />
             {/* Drawer */}
-            <div className="fixed inset-y-0 left-0 w-64 bg-sidebar z-50 lg:hidden flex flex-col">
+            <div className="fixed inset-y-0 left-0 z-50 flex w-64 flex-col bg-sidebar lg:hidden">
                 <div className="flex h-14 items-center justify-between border-b border-sidebar-border px-4">
                     <div className="flex items-center gap-2">
-                        <div className="flex size-7 items-center justify-center rounded-md bg-red-600 text-white text-xs font-bold">
+                        <div className="flex size-7 items-center justify-center rounded-md bg-red-600 text-xs font-bold text-white">
                             A
                         </div>
-                        <span className="font-semibold text-sm text-sidebar-foreground">Admin Panel</span>
+                        <span className="text-sm font-semibold text-sidebar-foreground">
+                            Admin Panel
+                        </span>
                     </div>
-                    <button onClick={onClose} className="p-1 rounded hover:bg-sidebar-accent">
+                    <button
+                        onClick={onClose}
+                        className="rounded p-1 hover:bg-sidebar-accent"
+                    >
                         <X className="size-5 text-sidebar-foreground" />
                     </button>
                 </div>
@@ -361,7 +543,7 @@ function MobileAdminDrawer({
                     <Link
                         href="/dashboard"
                         onClick={onClose}
-                        className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-accent-foreground transition-colors"
+                        className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-sidebar-foreground/70 transition-colors hover:bg-sidebar-accent/50 hover:text-sidebar-accent-foreground"
                     >
                         <ArrowLeft className="size-4" />
                         Back to App
@@ -377,10 +559,11 @@ function AdminBreadcrumb({ currentPath }: { currentPath: string }) {
     // Find the current group and item
     let currentGroup = '';
     let currentItem = '';
-    
+
     for (const group of adminNavGroups) {
-        const item = group.items.find(i => 
-            currentPath === i.href || currentPath.startsWith(i.href + '/')
+        const item = group.items.find(
+            (i) =>
+                currentPath === i.href || currentPath.startsWith(i.href + '/'),
         );
         if (item) {
             currentGroup = group.title;
@@ -392,8 +575,11 @@ function AdminBreadcrumb({ currentPath }: { currentPath: string }) {
     if (!currentItem) return null;
 
     return (
-        <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-            <Link href="/admin/dashboard" className="hover:text-foreground transition-colors">
+        <nav className="mb-4 flex items-center gap-2 text-sm text-muted-foreground">
+            <Link
+                href="/admin/dashboard"
+                className="transition-colors hover:text-foreground"
+            >
                 Admin
             </Link>
             <ChevronRight className="size-4" />
@@ -401,18 +587,19 @@ function AdminBreadcrumb({ currentPath }: { currentPath: string }) {
             {currentItem !== currentGroup && (
                 <>
                     <ChevronRight className="size-4" />
-                    <span className="text-foreground font-medium">{currentItem}</span>
+                    <span className="font-medium text-foreground">
+                        {currentItem}
+                    </span>
                 </>
             )}
         </nav>
     );
 }
 
-export default function AdminLayout({
-    children,
-}: PropsWithChildren) {
+export default function AdminLayout({ children }: PropsWithChildren) {
     const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
-    const currentPath = typeof window !== 'undefined' ? window.location.pathname : '';
+    const currentPath =
+        typeof window !== 'undefined' ? window.location.pathname : '';
 
     return (
         <FeatureProvider>
@@ -420,10 +607,12 @@ export default function AdminLayout({
                 {/* Desktop Sidebar */}
                 <aside className="hidden w-64 flex-col border-r bg-sidebar text-sidebar-foreground lg:flex">
                     <div className="flex h-14 items-center gap-2 border-b border-sidebar-border px-6">
-                        <div className="flex size-7 items-center justify-center rounded-md bg-red-600 text-white text-xs font-bold">
+                        <div className="flex size-7 items-center justify-center rounded-md bg-red-600 text-xs font-bold text-white">
                             A
                         </div>
-                        <span className="font-semibold text-sm">Admin Panel</span>
+                        <span className="text-sm font-semibold">
+                            Admin Panel
+                        </span>
                     </div>
 
                     <AdminSearchBar />
@@ -442,11 +631,11 @@ export default function AdminLayout({
                         ))}
                     </nav>
 
-                    <div className="border-t border-sidebar-border p-3 flex flex-col gap-2">
+                    <div className="flex flex-col gap-2 border-t border-sidebar-border p-3">
                         <AdminQuickStatsWidget />
                         <Link
                             href="/dashboard"
-                            className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-accent-foreground transition-colors"
+                            className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-sidebar-foreground/70 transition-colors hover:bg-sidebar-accent/50 hover:text-sidebar-accent-foreground"
                         >
                             <ArrowLeft className="size-4" />
                             Back to App
@@ -455,28 +644,30 @@ export default function AdminLayout({
                 </aside>
 
                 {/* Mobile Drawer */}
-                <MobileAdminDrawer 
+                <MobileAdminDrawer
                     currentPath={currentPath}
                     isOpen={mobileDrawerOpen}
                     onClose={() => setMobileDrawerOpen(false)}
                 />
 
                 {/* Main Content */}
-                <div className="flex flex-1 flex-col min-w-0">
+                <div className="flex min-w-0 flex-1 flex-col">
                     <ImpersonationBanner />
 
                     {/* Mobile Header */}
                     <header className="flex h-14 items-center gap-4 border-b px-4 lg:hidden">
-                        <button 
+                        <button
                             onClick={() => setMobileDrawerOpen(true)}
-                            className="p-2 rounded-md hover:bg-accent"
+                            className="rounded-md p-2 hover:bg-accent"
                         >
                             <Menu className="size-5" />
                         </button>
-                        <div className="flex size-7 items-center justify-center rounded-md bg-red-600 text-white text-xs font-bold">
+                        <div className="flex size-7 items-center justify-center rounded-md bg-red-600 text-xs font-bold text-white">
                             A
                         </div>
-                        <span className="font-semibold text-sm">Admin Panel</span>
+                        <span className="text-sm font-semibold">
+                            Admin Panel
+                        </span>
                     </header>
 
                     <main className="flex-1 overflow-y-auto p-4 lg:p-8">

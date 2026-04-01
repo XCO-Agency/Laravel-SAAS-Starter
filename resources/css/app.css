@@ -12,9 +12,10 @@
         'Instrument Sans', ui-sans-serif, system-ui, sans-serif,
         'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
         'Noto Color Emoji';
-    
+
     --font-display:
-        'Bricolage Grotesque', 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
+        'Bricolage Grotesque', 'Instrument Sans', ui-sans-serif, system-ui,
+        sans-serif;
 
     --radius-lg: var(--radius);
     --radius-md: calc(var(--radius) - 2px);
@@ -148,50 +149,60 @@
     body {
         @apply bg-background text-foreground;
     }
-    
+
     /* Comic book style text effects */
     .comic-text {
-        text-shadow: 
+        text-shadow:
             2px 2px 0px oklch(0.15 0.05 250),
             4px 4px 0px oklch(0.55 0.25 250 / 0.3);
         letter-spacing: -0.02em;
         font-weight: 800;
     }
-    
+
     .comic-panel {
-        background: linear-gradient(135deg, 
-            oklch(0.99 0.01 0) 0%, 
-            oklch(0.98 0.02 250) 50%, 
-            oklch(0.99 0.01 0) 100%);
+        background: linear-gradient(
+            135deg,
+            oklch(0.99 0.01 0) 0%,
+            oklch(0.98 0.02 250) 50%,
+            oklch(0.99 0.01 0) 100%
+        );
         border: 3px solid oklch(0.15 0.05 250);
-        box-shadow: 
+        box-shadow:
             0 8px 16px oklch(0.15 0.05 250 / 0.2),
             inset 0 1px 0 oklch(1 0 0);
     }
-    
+
     /* Vibrant gradient backgrounds */
     .gradient-marvel-blue {
-        background: linear-gradient(135deg, 
-            oklch(0.55 0.25 250) 0%, 
-            oklch(0.65 0.2 280) 100%);
+        background: linear-gradient(
+            135deg,
+            oklch(0.55 0.25 250) 0%,
+            oklch(0.65 0.2 280) 100%
+        );
     }
-    
+
     .gradient-marvel-red {
-        background: linear-gradient(135deg, 
-            oklch(0.6 0.25 15) 0%, 
-            oklch(0.7 0.2 30) 100%);
+        background: linear-gradient(
+            135deg,
+            oklch(0.6 0.25 15) 0%,
+            oklch(0.7 0.2 30) 100%
+        );
     }
-    
+
     .gradient-marvel-yellow {
-        background: linear-gradient(135deg, 
-            oklch(0.85 0.15 85) 0%, 
-            oklch(0.9 0.12 90) 100%);
+        background: linear-gradient(
+            135deg,
+            oklch(0.85 0.15 85) 0%,
+            oklch(0.9 0.12 90) 100%
+        );
     }
-    
+
     .gradient-marvel-purple {
-        background: linear-gradient(135deg, 
-            oklch(0.65 0.2 300) 0%, 
-            oklch(0.7 0.18 320) 100%);
+        background: linear-gradient(
+            135deg,
+            oklch(0.65 0.2 300) 0%,
+            oklch(0.7 0.18 320) 100%
+        );
     }
 
     /* Glassmorphism utility */
@@ -210,7 +221,8 @@
 
     /* Pulsing animation for high-conversion buttons */
     @keyframes pulse-premium {
-        0%, 100% {
+        0%,
+        100% {
             box-shadow: 0 0 0 0 rgba(var(--primary-rgb, 59, 130, 246), 0.4);
             transform: scale(1);
         }
@@ -241,11 +253,21 @@
     }
 
     /* Animation delays for staggered effect */
-    .delay-100 { animation-delay: 100ms; }
-    .delay-200 { animation-delay: 200ms; }
-    .delay-300 { animation-delay: 300ms; }
-    .delay-400 { animation-delay: 400ms; }
-    .delay-500 { animation-delay: 500ms; }
+    .delay-100 {
+        animation-delay: 100ms;
+    }
+    .delay-200 {
+        animation-delay: 200ms;
+    }
+    .delay-300 {
+        animation-delay: 300ms;
+    }
+    .delay-400 {
+        animation-delay: 400ms;
+    }
+    .delay-500 {
+        animation-delay: 500ms;
+    }
 }
 
 /* RTL Support - Tailwind v4 handles RTL automatically when dir="rtl" is set */
@@ -295,12 +317,12 @@ body {
     .settings-layout-container[data-rtl='true'] {
         flex-direction: row-reverse !important;
     }
-    
+
     [dir='rtl'] .settings-layout-sidebar,
     .settings-layout-sidebar[data-rtl='true'] {
         order: 2 !important;
     }
-    
+
     [dir='rtl'] .settings-layout-content,
     .settings-layout-content[data-rtl='true'] {
         order: 1 !important;

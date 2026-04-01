@@ -1,9 +1,5 @@
-import AppLayout from '@/layouts/app-layout';
-import WorkspaceLayout from '@/layouts/settings/workspace-layout';
-import { Head, useForm, usePage } from '@inertiajs/react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import {
     Card,
     CardContent,
@@ -19,16 +15,13 @@ import {
     DialogHeader,
     DialogTitle,
 } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import AppLayout from '@/layouts/app-layout';
+import WorkspaceLayout from '@/layouts/settings/workspace-layout';
 import { type BreadcrumbItem } from '@/types';
-import {
-    AlertTriangle,
-    Copy,
-    Key,
-    Plus,
-    Shield,
-    Trash2,
-} from 'lucide-react';
+import { Head, useForm, usePage } from '@inertiajs/react';
 import { formatDistanceToNow } from 'date-fns';
+import { AlertTriangle, Copy, Key, Plus, Shield, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 
 interface ApiKey {
@@ -54,9 +47,15 @@ const breadcrumbs: BreadcrumbItem[] = [
     { title: 'API Keys', href: '/workspaces/api-keys' },
 ];
 
-export default function WorkspaceApiKeys({ keys, availableScopes, isAdmin }: Props) {
+export default function WorkspaceApiKeys({
+    keys,
+    availableScopes,
+    isAdmin,
+}: Props) {
     const { props } = usePage();
-    const flash = props.flash as { newKey?: string; success?: string } | undefined;
+    const flash = props.flash as
+        | { newKey?: string; success?: string }
+        | undefined;
 
     const [showForm, setShowForm] = useState(false);
     const [deleteTarget, setDeleteTarget] = useState<ApiKey | null>(null);
@@ -92,7 +91,10 @@ export default function WorkspaceApiKeys({ keys, availableScopes, isAdmin }: Pro
     const toggleScope = (scope: string) => {
         const current = form.data.scopes;
         if (current.includes(scope)) {
-            form.setData('scopes', current.filter(s => s !== scope));
+            form.setData(
+                'scopes',
+                current.filter((s) => s !== scope),
+            );
         } else {
             form.setData('scopes', [...current, scope]);
         }
@@ -115,16 +117,20 @@ export default function WorkspaceApiKeys({ keys, availableScopes, isAdmin }: Pro
             >
                 <div className="flex items-center justify-between">
                     <div>
-                        <h1 className="text-2xl font-bold tracking-tight flex items-center gap-2">
+                        <h1 className="flex items-center gap-2 text-2xl font-bold tracking-tight">
                             <Key className="h-6 w-6" />
                             Workspace API Keys
                         </h1>
-                        <p className="text-muted-foreground text-sm">
-                            Manage API keys scoped to this workspace. These are separate from personal access tokens.
+                        <p className="text-sm text-muted-foreground">
+                            Manage API keys scoped to this workspace. These are
+                            separate from personal access tokens.
                         </p>
                     </div>
                     {isAdmin && (
-                        <Button onClick={() => setShowForm(!showForm)} size="sm">
+                        <Button
+                            onClick={() => setShowForm(!showForm)}
+                            size="sm"
+                        >
                             <Plus className="mr-1.5 h-4 w-4" />
                             Create Key
                         </Button>
@@ -135,22 +141,25 @@ export default function WorkspaceApiKeys({ keys, availableScopes, isAdmin }: Pro
                 {flash?.newKey && (
                     <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-4 dark:border-emerald-800 dark:bg-emerald-900/30">
                         <div className="flex items-start gap-3">
-                            <Shield className="h-5 w-5 text-emerald-600 dark:text-emerald-400 mt-0.5 shrink-0" />
+                            <Shield className="mt-0.5 h-5 w-5 shrink-0 text-emerald-600 dark:text-emerald-400" />
                             <div className="flex-1">
                                 <p className="text-sm font-medium text-emerald-800 dark:text-emerald-200">
                                     API Key Created
                                 </p>
-                                <p className="text-xs text-emerald-700 dark:text-emerald-300 mt-1">
-                                    Copy this key now. It will not be shown again.
+                                <p className="mt-1 text-xs text-emerald-700 dark:text-emerald-300">
+                                    Copy this key now. It will not be shown
+                                    again.
                                 </p>
                                 <div className="mt-2 flex items-center gap-2">
-                                    <code className="flex-1 rounded bg-white px-3 py-2 font-mono text-xs text-emerald-900 dark:bg-gray-800 dark:text-emerald-100 break-all">
+                                    <code className="flex-1 rounded bg-white px-3 py-2 font-mono text-xs break-all text-emerald-900 dark:bg-gray-800 dark:text-emerald-100">
                                         {flash.newKey}
                                     </code>
                                     <Button
                                         variant="outline"
                                         size="sm"
-                                        onClick={() => copyToClipboard(flash.newKey!)}
+                                        onClick={() =>
+                                            copyToClipboard(flash.newKey!)
+                                        }
                                     >
                                         <Copy className="mr-1.5 h-3.5 w-3.5" />
                                         {copied ? 'Copied!' : 'Copy'}
@@ -167,35 +176,53 @@ export default function WorkspaceApiKeys({ keys, availableScopes, isAdmin }: Pro
                         <CardHeader>
                             <CardTitle>Create API Key</CardTitle>
                             <CardDescription>
-                                API keys authenticate workspace-level API requests.
+                                API keys authenticate workspace-level API
+                                requests.
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
                             <form onSubmit={handleCreate} className="space-y-4">
                                 <div>
-                                    <label className="text-sm font-medium">Name *</label>
+                                    <label className="text-sm font-medium">
+                                        Name *
+                                    </label>
                                     <Input
                                         value={form.data.name}
-                                        onChange={e => form.setData('name', e.target.value)}
+                                        onChange={(e) =>
+                                            form.setData('name', e.target.value)
+                                        }
                                         placeholder="Production API key"
                                         className="mt-1"
                                     />
-                                    {form.errors.name && <p className="text-xs text-destructive mt-1">{form.errors.name}</p>}
+                                    {form.errors.name && (
+                                        <p className="mt-1 text-xs text-destructive">
+                                            {form.errors.name}
+                                        </p>
+                                    )}
                                 </div>
 
                                 <div>
-                                    <label className="text-sm font-medium">Scopes</label>
-                                    <p className="text-xs text-muted-foreground mb-2">Select the permissions for this key.</p>
+                                    <label className="text-sm font-medium">
+                                        Scopes
+                                    </label>
+                                    <p className="mb-2 text-xs text-muted-foreground">
+                                        Select the permissions for this key.
+                                    </p>
                                     <div className="flex flex-wrap gap-2">
-                                        {availableScopes.map(scope => (
+                                        {availableScopes.map((scope) => (
                                             <button
                                                 key={scope}
                                                 type="button"
-                                                onClick={() => toggleScope(scope)}
-                                                className={`rounded-full px-3 py-1 text-xs font-medium border transition-colors ${form.data.scopes.includes(scope)
-                                                        ? 'bg-primary text-primary-foreground border-primary'
-                                                        : 'bg-muted text-muted-foreground border-transparent hover:border-border'
-                                                    }`}
+                                                onClick={() =>
+                                                    toggleScope(scope)
+                                                }
+                                                className={`rounded-full border px-3 py-1 text-xs font-medium transition-colors ${
+                                                    form.data.scopes.includes(
+                                                        scope,
+                                                    )
+                                                        ? 'border-primary bg-primary text-primary-foreground'
+                                                        : 'border-transparent bg-muted text-muted-foreground hover:border-border'
+                                                }`}
                                             >
                                                 {scope}
                                             </button>
@@ -204,20 +231,36 @@ export default function WorkspaceApiKeys({ keys, availableScopes, isAdmin }: Pro
                                 </div>
 
                                 <div>
-                                    <label className="text-sm font-medium">Expires At (optional)</label>
+                                    <label className="text-sm font-medium">
+                                        Expires At (optional)
+                                    </label>
                                     <Input
                                         type="datetime-local"
                                         value={form.data.expires_at}
-                                        onChange={e => form.setData('expires_at', e.target.value)}
+                                        onChange={(e) =>
+                                            form.setData(
+                                                'expires_at',
+                                                e.target.value,
+                                            )
+                                        }
                                         className="mt-1 max-w-xs"
                                     />
                                 </div>
 
                                 <div className="flex gap-2">
-                                    <Button type="submit" disabled={form.processing}>
-                                        {form.processing ? 'Creating...' : 'Create Key'}
+                                    <Button
+                                        type="submit"
+                                        disabled={form.processing}
+                                    >
+                                        {form.processing
+                                            ? 'Creating...'
+                                            : 'Create Key'}
                                     </Button>
-                                    <Button type="button" variant="outline" onClick={() => setShowForm(false)}>
+                                    <Button
+                                        type="button"
+                                        variant="outline"
+                                        onClick={() => setShowForm(false)}
+                                    >
                                         Cancel
                                     </Button>
                                 </div>
@@ -239,31 +282,43 @@ export default function WorkspaceApiKeys({ keys, availableScopes, isAdmin }: Pro
                     <CardContent>
                         {keys.length === 0 ? (
                             <div className="flex flex-col items-center justify-center py-12 text-center text-muted-foreground">
-                                <Key className="h-10 w-10 mb-3 opacity-30" />
-                                <p className="text-sm">No workspace API keys.</p>
+                                <Key className="mb-3 h-10 w-10 opacity-30" />
+                                <p className="text-sm">
+                                    No workspace API keys.
+                                </p>
                             </div>
                         ) : (
                             <div className="space-y-3">
-                                {keys.map(key => (
+                                {keys.map((key) => (
                                     <div
                                         key={key.id}
                                         className={`flex items-center justify-between rounded-lg border p-4 ${key.is_expired ? 'opacity-50' : ''}`}
                                     >
                                         <div className="min-w-0 flex-1">
-                                            <div className="flex items-center gap-2 flex-wrap">
-                                                <span className="font-medium">{key.name}</span>
-                                                <Badge variant="outline" className="font-mono text-[10px]">
+                                            <div className="flex flex-wrap items-center gap-2">
+                                                <span className="font-medium">
+                                                    {key.name}
+                                                </span>
+                                                <Badge
+                                                    variant="outline"
+                                                    className="font-mono text-[10px]"
+                                                >
                                                     {key.key_prefix}...
                                                 </Badge>
                                                 {key.is_expired && (
-                                                    <Badge variant="destructive" className="text-[10px]">
+                                                    <Badge
+                                                        variant="destructive"
+                                                        className="text-[10px]"
+                                                    >
                                                         <AlertTriangle className="mr-1 h-3 w-3" />
                                                         Expired
                                                     </Badge>
                                                 )}
                                             </div>
-                                            <div className="flex items-center gap-3 mt-1 text-xs text-muted-foreground flex-wrap">
-                                                <span>Created by {key.created_by}</span>
+                                            <div className="mt-1 flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
+                                                <span>
+                                                    Created by {key.created_by}
+                                                </span>
                                                 <span>
                                                     {key.last_used_at
                                                         ? `Last used ${formatDistanceToNow(new Date(key.last_used_at), { addSuffix: true })}`
@@ -271,14 +326,21 @@ export default function WorkspaceApiKeys({ keys, availableScopes, isAdmin }: Pro
                                                 </span>
                                                 {key.expires_at && (
                                                     <span>
-                                                        Expires {new Date(key.expires_at).toLocaleDateString()}
+                                                        Expires{' '}
+                                                        {new Date(
+                                                            key.expires_at,
+                                                        ).toLocaleDateString()}
                                                     </span>
                                                 )}
                                             </div>
                                             {key.scopes.length > 0 && (
-                                                <div className="flex gap-1 mt-2 flex-wrap">
-                                                    {key.scopes.map(scope => (
-                                                        <Badge key={scope} variant="secondary" className="text-[10px]">
+                                                <div className="mt-2 flex flex-wrap gap-1">
+                                                    {key.scopes.map((scope) => (
+                                                        <Badge
+                                                            key={scope}
+                                                            variant="secondary"
+                                                            className="text-[10px]"
+                                                        >
                                                             {scope}
                                                         </Badge>
                                                     ))}
@@ -289,10 +351,12 @@ export default function WorkspaceApiKeys({ keys, availableScopes, isAdmin }: Pro
                                             <Button
                                                 variant="ghost"
                                                 size="sm"
-                                                className="text-destructive hover:text-destructive shrink-0 ml-4"
-                                                onClick={() => setDeleteTarget(key)}
+                                                className="ml-4 shrink-0 text-destructive hover:text-destructive"
+                                                onClick={() =>
+                                                    setDeleteTarget(key)
+                                                }
                                             >
-                                                <Trash2 className="h-4 w-4 mr-1.5" />
+                                                <Trash2 className="mr-1.5 h-4 w-4" />
                                                 Revoke
                                             </Button>
                                         )}
@@ -305,19 +369,31 @@ export default function WorkspaceApiKeys({ keys, availableScopes, isAdmin }: Pro
             </WorkspaceLayout>
 
             {/* Delete Confirmation */}
-            <Dialog open={!!deleteTarget} onOpenChange={() => setDeleteTarget(null)}>
+            <Dialog
+                open={!!deleteTarget}
+                onOpenChange={() => setDeleteTarget(null)}
+            >
                 <DialogContent>
                     <DialogHeader>
                         <DialogTitle>Revoke API Key</DialogTitle>
                         <DialogDescription>
-                            Are you sure you want to revoke &quot;{deleteTarget?.name}&quot;? Any integrations using this key will immediately lose access.
+                            Are you sure you want to revoke &quot;
+                            {deleteTarget?.name}&quot;? Any integrations using
+                            this key will immediately lose access.
                         </DialogDescription>
                     </DialogHeader>
                     <DialogFooter>
-                        <Button variant="outline" onClick={() => setDeleteTarget(null)}>
+                        <Button
+                            variant="outline"
+                            onClick={() => setDeleteTarget(null)}
+                        >
                             Cancel
                         </Button>
-                        <Button variant="destructive" onClick={handleDelete} disabled={deleteForm.processing}>
+                        <Button
+                            variant="destructive"
+                            onClick={handleDelete}
+                            disabled={deleteForm.processing}
+                        >
                             Revoke Key
                         </Button>
                     </DialogFooter>

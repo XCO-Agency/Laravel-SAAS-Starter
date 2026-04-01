@@ -5,56 +5,91 @@ import { useTranslations } from '@/hooks/use-translations';
 import { cn, isSameUrl, resolveUrl } from '@/lib/utils';
 import { edit } from '@/routes/profile';
 import { type NavItem } from '@/types';
-import { Link, usePage } from '@inertiajs/react';
+import { Link } from '@inertiajs/react';
 import {
     Bell,
     Cookie,
     Fingerprint,
     History,
     Link2,
-    Lock,
     Monitor,
     Shield,
-    ShieldCheck,
     Ticket,
     User,
 } from 'lucide-react';
 import { type PropsWithChildren, useMemo } from 'react';
-import { type SharedData } from '@/types';
 
 interface NavSection {
     title: string;
     items: NavItem[];
 }
 
-const getNavSections = (t: (key: string, fallback: string) => string): NavSection[] => [
+const getNavSections = (
+    t: (key: string, fallback: string) => string,
+): NavSection[] => [
     {
         title: t('navigation.profile_section', 'Profile'),
         items: [
-            { title: t('navigation.general', 'General'), href: edit(), icon: User },
-            { title: t('navigation.connected_accounts', 'Connected Accounts'), href: '/settings/connected-accounts', icon: Link2 },
+            {
+                title: t('navigation.general', 'General'),
+                href: edit(),
+                icon: User,
+            },
+            {
+                title: t('navigation.connected_accounts', 'Connected Accounts'),
+                href: '/settings/connected-accounts',
+                icon: Link2,
+            },
         ],
     },
     {
         title: t('navigation.security_section', 'Security'),
         items: [
-            { title: t('navigation.authentication', 'Authentication'), href: '/settings/security/authentication', icon: Shield },
-            { title: t('navigation.sessions', 'Sessions'), href: '/settings/sessions', icon: Monitor },
-            { title: t('navigation.login_history', 'Login History'), href: '/settings/login-history', icon: History },
+            {
+                title: t('navigation.authentication', 'Authentication'),
+                href: '/settings/security/authentication',
+                icon: Shield,
+            },
+            {
+                title: t('navigation.sessions', 'Sessions'),
+                href: '/settings/sessions',
+                icon: Monitor,
+            },
+            {
+                title: t('navigation.login_history', 'Login History'),
+                href: '/settings/login-history',
+                icon: History,
+            },
         ],
     },
     {
         title: t('navigation.privacy_section', 'Privacy'),
         items: [
-            { title: t('navigation.cookies', 'Cookies'), href: '/settings/privacy', icon: Cookie },
-            { title: t('navigation.notifications', 'Notifications'), href: '/settings/notifications', icon: Bell },
-            { title: t('navigation.api_tokens', 'API Tokens'), href: '/settings/api-tokens', icon: Fingerprint },
+            {
+                title: t('navigation.cookies', 'Cookies'),
+                href: '/settings/privacy',
+                icon: Cookie,
+            },
+            {
+                title: t('navigation.notifications', 'Notifications'),
+                href: '/settings/notifications',
+                icon: Bell,
+            },
+            {
+                title: t('navigation.api_tokens', 'API Tokens'),
+                href: '/settings/api-tokens',
+                icon: Fingerprint,
+            },
         ],
     },
     {
         title: t('navigation.support_section', 'Support'),
         items: [
-            { title: t('navigation.support_tickets', 'Support Tickets'), href: '/settings/tickets', icon: Ticket },
+            {
+                title: t('navigation.support_tickets', 'Support Tickets'),
+                href: '/settings/tickets',
+                icon: Ticket,
+            },
         ],
     },
 ];
@@ -74,8 +109,14 @@ export default function ProfileLayout({
     const { t, i18n } = useTranslations();
     const navSections = useMemo(() => getNavSections(t), [t]);
 
-    const defaultTitle = title ?? t('settings.profile.title', 'Profile Settings');
-    const defaultDescription = description ?? t('settings.profile.description', 'Manage your personal account settings');
+    const defaultTitle =
+        title ?? t('settings.profile.title', 'Profile Settings');
+    const defaultDescription =
+        description ??
+        t(
+            'settings.profile.description',
+            'Manage your personal account settings',
+        );
 
     if (typeof window === 'undefined') {
         return null;
@@ -89,12 +130,24 @@ export default function ProfileLayout({
         <div className="px-4 py-6" dir={isRTL ? 'rtl' : 'ltr'}>
             <Heading title={defaultTitle} description={defaultDescription} />
 
-            <div className={cn('flex flex-col lg:flex-row lg:gap-12 settings-layout-container', {
-                'lg:flex-row-reverse': isRTL,
-            })} data-rtl={isRTL}>
-                <aside className={cn('w-full max-w-xl lg:w-48 settings-layout-sidebar', {
-                    'lg:order-2': isRTL,
-                })} data-rtl={isRTL}>
+            <div
+                className={cn(
+                    'settings-layout-container flex flex-col lg:flex-row lg:gap-12',
+                    {
+                        'lg:flex-row-reverse': isRTL,
+                    },
+                )}
+                data-rtl={isRTL}
+            >
+                <aside
+                    className={cn(
+                        'settings-layout-sidebar w-full max-w-xl lg:w-48',
+                        {
+                            'lg:order-2': isRTL,
+                        },
+                    )}
+                    data-rtl={isRTL}
+                >
                     <nav className="flex flex-col space-y-6">
                         {navSections.map((section) => (
                             <div key={section.title}>
@@ -134,14 +187,19 @@ export default function ProfileLayout({
 
                 <Separator className="my-6 lg:hidden" />
 
-                <div className={cn('flex-1 settings-layout-content', {
-                    'md:max-w-2xl': !fullWidth,
-                    'lg:order-1': isRTL,
-                })} data-rtl={isRTL}>
-                    <section className={cn('space-y-12', {
-                        'max-w-xl': !fullWidth,
-                        'w-full': fullWidth,
-                    })}>
+                <div
+                    className={cn('settings-layout-content flex-1', {
+                        'md:max-w-2xl': !fullWidth,
+                        'lg:order-1': isRTL,
+                    })}
+                    data-rtl={isRTL}
+                >
+                    <section
+                        className={cn('space-y-12', {
+                            'max-w-xl': !fullWidth,
+                            'w-full': fullWidth,
+                        })}
+                    >
                         {children}
                     </section>
                 </div>

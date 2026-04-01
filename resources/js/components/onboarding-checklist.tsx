@@ -1,5 +1,11 @@
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { useTranslations } from '@/hooks/use-translations';
 import http from '@/lib/http';
@@ -30,7 +36,9 @@ export function OnboardingChecklist() {
 
     const fetchChecklist = async () => {
         try {
-            const { data: result, response } = await http.get<ChecklistData>('/onboarding-checklist');
+            const { data: result, response } = await http.get<ChecklistData>(
+                '/onboarding-checklist',
+            );
             if (response.ok) {
                 setData(result);
                 if (result.dismissed) {
@@ -67,7 +75,7 @@ export function OnboardingChecklist() {
 
     return (
         <Card className="relative overflow-hidden border-primary/20 bg-gradient-to-br from-primary/5 via-background to-primary/5">
-            <div className="absolute top-0 right-0 h-32 w-32 transform translate-x-8 -translate-y-8">
+            <div className="absolute top-0 right-0 h-32 w-32 translate-x-8 -translate-y-8 transform">
                 <div className="h-full w-full rounded-full bg-primary/5" />
             </div>
             <CardHeader className="pb-3">
@@ -91,8 +99,14 @@ export function OnboardingChecklist() {
                 </div>
                 <CardDescription>
                     {allComplete
-                        ? t('onboarding.checklist.complete', "You're all set! Your workspace is fully configured.")
-                        : t('onboarding.checklist.description', 'Complete these steps to get the most out of your workspace.')}
+                        ? t(
+                              'onboarding.checklist.complete',
+                              "You're all set! Your workspace is fully configured.",
+                          )
+                        : t(
+                              'onboarding.checklist.description',
+                              'Complete these steps to get the most out of your workspace.',
+                          )}
                 </CardDescription>
                 <div className="flex items-center gap-3 pt-2">
                     <Progress value={progress} className="h-2 flex-1" />
@@ -107,10 +121,11 @@ export function OnboardingChecklist() {
                         <Link
                             key={step.id}
                             href={step.href}
-                            className={`flex items-center gap-3 rounded-lg border p-3 transition-all hover:bg-muted/50 ${step.completed
-                                ? 'border-primary/20 bg-primary/5'
-                                : 'border-border hover:border-primary/30'
-                                }`}
+                            className={`flex items-center gap-3 rounded-lg border p-3 transition-all hover:bg-muted/50 ${
+                                step.completed
+                                    ? 'border-primary/20 bg-primary/5'
+                                    : 'border-border hover:border-primary/30'
+                            }`}
                         >
                             {step.completed ? (
                                 <CheckCircle2 className="h-5 w-5 shrink-0 text-primary" />
@@ -119,12 +134,17 @@ export function OnboardingChecklist() {
                             )}
                             <div className="min-w-0 flex-1">
                                 <p
-                                    className={`text-sm font-medium ${step.completed ? 'text-muted-foreground line-through' : 'text-foreground'
-                                        }`}
+                                    className={`text-sm font-medium ${
+                                        step.completed
+                                            ? 'text-muted-foreground line-through'
+                                            : 'text-foreground'
+                                    }`}
                                 >
                                     {step.label}
                                 </p>
-                                <p className="text-xs text-muted-foreground truncate">{step.description}</p>
+                                <p className="truncate text-xs text-muted-foreground">
+                                    {step.description}
+                                </p>
                             </div>
                         </Link>
                     ))}

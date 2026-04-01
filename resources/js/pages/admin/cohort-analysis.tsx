@@ -1,4 +1,10 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 import AdminLayout from '@/layouts/admin-layout';
 import { Head } from '@inertiajs/react';
 import { Grid3X3 } from 'lucide-react';
@@ -30,7 +36,9 @@ export default function CohortAnalysis({ cohorts }: CohortAnalysisProps) {
     const maxMonths = Math.max(...cohorts.map((c) => c.retention.length), 0);
 
     // Column headers: Month 0, Month 1, Month 2, Month 3
-    const columnHeaders = Array.from({ length: maxMonths }, (_, i) => (i === 0 ? 'Month 0' : `Month ${i}`));
+    const columnHeaders = Array.from({ length: maxMonths }, (_, i) =>
+        i === 0 ? 'Month 0' : `Month ${i}`,
+    );
 
     // Average retention per column (excluding nulls and month 0)
     const averages = columnHeaders.map((_, colIdx) => {
@@ -53,7 +61,8 @@ export default function CohortAnalysis({ cohorts }: CohortAnalysisProps) {
                         Cohort Retention Analysis
                     </h2>
                     <p className="text-sm text-muted-foreground">
-                        Percentage of users from each signup month who returned and logged in in subsequent months.
+                        Percentage of users from each signup month who returned
+                        and logged in in subsequent months.
                     </p>
                 </div>
 
@@ -68,7 +77,8 @@ export default function CohortAnalysis({ cohorts }: CohortAnalysisProps) {
                         <CardHeader>
                             <CardTitle>Retention by Signup Cohort</CardTitle>
                             <CardDescription>
-                                Last 6 months · green ≥ 70% · amber ≥ 40% · red &lt; 40% · — future period
+                                Last 6 months · green ≥ 70% · amber ≥ 40% · red
+                                &lt; 40% · — future period
                             </CardDescription>
                         </CardHeader>
                         <CardContent className="overflow-x-auto">
@@ -84,7 +94,7 @@ export default function CohortAnalysis({ cohorts }: CohortAnalysisProps) {
                                         {columnHeaders.map((header) => (
                                             <th
                                                 key={header}
-                                                className="py-2 px-2 text-center font-semibold text-muted-foreground"
+                                                className="px-2 py-2 text-center font-semibold text-muted-foreground"
                                             >
                                                 {header}
                                             </th>
@@ -94,16 +104,25 @@ export default function CohortAnalysis({ cohorts }: CohortAnalysisProps) {
                                 <tbody className="divide-y">
                                     {cohorts.map((cohort) => (
                                         <tr key={cohort.month}>
-                                            <td className="py-2 pr-4 font-medium">{cohort.month}</td>
-                                            <td className="py-2 pr-4 text-right tabular-nums text-muted-foreground">
+                                            <td className="py-2 pr-4 font-medium">
+                                                {cohort.month}
+                                            </td>
+                                            <td className="py-2 pr-4 text-right text-muted-foreground tabular-nums">
                                                 {cohort.size.toLocaleString()}
                                             </td>
                                             {columnHeaders.map((_, colIdx) => {
-                                                const value = cohort.retention[colIdx] ?? null;
+                                                const value =
+                                                    cohort.retention[colIdx] ??
+                                                    null;
                                                 return (
-                                                    <td key={colIdx} className="py-2 px-2 text-center">
+                                                    <td
+                                                        key={colIdx}
+                                                        className="px-2 py-2 text-center"
+                                                    >
                                                         {value === null ? (
-                                                            <span className="text-muted-foreground">—</span>
+                                                            <span className="text-muted-foreground">
+                                                                —
+                                                            </span>
                                                         ) : (
                                                             <span
                                                                 className={`inline-block min-w-[3.5rem] rounded-md px-2 py-0.5 font-semibold tabular-nums ${retentionColor(value)}`}
@@ -119,12 +138,19 @@ export default function CohortAnalysis({ cohorts }: CohortAnalysisProps) {
                                 </tbody>
                                 <tfoot>
                                     <tr className="border-t-2">
-                                        <td className="py-2 pr-4 font-semibold text-muted-foreground">Average</td>
+                                        <td className="py-2 pr-4 font-semibold text-muted-foreground">
+                                            Average
+                                        </td>
                                         <td />
                                         {averages.map((avg, colIdx) => (
-                                            <td key={colIdx} className="py-2 px-2 text-center">
+                                            <td
+                                                key={colIdx}
+                                                className="px-2 py-2 text-center"
+                                            >
                                                 {avg === null ? (
-                                                    <span className="text-muted-foreground">—</span>
+                                                    <span className="text-muted-foreground">
+                                                        —
+                                                    </span>
                                                 ) : (
                                                     <span
                                                         className={`inline-block min-w-[3.5rem] rounded-md px-2 py-0.5 font-semibold tabular-nums ${retentionColor(avg)}`}

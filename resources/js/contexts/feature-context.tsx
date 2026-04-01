@@ -1,6 +1,6 @@
-import { createContext, useContext, type PropsWithChildren } from 'react';
-import { usePage } from '@inertiajs/react';
 import { type SharedData } from '@/types';
+import { usePage } from '@inertiajs/react';
+import { createContext, useContext, type PropsWithChildren } from 'react';
 
 /**
  * Feature configuration type - flattened structure with dot notation keys

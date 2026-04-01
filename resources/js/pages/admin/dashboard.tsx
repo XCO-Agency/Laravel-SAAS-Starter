@@ -1,7 +1,13 @@
+import { Button } from '@/components/ui/button';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 import AdminLayout from '@/layouts/admin-layout';
 import { Head, Link, router } from '@inertiajs/react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
     Activity,
     ArrowDownRight,
@@ -65,7 +71,13 @@ interface AdminDashboardProps {
     }[];
 }
 
-function Sparkline({ data, color = 'hsl(var(--primary))' }: { data: number[]; color?: string }) {
+function Sparkline({
+    data,
+    color = 'hsl(var(--primary))',
+}: {
+    data: number[];
+    color?: string;
+}) {
     if (data.length < 2) return null;
 
     const width = 80;
@@ -93,7 +105,13 @@ function Sparkline({ data, color = 'hsl(var(--primary))' }: { data: number[]; co
     );
 }
 
-function GrowthBadge({ value, invertColors = false }: { value: number, invertColors?: boolean }) {
+function GrowthBadge({
+    value,
+    invertColors = false,
+}: {
+    value: number;
+    invertColors?: boolean;
+}) {
     const isPositive = value >= 0;
 
     // For churn, negative growth is good (green), positive growth is bad (red)
@@ -101,29 +119,53 @@ function GrowthBadge({ value, invertColors = false }: { value: number, invertCol
     const unhealthyClass = 'text-red-600 dark:text-red-400';
 
     const colorClass = invertColors
-        ? (isPositive ? unhealthyClass : healthyClass)
-        : (isPositive ? healthyClass : unhealthyClass);
+        ? isPositive
+            ? unhealthyClass
+            : healthyClass
+        : isPositive
+          ? healthyClass
+          : unhealthyClass;
 
     return (
-        <span className={`inline-flex items-center gap-0.5 text-xs font-medium ${colorClass}`}>
-            {isPositive ? <ArrowUpRight className="h-3 w-3" /> : <ArrowDownRight className="h-3 w-3" />}
+        <span
+            className={`inline-flex items-center gap-0.5 text-xs font-medium ${colorClass}`}
+        >
+            {isPositive ? (
+                <ArrowUpRight className="h-3 w-3" />
+            ) : (
+                <ArrowDownRight className="h-3 w-3" />
+            )}
             {Math.abs(value)}%
         </span>
     );
 }
 
-const COLORS = ['hsl(var(--primary))', 'hsl(var(--primary) / 0.7)', 'hsl(var(--primary) / 0.4)', 'hsl(var(--muted))'];
+const COLORS = [
+    'hsl(var(--primary))',
+    'hsl(var(--primary) / 0.7)',
+    'hsl(var(--primary) / 0.4)',
+    'hsl(var(--muted))',
+];
 
-export default function AdminDashboard({ metrics, sparklines, dailySignups, dailyWorkspaces, planDistribution, recent_users }: AdminDashboardProps) {
+export default function AdminDashboard({
+    metrics,
+    sparklines,
+    dailySignups,
+    dailyWorkspaces,
+    planDistribution,
+    recent_users,
+}: AdminDashboardProps) {
     // Combine daily stats for the multi-line chart
-    const combinedDailyStats = dailySignups.map((signupDay, index) => {
-        const workspaceDay = dailyWorkspaces[index] || { count: 0 };
-        return {
-            date: signupDay.date,
-            users: signupDay.count,
-            workspaces: workspaceDay.count,
-        };
-    }).reverse(); // Reverse to show chronological order left-to-right
+    const combinedDailyStats = dailySignups
+        .map((signupDay, index) => {
+            const workspaceDay = dailyWorkspaces[index] || { count: 0 };
+            return {
+                date: signupDay.date,
+                users: signupDay.count,
+                workspaces: workspaceDay.count,
+            };
+        })
+        .reverse(); // Reverse to show chronological order left-to-right
 
     const formatCurrency = (value: number) => {
         return new Intl.NumberFormat('en-US', {
@@ -138,50 +180,77 @@ export default function AdminDashboard({ metrics, sparklines, dailySignups, dail
             <Head title="Admin Dashboard" />
             <div className="flex h-full flex-1 flex-col gap-6 p-4 md:p-6 lg:p-8">
                 <div>
-                    <h2 className="text-2xl font-bold tracking-tight">System Overview</h2>
-                    <p className="text-muted-foreground text-sm">Monitor platform metrics across all workspaces.</p>
+                    <h2 className="text-2xl font-bold tracking-tight">
+                        System Overview
+                    </h2>
+                    <p className="text-sm text-muted-foreground">
+                        Monitor platform metrics across all workspaces.
+                    </p>
                 </div>
 
                 {/* Top Metric Cards */}
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Monthly Recurring Revenue</CardTitle>
+                            <CardTitle className="text-sm font-medium">
+                                Monthly Recurring Revenue
+                            </CardTitle>
                             <DollarSign className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">{formatCurrency(metrics.mrr)}</div>
+                            <div className="text-2xl font-bold">
+                                {formatCurrency(metrics.mrr)}
+                            </div>
                             <div className="mt-2 flex items-center justify-between">
-                                <p className="text-xs text-muted-foreground">From active subscriptions</p>
-                                <Sparkline data={sparklines.new_subscriptions} />
+                                <p className="text-xs text-muted-foreground">
+                                    From active subscriptions
+                                </p>
+                                <Sparkline
+                                    data={sparklines.new_subscriptions}
+                                />
                             </div>
                         </CardContent>
                     </Card>
 
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Active Subscriptions</CardTitle>
+                            <CardTitle className="text-sm font-medium">
+                                Active Subscriptions
+                            </CardTitle>
                             <CreditCard className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">{metrics.active_subscriptions}</div>
+                            <div className="text-2xl font-bold">
+                                {metrics.active_subscriptions}
+                            </div>
                             <div className="mt-2 flex items-center justify-between">
-                                <p className="text-xs text-muted-foreground">Paying and trialing workspaces</p>
-                                <Sparkline data={sparklines.new_subscriptions} />
+                                <p className="text-xs text-muted-foreground">
+                                    Paying and trialing workspaces
+                                </p>
+                                <Sparkline
+                                    data={sparklines.new_subscriptions}
+                                />
                             </div>
                         </CardContent>
                     </Card>
 
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Active Workspaces (7d)</CardTitle>
+                            <CardTitle className="text-sm font-medium">
+                                Active Workspaces (7d)
+                            </CardTitle>
                             <Activity className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">{metrics.total_workspaces}</div>
+                            <div className="text-2xl font-bold">
+                                {metrics.total_workspaces}
+                            </div>
                             <div className="mt-2 flex items-center justify-between">
                                 <p className="text-xs text-muted-foreground">
-                                    <GrowthBadge value={metrics.workspace_growth_percent} /> vs prior 30d
+                                    <GrowthBadge
+                                        value={metrics.workspace_growth_percent}
+                                    />{' '}
+                                    vs prior 30d
                                 </p>
                                 <Sparkline data={sparklines.new_workspaces} />
                             </div>
@@ -190,14 +259,21 @@ export default function AdminDashboard({ metrics, sparklines, dailySignups, dail
 
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Total Users</CardTitle>
+                            <CardTitle className="text-sm font-medium">
+                                Total Users
+                            </CardTitle>
                             <Users className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">{metrics.total_users}</div>
+                            <div className="text-2xl font-bold">
+                                {metrics.total_users}
+                            </div>
                             <div className="mt-2 flex items-center justify-between">
                                 <p className="text-xs text-muted-foreground">
-                                    <GrowthBadge value={metrics.user_growth_percent} /> from previous 30d
+                                    <GrowthBadge
+                                        value={metrics.user_growth_percent}
+                                    />{' '}
+                                    from previous 30d
                                 </p>
                                 <Sparkline data={sparklines.new_users} />
                             </div>
@@ -212,21 +288,58 @@ export default function AdminDashboard({ metrics, sparklines, dailySignups, dail
                         <CardHeader>
                             <CardTitle>Platform Growth</CardTitle>
                             <CardDescription>
-                                Daily new users and workspaces over the last 14 days
+                                Daily new users and workspaces over the last 14
+                                days
                             </CardDescription>
                         </CardHeader>
                         <CardContent className="pl-0">
                             <div className="h-[300px]">
                                 <ResponsiveContainer width="100%" height="100%">
-                                    <AreaChart data={combinedDailyStats} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                                    <AreaChart
+                                        data={combinedDailyStats}
+                                        margin={{
+                                            top: 10,
+                                            right: 30,
+                                            left: 0,
+                                            bottom: 0,
+                                        }}
+                                    >
                                         <defs>
-                                            <linearGradient id="colorUsers" x1="0" y1="0" x2="0" y2="1">
-                                                <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.3} />
-                                                <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0} />
+                                            <linearGradient
+                                                id="colorUsers"
+                                                x1="0"
+                                                y1="0"
+                                                x2="0"
+                                                y2="1"
+                                            >
+                                                <stop
+                                                    offset="5%"
+                                                    stopColor="hsl(var(--primary))"
+                                                    stopOpacity={0.3}
+                                                />
+                                                <stop
+                                                    offset="95%"
+                                                    stopColor="hsl(var(--primary))"
+                                                    stopOpacity={0}
+                                                />
                                             </linearGradient>
-                                            <linearGradient id="colorWorkspaces" x1="0" y1="0" x2="0" y2="1">
-                                                <stop offset="5%" stopColor="hsl(var(--foreground))" stopOpacity={0.3} />
-                                                <stop offset="95%" stopColor="hsl(var(--foreground))" stopOpacity={0} />
+                                            <linearGradient
+                                                id="colorWorkspaces"
+                                                x1="0"
+                                                y1="0"
+                                                x2="0"
+                                                y2="1"
+                                            >
+                                                <stop
+                                                    offset="5%"
+                                                    stopColor="hsl(var(--foreground))"
+                                                    stopOpacity={0.3}
+                                                />
+                                                <stop
+                                                    offset="95%"
+                                                    stopColor="hsl(var(--foreground))"
+                                                    stopOpacity={0}
+                                                />
                                             </linearGradient>
                                         </defs>
                                         <XAxis
@@ -242,14 +355,32 @@ export default function AdminDashboard({ metrics, sparklines, dailySignups, dail
                                             fontSize={12}
                                             tickLine={false}
                                             axisLine={false}
-                                            tickFormatter={(value) => `${value}`}
+                                            tickFormatter={(value) =>
+                                                `${value}`
+                                            }
                                         />
-                                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
+                                        <CartesianGrid
+                                            strokeDasharray="3 3"
+                                            vertical={false}
+                                            stroke="hsl(var(--border))"
+                                        />
                                         <Tooltip
-                                            contentStyle={{ backgroundColor: 'hsl(var(--card))', borderColor: 'hsl(var(--border))', borderRadius: '8px' }}
-                                            itemStyle={{ color: 'hsl(var(--foreground))' }}
+                                            contentStyle={{
+                                                backgroundColor:
+                                                    'hsl(var(--card))',
+                                                borderColor:
+                                                    'hsl(var(--border))',
+                                                borderRadius: '8px',
+                                            }}
+                                            itemStyle={{
+                                                color: 'hsl(var(--foreground))',
+                                            }}
                                         />
-                                        <Legend wrapperStyle={{ paddingTop: '10px' }} />
+                                        <Legend
+                                            wrapperStyle={{
+                                                paddingTop: '10px',
+                                            }}
+                                        />
                                         <Area
                                             type="monotone"
                                             dataKey="users"
@@ -279,11 +410,12 @@ export default function AdminDashboard({ metrics, sparklines, dailySignups, dail
                         <CardHeader>
                             <CardTitle>Plan Distribution</CardTitle>
                             <CardDescription>
-                                Active workspace subscriptions across pricing tiers
+                                Active workspace subscriptions across pricing
+                                tiers
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
-                            <div className="h-[300px] flex items-center justify-center">
+                            <div className="flex h-[300px] items-center justify-center">
                                 <ResponsiveContainer width="100%" height="100%">
                                     <PieChart>
                                         <Pie
@@ -296,16 +428,43 @@ export default function AdminDashboard({ metrics, sparklines, dailySignups, dail
                                             dataKey="count"
                                             nameKey="plan"
                                         >
-                                            {planDistribution.map((entry, index) => (
-                                                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                                            ))}
+                                            {planDistribution.map(
+                                                (entry, index) => (
+                                                    <Cell
+                                                        key={`cell-${index}`}
+                                                        fill={
+                                                            COLORS[
+                                                                index %
+                                                                    COLORS.length
+                                                            ]
+                                                        }
+                                                    />
+                                                ),
+                                            )}
                                         </Pie>
                                         <Tooltip
-                                            contentStyle={{ backgroundColor: 'hsl(var(--card))', borderColor: 'hsl(var(--border))', borderRadius: '8px' }}
-                                            itemStyle={{ color: 'hsl(var(--foreground))' }}
-                                            formatter={(value: any, name: any) => [`${value} Workspaces`, name]}
+                                            contentStyle={{
+                                                backgroundColor:
+                                                    'hsl(var(--card))',
+                                                borderColor:
+                                                    'hsl(var(--border))',
+                                                borderRadius: '8px',
+                                            }}
+                                            itemStyle={{
+                                                color: 'hsl(var(--foreground))',
+                                            }}
+                                            formatter={
+                                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                                (value: any) => [
+                                                    `${value} Workspaces`,
+                                                ]
+                                            }
                                         />
-                                        <Legend layout="horizontal" verticalAlign="bottom" align="center" />
+                                        <Legend
+                                            layout="horizontal"
+                                            verticalAlign="bottom"
+                                            align="center"
+                                        />
                                     </PieChart>
                                 </ResponsiveContainer>
                             </div>
@@ -315,42 +474,68 @@ export default function AdminDashboard({ metrics, sparklines, dailySignups, dail
 
                 {/* Recent Users */}
                 <div>
-                    <div className="flex items-center justify-between mb-4">
-                        <h3 className="text-lg font-semibold tracking-tight">Recent Users</h3>
+                    <div className="mb-4 flex items-center justify-between">
+                        <h3 className="text-lg font-semibold tracking-tight">
+                            Recent Users
+                        </h3>
                         <Button variant="outline" size="sm" asChild>
                             <Link href="/admin/users">View All Users →</Link>
                         </Button>
                     </div>
-                    <div className="rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden">
-                        <table className="w-full text-sm text-left">
-                            <thead className="bg-muted/50 text-muted-foreground uppercase text-xs">
+                    <div className="overflow-hidden rounded-xl border bg-card text-card-foreground shadow-sm">
+                        <table className="w-full text-left text-sm">
+                            <thead className="bg-muted/50 text-xs text-muted-foreground uppercase">
                                 <tr>
-                                    <th className="px-6 py-3 font-medium">Name</th>
-                                    <th className="px-6 py-3 font-medium">Email</th>
-                                    <th className="px-6 py-3 font-medium">Joined</th>
-                                    <th className="px-6 py-3 font-medium text-right">Actions</th>
+                                    <th className="px-6 py-3 font-medium">
+                                        Name
+                                    </th>
+                                    <th className="px-6 py-3 font-medium">
+                                        Email
+                                    </th>
+                                    <th className="px-6 py-3 font-medium">
+                                        Joined
+                                    </th>
+                                    <th className="px-6 py-3 text-right font-medium">
+                                        Actions
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-border">
                                 {recent_users.length === 0 ? (
                                     <tr>
-                                        <td colSpan={4} className="px-6 py-8 text-center text-muted-foreground">
+                                        <td
+                                            colSpan={4}
+                                            className="px-6 py-8 text-center text-muted-foreground"
+                                        >
                                             No users found.
                                         </td>
                                     </tr>
                                 ) : (
                                     recent_users.map((user) => (
-                                        <tr key={user.id} className="hover:bg-muted/50 transition-colors">
-                                            <td className="px-6 py-4 font-medium">{user.name}</td>
-                                            <td className="px-6 py-4 text-muted-foreground">{user.email}</td>
+                                        <tr
+                                            key={user.id}
+                                            className="transition-colors hover:bg-muted/50"
+                                        >
+                                            <td className="px-6 py-4 font-medium">
+                                                {user.name}
+                                            </td>
                                             <td className="px-6 py-4 text-muted-foreground">
-                                                {new Date(user.created_at).toLocaleDateString()}
+                                                {user.email}
+                                            </td>
+                                            <td className="px-6 py-4 text-muted-foreground">
+                                                {new Date(
+                                                    user.created_at,
+                                                ).toLocaleDateString()}
                                             </td>
                                             <td className="px-6 py-4 text-right">
                                                 <Button
                                                     size="sm"
                                                     variant="secondary"
-                                                    onClick={() => router.post(`/admin/impersonate/${user.id}`)}
+                                                    onClick={() =>
+                                                        router.post(
+                                                            `/admin/impersonate/${user.id}`,
+                                                        )
+                                                    }
                                                 >
                                                     Impersonate
                                                 </Button>

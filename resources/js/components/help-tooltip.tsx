@@ -1,6 +1,10 @@
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
-import { HelpCircle } from 'lucide-react';
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+} from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
+import { HelpCircle } from 'lucide-react';
 
 interface HelpTooltipProps {
     content: string;
@@ -25,7 +29,7 @@ export function HelpTooltip({
                 <button
                     type="button"
                     className={cn(
-                        'inline-flex items-center justify-center rounded-full text-muted-foreground/60 hover:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring',
+                        'inline-flex items-center justify-center rounded-full text-muted-foreground/60 transition-colors hover:text-muted-foreground focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-none',
                         className,
                     )}
                     aria-label="Help"
@@ -33,7 +37,10 @@ export function HelpTooltip({
                     <HelpCircle className={cn('h-3.5 w-3.5', iconClassName)} />
                 </button>
             </TooltipTrigger>
-            <TooltipContent side={side} className="max-w-xs text-xs leading-relaxed">
+            <TooltipContent
+                side={side}
+                className="max-w-xs text-xs leading-relaxed"
+            >
                 {content}
             </TooltipContent>
         </Tooltip>

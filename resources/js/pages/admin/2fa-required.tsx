@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Head, Link } from '@inertiajs/react';
-import { ShieldAlert, ArrowLeft } from 'lucide-react';
+import { ArrowLeft, ShieldAlert } from 'lucide-react';
 
 export default function AdminTwoFactorRequired() {
     return (
@@ -13,20 +13,33 @@ export default function AdminTwoFactorRequired() {
                 </div>
 
                 <div className="space-y-4">
-                    <h1 className="text-2xl font-bold tracking-tight">Admin Access Restricted</h1>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                        To access the global administration panel, you must secure your account with Two-Factor Authentication (2FA). This is a mandatory security requirement for all super-admin accounts.
+                    <h1 className="text-2xl font-bold tracking-tight">
+                        Admin Access Restricted
+                    </h1>
+                    <p className="text-sm leading-relaxed text-muted-foreground">
+                        To access the global administration panel, you must
+                        secure your account with Two-Factor Authentication
+                        (2FA). This is a mandatory security requirement for all
+                        super-admin accounts.
                     </p>
                 </div>
 
-                <div className="space-y-3 pt-4 border-t border-border">
+                <div className="space-y-3 border-t border-border pt-4">
                     <Button className="w-full" size="lg" asChild>
                         <Link href="/settings/two-factor">
                             Enable Two-Factor Authentication
                         </Link>
                     </Button>
-                    <Button variant="outline" className="w-full" size="lg" asChild>
-                        <Link href="/dashboard" className="flex items-center gap-2">
+                    <Button
+                        variant="outline"
+                        className="w-full"
+                        size="lg"
+                        asChild
+                    >
+                        <Link
+                            href="/dashboard"
+                            className="flex items-center gap-2"
+                        >
                             <ArrowLeft className="h-4 w-4" />
                             Return to App Dashboard
                         </Link>

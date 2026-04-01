@@ -1,8 +1,8 @@
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import AdminLayout from '@/layouts/admin-layout';
 import { Head, router } from '@inertiajs/react';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, MonitorSmartphone, XCircle, Trash2 } from 'lucide-react';
+import { ArrowLeft, MonitorSmartphone, Trash2, XCircle } from 'lucide-react';
 
 interface Session {
     id: string;
@@ -23,14 +23,26 @@ interface UserSessionsProps {
 
 export default function UserSessions({ user, sessions }: UserSessionsProps) {
     const revokeSession = (sessionId: string) => {
-        if (confirm('Are you sure you want to terminate this session? The user will be logged out on that device.')) {
-            router.delete(`/admin/users/${user.id}/sessions/${sessionId}`, { preserveScroll: true });
+        if (
+            confirm(
+                'Are you sure you want to terminate this session? The user will be logged out on that device.',
+            )
+        ) {
+            router.delete(`/admin/users/${user.id}/sessions/${sessionId}`, {
+                preserveScroll: true,
+            });
         }
     };
 
     const revokeAllSessions = () => {
-        if (confirm('Are you sure you want to terminate ALL sessions for this user? They will be entirely logged out.')) {
-            router.delete(`/admin/users/${user.id}/sessions`, { preserveScroll: true });
+        if (
+            confirm(
+                'Are you sure you want to terminate ALL sessions for this user? They will be entirely logged out.',
+            )
+        ) {
+            router.delete(`/admin/users/${user.id}/sessions`, {
+                preserveScroll: true,
+            });
         }
     };
 
@@ -38,10 +50,10 @@ export default function UserSessions({ user, sessions }: UserSessionsProps) {
         <AdminLayout>
             <Head title={`Sessions - ${user.name}`} />
 
-            <div className="flex h-full flex-1 flex-col gap-6 p-4 md:p-6 lg:p-8 rounded-xl border border-sidebar-border/70">
+            <div className="flex h-full flex-1 flex-col gap-6 rounded-xl border border-sidebar-border/70 p-4 md:p-6 lg:p-8">
                 <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                     <div>
-                        <div className="flex items-center gap-2 mb-2">
+                        <div className="mb-2 flex items-center gap-2">
                             <Button
                                 variant="ghost"
                                 size="sm"
@@ -57,13 +69,17 @@ export default function UserSessions({ user, sessions }: UserSessionsProps) {
                             Active Sessions
                         </h2>
                         <p className="text-sm text-muted-foreground">
-                            Viewing active sessions for <strong>{user.name}</strong> ({user.email})
+                            Viewing active sessions for{' '}
+                            <strong>{user.name}</strong> ({user.email})
                         </p>
                     </div>
 
                     <div className="flex items-center gap-2">
                         {sessions.length > 0 && (
-                            <Button variant="destructive" onClick={revokeAllSessions}>
+                            <Button
+                                variant="destructive"
+                                onClick={revokeAllSessions}
+                            >
                                 <Trash2 className="mr-2 h-4 w-4" />
                                 Terminate All Sessions
                             </Button>
@@ -71,42 +87,74 @@ export default function UserSessions({ user, sessions }: UserSessionsProps) {
                     </div>
                 </div>
 
-                <div className="rounded-xl border bg-card text-card-foreground shadow overflow-hidden">
-                    <table className="w-full text-sm text-left">
-                        <thead className="bg-muted/50 text-muted-foreground uppercase text-xs">
+                <div className="overflow-hidden rounded-xl border bg-card text-card-foreground shadow">
+                    <table className="w-full text-left text-sm">
+                        <thead className="bg-muted/50 text-xs text-muted-foreground uppercase">
                             <tr>
-                                <th className="px-6 py-3 font-medium">Device / Browser</th>
-                                <th className="px-6 py-3 font-medium">IP Address</th>
-                                <th className="px-6 py-3 font-medium">Last Active</th>
-                                <th className="px-6 py-3 font-medium text-right">Actions</th>
+                                <th className="px-6 py-3 font-medium">
+                                    Device / Browser
+                                </th>
+                                <th className="px-6 py-3 font-medium">
+                                    IP Address
+                                </th>
+                                <th className="px-6 py-3 font-medium">
+                                    Last Active
+                                </th>
+                                <th className="px-6 py-3 text-right font-medium">
+                                    Actions
+                                </th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-border">
                             {sessions.length === 0 ? (
                                 <tr>
-                                    <td colSpan={4} className="px-6 py-12 text-center text-muted-foreground">
+                                    <td
+                                        colSpan={4}
+                                        className="px-6 py-12 text-center text-muted-foreground"
+                                    >
                                         No active sessions found for this user.
                                     </td>
                                 </tr>
                             ) : (
                                 sessions.map((session) => (
-                                    <tr key={session.id} className={`transition-colors hover:bg-muted/50 ${session.is_current_device ? 'bg-primary/5' : ''}`}>
+                                    <tr
+                                        key={session.id}
+                                        className={`transition-colors hover:bg-muted/50 ${session.is_current_device ? 'bg-primary/5' : ''}`}
+                                    >
                                         <td className="px-6 py-4">
                                             <div className="flex flex-col gap-1">
-                                                <div className="font-medium flex items-center gap-2">
+                                                <div className="flex items-center gap-2 font-medium">
                                                     {session.user_agent ? (
-                                                        <span className="truncate max-w-[300px]" title={session.user_agent}>
-                                                            {session.user_agent.split(' ').slice(0, 3).join(' ')}...
+                                                        <span
+                                                            className="max-w-[300px] truncate"
+                                                            title={
+                                                                session.user_agent
+                                                            }
+                                                        >
+                                                            {session.user_agent
+                                                                .split(' ')
+                                                                .slice(0, 3)
+                                                                .join(' ')}
+                                                            ...
                                                         </span>
                                                     ) : (
                                                         'Unknown Device'
                                                     )}
                                                     {session.is_current_device && (
-                                                        <Badge variant="default" className="text-[10px] h-5 px-1.5">This Admin Session</Badge>
+                                                        <Badge
+                                                            variant="default"
+                                                            className="h-5 px-1.5 text-[10px]"
+                                                        >
+                                                            This Admin Session
+                                                        </Badge>
                                                     )}
                                                 </div>
-                                                <span className="text-xs text-muted-foreground truncate max-w-[400px]" title={session.user_agent}>
-                                                    {session.user_agent || 'No user agent provided'}
+                                                <span
+                                                    className="max-w-[400px] truncate text-xs text-muted-foreground"
+                                                    title={session.user_agent}
+                                                >
+                                                    {session.user_agent ||
+                                                        'No user agent provided'}
                                                 </span>
                                             </div>
                                         </td>
@@ -116,13 +164,17 @@ export default function UserSessions({ user, sessions }: UserSessionsProps) {
                                         <td className="px-6 py-4 text-muted-foreground">
                                             {session.last_activity}
                                         </td>
-                                        <td className="px-6 py-4 text-right flex justify-end">
+                                        <td className="flex justify-end px-6 py-4 text-right">
                                             {!session.is_current_device && (
                                                 <Button
                                                     variant="outline"
                                                     size="sm"
                                                     className="text-destructive hover:text-destructive"
-                                                    onClick={() => revokeSession(session.id)}
+                                                    onClick={() =>
+                                                        revokeSession(
+                                                            session.id,
+                                                        )
+                                                    }
                                                 >
                                                     <XCircle className="mr-1.5 h-3.5 w-3.5" />
                                                     Revoke

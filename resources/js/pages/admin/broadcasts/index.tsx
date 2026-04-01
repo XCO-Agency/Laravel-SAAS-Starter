@@ -1,15 +1,5 @@
-import { Head, useForm, router } from '@inertiajs/react';
-import AdminLayout from '@/layouts/admin-layout';
-import { BreadcrumbItem } from '@/types';
 import { Button } from '@/components/ui/button';
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from '@/components/ui/table';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
     Dialog,
     DialogContent,
@@ -20,8 +10,6 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Checkbox } from '@/components/ui/checkbox';
 import {
     Select,
     SelectContent,
@@ -29,6 +17,17 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/components/ui/table';
+import { Textarea } from '@/components/ui/textarea';
+import AdminLayout from '@/layouts/admin-layout';
+import { Head, router, useForm } from '@inertiajs/react';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
@@ -80,14 +79,16 @@ interface Props {
 export default function BroadcastsIndex({ broadcasts }: Props) {
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
-    const { data, setData, post, processing, errors, reset, clearErrors } = useForm({
-        subject: '',
-        body: '',
-        action_url: '',
-        send_via_email: false,
-        send_via_in_app: true,
-        target_segment: 'all_users',
-    });
+    const { data, setData, post, processing, errors, reset, clearErrors } =
+        useForm({
+            subject: '',
+            body: '',
+            action_url: '',
+            send_via_email: false,
+            send_via_in_app: true,
+            target_segment: 'all_users',
+            channels: [] as string[],
+        });
 
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -124,7 +125,7 @@ export default function BroadcastsIndex({ broadcasts }: Props) {
 
         return (
             <div className="flex items-center justify-between px-2 py-4">
-                <div className="text-muted-foreground flex-1 text-sm">
+                <div className="flex-1 text-sm text-muted-foreground">
                     Showing {meta.from} to {meta.to} of {meta.total} results
                 </div>
                 <div className="flex items-center space-x-2">
@@ -135,7 +136,14 @@ export default function BroadcastsIndex({ broadcasts }: Props) {
                             size="sm"
                             disabled={!link.url}
                             className={link.active ? 'pointer-events-none' : ''}
-                            onClick={() => link.url && router.get(link.url, {}, { preserveState: true })}
+                            onClick={() =>
+                                link.url &&
+                                router.get(
+                                    link.url,
+                                    {},
+                                    { preserveState: true },
+                                )
+                            }
                             dangerouslySetInnerHTML={{ __html: link.label }}
                         />
                     ))}
@@ -151,18 +159,28 @@ export default function BroadcastsIndex({ broadcasts }: Props) {
             <div className="flex h-full flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
                 <div className="flex items-center justify-between">
                     <div>
-                        <h1 className="text-2xl font-bold tracking-tight">Broadcast Notifications</h1>
-                        <p className="text-muted-foreground">Send mass messages via email or in-app notifications.</p>
+                        <h1 className="text-2xl font-bold tracking-tight">
+                            Broadcast Notifications
+                        </h1>
+                        <p className="text-muted-foreground">
+                            Send mass messages via email or in-app
+                            notifications.
+                        </p>
                     </div>
 
-                    <Dialog open={isCreateModalOpen} onOpenChange={handleModalOpenChange}>
+                    <Dialog
+                        open={isCreateModalOpen}
+                        onOpenChange={handleModalOpenChange}
+                    >
                         <DialogTrigger asChild>
                             <Button>New Broadcast</Button>
                         </DialogTrigger>
                         <DialogContent className="sm:max-w-[500px]">
                             <DialogHeader>
                                 <DialogTitle>Create Broadcast</DialogTitle>
-                                <DialogDescription>Compose a new message to broadcast to users.</DialogDescription>
+                                <DialogDescription>
+                                    Compose a new message to broadcast to users.
+                                </DialogDescription>
                             </DialogHeader>
 
                             <form onSubmit={submit} className="space-y-4 pt-4">
@@ -171,10 +189,16 @@ export default function BroadcastsIndex({ broadcasts }: Props) {
                                     <Input
                                         id="subject"
                                         value={data.subject}
-                                        onChange={(e) => setData('subject', e.target.value)}
+                                        onChange={(e) =>
+                                            setData('subject', e.target.value)
+                                        }
                                         placeholder="Important Update..."
                                     />
-                                    {errors.subject && <div className="text-sm text-red-500">{errors.subject}</div>}
+                                    {errors.subject && (
+                                        <div className="text-sm text-red-500">
+                                            {errors.subject}
+                                        </div>
+                                    )}
                                 </div>
 
                                 <div className="space-y-2">
@@ -182,42 +206,79 @@ export default function BroadcastsIndex({ broadcasts }: Props) {
                                     <Textarea
                                         id="body"
                                         value={data.body}
-                                        onChange={(e) => setData('body', e.target.value)}
+                                        onChange={(e) =>
+                                            setData('body', e.target.value)
+                                        }
                                         placeholder="Hello everyone,"
                                         className="h-32"
                                     />
-                                    {errors.body && <div className="text-sm text-red-500">{errors.body}</div>}
+                                    {errors.body && (
+                                        <div className="text-sm text-red-500">
+                                            {errors.body}
+                                        </div>
+                                    )}
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label htmlFor="action_url">Action URL <span className="text-muted-foreground font-normal text-xs">(optional)</span></Label>
+                                    <Label htmlFor="action_url">
+                                        Action URL{' '}
+                                        <span className="text-xs font-normal text-muted-foreground">
+                                            (optional)
+                                        </span>
+                                    </Label>
                                     <Input
                                         id="action_url"
                                         type="url"
                                         value={data.action_url}
-                                        onChange={(e) => setData('action_url', e.target.value)}
+                                        onChange={(e) =>
+                                            setData(
+                                                'action_url',
+                                                e.target.value,
+                                            )
+                                        }
                                         placeholder="https://yourapp.com/announcement"
                                     />
-                                    {errors.action_url && <div className="text-sm text-red-500">{errors.action_url}</div>}
-                                    <p className="text-xs text-muted-foreground">If provided, a "View Details" link will appear in the in-app notification.</p>
+                                    {errors.action_url && (
+                                        <div className="text-sm text-red-500">
+                                            {errors.action_url}
+                                        </div>
+                                    )}
+                                    <p className="text-xs text-muted-foreground">
+                                        If provided, a "View Details" link will
+                                        appear in the in-app notification.
+                                    </p>
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label htmlFor="target_segment">Target Segment</Label>
+                                    <Label htmlFor="target_segment">
+                                        Target Segment
+                                    </Label>
                                     <Select
                                         value={data.target_segment}
-                                        onValueChange={(value) => setData('target_segment', value)}
+                                        onValueChange={(value) =>
+                                            setData('target_segment', value)
+                                        }
                                     >
                                         <SelectTrigger>
                                             <SelectValue placeholder="Select target segment" />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            <SelectItem value="all_users">All Users</SelectItem>
-                                            <SelectItem value="workspace_owners">Workspace Owners</SelectItem>
-                                            <SelectItem value="super_admins">Super Admins</SelectItem>
+                                            <SelectItem value="all_users">
+                                                All Users
+                                            </SelectItem>
+                                            <SelectItem value="workspace_owners">
+                                                Workspace Owners
+                                            </SelectItem>
+                                            <SelectItem value="super_admins">
+                                                Super Admins
+                                            </SelectItem>
                                         </SelectContent>
                                     </Select>
-                                    {errors.target_segment && <div className="text-sm text-red-500">{errors.target_segment}</div>}
+                                    {errors.target_segment && (
+                                        <div className="text-sm text-red-500">
+                                            {errors.target_segment}
+                                        </div>
+                                    )}
                                 </div>
 
                                 <div className="space-y-4 pt-2">
@@ -227,11 +288,16 @@ export default function BroadcastsIndex({ broadcasts }: Props) {
                                         <Checkbox
                                             id="send_via_in_app"
                                             checked={data.send_via_in_app}
-                                            onCheckedChange={(checked) => setData('send_via_in_app', checked as boolean)}
+                                            onCheckedChange={(checked) =>
+                                                setData(
+                                                    'send_via_in_app',
+                                                    checked as boolean,
+                                                )
+                                            }
                                         />
                                         <label
                                             htmlFor="send_via_in_app"
-                                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                            className="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                                         >
                                             In-App Notification
                                         </label>
@@ -241,24 +307,42 @@ export default function BroadcastsIndex({ broadcasts }: Props) {
                                         <Checkbox
                                             id="send_via_email"
                                             checked={data.send_via_email}
-                                            onCheckedChange={(checked) => setData('send_via_email', checked as boolean)}
+                                            onCheckedChange={(checked) =>
+                                                setData(
+                                                    'send_via_email',
+                                                    checked as boolean,
+                                                )
+                                            }
                                         />
                                         <label
                                             htmlFor="send_via_email"
-                                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                            className="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                                         >
                                             Email Notification
                                         </label>
                                     </div>
-                                    {errors.channels && <div className="text-sm text-red-500">{errors.channels}</div>}
+                                    {errors.channels && (
+                                        <div className="text-sm text-red-500">
+                                            {errors.channels}
+                                        </div>
+                                    )}
                                 </div>
 
                                 <div className="flex justify-end pt-4">
-                                    <Button type="button" variant="outline" className="mr-2" onClick={() => setIsCreateModalOpen(false)}>
+                                    <Button
+                                        type="button"
+                                        variant="outline"
+                                        className="mr-2"
+                                        onClick={() =>
+                                            setIsCreateModalOpen(false)
+                                        }
+                                    >
                                         Cancel
                                     </Button>
                                     <Button type="submit" disabled={processing}>
-                                        {processing ? 'Dispatching...' : 'Dispatch Broadcast'}
+                                        {processing
+                                            ? 'Dispatching...'
+                                            : 'Dispatch Broadcast'}
                                     </Button>
                                 </div>
                             </form>
@@ -280,17 +364,25 @@ export default function BroadcastsIndex({ broadcasts }: Props) {
                         <TableBody>
                             {broadcasts.data.length === 0 ? (
                                 <TableRow>
-                                    <TableCell colSpan={5} className="h-24 text-center">
+                                    <TableCell
+                                        colSpan={5}
+                                        className="h-24 text-center"
+                                    >
                                         No broadcasts found.
                                     </TableCell>
                                 </TableRow>
                             ) : (
                                 broadcasts.data.map((broadcast) => (
                                     <TableRow key={broadcast.id}>
-                                        <TableCell className="font-medium">{broadcast.subject}</TableCell>
+                                        <TableCell className="font-medium">
+                                            {broadcast.subject}
+                                        </TableCell>
                                         <TableCell>
                                             <span className="inline-flex items-center rounded-md bg-secondary px-2 py-1 text-xs font-medium">
-                                                {broadcast.target_segment.replace('_', ' ')}
+                                                {broadcast.target_segment.replace(
+                                                    '_',
+                                                    ' ',
+                                                )}
                                             </span>
                                         </TableCell>
                                         <TableCell>
@@ -307,7 +399,9 @@ export default function BroadcastsIndex({ broadcasts }: Props) {
                                                 )}
                                             </div>
                                         </TableCell>
-                                        <TableCell>{broadcast.sender?.name}</TableCell>
+                                        <TableCell>
+                                            {broadcast.sender?.name}
+                                        </TableCell>
                                         <TableCell className="text-muted-foreground">
                                             {formatDate(broadcast.sent_at)}
                                         </TableCell>

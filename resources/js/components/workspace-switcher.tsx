@@ -1,3 +1,4 @@
+import { Badge } from '@/components/ui/badge';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -14,8 +15,14 @@ import {
 } from '@/components/ui/sidebar';
 import { type SharedData } from '@/types';
 import { router, usePage } from '@inertiajs/react';
-import { Building2, Check, ChevronsUpDown, Crown, Plus, Settings } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
+import {
+    Building2,
+    Check,
+    ChevronsUpDown,
+    Crown,
+    Plus,
+    Settings,
+} from 'lucide-react';
 
 export function WorkspaceSwitcher() {
     const { currentWorkspace, workspaces } = usePage<SharedData>().props;
@@ -91,14 +98,18 @@ export function WorkspaceSwitcher() {
                                 </span>
                                 {workspace.plan && (
                                     <Badge
-                                        variant={workspace.plan === 'Free' ? 'outline' : 'secondary'}
-                                        className="text-[10px] px-1.5 py-0"
+                                        variant={
+                                            workspace.plan === 'Free'
+                                                ? 'outline'
+                                                : 'secondary'
+                                        }
+                                        className="px-1.5 py-0 text-[10px]"
                                     >
                                         {workspace.plan}
                                     </Badge>
                                 )}
                                 {workspace.role === 'owner' && (
-                                    <Crown className="size-3 text-yellow-500 shrink-0" />
+                                    <Crown className="size-3 shrink-0 text-yellow-500" />
                                 )}
                                 {workspace.is_current && (
                                     <Check className="ml-auto size-4" />
@@ -134,9 +145,3 @@ export function WorkspaceSwitcher() {
         </SidebarMenu>
     );
 }
-
-
-
-
-
-

@@ -1,4 +1,10 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 import AdminLayout from '@/layouts/admin-layout';
 import { Head } from '@inertiajs/react';
 import {
@@ -80,7 +86,8 @@ export default function OnboardingInsights({
                         Onboarding Insights
                     </h2>
                     <p className="text-sm text-muted-foreground">
-                        Understand where users drop off during onboarding and monitor completion rates over the last 30 days.
+                        Understand where users drop off during onboarding and
+                        monitor completion rates over the last 30 days.
                     </p>
                 </div>
 
@@ -90,8 +97,12 @@ export default function OnboardingInsights({
                         <CardContent className="pt-6">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <p className="text-sm text-muted-foreground">New Registrations</p>
-                                    <p className="text-3xl font-bold">{metrics.total_registered}</p>
+                                    <p className="text-sm text-muted-foreground">
+                                        New Registrations
+                                    </p>
+                                    <p className="text-3xl font-bold">
+                                        {metrics.total_registered}
+                                    </p>
                                 </div>
                                 <UserPlus className="h-8 w-8 text-muted-foreground/30" />
                             </div>
@@ -102,8 +113,12 @@ export default function OnboardingInsights({
                         <CardContent className="pt-6">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <p className="text-sm text-muted-foreground">Fully Onboarded</p>
-                                    <p className="text-3xl font-bold">{metrics.total_onboarded}</p>
+                                    <p className="text-sm text-muted-foreground">
+                                        Fully Onboarded
+                                    </p>
+                                    <p className="text-3xl font-bold">
+                                        {metrics.total_onboarded}
+                                    </p>
                                 </div>
                                 <CheckCircle2 className="h-8 w-8 text-emerald-500/30" />
                             </div>
@@ -114,8 +129,12 @@ export default function OnboardingInsights({
                         <CardContent className="pt-6">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <p className="text-sm text-muted-foreground">Completion Rate</p>
-                                    <p className="text-3xl font-bold">{metrics.completion_rate}%</p>
+                                    <p className="text-sm text-muted-foreground">
+                                        Completion Rate
+                                    </p>
+                                    <p className="text-3xl font-bold">
+                                        {metrics.completion_rate}%
+                                    </p>
                                 </div>
                                 <Users className="h-8 w-8 text-blue-500/30" />
                             </div>
@@ -126,8 +145,12 @@ export default function OnboardingInsights({
                         <CardContent className="pt-6">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <p className="text-sm text-muted-foreground">Avg. Time to Complete</p>
-                                    <p className="text-3xl font-bold">{formatTime(metrics.avg_time_minutes)}</p>
+                                    <p className="text-sm text-muted-foreground">
+                                        Avg. Time to Complete
+                                    </p>
+                                    <p className="text-3xl font-bold">
+                                        {formatTime(metrics.avg_time_minutes)}
+                                    </p>
                                 </div>
                                 <Clock className="h-8 w-8 text-violet-500/30" />
                             </div>
@@ -138,14 +161,22 @@ export default function OnboardingInsights({
                 {/* Funnel Visualization */}
                 <Card>
                     <CardHeader>
-                        <CardTitle className="text-base">Onboarding Funnel</CardTitle>
-                        <CardDescription>How many users viewed and completed each step.</CardDescription>
+                        <CardTitle className="text-base">
+                            Onboarding Funnel
+                        </CardTitle>
+                        <CardDescription>
+                            How many users viewed and completed each step.
+                        </CardDescription>
                     </CardHeader>
                     <CardContent>
                         <div className="space-y-6">
                             {funnel.map((step, index) => {
-                                const viewedWidth = (step.viewed / maxViewed) * 100;
-                                const completedWidth = step.viewed > 0 ? (step.completed / step.viewed) * 100 : 0;
+                                const viewedWidth =
+                                    (step.viewed / maxViewed) * 100;
+                                const completedWidth =
+                                    step.viewed > 0
+                                        ? (step.completed / step.viewed) * 100
+                                        : 0;
 
                                 return (
                                     <div key={step.step}>
@@ -154,11 +185,24 @@ export default function OnboardingInsights({
                                                 <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary text-xs font-medium text-primary-foreground">
                                                     {index + 1}
                                                 </span>
-                                                <span className="font-medium text-sm">{stepLabels[step.step] ?? step.step}</span>
+                                                <span className="text-sm font-medium">
+                                                    {stepLabels[step.step] ??
+                                                        step.step}
+                                                </span>
                                             </div>
                                             <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                                                <span>Viewed: <strong className="text-foreground">{step.viewed}</strong></span>
-                                                <span>Completed: <strong className="text-foreground">{step.completed}</strong></span>
+                                                <span>
+                                                    Viewed:{' '}
+                                                    <strong className="text-foreground">
+                                                        {step.viewed}
+                                                    </strong>
+                                                </span>
+                                                <span>
+                                                    Completed:{' '}
+                                                    <strong className="text-foreground">
+                                                        {step.completed}
+                                                    </strong>
+                                                </span>
                                             </div>
                                         </div>
 
@@ -167,20 +211,25 @@ export default function OnboardingInsights({
                                             <div className="h-3 overflow-hidden rounded-full bg-muted">
                                                 <div
                                                     className={`h-full rounded-full ${stepColors[step.step] ?? 'bg-primary'} opacity-30 transition-all`}
-                                                    style={{ width: `${viewedWidth}%` }}
+                                                    style={{
+                                                        width: `${viewedWidth}%`,
+                                                    }}
                                                 />
                                             </div>
                                             <div className="h-3 overflow-hidden rounded-full bg-muted">
                                                 <div
                                                     className={`h-full rounded-full ${stepColors[step.step] ?? 'bg-primary'} transition-all`}
-                                                    style={{ width: `${(step.completed / maxViewed) * 100}%` }}
+                                                    style={{
+                                                        width: `${(step.completed / maxViewed) * 100}%`,
+                                                    }}
                                                 />
                                             </div>
                                         </div>
 
                                         {step.viewed > 0 && (
                                             <p className="mt-1 text-xs text-muted-foreground">
-                                                {completedWidth.toFixed(0)}% completion rate for this step
+                                                {completedWidth.toFixed(0)}%
+                                                completion rate for this step
                                             </p>
                                         )}
                                     </div>
@@ -210,27 +259,40 @@ export default function OnboardingInsights({
                                 <TrendingDown className="h-4 w-4 text-red-500" />
                                 Drop-off Points
                             </CardTitle>
-                            <CardDescription>Users who viewed a step but didn't complete it.</CardDescription>
+                            <CardDescription>
+                                Users who viewed a step but didn't complete it.
+                            </CardDescription>
                         </CardHeader>
                         <CardContent>
                             {dropOff.some((d) => d.dropped > 0) ? (
                                 <div className="space-y-4">
                                     {dropOff.map((step) => (
-                                        <div key={step.step} className="flex items-center gap-3">
+                                        <div
+                                            key={step.step}
+                                            className="flex items-center gap-3"
+                                        >
                                             <div className="flex-1">
                                                 <div className="mb-1 flex items-center justify-between text-sm">
-                                                    <span className="font-medium">{stepLabels[step.step] ?? step.step}</span>
+                                                    <span className="font-medium">
+                                                        {stepLabels[
+                                                            step.step
+                                                        ] ?? step.step}
+                                                    </span>
                                                     <span className="flex items-center gap-1.5 text-muted-foreground">
-                                                        {step.drop_rate > 30 && (
+                                                        {step.drop_rate >
+                                                            30 && (
                                                             <AlertTriangle className="h-3.5 w-3.5 text-amber-500" />
                                                         )}
-                                                        {step.dropped} dropped ({step.drop_rate}%)
+                                                        {step.dropped} dropped (
+                                                        {step.drop_rate}%)
                                                     </span>
                                                 </div>
                                                 <div className="h-2 overflow-hidden rounded-full bg-muted">
                                                     <div
                                                         className={`h-full rounded-full transition-all ${step.drop_rate > 50 ? 'bg-red-500' : step.drop_rate > 30 ? 'bg-amber-500' : 'bg-green-500'}`}
-                                                        style={{ width: `${step.drop_rate}%` }}
+                                                        style={{
+                                                            width: `${step.drop_rate}%`,
+                                                        }}
                                                     />
                                                 </div>
                                             </div>
@@ -238,7 +300,9 @@ export default function OnboardingInsights({
                                     ))}
                                 </div>
                             ) : (
-                                <p className="text-sm text-muted-foreground">No drop-off data available yet.</p>
+                                <p className="text-sm text-muted-foreground">
+                                    No drop-off data available yet.
+                                </p>
                             )}
                         </CardContent>
                     </Card>
@@ -246,13 +310,21 @@ export default function OnboardingInsights({
                     {/* Daily Completions */}
                     <Card>
                         <CardHeader>
-                            <CardTitle className="text-base">Daily Completions (14 Days)</CardTitle>
-                            <CardDescription>Users who finished onboarding per day.</CardDescription>
+                            <CardTitle className="text-base">
+                                Daily Completions (14 Days)
+                            </CardTitle>
+                            <CardDescription>
+                                Users who finished onboarding per day.
+                            </CardDescription>
                         </CardHeader>
                         <CardContent>
-                            <div className="flex items-end gap-1.5" style={{ height: 160 }}>
+                            <div
+                                className="flex items-end gap-1.5"
+                                style={{ height: 160 }}
+                            >
                                 {dailyCompletions.map((day) => {
-                                    const heightPercent = (day.count / maxDaily) * 100;
+                                    const heightPercent =
+                                        (day.count / maxDaily) * 100;
 
                                     return (
                                         <div
@@ -261,17 +333,25 @@ export default function OnboardingInsights({
                                         >
                                             <div
                                                 className="w-full rounded-t bg-emerald-500/80 transition-colors group-hover:bg-emerald-500"
-                                                style={{ height: `${heightPercent}%`, minHeight: day.count > 0 ? 4 : 0 }}
+                                                style={{
+                                                    height: `${heightPercent}%`,
+                                                    minHeight:
+                                                        day.count > 0 ? 4 : 0,
+                                                }}
                                             />
 
-                                            <div className="absolute bottom-full mb-2 hidden group-hover:block z-10">
-                                                <div className="rounded-md bg-popover px-2.5 py-1.5 text-xs shadow-md border whitespace-nowrap">
-                                                    <p className="font-medium">{day.date}</p>
-                                                    <p>{day.count} completions</p>
+                                            <div className="absolute bottom-full z-10 mb-2 hidden group-hover:block">
+                                                <div className="rounded-md border bg-popover px-2.5 py-1.5 text-xs whitespace-nowrap shadow-md">
+                                                    <p className="font-medium">
+                                                        {day.date}
+                                                    </p>
+                                                    <p>
+                                                        {day.count} completions
+                                                    </p>
                                                 </div>
                                             </div>
 
-                                            <span className="mt-1.5 text-[10px] text-muted-foreground truncate w-full text-center">
+                                            <span className="mt-1.5 w-full truncate text-center text-[10px] text-muted-foreground">
                                                 {day.date.split(' ')[1]}
                                             </span>
                                         </div>

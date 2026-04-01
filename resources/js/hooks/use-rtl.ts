@@ -37,9 +37,3 @@ export function useRTL() {
         };
     }, [i18n.language]);
 }
-
-
-
-
-
-

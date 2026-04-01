@@ -35,8 +35,12 @@ interface WorkspaceTrashProps {
     trashedWorkspaces: TrashedWorkspace[];
 }
 
-export default function WorkspaceTrash({ trashedWorkspaces }: WorkspaceTrashProps) {
-    const [confirmDelete, setConfirmDelete] = useState<TrashedWorkspace | null>(null);
+export default function WorkspaceTrash({
+    trashedWorkspaces,
+}: WorkspaceTrashProps) {
+    const [confirmDelete, setConfirmDelete] = useState<TrashedWorkspace | null>(
+        null,
+    );
     const [processing, setProcessing] = useState(false);
 
     const breadcrumbs: BreadcrumbItem[] = [
@@ -46,9 +50,13 @@ export default function WorkspaceTrash({ trashedWorkspaces }: WorkspaceTrashProp
 
     const handleRestore = (workspace: TrashedWorkspace) => {
         setProcessing(true);
-        router.post(`/workspaces/trash/${workspace.id}/restore`, {}, {
-            onFinish: () => setProcessing(false),
-        });
+        router.post(
+            `/workspaces/trash/${workspace.id}/restore`,
+            {},
+            {
+                onFinish: () => setProcessing(false),
+            },
+        );
     };
 
     const handleForceDelete = () => {
@@ -88,9 +96,12 @@ export default function WorkspaceTrash({ trashedWorkspaces }: WorkspaceTrashProp
                     <Card>
                         <CardContent className="flex flex-col items-center justify-center py-12">
                             <Trash2 className="mb-4 h-12 w-12 text-muted-foreground" />
-                            <h3 className="mb-2 text-lg font-medium">Trash is empty</h3>
+                            <h3 className="mb-2 text-lg font-medium">
+                                Trash is empty
+                            </h3>
                             <p className="text-center text-muted-foreground">
-                                Deleted workspaces will appear here for 30 days before being permanently removed.
+                                Deleted workspaces will appear here for 30 days
+                                before being permanently removed.
                             </p>
                         </CardContent>
                     </Card>
@@ -117,7 +128,12 @@ export default function WorkspaceTrash({ trashedWorkspaces }: WorkspaceTrashProp
                                                     {workspace.name}
                                                 </CardTitle>
                                                 <CardDescription>
-                                                    Deleted {new Date(workspace.deleted_at).toLocaleDateString()} • {workspace.days_remaining} days remaining
+                                                    Deleted{' '}
+                                                    {new Date(
+                                                        workspace.deleted_at,
+                                                    ).toLocaleDateString()}{' '}
+                                                    • {workspace.days_remaining}{' '}
+                                                    days remaining
                                                 </CardDescription>
                                             </div>
                                         </div>
@@ -126,7 +142,9 @@ export default function WorkspaceTrash({ trashedWorkspaces }: WorkspaceTrashProp
                                                 variant="outline"
                                                 size="sm"
                                                 disabled={processing}
-                                                onClick={() => handleRestore(workspace)}
+                                                onClick={() =>
+                                                    handleRestore(workspace)
+                                                }
                                             >
                                                 <RotateCcw className="mr-1.5 h-3.5 w-3.5" />
                                                 Restore
@@ -135,7 +153,9 @@ export default function WorkspaceTrash({ trashedWorkspaces }: WorkspaceTrashProp
                                                 variant="destructive"
                                                 size="sm"
                                                 disabled={processing}
-                                                onClick={() => setConfirmDelete(workspace)}
+                                                onClick={() =>
+                                                    setConfirmDelete(workspace)
+                                                }
                                             >
                                                 <Trash2 className="mr-1.5 h-3.5 w-3.5" />
                                                 Delete Forever
@@ -148,17 +168,26 @@ export default function WorkspaceTrash({ trashedWorkspaces }: WorkspaceTrashProp
                     </div>
                 )}
 
-                <Dialog open={!!confirmDelete} onOpenChange={() => setConfirmDelete(null)}>
+                <Dialog
+                    open={!!confirmDelete}
+                    onOpenChange={() => setConfirmDelete(null)}
+                >
                     <DialogContent>
                         <DialogHeader>
-                            <DialogTitle>Permanently delete workspace?</DialogTitle>
+                            <DialogTitle>
+                                Permanently delete workspace?
+                            </DialogTitle>
                             <DialogDescription>
-                                This will permanently delete <strong>{confirmDelete?.name}</strong> and all associated data.
-                                This action cannot be undone.
+                                This will permanently delete{' '}
+                                <strong>{confirmDelete?.name}</strong> and all
+                                associated data. This action cannot be undone.
                             </DialogDescription>
                         </DialogHeader>
                         <DialogFooter>
-                            <Button variant="outline" onClick={() => setConfirmDelete(null)}>
+                            <Button
+                                variant="outline"
+                                onClick={() => setConfirmDelete(null)}
+                            >
                                 Cancel
                             </Button>
                             <Button

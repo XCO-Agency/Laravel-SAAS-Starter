@@ -4,17 +4,16 @@ import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Transition } from '@headlessui/react';
 import { Form, Head, Link, router, usePage } from '@inertiajs/react';
 
+import AppearanceTabs from '@/components/appearance-tabs';
+import AvatarUpload from '@/components/avatar-upload';
 import DeleteUser from '@/components/delete-user';
 import ExportData from '@/components/export-data';
-import { LanguageSwitcher } from '@/components/language-switcher';
-import AppearanceTabs from '@/components/appearance-tabs';
 import HeadingSmall from '@/components/heading-small';
 import InputError from '@/components/input-error';
-import { useTranslations } from '@/hooks/use-translations';
+import { LanguageSwitcher } from '@/components/language-switcher';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import {
     Select,
     SelectContent,
@@ -23,12 +22,15 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
-import { type ChangeEvent } from 'react';
-import AvatarUpload from '@/components/avatar-upload';
+import { Textarea } from '@/components/ui/textarea';
+import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import ProfileLayout from '@/layouts/settings/profile-layout';
 import { edit } from '@/routes/profile';
-import { update as updateAvatar, destroy as destroyAvatar } from '@/routes/profile/avatar';
+import {
+    destroy as destroyAvatar,
+    update as updateAvatar,
+} from '@/routes/profile/avatar';
 
 export default function Profile({
     mustVerifyEmail,
@@ -54,13 +56,13 @@ export default function Profile({
 
             <ProfileLayout
                 title={t('settings.profile.title', 'Profile information')}
-                description={t('settings.profile.description', 'Update your name and email address')}
+                description={t(
+                    'settings.profile.description',
+                    'Update your name and email address',
+                )}
                 fullWidth
             >
                 <div className="space-y-6">
-
-
-
                     <Form
                         {...ProfileController.update.form()}
                         options={{
@@ -78,14 +80,22 @@ export default function Profile({
                                         onSuccess={() => {
                                             router.reload({ only: ['auth'] });
                                         }}
-                                        label={t('settings.profile.avatar', 'Profile Photo')}
-                                        description={t('settings.profile.avatar_description', 'Update your profile photo. Recommended size is 256x256px.')}
+                                        label={t(
+                                            'settings.profile.avatar',
+                                            'Profile Photo',
+                                        )}
+                                        description={t(
+                                            'settings.profile.avatar_description',
+                                            'Update your profile photo. Recommended size is 256x256px.',
+                                        )}
                                     />
                                     <InputError message={errors.avatar} />
                                 </div>
 
                                 <div className="grid gap-2">
-                                    <Label htmlFor="name">{t('settings.profile.name', 'Name')}</Label>
+                                    <Label htmlFor="name">
+                                        {t('settings.profile.name', 'Name')}
+                                    </Label>
 
                                     <Input
                                         id="name"
@@ -94,7 +104,10 @@ export default function Profile({
                                         name="name"
                                         required
                                         autoComplete="name"
-                                        placeholder={t('settings.profile.name', 'Name')}
+                                        placeholder={t(
+                                            'settings.profile.name',
+                                            'Name',
+                                        )}
                                     />
 
                                     <InputError
@@ -104,7 +117,12 @@ export default function Profile({
                                 </div>
 
                                 <div className="grid gap-2">
-                                    <Label htmlFor="email">{t('settings.profile.email', 'Email address')}</Label>
+                                    <Label htmlFor="email">
+                                        {t(
+                                            'settings.profile.email',
+                                            'Email address',
+                                        )}
+                                    </Label>
 
                                     <Input
                                         id="email"
@@ -114,7 +132,10 @@ export default function Profile({
                                         name="email"
                                         required
                                         autoComplete="username"
-                                        placeholder={t('settings.profile.email', 'Email address')}
+                                        placeholder={t(
+                                            'settings.profile.email',
+                                            'Email address',
+                                        )}
                                     />
 
                                     <InputError
@@ -124,7 +145,9 @@ export default function Profile({
                                 </div>
 
                                 <div className="grid gap-2">
-                                    <Label htmlFor="bio">{t('settings.profile.bio', 'Bio')}</Label>
+                                    <Label htmlFor="bio">
+                                        {t('settings.profile.bio', 'Bio')}
+                                    </Label>
 
                                     <Textarea
                                         id="bio"
@@ -132,7 +155,10 @@ export default function Profile({
                                         defaultValue={auth.user.bio || ''}
                                         name="bio"
                                         rows={4}
-                                        placeholder={t('settings.profile.bio_placeholder', 'Tell us a little about yourself...')}
+                                        placeholder={t(
+                                            'settings.profile.bio_placeholder',
+                                            'Tell us a little about yourself...',
+                                        )}
                                     />
 
                                     <InputError
@@ -140,19 +166,38 @@ export default function Profile({
                                         message={errors.bio}
                                     />
                                     <p className="text-xs text-muted-foreground">
-                                        {t('settings.profile.bio_help', 'Brief description up to 1000 characters.')}
+                                        {t(
+                                            'settings.profile.bio_help',
+                                            'Brief description up to 1000 characters.',
+                                        )}
                                     </p>
                                 </div>
 
                                 <div className="grid gap-2">
-                                    <Label htmlFor="timezone">{t('settings.profile.timezone', 'Timezone')}</Label>
+                                    <Label htmlFor="timezone">
+                                        {t(
+                                            'settings.profile.timezone',
+                                            'Timezone',
+                                        )}
+                                    </Label>
 
-                                    <input type="hidden" name="timezone" id="timezone" defaultValue={auth.user.timezone || 'UTC'} />
+                                    <input
+                                        type="hidden"
+                                        name="timezone"
+                                        id="timezone"
+                                        defaultValue={
+                                            auth.user.timezone || 'UTC'
+                                        }
+                                    />
 
                                     <Select
-                                        defaultValue={auth.user.timezone || 'UTC'}
+                                        defaultValue={
+                                            auth.user.timezone || 'UTC'
+                                        }
                                         onValueChange={(val) => {
-                                            const el = document.getElementById('timezone') as HTMLInputElement;
+                                            const el = document.getElementById(
+                                                'timezone',
+                                            ) as HTMLInputElement;
                                             if (el) el.value = val;
                                         }}
                                         name="timezone_select"
@@ -161,15 +206,33 @@ export default function Profile({
                                             <SelectValue placeholder="Select a timezone" />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            <SelectItem value="UTC">UTC (Universal Coordinated Time)</SelectItem>
-                                            <SelectItem value="America/New_York">Eastern Time (US & Canada)</SelectItem>
-                                            <SelectItem value="America/Chicago">Central Time (US & Canada)</SelectItem>
-                                            <SelectItem value="America/Denver">Mountain Time (US & Canada)</SelectItem>
-                                            <SelectItem value="America/Los_Angeles">Pacific Time (US & Canada)</SelectItem>
-                                            <SelectItem value="Europe/London">London</SelectItem>
-                                            <SelectItem value="Europe/Paris">Paris</SelectItem>
-                                            <SelectItem value="Asia/Tokyo">Tokyo</SelectItem>
-                                            <SelectItem value="Australia/Sydney">Sydney</SelectItem>
+                                            <SelectItem value="UTC">
+                                                UTC (Universal Coordinated Time)
+                                            </SelectItem>
+                                            <SelectItem value="America/New_York">
+                                                Eastern Time (US & Canada)
+                                            </SelectItem>
+                                            <SelectItem value="America/Chicago">
+                                                Central Time (US & Canada)
+                                            </SelectItem>
+                                            <SelectItem value="America/Denver">
+                                                Mountain Time (US & Canada)
+                                            </SelectItem>
+                                            <SelectItem value="America/Los_Angeles">
+                                                Pacific Time (US & Canada)
+                                            </SelectItem>
+                                            <SelectItem value="Europe/London">
+                                                London
+                                            </SelectItem>
+                                            <SelectItem value="Europe/Paris">
+                                                Paris
+                                            </SelectItem>
+                                            <SelectItem value="Asia/Tokyo">
+                                                Tokyo
+                                            </SelectItem>
+                                            <SelectItem value="Australia/Sydney">
+                                                Sydney
+                                            </SelectItem>
                                         </SelectContent>
                                     </Select>
 
@@ -180,14 +243,30 @@ export default function Profile({
                                 </div>
 
                                 <div className="grid gap-2">
-                                    <Label htmlFor="date_format">{t('settings.profile.date_format', 'Date Format')}</Label>
+                                    <Label htmlFor="date_format">
+                                        {t(
+                                            'settings.profile.date_format',
+                                            'Date Format',
+                                        )}
+                                    </Label>
 
-                                    <input type="hidden" name="date_format" id="date_format" defaultValue={auth.user.date_format || 'Y-m-d'} />
+                                    <input
+                                        type="hidden"
+                                        name="date_format"
+                                        id="date_format"
+                                        defaultValue={
+                                            auth.user.date_format || 'Y-m-d'
+                                        }
+                                    />
 
                                     <Select
-                                        defaultValue={auth.user.date_format || 'Y-m-d'}
+                                        defaultValue={
+                                            auth.user.date_format || 'Y-m-d'
+                                        }
                                         onValueChange={(val) => {
-                                            const el = document.getElementById('date_format') as HTMLInputElement;
+                                            const el = document.getElementById(
+                                                'date_format',
+                                            ) as HTMLInputElement;
                                             if (el) el.value = val;
                                         }}
                                         name="date_format_select"
@@ -196,11 +275,21 @@ export default function Profile({
                                             <SelectValue placeholder="Select a date format" />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            <SelectItem value="Y-m-d">YYYY-MM-DD (e.g., 2026-03-05)</SelectItem>
-                                            <SelectItem value="d/m/Y">DD/MM/YYYY (e.g., 05/03/2026)</SelectItem>
-                                            <SelectItem value="m/d/Y">MM/DD/YYYY (e.g., 03/05/2026)</SelectItem>
-                                            <SelectItem value="Y/m/d">YYYY/MM/DD (e.g., 2026/03/05)</SelectItem>
-                                            <SelectItem value="M j, Y">MMM D, YYYY (e.g., Mar 5, 2026)</SelectItem>
+                                            <SelectItem value="Y-m-d">
+                                                YYYY-MM-DD (e.g., 2026-03-05)
+                                            </SelectItem>
+                                            <SelectItem value="d/m/Y">
+                                                DD/MM/YYYY (e.g., 05/03/2026)
+                                            </SelectItem>
+                                            <SelectItem value="m/d/Y">
+                                                MM/DD/YYYY (e.g., 03/05/2026)
+                                            </SelectItem>
+                                            <SelectItem value="Y/m/d">
+                                                YYYY/MM/DD (e.g., 2026/03/05)
+                                            </SelectItem>
+                                            <SelectItem value="M j, Y">
+                                                MMM D, YYYY (e.g., Mar 5, 2026)
+                                            </SelectItem>
                                         </SelectContent>
                                     </Select>
 
@@ -214,22 +303,31 @@ export default function Profile({
                                     auth.user.email_verified_at === null && (
                                         <div>
                                             <p className="-mt-4 text-sm text-muted-foreground">
-                                                {t('settings.profile.email_unverified', 'Your email address is unverified.')}{' '}
+                                                {t(
+                                                    'settings.profile.email_unverified',
+                                                    'Your email address is unverified.',
+                                                )}{' '}
                                                 <Link
                                                     href={send()}
                                                     as="button"
                                                     className="text-foreground underline decoration-neutral-300 underline-offset-4 transition-colors duration-300 ease-out hover:decoration-current! dark:decoration-neutral-500"
                                                 >
-                                                    {t('settings.profile.resend_verification', 'Click here to resend the verification email.')}
+                                                    {t(
+                                                        'settings.profile.resend_verification',
+                                                        'Click here to resend the verification email.',
+                                                    )}
                                                 </Link>
                                             </p>
 
                                             {status ===
                                                 'verification-link-sent' && (
-                                                    <div className="mt-2 text-sm font-medium text-green-600">
-                                                        {t('settings.profile.verification_sent', 'A new verification link has been sent to your email address.')}
-                                                    </div>
-                                                )}
+                                                <div className="mt-2 text-sm font-medium text-green-600">
+                                                    {t(
+                                                        'settings.profile.verification_sent',
+                                                        'A new verification link has been sent to your email address.',
+                                                    )}
+                                                </div>
+                                            )}
                                         </div>
                                     )}
 
@@ -249,7 +347,10 @@ export default function Profile({
                                         leaveTo="opacity-0"
                                     >
                                         <p className="text-sm text-neutral-600">
-                                            {t('settings.profile.saved', 'Saved')}
+                                            {t(
+                                                'settings.profile.saved',
+                                                'Saved',
+                                            )}
                                         </p>
                                     </Transition>
                                 </div>
@@ -263,14 +364,19 @@ export default function Profile({
                     <div className="space-y-4">
                         <HeadingSmall
                             title={t('settings.appearance.title', 'Appearance')}
-                            description={t('settings.appearance.description', "Choose your preferred theme for the application.")}
+                            description={t(
+                                'settings.appearance.description',
+                                'Choose your preferred theme for the application.',
+                            )}
                         />
                         <AppearanceTabs />
                     </div>
 
                     <Separator />
 
-                    <LanguageSwitcher currentLocale={locale || auth.user?.locale || 'en'} />
+                    <LanguageSwitcher
+                        currentLocale={locale || auth.user?.locale || 'en'}
+                    />
                 </div>
 
                 <ExportData />

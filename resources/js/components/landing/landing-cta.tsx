@@ -1,8 +1,7 @@
-
 import { Button } from '@/components/ui/button';
+import { useTranslations } from '@/hooks/use-translations';
 import { register } from '@/routes';
 import { type SharedData } from '@/types';
-import { useTranslations } from '@/hooks/use-translations';
 import { Link, usePage } from '@inertiajs/react';
 import { ArrowRight, Sparkles } from 'lucide-react';
 
@@ -16,7 +15,7 @@ export function LandingCta() {
                 <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary to-accent p-8 sm:p-12 lg:p-16">
                     {/* Background decoration */}
                     <div className="absolute inset-0 -z-10">
-                        <div className="absolute -right-20 -top-20 h-80 w-80 rounded-full bg-white/10 blur-3xl" />
+                        <div className="absolute -top-20 -right-20 h-80 w-80 rounded-full bg-white/10 blur-3xl" />
                         <div className="absolute -bottom-20 -left-20 h-80 w-80 rounded-full bg-white/10 blur-3xl" />
                     </div>
 
@@ -27,11 +26,17 @@ export function LandingCta() {
                         </div>
 
                         <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl">
-                            {t('landing.cta.title', 'Ready to Launch Your SaaS?')}
+                            {t(
+                                'landing.cta.title',
+                                'Ready to Launch Your SaaS?',
+                            )}
                         </h2>
 
                         <p className="mt-4 text-lg text-white/80 sm:text-xl">
-                            {t('landing.cta.description', 'Join thousands of developers who are building and shipping faster with Laravel SAAS Starter. No credit card required. No subscriptions. Just clone and start building.')}
+                            {t(
+                                'landing.cta.description',
+                                'Join thousands of developers who are building and shipping faster with Laravel SAAS Starter. No credit card required. No subscriptions. Just clone and start building.',
+                            )}
                         </p>
 
                         <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
@@ -41,8 +46,13 @@ export function LandingCta() {
                                 asChild
                                 className="h-12 px-8 text-base"
                             >
-                                <Link href={auth.user ? '/dashboard' : register()}>
-                                    {t('landing.cta.get_started', 'Get Started Free')}
+                                <Link
+                                    href={auth.user ? '/dashboard' : register()}
+                                >
+                                    {t(
+                                        'landing.cta.get_started',
+                                        'Get Started Free',
+                                    )}
                                     <ArrowRight className="ml-2 h-4 w-4" />
                                 </Link>
                             </Button>
@@ -52,7 +62,11 @@ export function LandingCta() {
                                 asChild
                                 className="h-12 border-white/30 bg-transparent px-8 text-base text-white hover:bg-white/10 hover:text-white"
                             >
-                                <a href="https://github.com/xco-agency/laravel-saas-starter" target="_blank" rel="noopener noreferrer">
+                                <a
+                                    href="https://github.com/xco-agency/laravel-saas-starter"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
                                     {t('landing.cta.github', 'View on GitHub')}
                                 </a>
                             </Button>

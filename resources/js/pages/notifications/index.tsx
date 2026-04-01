@@ -1,9 +1,15 @@
-import http from '@/lib/http';
-import { Head, Link, router } from '@inertiajs/react';
-import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem } from '@/types';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
+import AppLayout from '@/layouts/app-layout';
+import http from '@/lib/http';
+import { type BreadcrumbItem } from '@/types';
+import { Head, Link, router } from '@inertiajs/react';
 import { Bell, Check, Clock, Trash2 } from 'lucide-react';
 
 interface PaginationLink {
@@ -41,9 +47,15 @@ const FILTER_TABS = [
     { value: 'unread', label: 'Unread' },
 ];
 
-export default function NotificationsIndex({ notifications, filter, unreadCount }: Props) {
+export default function NotificationsIndex({
+    notifications,
+    filter,
+    unreadCount,
+}: Props) {
     const markAsRead = async (id: string, currentlyRead: boolean) => {
-        if (currentlyRead) { return; }
+        if (currentlyRead) {
+            return;
+        }
 
         try {
             await http.patch(`/api/notifications/${id}/read`);
@@ -98,17 +110,26 @@ export default function NotificationsIndex({ notifications, filter, unreadCount 
                                 <CardTitle>Notifications</CardTitle>
                                 <CardDescription>
                                     {notifications.total} total
-                                    {unreadCount > 0 && ` · ${unreadCount} unread`}
+                                    {unreadCount > 0 &&
+                                        ` · ${unreadCount} unread`}
                                 </CardDescription>
                             </div>
                             <div className="flex items-center gap-2">
                                 {unreadCount > 0 && (
-                                    <Button variant="outline" size="sm" onClick={markAllAsRead}>
+                                    <Button
+                                        variant="outline"
+                                        size="sm"
+                                        onClick={markAllAsRead}
+                                    >
                                         <Check className="mr-2 h-4 w-4" />
                                         Mark all read
                                     </Button>
                                 )}
-                                <Button variant="outline" size="sm" onClick={clearRead}>
+                                <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={clearRead}
+                                >
                                     <Trash2 className="mr-2 h-4 w-4" />
                                     Clear read
                                 </Button>
@@ -116,40 +137,45 @@ export default function NotificationsIndex({ notifications, filter, unreadCount 
                         </div>
 
                         {/* Filter Tabs */}
-                        <div className="flex gap-1 border-b mt-4">
-                            {FILTER_TABS.map(tab => (
+                        <div className="mt-4 flex gap-1 border-b">
+                            {FILTER_TABS.map((tab) => (
                                 <button
                                     key={tab.value}
-                                    onClick={() => handleFilterChange(tab.value)}
-                                    className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
+                                    onClick={() =>
+                                        handleFilterChange(tab.value)
+                                    }
+                                    className={`border-b-2 px-4 py-2 text-sm font-medium transition-colors ${
                                         filter === tab.value
                                             ? 'border-primary text-primary'
                                             : 'border-transparent text-muted-foreground hover:text-foreground'
                                     }`}
                                 >
                                     {tab.label}
-                                    {tab.value === 'unread' && unreadCount > 0 && (
-                                        <span className="ml-1.5 rounded-full bg-primary px-1.5 py-0.5 text-[10px] text-primary-foreground">
-                                            {unreadCount}
-                                        </span>
-                                    )}
+                                    {tab.value === 'unread' &&
+                                        unreadCount > 0 && (
+                                            <span className="ml-1.5 rounded-full bg-primary px-1.5 py-0.5 text-[10px] text-primary-foreground">
+                                                {unreadCount}
+                                            </span>
+                                        )}
                                 </button>
                             ))}
                         </div>
                     </CardHeader>
                     <CardContent>
                         {notifications.data.length === 0 ? (
-                            <div className="flex flex-col flex-1 items-center justify-center p-8 text-center bg-muted/20 border border-dashed rounded-lg">
-                                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-muted text-muted-foreground mr-2 mb-4">
+                            <div className="flex flex-1 flex-col items-center justify-center rounded-lg border border-dashed bg-muted/20 p-8 text-center">
+                                <div className="mr-2 mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-muted text-muted-foreground">
                                     <Bell className="h-6 w-6" />
                                 </div>
                                 <h3 className="text-lg font-medium">
-                                    {filter === 'unread' ? 'No Unread Notifications' : 'No Notifications Here'}
+                                    {filter === 'unread'
+                                        ? 'No Unread Notifications'
+                                        : 'No Notifications Here'}
                                 </h3>
-                                <p className="text-sm text-muted-foreground mt-1 max-w-sm">
+                                <p className="mt-1 max-w-sm text-sm text-muted-foreground">
                                     {filter === 'unread'
                                         ? "You're all caught up!"
-                                        : "When something happens in your workspace, it will appear right here."}
+                                        : 'When something happens in your workspace, it will appear right here.'}
                                 </p>
                             </div>
                         ) : (
@@ -157,48 +183,81 @@ export default function NotificationsIndex({ notifications, filter, unreadCount 
                                 {notifications.data.map((notification) => (
                                     <div
                                         key={notification.id}
-                                        className={`flex items-start justify-between rounded-lg border p-4 transition-all hover:bg-muted/40 ${!notification.read_at ? 'bg-muted/20 border-primary/20' : ''}`}
+                                        className={`flex items-start justify-between rounded-lg border p-4 transition-all hover:bg-muted/40 ${!notification.read_at ? 'border-primary/20 bg-muted/20' : ''}`}
                                     >
                                         <div className="flex items-start gap-4">
-                                            <div className={`mt-1 h-2 w-2 rounded-full flex-shrink-0 ${!notification.read_at ? 'bg-primary' : 'bg-transparent'}`} />
+                                            <div
+                                                className={`mt-1 h-2 w-2 flex-shrink-0 rounded-full ${!notification.read_at ? 'bg-primary' : 'bg-transparent'}`}
+                                            />
                                             <div>
-                                                <h4 className="font-semibold text-sm">
-                                                    {notification.data?.title || 'System Notification'}
+                                                <h4 className="text-sm font-semibold">
+                                                    {notification.data?.title ||
+                                                        'System Notification'}
                                                 </h4>
-                                                <p className="text-sm text-muted-foreground mt-1">
-                                                    {notification.data?.message || 'You have a new message.'}
+                                                <p className="mt-1 text-sm text-muted-foreground">
+                                                    {notification.data
+                                                        ?.message ||
+                                                        'You have a new message.'}
                                                 </p>
-                                                {notification.data?.action_url && (
-                                                    <Button variant="link" className="p-0 h-auto mt-2 text-xs" asChild>
-                                                        <a href={notification.data.action_url}>View Details</a>
+                                                {notification.data
+                                                    ?.action_url && (
+                                                    <Button
+                                                        variant="link"
+                                                        className="mt-2 h-auto p-0 text-xs"
+                                                        asChild
+                                                    >
+                                                        <a
+                                                            href={
+                                                                notification
+                                                                    .data
+                                                                    .action_url
+                                                            }
+                                                        >
+                                                            View Details
+                                                        </a>
                                                     </Button>
                                                 )}
-                                                <div className="flex items-center text-xs text-muted-foreground mt-2">
+                                                <div className="mt-2 flex items-center text-xs text-muted-foreground">
                                                     <Clock className="mr-1 h-3 w-3" />
-                                                    {new Date(notification.created_at).toLocaleString()}
+                                                    {new Date(
+                                                        notification.created_at,
+                                                    ).toLocaleString()}
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="flex items-center gap-1 shrink-0">
+                                        <div className="flex shrink-0 items-center gap-1">
                                             {!notification.read_at && (
                                                 <Button
                                                     variant="ghost"
                                                     size="icon"
-                                                    className="h-8 w-8 text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50"
-                                                    onClick={() => markAsRead(notification.id, !!notification.read_at)}
+                                                    className="h-8 w-8 text-emerald-600 hover:bg-emerald-50 hover:text-emerald-700"
+                                                    onClick={() =>
+                                                        markAsRead(
+                                                            notification.id,
+                                                            !!notification.read_at,
+                                                        )
+                                                    }
                                                 >
                                                     <Check className="h-4 w-4" />
-                                                    <span className="sr-only">Mark as read</span>
+                                                    <span className="sr-only">
+                                                        Mark as read
+                                                    </span>
                                                 </Button>
                                             )}
                                             <Button
                                                 variant="ghost"
                                                 size="icon"
                                                 className="h-8 w-8 text-muted-foreground hover:text-destructive"
-                                                onClick={() => deleteNotification(notification.id)}
+                                                onClick={() =>
+                                                    deleteNotification(
+                                                        notification.id,
+                                                    )
+                                                }
                                             >
                                                 <Trash2 className="h-4 w-4" />
-                                                <span className="sr-only">Delete</span>
+                                                <span className="sr-only">
+                                                    Delete
+                                                </span>
                                             </Button>
                                         </div>
                                     </div>
@@ -206,36 +265,70 @@ export default function NotificationsIndex({ notifications, filter, unreadCount 
 
                                 {/* Pagination Controls */}
                                 {notifications.last_page > 1 && (
-                                    <div className="flex items-center justify-between border-t pt-4 mt-6">
+                                    <div className="mt-6 flex items-center justify-between border-t pt-4">
                                         <div className="text-sm text-muted-foreground">
-                                            Showing <span className="font-medium">{notifications.from || 0}</span> to{' '}
-                                            <span className="font-medium">{notifications.to || 0}</span> of{' '}
-                                            <span className="font-medium">{notifications.total}</span> entries
+                                            Showing{' '}
+                                            <span className="font-medium">
+                                                {notifications.from || 0}
+                                            </span>{' '}
+                                            to{' '}
+                                            <span className="font-medium">
+                                                {notifications.to || 0}
+                                            </span>{' '}
+                                            of{' '}
+                                            <span className="font-medium">
+                                                {notifications.total}
+                                            </span>{' '}
+                                            entries
                                         </div>
                                         <div className="flex items-center space-x-2">
-                                            {notifications.links.map((link, i) => {
-                                                let label = link.label;
-                                                if (label.includes('Previous')) { label = 'Prev'; }
-                                                if (label.includes('Next')) { label = 'Next'; }
+                                            {notifications.links.map(
+                                                (link, i) => {
+                                                    let label = link.label;
+                                                    if (
+                                                        label.includes(
+                                                            'Previous',
+                                                        )
+                                                    ) {
+                                                        label = 'Prev';
+                                                    }
+                                                    if (
+                                                        label.includes('Next')
+                                                    ) {
+                                                        label = 'Next';
+                                                    }
 
-                                                return (
-                                                    <Button
-                                                        key={i}
-                                                        variant={link.active ? 'default' : 'outline'}
-                                                        size="sm"
-                                                        disabled={!link.url}
-                                                        asChild={!!link.url}
-                                                    >
-                                                        {link.url ? (
-                                                            <Link href={link.url} preserveScroll preserveState>
-                                                                {label}
-                                                            </Link>
-                                                        ) : (
-                                                            <span>{label}</span>
-                                                        )}
-                                                    </Button>
-                                                );
-                                            })}
+                                                    return (
+                                                        <Button
+                                                            key={i}
+                                                            variant={
+                                                                link.active
+                                                                    ? 'default'
+                                                                    : 'outline'
+                                                            }
+                                                            size="sm"
+                                                            disabled={!link.url}
+                                                            asChild={!!link.url}
+                                                        >
+                                                            {link.url ? (
+                                                                <Link
+                                                                    href={
+                                                                        link.url
+                                                                    }
+                                                                    preserveScroll
+                                                                    preserveState
+                                                                >
+                                                                    {label}
+                                                                </Link>
+                                                            ) : (
+                                                                <span>
+                                                                    {label}
+                                                                </span>
+                                                            )}
+                                                        </Button>
+                                                    );
+                                                },
+                                            )}
                                         </div>
                                     </div>
                                 )}

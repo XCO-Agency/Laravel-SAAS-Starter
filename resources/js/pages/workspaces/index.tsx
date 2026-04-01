@@ -46,13 +46,19 @@ export default function WorkspacesIndex({
                 <div className="flex items-center justify-between">
                     <Heading
                         title={t('workspace.list.title', 'Workspaces')}
-                        description={t('workspace.list.description', 'Manage your workspaces and collaborate with your team.')}
+                        description={t(
+                            'workspace.list.description',
+                            'Manage your workspaces and collaborate with your team.',
+                        )}
                     />
                     {canCreateWorkspace ? (
                         <Button asChild>
                             <Link href="/workspaces/create">
                                 <Plus className="mr-2 h-4 w-4" />
-                                {t('workspace.list.new_workspace', 'New Workspace')}
+                                {t(
+                                    'workspace.list.new_workspace',
+                                    'New Workspace',
+                                )}
                             </Link>
                         </Button>
                     ) : (
@@ -79,10 +85,11 @@ export default function WorkspacesIndex({
                     {workspaces.map((workspace) => (
                         <Card
                             key={workspace.id}
-                            className={`cursor-pointer transition-all hover:shadow-md ${workspace.is_current
-                                ? 'ring-2 ring-primary'
-                                : ''
-                                }`}
+                            className={`cursor-pointer transition-all hover:shadow-md ${
+                                workspace.is_current
+                                    ? 'ring-2 ring-primary'
+                                    : ''
+                            }`}
                             onClick={() => switchWorkspace(workspace)}
                         >
                             <CardHeader className="pb-3">
@@ -105,14 +112,20 @@ export default function WorkspacesIndex({
                                             </CardTitle>
                                             {workspace.personal_workspace && (
                                                 <span className="text-xs text-muted-foreground">
-                                                    {t('workspace.list.personal', 'Personal')}
+                                                    {t(
+                                                        'workspace.list.personal',
+                                                        'Personal',
+                                                    )}
                                                 </span>
                                             )}
                                         </div>
                                     </div>
                                     {workspace.is_current && (
                                         <span className="rounded-full bg-primary/10 px-2 py-1 text-xs font-medium text-primary">
-                                            {t('workspace.list.current', 'Current')}
+                                            {t(
+                                                'workspace.list.current',
+                                                'Current',
+                                            )}
                                         </span>
                                     )}
                                 </div>
@@ -121,7 +134,8 @@ export default function WorkspacesIndex({
                                 <CardDescription className="flex items-center gap-4 text-sm">
                                     <span className="flex items-center gap-1">
                                         <Users className="h-4 w-4" />
-                                        {workspace.members_count} {t('workspace.list.members', 'members')}
+                                        {workspace.members_count}{' '}
+                                        {t('workspace.list.members', 'members')}
                                     </span>
                                     <span className="flex items-center gap-1">
                                         {workspace.role === 'owner' && (
@@ -143,7 +157,8 @@ export default function WorkspacesIndex({
                                 </CardDescription>
                                 <div className="mt-3 flex items-center justify-between">
                                     <span className="rounded-full bg-secondary px-2 py-1 text-xs">
-                                        {workspace.plan} {t('workspace.list.plan', 'Plan')}
+                                        {workspace.plan}{' '}
+                                        {t('workspace.list.plan', 'Plan')}
                                     </span>
                                 </div>
                             </CardContent>
@@ -156,16 +171,25 @@ export default function WorkspacesIndex({
                         <CardContent className="flex flex-col items-center justify-center py-12">
                             <Building2 className="mb-4 h-12 w-12 text-muted-foreground" />
                             <h3 className="mb-2 text-lg font-medium">
-                                {t('workspace.list.no_workspaces', "You don't have any workspaces yet.")}
+                                {t(
+                                    'workspace.list.no_workspaces',
+                                    "You don't have any workspaces yet.",
+                                )}
                             </h3>
                             <p className="mb-4 text-center text-muted-foreground">
-                                {t('workspace.list.get_started', 'Get started by creating your first workspace.')}
+                                {t(
+                                    'workspace.list.get_started',
+                                    'Get started by creating your first workspace.',
+                                )}
                             </p>
                             {canCreateWorkspace && (
                                 <Button asChild>
                                     <Link href="/workspaces/create">
                                         <Plus className="mr-2 h-4 w-4" />
-                                        {t('workspace.create.create', 'Create Workspace')}
+                                        {t(
+                                            'workspace.create.create',
+                                            'Create Workspace',
+                                        )}
                                     </Link>
                                 </Button>
                             )}
@@ -176,4 +200,3 @@ export default function WorkspacesIndex({
         </AppLayout>
     );
 }
-

@@ -8,8 +8,8 @@ import {
     LandingPricing,
     LandingTestimonials,
 } from '@/components/landing';
-import { Head } from '@inertiajs/react';
 import { useTranslations } from '@/hooks/use-translations';
+import { Head } from '@inertiajs/react';
 
 export default function Welcome({
     canRegister = true,
@@ -20,26 +20,55 @@ export default function Welcome({
 
     return (
         <>
-            <Head title={t('landing.meta.title', 'Laravel SAAS Starter - Launch Your SaaS 10x Faster')}>
+            <Head
+                title={t(
+                    'landing.meta.title',
+                    'Laravel SAAS Starter - Launch Your SaaS 10x Faster',
+                )}
+            >
                 <meta
                     name="description"
-                    content={t('landing.meta.description', 'Laravel SAAS Starter is a production-ready Laravel SaaS starter kit with authentication, billing, teams, and everything you need to launch faster. Built by XCO Agency.')}
+                    content={t(
+                        'landing.meta.description',
+                        'Laravel SAAS Starter is a production-ready Laravel SaaS starter kit with authentication, billing, teams, and everything you need to launch faster. Built by XCO Agency.',
+                    )}
                 />
                 <meta
                     name="keywords"
-                    content={t('landing.meta.keywords', 'laravel, saas, starter kit, boilerplate, authentication, stripe, billing, teams')}
+                    content={t(
+                        'landing.meta.keywords',
+                        'laravel, saas, starter kit, boilerplate, authentication, stripe, billing, teams',
+                    )}
                 />
-                <meta property="og:title" content={t('landing.meta.og_title', 'Laravel SAAS Starter - Launch Your SaaS 10x Faster')} />
+                <meta
+                    property="og:title"
+                    content={t(
+                        'landing.meta.og_title',
+                        'Laravel SAAS Starter - Launch Your SaaS 10x Faster',
+                    )}
+                />
                 <meta
                     property="og:description"
-                    content={t('landing.meta.og_description', 'Production-ready Laravel SaaS starter kit. 100% free and open source. Launch your SaaS 10x faster with authentication, billing, teams, and more.')}
+                    content={t(
+                        'landing.meta.og_description',
+                        'Production-ready Laravel SaaS starter kit. 100% free and open source. Launch your SaaS 10x faster with authentication, billing, teams, and more.',
+                    )}
                 />
                 <meta property="og:type" content="website" />
                 <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content={t('landing.meta.twitter_title', 'Laravel SAAS Starter - Launch Your SaaS 10x Faster')} />
+                <meta
+                    name="twitter:title"
+                    content={t(
+                        'landing.meta.twitter_title',
+                        'Laravel SAAS Starter - Launch Your SaaS 10x Faster',
+                    )}
+                />
                 <meta
                     name="twitter:description"
-                    content={t('landing.meta.twitter_description', 'Production-ready Laravel SaaS starter kit by XCO Agency.')}
+                    content={t(
+                        'landing.meta.twitter_description',
+                        'Production-ready Laravel SaaS starter kit by XCO Agency.',
+                    )}
                 />
                 <link rel="preconnect" href="https://fonts.bunny.net" />
                 <link

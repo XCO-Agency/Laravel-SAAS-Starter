@@ -1,9 +1,15 @@
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
+import { useTranslations } from '@/hooks/use-translations';
+import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
-import AppLayout from '@/layouts/app-layout';
-import { useTranslations } from '@/hooks/use-translations';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Alert, AlertDescription } from '@/components/ui/alert';
 import { AlertCircle, CheckCircle2 } from 'lucide-react';
 
 interface UsageItem {
@@ -54,37 +60,56 @@ export default function Usage({ workspace, usage }: Props) {
 
             <div className="flex h-full flex-1 flex-col gap-4 p-4">
                 <div className="flex flex-col gap-1">
-                    <h1 className="text-2xl font-bold tracking-tight">{t('usage.title', 'Usage Dashboard')}</h1>
+                    <h1 className="text-2xl font-bold tracking-tight">
+                        {t('usage.title', 'Usage Dashboard')}
+                    </h1>
                     <p className="text-muted-foreground">
-                        {t('usage.description', 'Manage your workspace limits and monitor your current usage.')}
+                        {t(
+                            'usage.description',
+                            'Manage your workspace limits and monitor your current usage.',
+                        )}
                     </p>
                 </div>
 
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-                    <Card className="bg-primary/5 border-primary/20">
+                    <Card className="border-primary/20 bg-primary/5">
                         <CardHeader className="pb-2">
-                            <CardTitle className="text-sm font-medium">{t('usage.current_plan', 'Current Plan')}</CardTitle>
+                            <CardTitle className="text-sm font-medium">
+                                {t('usage.current_plan', 'Current Plan')}
+                            </CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold text-primary">{workspace.plan}</div>
-                            <p className="text-xs text-muted-foreground mt-1">
+                            <div className="text-2xl font-bold text-primary">
+                                {workspace.plan}
+                            </div>
+                            <p className="mt-1 text-xs text-muted-foreground">
                                 {workspace.name}
                             </p>
                         </CardContent>
                     </Card>
                 </div>
 
-                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-2 mt-4">
+                <div className="mt-4 grid gap-6 md:grid-cols-2 lg:grid-cols-2">
                     {Object.entries(usage).map(([key, item]) => {
-                        const reached = isLimitReached(item.current, item.limit);
-                        const percentage = getUsagePercentage(item.current, item.limit);
+                        const reached = isLimitReached(
+                            item.current,
+                            item.limit,
+                        );
+                        const percentage = getUsagePercentage(
+                            item.current,
+                            item.limit,
+                        );
 
                         return (
                             <Card key={key} className="overflow-hidden">
                                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                                     <div className="space-y-1">
-                                        <CardTitle className="text-base font-semibold">{item.label}</CardTitle>
-                                        <CardDescription>{item.message}</CardDescription>
+                                        <CardTitle className="text-base font-semibold">
+                                            {item.label}
+                                        </CardTitle>
+                                        <CardDescription>
+                                            {item.message}
+                                        </CardDescription>
                                     </div>
                                     {reached ? (
                                         <AlertCircle className="h-5 w-5 text-destructive" />
@@ -93,11 +118,14 @@ export default function Usage({ workspace, usage }: Props) {
                                     )}
                                 </CardHeader>
                                 <CardContent className="pt-4">
-                                    <div className="flex items-center justify-between mb-2">
+                                    <div className="mb-2 flex items-center justify-between">
                                         <span className="text-2xl font-bold">
                                             {item.current}
-                                            <span className="text-muted-foreground text-sm font-normal ml-1">
-                                                / {item.limit === -1 ? '∞' : item.limit}
+                                            <span className="ml-1 text-sm font-normal text-muted-foreground">
+                                                /{' '}
+                                                {item.limit === -1
+                                                    ? '∞'
+                                                    : item.limit}
                                             </span>
                                         </span>
                                         {item.limit !== -1 && (
@@ -107,19 +135,27 @@ export default function Usage({ workspace, usage }: Props) {
                                         )}
                                     </div>
                                     {item.limit !== -1 && (
-                                        <div className="relative w-full h-2 bg-secondary rounded-full overflow-hidden">
+                                        <div className="relative h-2 w-full overflow-hidden rounded-full bg-secondary">
                                             <div
                                                 className={`h-full transition-all duration-500 ease-in-out ${getProgressColor(item.current, item.limit)}`}
-                                                style={{ width: `${percentage}%` }}
+                                                style={{
+                                                    width: `${percentage}%`,
+                                                }}
                                             />
                                         </div>
                                     )}
 
                                     {reached && (
-                                        <Alert variant="destructive" className="mt-4 bg-destructive/5 border-destructive/20 py-2">
+                                        <Alert
+                                            variant="destructive"
+                                            className="mt-4 border-destructive/20 bg-destructive/5 py-2"
+                                        >
                                             <AlertCircle className="h-4 w-4" />
                                             <AlertDescription className="text-xs">
-                                                {t('usage.limit_reached_alert', 'Limit reached. Upgrade your plan to increase your capacity.')}
+                                                {t(
+                                                    'usage.limit_reached_alert',
+                                                    'Limit reached. Upgrade your plan to increase your capacity.',
+                                                )}
                                             </AlertDescription>
                                         </Alert>
                                     )}

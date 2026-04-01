@@ -1,4 +1,3 @@
-import { update as updateLocale } from '@/routes/locale';
 import {
     Select,
     SelectContent,
@@ -7,6 +6,7 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { useTranslations } from '@/hooks/use-translations';
+import { update as updateLocale } from '@/routes/locale';
 import { router } from '@inertiajs/react';
 import { Globe } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -22,7 +22,9 @@ const languages = [
     { code: 'ar', label: 'العربية' },
 ];
 
-export function LanguageSwitcher({ currentLocale = 'en' }: LanguageSwitcherProps) {
+export function LanguageSwitcher({
+    currentLocale = 'en',
+}: LanguageSwitcherProps) {
     const { t, i18n } = useTranslations();
     const [localeValue, setLocaleValue] = useState(currentLocale);
     const [loading, setLoading] = useState(false);
@@ -74,10 +76,22 @@ export function LanguageSwitcher({ currentLocale = 'en' }: LanguageSwitcherProps
                     {t('settings.language.title', 'Language')}
                 </label>
             </div> */}
-            <Select value={localeValue} onValueChange={handleLocaleChange} disabled={loading}>
-                <SelectTrigger id="locale" className="w-[140px] border-none bg-transparent focus:ring-0 focus:ring-offset-0">
+            <Select
+                value={localeValue}
+                onValueChange={handleLocaleChange}
+                disabled={loading}
+            >
+                <SelectTrigger
+                    id="locale"
+                    className="w-[140px] border-none bg-transparent focus:ring-0 focus:ring-offset-0"
+                >
                     <Globe className="mr-2 h-4 w-4 text-muted-foreground" />
-                    <SelectValue placeholder={t('settings.language.description', 'Select your preferred language')} />
+                    <SelectValue
+                        placeholder={t(
+                            'settings.language.description',
+                            'Select your preferred language',
+                        )}
+                    />
                 </SelectTrigger>
                 <SelectContent>
                     {languages.map((lang) => (
@@ -90,4 +104,3 @@ export function LanguageSwitcher({ currentLocale = 'en' }: LanguageSwitcherProps
         </div>
     );
 }
-

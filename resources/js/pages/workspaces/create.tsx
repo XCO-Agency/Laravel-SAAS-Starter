@@ -20,10 +20,13 @@ import { type ChangeEvent, useRef, useState } from 'react';
 
 export default function CreateWorkspace() {
     const { t } = useTranslations();
-    
+
     const breadcrumbs: BreadcrumbItem[] = [
         { title: t('workspace.list.title', 'Workspaces'), href: '/workspaces' },
-        { title: t('workspace.create.title', 'Create'), href: '/workspaces/create' },
+        {
+            title: t('workspace.create.title', 'Create'),
+            href: '/workspaces/create',
+        },
     ];
     const { data, setData, errors, processing, reset } = useForm({
         name: '',
@@ -82,40 +85,65 @@ export default function CreateWorkspace() {
             formData.logo = data.logo;
         }
 
-        router.post('/workspaces', formData, {
-            forceFormData: true,
-            onSuccess: () => reset(),
-        });
+        router.post(
+            '/workspaces',
+            formData as Record<string, string | number | boolean | File | null>,
+            {
+                forceFormData: true,
+                onSuccess: () => reset(),
+            },
+        );
     };
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title={t('workspace.create.page_title', 'Create Workspace')} />
+            <Head
+                title={t('workspace.create.page_title', 'Create Workspace')}
+            />
 
             <div className="space-y-6">
                 <Heading
                     title={t('workspace.create.title', 'Create Workspace')}
-                    description={t('workspace.create.description', 'Create a new workspace to organize your projects and team.')}
+                    description={t(
+                        'workspace.create.description',
+                        'Create a new workspace to organize your projects and team.',
+                    )}
                 />
 
                 <Card className="max-w-2xl">
                     <CardHeader>
-                        <CardTitle>{t('workspace.create.details_title', 'Workspace Details')}</CardTitle>
+                        <CardTitle>
+                            {t(
+                                'workspace.create.details_title',
+                                'Workspace Details',
+                            )}
+                        </CardTitle>
                         <CardDescription>
-                            {t('workspace.create.details_description', 'Enter the details for your new workspace.')}
+                            {t(
+                                'workspace.create.details_description',
+                                'Enter the details for your new workspace.',
+                            )}
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
                         <form onSubmit={handleSubmit} className="space-y-6">
                             {/* Logo Upload */}
                             <div className="space-y-2">
-                                <Label>{t('workspace.create.logo', 'Workspace Logo')}</Label>
+                                <Label>
+                                    {t(
+                                        'workspace.create.logo',
+                                        'Workspace Logo',
+                                    )}
+                                </Label>
                                 <div className="flex items-center gap-4">
                                     {logoPreview ? (
                                         <div className="relative">
                                             <img
                                                 src={logoPreview}
-                                                alt={t('workspace.create.logo_preview', 'Logo preview')}
+                                                alt={t(
+                                                    'workspace.create.logo_preview',
+                                                    'Logo preview',
+                                                )}
                                                 className="h-20 w-20 rounded-lg object-cover"
                                             />
                                             <button
@@ -148,10 +176,16 @@ export default function CreateWorkspace() {
                                             }
                                         >
                                             <Upload className="mr-2 h-4 w-4" />
-                                            {t('workspace.create.upload_logo', 'Upload Logo')}
+                                            {t(
+                                                'workspace.create.upload_logo',
+                                                'Upload Logo',
+                                            )}
                                         </Button>
                                         <p className="mt-1 text-xs text-muted-foreground">
-                                            {t('common.png_jpg_gif_2mb', 'PNG, JPG, GIF up to 2MB')}
+                                            {t(
+                                                'common.png_jpg_gif_2mb',
+                                                'PNG, JPG, GIF up to 2MB',
+                                            )}
                                         </p>
                                     </div>
                                 </div>
@@ -160,12 +194,20 @@ export default function CreateWorkspace() {
 
                             {/* Name */}
                             <div className="space-y-2">
-                                <Label htmlFor="name">{t('workspace.create.name', 'Workspace Name')}</Label>
+                                <Label htmlFor="name">
+                                    {t(
+                                        'workspace.create.name',
+                                        'Workspace Name',
+                                    )}
+                                </Label>
                                 <Input
                                     id="name"
                                     value={data.name}
                                     onChange={handleNameChange}
-                                    placeholder={t('workspace.create.name_placeholder', 'My Awesome Workspace')}
+                                    placeholder={t(
+                                        'workspace.create.name_placeholder',
+                                        'My Awesome Workspace',
+                                    )}
                                     required
                                 />
                                 <InputError message={errors.name} />
@@ -173,7 +215,9 @@ export default function CreateWorkspace() {
 
                             {/* Slug */}
                             <div className="space-y-2">
-                                <Label htmlFor="slug">{t('workspace.create.slug', 'URL Slug')}</Label>
+                                <Label htmlFor="slug">
+                                    {t('workspace.create.slug', 'URL Slug')}
+                                </Label>
                                 <div className="flex items-center">
                                     <span className="rounded-l-md border border-r-0 bg-muted px-3 py-2 text-sm text-muted-foreground">
                                         /
@@ -184,12 +228,18 @@ export default function CreateWorkspace() {
                                         onChange={(e) =>
                                             setData('slug', e.target.value)
                                         }
-                                        placeholder={t('workspace.create.slug_placeholder', 'my-awesome-workspace')}
+                                        placeholder={t(
+                                            'workspace.create.slug_placeholder',
+                                            'my-awesome-workspace',
+                                        )}
                                         className="rounded-l-none"
                                     />
                                 </div>
                                 <p className="text-xs text-muted-foreground">
-                                    {t('workspace.create.slug_description', 'This will be used in URLs. Only lowercase letters, numbers, and hyphens are allowed.')}
+                                    {t(
+                                        'workspace.create.slug_description',
+                                        'This will be used in URLs. Only lowercase letters, numbers, and hyphens are allowed.',
+                                    )}
                                 </p>
                                 <InputError message={errors.slug} />
                             </div>
@@ -198,7 +248,10 @@ export default function CreateWorkspace() {
                             <div className="flex gap-4">
                                 <Button type="submit" disabled={processing}>
                                     {processing && <Spinner className="mr-2" />}
-                                    {t('workspace.create.create_button', 'Create Workspace')}
+                                    {t(
+                                        'workspace.create.create_button',
+                                        'Create Workspace',
+                                    )}
                                 </Button>
                                 <Button
                                     type="button"

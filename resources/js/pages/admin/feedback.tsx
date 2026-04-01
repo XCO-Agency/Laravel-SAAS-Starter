@@ -1,10 +1,18 @@
-import React, { useState } from 'react';
-import AdminLayout from '@/layouts/admin-layout';
-import { Head, router } from '@inertiajs/react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Bug, Lightbulb, MessageCircle, Trash2, CheckCheck, Archive, ExternalLink } from 'lucide-react';
+import AdminLayout from '@/layouts/admin-layout';
 import { cn } from '@/lib/utils';
+import { Head, router } from '@inertiajs/react';
+import {
+    Archive,
+    Bug,
+    CheckCheck,
+    ExternalLink,
+    Lightbulb,
+    MessageCircle,
+    Trash2,
+} from 'lucide-react';
+import { useState } from 'react';
 
 interface FeedbackUser {
     id: number;
@@ -46,15 +54,41 @@ interface Props {
 }
 
 const TYPE_CONFIG = {
-    bug: { label: 'Bug', icon: Bug, color: 'text-red-500', badge: 'destructive' as const },
-    idea: { label: 'Idea', icon: Lightbulb, color: 'text-amber-500', badge: 'secondary' as const },
-    general: { label: 'General', icon: MessageCircle, color: 'text-blue-500', badge: 'outline' as const },
+    bug: {
+        label: 'Bug',
+        icon: Bug,
+        color: 'text-red-500',
+        badge: 'destructive' as const,
+    },
+    idea: {
+        label: 'Idea',
+        icon: Lightbulb,
+        color: 'text-amber-500',
+        badge: 'secondary' as const,
+    },
+    general: {
+        label: 'General',
+        icon: MessageCircle,
+        color: 'text-blue-500',
+        badge: 'outline' as const,
+    },
 };
 
 const STATUS_CONFIG = {
-    new: { label: 'New', className: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400' },
-    reviewed: { label: 'Reviewed', className: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400' },
-    archived: { label: 'Archived', className: 'bg-muted text-muted-foreground' },
+    new: {
+        label: 'New',
+        className:
+            'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400',
+    },
+    reviewed: {
+        label: 'Reviewed',
+        className:
+            'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400',
+    },
+    archived: {
+        label: 'Archived',
+        className: 'bg-muted text-muted-foreground',
+    },
 };
 
 export default function AdminFeedback({ feedback, filters, counts }: Props) {
@@ -62,16 +96,26 @@ export default function AdminFeedback({ feedback, filters, counts }: Props) {
     const [statusFilter, setStatusFilter] = useState(filters.status ?? '');
 
     const applyFilters = (newType: string, newStatus: string) => {
-        router.get('/admin/feedback', { type: newType || undefined, status: newStatus || undefined }, { preserveState: true });
+        router.get(
+            '/admin/feedback',
+            { type: newType || undefined, status: newStatus || undefined },
+            { preserveState: true },
+        );
     };
 
     const setStatus = (item: FeedbackItem, status: string) => {
-        router.put(`/admin/feedback/${item.id}`, { status }, { preserveScroll: true });
+        router.put(
+            `/admin/feedback/${item.id}`,
+            { status },
+            { preserveScroll: true },
+        );
     };
 
     const destroy = (item: FeedbackItem) => {
         if (confirm('Delete this feedback submission?')) {
-            router.delete(`/admin/feedback/${item.id}`, { preserveScroll: true });
+            router.delete(`/admin/feedback/${item.id}`, {
+                preserveScroll: true,
+            });
         }
     };
 
@@ -87,7 +131,7 @@ export default function AdminFeedback({ feedback, filters, counts }: Props) {
     return (
         <AdminLayout>
             <Head title="User Feedback" />
-            <div className="flex h-full flex-1 flex-col gap-6 p-4 md:p-6 lg:p-8 rounded-xl border border-sidebar-border/70">
+            <div className="flex h-full flex-1 flex-col gap-6 rounded-xl border border-sidebar-border/70 p-4 md:p-6 lg:p-8">
                 {/* Header */}
                 <div className="flex items-center justify-between">
                     <div>
@@ -96,13 +140,17 @@ export default function AdminFeedback({ feedback, filters, counts }: Props) {
                             User Feedback
                         </h2>
                         <p className="text-sm text-muted-foreground">
-                            {feedback.total} submission{feedback.total !== 1 ? 's' : ''} from users
+                            {feedback.total} submission
+                            {feedback.total !== 1 ? 's' : ''} from users
                         </p>
                     </div>
                     {/* Type filter */}
                     <select
                         value={typeFilter}
-                        onChange={(e) => { setTypeFilter(e.target.value); applyFilters(e.target.value, statusFilter); }}
+                        onChange={(e) => {
+                            setTypeFilter(e.target.value);
+                            applyFilters(e.target.value, statusFilter);
+                        }}
                         className="h-9 rounded-md border border-input bg-background px-3 text-sm"
                     >
                         <option value="">All Types</option>
@@ -117,7 +165,10 @@ export default function AdminFeedback({ feedback, filters, counts }: Props) {
                     {STATUS_TABS.map((tab) => (
                         <button
                             key={tab.value}
-                            onClick={() => { setStatusFilter(tab.value); applyFilters(typeFilter, tab.value); }}
+                            onClick={() => {
+                                setStatusFilter(tab.value);
+                                applyFilters(typeFilter, tab.value);
+                            }}
                             className={cn(
                                 'flex items-center gap-1.5 border-b-2 px-3 py-2 text-sm font-medium transition-colors',
                                 statusFilter === tab.value
@@ -126,10 +177,14 @@ export default function AdminFeedback({ feedback, filters, counts }: Props) {
                             )}
                         >
                             {tab.label}
-                            <span className={cn(
-                                'rounded-full px-1.5 py-0.5 text-[10px] font-semibold',
-                                statusFilter === tab.value ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground',
-                            )}>
+                            <span
+                                className={cn(
+                                    'rounded-full px-1.5 py-0.5 text-[10px] font-semibold',
+                                    statusFilter === tab.value
+                                        ? 'bg-primary text-primary-foreground'
+                                        : 'bg-muted text-muted-foreground',
+                                )}
+                            >
                                 {tab.count}
                             </span>
                         </button>
@@ -149,51 +204,96 @@ export default function AdminFeedback({ feedback, filters, counts }: Props) {
                             const Icon = typeConf.icon;
 
                             return (
-                                <div key={item.id} className="flex gap-4 rounded-xl border bg-card p-4">
-                                    <Icon className={cn('mt-0.5 h-5 w-5 shrink-0', typeConf.color)} />
-                                    <div className="flex-1 min-w-0 space-y-1">
-                                        <div className="flex items-center gap-2 flex-wrap">
-                                            <Badge variant={typeConf.badge} className="text-[10px]">{typeConf.label}</Badge>
-                                            <span className={cn('rounded-full px-2 py-0.5 text-[10px] font-semibold', statusConf.className)}>
+                                <div
+                                    key={item.id}
+                                    className="flex gap-4 rounded-xl border bg-card p-4"
+                                >
+                                    <Icon
+                                        className={cn(
+                                            'mt-0.5 h-5 w-5 shrink-0',
+                                            typeConf.color,
+                                        )}
+                                    />
+                                    <div className="min-w-0 flex-1 space-y-1">
+                                        <div className="flex flex-wrap items-center gap-2">
+                                            <Badge
+                                                variant={typeConf.badge}
+                                                className="text-[10px]"
+                                            >
+                                                {typeConf.label}
+                                            </Badge>
+                                            <span
+                                                className={cn(
+                                                    'rounded-full px-2 py-0.5 text-[10px] font-semibold',
+                                                    statusConf.className,
+                                                )}
+                                            >
                                                 {statusConf.label}
                                             </span>
                                             {item.user && (
                                                 <span className="text-xs text-muted-foreground">
-                                                    {item.user.name} · {item.user.email}
+                                                    {item.user.name} ·{' '}
+                                                    {item.user.email}
                                                 </span>
                                             )}
                                             {item.workspace && (
-                                                <span className="text-xs text-muted-foreground">· {item.workspace.name}</span>
+                                                <span className="text-xs text-muted-foreground">
+                                                    · {item.workspace.name}
+                                                </span>
                                             )}
                                             <span className="ml-auto text-xs text-muted-foreground">
-                                                {new Date(item.created_at).toLocaleDateString()}
+                                                {new Date(
+                                                    item.created_at,
+                                                ).toLocaleDateString()}
                                             </span>
                                         </div>
-                                        <p className="text-sm whitespace-pre-wrap">{item.message}</p>
+                                        <p className="text-sm whitespace-pre-wrap">
+                                            {item.message}
+                                        </p>
                                         {item.page_url && (
                                             <a
                                                 href={item.page_url}
                                                 target="_blank"
                                                 rel="noreferrer"
-                                                className="inline-flex items-center gap-1 text-[11px] text-muted-foreground hover:text-foreground transition"
+                                                className="inline-flex items-center gap-1 text-[11px] text-muted-foreground transition hover:text-foreground"
                                             >
                                                 <ExternalLink className="h-3 w-3" />
                                                 {item.page_url}
                                             </a>
                                         )}
                                     </div>
-                                    <div className="flex items-start gap-1 shrink-0">
+                                    <div className="flex shrink-0 items-start gap-1">
                                         {item.status !== 'reviewed' && (
-                                            <Button variant="ghost" size="icon" title="Mark Reviewed" onClick={() => setStatus(item, 'reviewed')}>
+                                            <Button
+                                                variant="ghost"
+                                                size="icon"
+                                                title="Mark Reviewed"
+                                                onClick={() =>
+                                                    setStatus(item, 'reviewed')
+                                                }
+                                            >
                                                 <CheckCheck className="h-4 w-4 text-emerald-600" />
                                             </Button>
                                         )}
                                         {item.status !== 'archived' && (
-                                            <Button variant="ghost" size="icon" title="Archive" onClick={() => setStatus(item, 'archived')}>
+                                            <Button
+                                                variant="ghost"
+                                                size="icon"
+                                                title="Archive"
+                                                onClick={() =>
+                                                    setStatus(item, 'archived')
+                                                }
+                                            >
                                                 <Archive className="h-4 w-4 text-muted-foreground" />
                                             </Button>
                                         )}
-                                        <Button variant="ghost" size="icon" title="Delete" className="text-destructive" onClick={() => destroy(item)}>
+                                        <Button
+                                            variant="ghost"
+                                            size="icon"
+                                            title="Delete"
+                                            className="text-destructive"
+                                            onClick={() => destroy(item)}
+                                        >
                                             <Trash2 className="h-4 w-4" />
                                         </Button>
                                     </div>
@@ -212,7 +312,14 @@ export default function AdminFeedback({ feedback, filters, counts }: Props) {
                                 variant={link.active ? 'default' : 'outline'}
                                 size="sm"
                                 disabled={!link.url}
-                                onClick={() => link.url && router.get(link.url, {}, { preserveState: true })}
+                                onClick={() =>
+                                    link.url &&
+                                    router.get(
+                                        link.url,
+                                        {},
+                                        { preserveState: true },
+                                    )
+                                }
                                 dangerouslySetInnerHTML={{ __html: link.label }}
                             />
                         ))}

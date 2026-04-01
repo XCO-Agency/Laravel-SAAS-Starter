@@ -8,4 +8,3 @@ export function useTranslations() {
 
     return { t, i18n };
 }
-

@@ -60,7 +60,9 @@ export default function AvatarUpload({
 
     const handleCropComplete = async (croppedBlob: Blob) => {
         setCropperSrc(null); // Close cropper
-        const file = new File([croppedBlob], 'avatar.jpg', { type: 'image/jpeg' });
+        const file = new File([croppedBlob], 'avatar.jpg', {
+            type: 'image/jpeg',
+        });
 
         // Generate preview for UI feedback
         const previewReader = new FileReader();
@@ -93,8 +95,13 @@ export default function AvatarUpload({
             if (onSuccess) onSuccess();
             // We do not clear preview on success unless parent changes currentUrl which remounts or we just rely on parent
         } catch (err: unknown) {
-            const axiosError = err as { response?: { data?: { message?: string } } };
-            setError(axiosError.response?.data?.message || 'Failed to upload image. Please try again.');
+            const axiosError = err as {
+                response?: { data?: { message?: string } };
+            };
+            setError(
+                axiosError.response?.data?.message ||
+                    'Failed to upload image. Please try again.',
+            );
             setPreviewUrl(null); // Revert
         } finally {
             setIsUploading(false);
@@ -112,8 +119,13 @@ export default function AvatarUpload({
             setPreviewUrl(null);
             if (onSuccess) onSuccess();
         } catch (err: unknown) {
-            const axiosError = err as { response?: { data?: { message?: string } } };
-            setError(axiosError.response?.data?.message || 'Failed to delete image. Please try again.');
+            const axiosError = err as {
+                response?: { data?: { message?: string } };
+            };
+            setError(
+                axiosError.response?.data?.message ||
+                    'Failed to delete image. Please try again.',
+            );
         } finally {
             setIsDeleting(false);
         }
@@ -123,10 +135,14 @@ export default function AvatarUpload({
 
     return (
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6">
-            <div className="relative group shrink-0">
+            <div className="group relative shrink-0">
                 <div className="flex h-24 w-24 overflow-hidden rounded-full border-4 border-background shadow-sm ring-1 ring-border sm:h-32 sm:w-32">
                     {displayUrl ? (
-                        <img src={displayUrl} alt="Avatar" className="h-full w-full object-cover" />
+                        <img
+                            src={displayUrl}
+                            alt="Avatar"
+                            className="h-full w-full object-cover"
+                        />
                     ) : (
                         <div className="flex h-full w-full items-center justify-center bg-muted text-muted-foreground">
                             <ImageIcon className="h-8 w-8 sm:h-12 sm:w-12" />
@@ -145,7 +161,9 @@ export default function AvatarUpload({
             <div className="flex-1 space-y-3">
                 <div>
                     <h3 className="text-lg font-medium">{label}</h3>
-                    <p className="text-sm text-muted-foreground">{description}</p>
+                    <p className="text-sm text-muted-foreground">
+                        {description}
+                    </p>
                 </div>
 
                 <div className="flex flex-wrap items-center gap-2">
@@ -164,7 +182,9 @@ export default function AvatarUpload({
                         onClick={() => fileInputRef.current?.click()}
                         disabled={isUploading || isDeleting}
                     >
-                        {isUploading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                        {isUploading && (
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        )}
                         Upload Image
                     </Button>
 
@@ -175,16 +195,22 @@ export default function AvatarUpload({
                             size="sm"
                             onClick={handleDelete}
                             disabled={isUploading || isDeleting}
-                            className="text-destructive hover:bg-destructive/10 hover:text-destructive border-destructive/20"
+                            className="border-destructive/20 text-destructive hover:bg-destructive/10 hover:text-destructive"
                         >
-                            {isDeleting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                            {isDeleting && (
+                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            )}
                             <Trash2 className="h-4 w-4" />
                             <span className="sr-only">Remove</span>
                         </Button>
                     )}
                 </div>
 
-                {error && <p className="text-sm font-medium text-destructive">{error}</p>}
+                {error && (
+                    <p className="text-sm font-medium text-destructive">
+                        {error}
+                    </p>
+                )}
             </div>
 
             {cropperSrc && (
@@ -193,7 +219,8 @@ export default function AvatarUpload({
                     onCropComplete={handleCropComplete}
                     onCancel={() => {
                         setCropperSrc(null);
-                        if (fileInputRef.current) fileInputRef.current.value = '';
+                        if (fileInputRef.current)
+                            fileInputRef.current.value = '';
                     }}
                 />
             )}

@@ -97,7 +97,10 @@ function TwoFactorSetupStep({
                     <div className="relative flex w-full items-center justify-center">
                         <div className="absolute inset-0 top-1/2 h-px w-full bg-border" />
                         <span className="relative bg-card px-2 py-1">
-                            {t('settings.two_factor.setup_modal.or_enter_manually', 'or, enter the code manually')}
+                            {t(
+                                'settings.two_factor.setup_modal.or_enter_manually',
+                                'or, enter the code manually',
+                            )}
                         </span>
                     </div>
 
@@ -203,7 +206,10 @@ function TwoFactorVerificationStep({
                                 onClick={onBack}
                                 disabled={processing}
                             >
-                                {t('settings.two_factor.setup_modal.back', 'Back')}
+                                {t(
+                                    'settings.two_factor.setup_modal.back',
+                                    'Back',
+                                )}
                             </Button>
                             <Button
                                 type="submit"
@@ -212,7 +218,10 @@ function TwoFactorVerificationStep({
                                     processing || code.length < OTP_MAX_LENGTH
                                 }
                             >
-                                {t('settings.two_factor.setup_modal.confirm', 'Confirm')}
+                                {t(
+                                    'settings.two_factor.setup_modal.confirm',
+                                    'Confirm',
+                                )}
                             </Button>
                         </div>
                     </div>
@@ -257,24 +266,48 @@ export default function TwoFactorSetupModal({
     }>(() => {
         if (twoFactorEnabled) {
             return {
-                title: t('settings.two_factor.setup_modal.enabled_title', 'Two-Factor Authentication Enabled'),
-                description: t('settings.two_factor.setup_modal.enabled_description', 'Two-factor authentication is now enabled. Scan the QR code or enter the setup key in your authenticator app.'),
+                title: t(
+                    'settings.two_factor.setup_modal.enabled_title',
+                    'Two-Factor Authentication Enabled',
+                ),
+                description: t(
+                    'settings.two_factor.setup_modal.enabled_description',
+                    'Two-factor authentication is now enabled. Scan the QR code or enter the setup key in your authenticator app.',
+                ),
                 buttonText: t('settings.two_factor.setup_modal.close', 'Close'),
             };
         }
 
         if (showVerificationStep) {
             return {
-                title: t('settings.two_factor.setup_modal.verify_title', 'Verify Authentication Code'),
-                description: t('settings.two_factor.setup_modal.verify_description', 'Enter the 6-digit code from your authenticator app'),
-                buttonText: t('settings.two_factor.setup_modal.continue', 'Continue'),
+                title: t(
+                    'settings.two_factor.setup_modal.verify_title',
+                    'Verify Authentication Code',
+                ),
+                description: t(
+                    'settings.two_factor.setup_modal.verify_description',
+                    'Enter the 6-digit code from your authenticator app',
+                ),
+                buttonText: t(
+                    'settings.two_factor.setup_modal.continue',
+                    'Continue',
+                ),
             };
         }
 
         return {
-            title: t('settings.two_factor.setup_modal.enable_title', 'Enable Two-Factor Authentication'),
-            description: t('settings.two_factor.setup_modal.enable_description', 'To finish enabling two-factor authentication, scan the QR code or enter the setup key in your authenticator app'),
-            buttonText: t('settings.two_factor.setup_modal.continue', 'Continue'),
+            title: t(
+                'settings.two_factor.setup_modal.enable_title',
+                'Enable Two-Factor Authentication',
+            ),
+            description: t(
+                'settings.two_factor.setup_modal.enable_description',
+                'To finish enabling two-factor authentication, scan the QR code or enter the setup key in your authenticator app',
+            ),
+            buttonText: t(
+                'settings.two_factor.setup_modal.continue',
+                'Continue',
+            ),
         };
     }, [twoFactorEnabled, showVerificationStep, t]);
 

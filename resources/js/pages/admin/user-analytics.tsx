@@ -1,5 +1,11 @@
 import { HelpTooltip } from '@/components/help-tooltip';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 import AdminLayout from '@/layouts/admin-layout';
 import { Head } from '@inertiajs/react';
 import {
@@ -53,7 +59,8 @@ export default function UserAnalytics({
 }: UserAnalyticsProps) {
     const maxSignups = Math.max(...dailySignups.map((d) => d.count), 1);
     const maxGrowth = Math.max(...monthlyGrowth.map((d) => d.total), 1);
-    const totalDeviceUsers = topDevices.reduce((acc, d) => acc + d.users, 0) || 1;
+    const totalDeviceUsers =
+        topDevices.reduce((acc, d) => acc + d.users, 0) || 1;
 
     const deviceIcons: Record<string, typeof Monitor> = {
         iOS: Smartphone,
@@ -82,8 +89,8 @@ export default function UserAnalytics({
                         User Analytics
                     </h2>
                     <p className="text-sm text-muted-foreground">
-                        Monitor user growth, engagement, and retention across the
-                        platform.
+                        Monitor user growth, engagement, and retention across
+                        the platform.
                     </p>
                 </div>
 
@@ -93,8 +100,12 @@ export default function UserAnalytics({
                         <CardContent className="pt-6">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <p className="text-sm text-muted-foreground">Total Users</p>
-                                    <p className="text-3xl font-bold">{totalUsers.toLocaleString()}</p>
+                                    <p className="text-sm text-muted-foreground">
+                                        Total Users
+                                    </p>
+                                    <p className="text-3xl font-bold">
+                                        {totalUsers.toLocaleString()}
+                                    </p>
                                 </div>
                                 <Users className="h-8 w-8 text-muted-foreground/30" />
                             </div>
@@ -104,8 +115,12 @@ export default function UserAnalytics({
                         <CardContent className="pt-6">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <p className="text-sm text-muted-foreground">Active Today</p>
-                                    <p className="text-3xl font-bold">{activeUsers.today}</p>
+                                    <p className="text-sm text-muted-foreground">
+                                        Active Today
+                                    </p>
+                                    <p className="text-3xl font-bold">
+                                        {activeUsers.today}
+                                    </p>
                                 </div>
                                 <UserCheck className="h-8 w-8 text-emerald-500/30" />
                             </div>
@@ -115,8 +130,12 @@ export default function UserAnalytics({
                         <CardContent className="pt-6">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <p className="text-sm text-muted-foreground">Active This Week</p>
-                                    <p className="text-3xl font-bold">{activeUsers.week}</p>
+                                    <p className="text-sm text-muted-foreground">
+                                        Active This Week
+                                    </p>
+                                    <p className="text-3xl font-bold">
+                                        {activeUsers.week}
+                                    </p>
                                 </div>
                                 <TrendingUp className="h-8 w-8 text-blue-500/30" />
                             </div>
@@ -130,9 +149,12 @@ export default function UserAnalytics({
                                         30-Day Retention
                                         <HelpTooltip content="Percentage of users who signed up 30+ days ago and signed in within the last 30 days." />
                                     </p>
-                                    <p className="text-3xl font-bold">{retention.rate}%</p>
+                                    <p className="text-3xl font-bold">
+                                        {retention.rate}%
+                                    </p>
                                     <p className="text-xs text-muted-foreground">
-                                        {retention.retained_users} of {retention.mature_users} mature users
+                                        {retention.retained_users} of{' '}
+                                        {retention.mature_users} mature users
                                     </p>
                                 </div>
                                 <UserCheck className="h-8 w-8 text-violet-500/30" />
@@ -146,8 +168,12 @@ export default function UserAnalytics({
                     {/* Daily Signups Chart */}
                     <Card>
                         <CardHeader>
-                            <CardTitle className="text-base">Daily Signups (Last 30 Days)</CardTitle>
-                            <CardDescription>New user registrations per day</CardDescription>
+                            <CardTitle className="text-base">
+                                Daily Signups (Last 30 Days)
+                            </CardTitle>
+                            <CardDescription>
+                                New user registrations per day
+                            </CardDescription>
                         </CardHeader>
                         <CardContent>
                             <div className="flex h-48 items-end gap-[2px]">
@@ -163,16 +189,25 @@ export default function UserAnalytics({
                                             }}
                                         />
                                         <div className="pointer-events-none absolute -top-8 hidden rounded bg-popover px-2 py-1 text-xs shadow-md group-hover:block">
-                                            <span className="font-medium">{day.count}</span>
+                                            <span className="font-medium">
+                                                {day.count}
+                                            </span>
                                             <br />
-                                            <span className="text-muted-foreground">{day.date}</span>
+                                            <span className="text-muted-foreground">
+                                                {day.date}
+                                            </span>
                                         </div>
                                     </div>
                                 ))}
                             </div>
                             <div className="mt-2 flex justify-between text-xs text-muted-foreground">
                                 <span>{dailySignups[0]?.date}</span>
-                                <span>{dailySignups[dailySignups.length - 1]?.date}</span>
+                                <span>
+                                    {
+                                        dailySignups[dailySignups.length - 1]
+                                            ?.date
+                                    }
+                                </span>
                             </div>
                         </CardContent>
                     </Card>
@@ -180,8 +215,12 @@ export default function UserAnalytics({
                     {/* Cumulative Growth Chart */}
                     <Card>
                         <CardHeader>
-                            <CardTitle className="text-base">Cumulative Growth (6 Months)</CardTitle>
-                            <CardDescription>Total user base over time</CardDescription>
+                            <CardTitle className="text-base">
+                                Cumulative Growth (6 Months)
+                            </CardTitle>
+                            <CardDescription>
+                                Total user base over time
+                            </CardDescription>
                         </CardHeader>
                         <CardContent>
                             <div className="flex h-48 items-end gap-2">
@@ -197,7 +236,9 @@ export default function UserAnalytics({
                                             }}
                                         />
                                         <div className="pointer-events-none absolute -top-8 hidden rounded bg-popover px-2 py-1 text-xs shadow-md group-hover:block">
-                                            <span className="font-medium">{month.total.toLocaleString()}</span>
+                                            <span className="font-medium">
+                                                {month.total.toLocaleString()}
+                                            </span>
                                         </div>
                                         <span className="mt-1 text-xs text-muted-foreground">
                                             {month.month.split(' ')[0]}
@@ -214,21 +255,43 @@ export default function UserAnalytics({
                     {/* Active Users Breakdown */}
                     <Card>
                         <CardHeader>
-                            <CardTitle className="text-base">Active Users</CardTitle>
-                            <CardDescription>Unique sign-ins across time windows</CardDescription>
+                            <CardTitle className="text-base">
+                                Active Users
+                            </CardTitle>
+                            <CardDescription>
+                                Unique sign-ins across time windows
+                            </CardDescription>
                         </CardHeader>
                         <CardContent>
                             <div className="space-y-4">
                                 {[
-                                    { label: 'Today', value: activeUsers.today, max: totalUsers, color: 'bg-emerald-500' },
-                                    { label: 'Last 7 Days', value: activeUsers.week, max: totalUsers, color: 'bg-blue-500' },
-                                    { label: 'Last 30 Days', value: activeUsers.month, max: totalUsers, color: 'bg-indigo-500' },
+                                    {
+                                        label: 'Today',
+                                        value: activeUsers.today,
+                                        max: totalUsers,
+                                        color: 'bg-emerald-500',
+                                    },
+                                    {
+                                        label: 'Last 7 Days',
+                                        value: activeUsers.week,
+                                        max: totalUsers,
+                                        color: 'bg-blue-500',
+                                    },
+                                    {
+                                        label: 'Last 30 Days',
+                                        value: activeUsers.month,
+                                        max: totalUsers,
+                                        color: 'bg-indigo-500',
+                                    },
                                 ].map((stat) => (
                                     <div key={stat.label}>
                                         <div className="mb-1 flex items-center justify-between text-sm">
                                             <span>{stat.label}</span>
                                             <span className="font-medium">
-                                                {stat.value} <span className="text-muted-foreground">/ {stat.max}</span>
+                                                {stat.value}{' '}
+                                                <span className="text-muted-foreground">
+                                                    / {stat.max}
+                                                </span>
                                             </span>
                                         </div>
                                         <div className="h-2 overflow-hidden rounded-full bg-muted">
@@ -248,8 +311,12 @@ export default function UserAnalytics({
                     {/* Device Distribution */}
                     <Card>
                         <CardHeader>
-                            <CardTitle className="text-base">Platform Distribution</CardTitle>
-                            <CardDescription>Active user platforms (last 30 days)</CardDescription>
+                            <CardTitle className="text-base">
+                                Platform Distribution
+                            </CardTitle>
+                            <CardDescription>
+                                Active user platforms (last 30 days)
+                            </CardDescription>
                         </CardHeader>
                         <CardContent>
                             {topDevices.length === 0 ? (
@@ -259,22 +326,39 @@ export default function UserAnalytics({
                             ) : (
                                 <div className="space-y-3">
                                     {topDevices.map((device) => {
-                                        const Icon = deviceIcons[device.platform] || Monitor;
-                                        const color = deviceColors[device.platform] || 'bg-gray-400';
-                                        const pct = ((device.users / totalDeviceUsers) * 100).toFixed(1);
+                                        const Icon =
+                                            deviceIcons[device.platform] ||
+                                            Monitor;
+                                        const color =
+                                            deviceColors[device.platform] ||
+                                            'bg-gray-400';
+                                        const pct = (
+                                            (device.users / totalDeviceUsers) *
+                                            100
+                                        ).toFixed(1);
 
                                         return (
-                                            <div key={device.platform} className="flex items-center gap-3">
+                                            <div
+                                                key={device.platform}
+                                                className="flex items-center gap-3"
+                                            >
                                                 <Icon className="h-4 w-4 text-muted-foreground" />
                                                 <div className="flex-1">
                                                     <div className="mb-1 flex items-center justify-between text-sm">
-                                                        <span>{device.platform}</span>
-                                                        <span className="text-muted-foreground">{device.users} users ({pct}%)</span>
+                                                        <span>
+                                                            {device.platform}
+                                                        </span>
+                                                        <span className="text-muted-foreground">
+                                                            {device.users} users
+                                                            ({pct}%)
+                                                        </span>
                                                     </div>
                                                     <div className="h-1.5 overflow-hidden rounded-full bg-muted">
                                                         <div
                                                             className={`h-full rounded-full ${color}`}
-                                                            style={{ width: `${pct}%` }}
+                                                            style={{
+                                                                width: `${pct}%`,
+                                                            }}
                                                         />
                                                     </div>
                                                 </div>

@@ -1,6 +1,12 @@
 import { HelpTooltip } from '@/components/help-tooltip';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 import AdminLayout from '@/layouts/admin-layout';
 import { Head } from '@inertiajs/react';
 import {
@@ -80,7 +86,8 @@ export default function RevenueAnalytics({
         ...monthlySubscriptions.map((m) => Math.max(m.new, m.canceled)),
         1,
     );
-    const totalDistribution = planDistribution.reduce((acc, p) => acc + p.count, 0) || 1;
+    const totalDistribution =
+        planDistribution.reduce((acc, p) => acc + p.count, 0) || 1;
     const totalMrr = revenueByPlan.reduce((acc, p) => acc + p.estimated_mrr, 0);
 
     return (
@@ -94,13 +101,17 @@ export default function RevenueAnalytics({
                             Revenue Analytics
                         </h2>
                         <p className="text-sm text-muted-foreground">
-                            Monitor subscription metrics, revenue, and billing health across the platform.
+                            Monitor subscription metrics, revenue, and billing
+                            health across the platform.
                         </p>
                     </div>
                     <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => { window.location.href = '/admin/revenue-analytics/export'; }}
+                        onClick={() => {
+                            window.location.href =
+                                '/admin/revenue-analytics/export';
+                        }}
                     >
                         <Download className="mr-2 h-4 w-4" />
                         Export CSV
@@ -117,7 +128,9 @@ export default function RevenueAnalytics({
                                         Estimated MRR
                                         <HelpTooltip content="Monthly Recurring Revenue estimated from active subscriptions and plan prices." />
                                     </p>
-                                    <p className="text-3xl font-bold">${mrr.toLocaleString()}</p>
+                                    <p className="text-3xl font-bold">
+                                        ${mrr.toLocaleString()}
+                                    </p>
                                 </div>
                                 <DollarSign className="h-8 w-8 text-emerald-500/30" />
                             </div>
@@ -127,8 +140,12 @@ export default function RevenueAnalytics({
                         <CardContent className="pt-6">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <p className="text-sm text-muted-foreground">Active Subscriptions</p>
-                                    <p className="text-3xl font-bold">{summary.total_active}</p>
+                                    <p className="text-sm text-muted-foreground">
+                                        Active Subscriptions
+                                    </p>
+                                    <p className="text-3xl font-bold">
+                                        {summary.total_active}
+                                    </p>
                                     {summary.total_trialing > 0 && (
                                         <p className="text-xs text-muted-foreground">
                                             + {summary.total_trialing} trialing
@@ -147,7 +164,9 @@ export default function RevenueAnalytics({
                                         30-Day Churn
                                         <HelpTooltip content="Percentage of subscriptions canceled in the last 30 days relative to the subscriber base." />
                                     </p>
-                                    <p className="text-3xl font-bold">{churnRate}%</p>
+                                    <p className="text-3xl font-bold">
+                                        {churnRate}%
+                                    </p>
                                 </div>
                                 {churnRate > 5 ? (
                                     <ArrowDownRight className="h-8 w-8 text-red-500/30" />
@@ -165,10 +184,13 @@ export default function RevenueAnalytics({
                                         Trial Conversion
                                         <HelpTooltip content="Percentage of trial subscriptions that converted to active paid plans." />
                                     </p>
-                                    <p className="text-3xl font-bold">{trialConversionRate}%</p>
+                                    <p className="text-3xl font-bold">
+                                        {trialConversionRate}%
+                                    </p>
                                     {summary.workspaces_on_trial > 0 && (
                                         <p className="text-xs text-muted-foreground">
-                                            {summary.workspaces_on_trial} on trial now
+                                            {summary.workspaces_on_trial} on
+                                            trial now
                                         </p>
                                     )}
                                 </div>
@@ -185,7 +207,9 @@ export default function RevenueAnalytics({
                             <div className="flex items-center gap-2 rounded-lg border border-amber-200 bg-amber-50 px-4 py-2 text-sm dark:border-amber-800 dark:bg-amber-950">
                                 <AlertTriangle className="h-4 w-4 text-amber-600 dark:text-amber-400" />
                                 <span className="text-amber-800 dark:text-amber-200">
-                                    {summary.total_past_due} past due subscription{summary.total_past_due !== 1 ? 's' : ''}
+                                    {summary.total_past_due} past due
+                                    subscription
+                                    {summary.total_past_due !== 1 ? 's' : ''}
                                 </span>
                             </div>
                         )}
@@ -205,8 +229,12 @@ export default function RevenueAnalytics({
                     {/* Daily New Subscriptions */}
                     <Card>
                         <CardHeader>
-                            <CardTitle className="text-base">Daily New Subscriptions (30 Days)</CardTitle>
-                            <CardDescription>New subscription sign-ups per day</CardDescription>
+                            <CardTitle className="text-base">
+                                Daily New Subscriptions (30 Days)
+                            </CardTitle>
+                            <CardDescription>
+                                New subscription sign-ups per day
+                            </CardDescription>
                         </CardHeader>
                         <CardContent>
                             <div className="flex h-48 items-end gap-[2px]">
@@ -222,16 +250,25 @@ export default function RevenueAnalytics({
                                             }}
                                         />
                                         <div className="pointer-events-none absolute -top-8 hidden rounded bg-popover px-2 py-1 text-xs shadow-md group-hover:block">
-                                            <span className="font-medium">{day.count}</span>
+                                            <span className="font-medium">
+                                                {day.count}
+                                            </span>
                                             <br />
-                                            <span className="text-muted-foreground">{day.date}</span>
+                                            <span className="text-muted-foreground">
+                                                {day.date}
+                                            </span>
                                         </div>
                                     </div>
                                 ))}
                             </div>
                             <div className="mt-2 flex justify-between text-xs text-muted-foreground">
                                 <span>{dailyNewSubs[0]?.date}</span>
-                                <span>{dailyNewSubs[dailyNewSubs.length - 1]?.date}</span>
+                                <span>
+                                    {
+                                        dailyNewSubs[dailyNewSubs.length - 1]
+                                            ?.date
+                                    }
+                                </span>
                             </div>
                         </CardContent>
                     </Card>
@@ -239,8 +276,12 @@ export default function RevenueAnalytics({
                     {/* Monthly Subscription Flow */}
                     <Card>
                         <CardHeader>
-                            <CardTitle className="text-base">Subscription Flow (6 Months)</CardTitle>
-                            <CardDescription>New vs canceled subscriptions per month</CardDescription>
+                            <CardTitle className="text-base">
+                                Subscription Flow (6 Months)
+                            </CardTitle>
+                            <CardDescription>
+                                New vs canceled subscriptions per month
+                            </CardDescription>
                         </CardHeader>
                         <CardContent>
                             <div className="flex h-48 items-end gap-2">
@@ -263,7 +304,7 @@ export default function RevenueAnalytics({
                                                 }}
                                             />
                                         </div>
-                                        <div className="pointer-events-none absolute -top-12 hidden whitespace-nowrap rounded bg-popover px-2 py-1 text-xs shadow-md group-hover:block">
+                                        <div className="pointer-events-none absolute -top-12 hidden rounded bg-popover px-2 py-1 text-xs whitespace-nowrap shadow-md group-hover:block">
                                             <div className="flex items-center gap-1">
                                                 <span className="inline-block h-2 w-2 rounded-full bg-emerald-500" />
                                                 New: {month.new}
@@ -272,7 +313,10 @@ export default function RevenueAnalytics({
                                                 <span className="inline-block h-2 w-2 rounded-full bg-red-400" />
                                                 Canceled: {month.canceled}
                                             </div>
-                                            <div className="font-medium">Net: {month.net > 0 ? '+' : ''}{month.net}</div>
+                                            <div className="font-medium">
+                                                Net: {month.net > 0 ? '+' : ''}
+                                                {month.net}
+                                            </div>
                                         </div>
                                         <span className="text-xs text-muted-foreground">
                                             {month.month.split(' ')[0]}
@@ -282,10 +326,12 @@ export default function RevenueAnalytics({
                             </div>
                             <div className="mt-3 flex items-center gap-4 text-xs text-muted-foreground">
                                 <span className="flex items-center gap-1">
-                                    <span className="inline-block h-2 w-2 rounded-full bg-emerald-500" /> New
+                                    <span className="inline-block h-2 w-2 rounded-full bg-emerald-500" />{' '}
+                                    New
                                 </span>
                                 <span className="flex items-center gap-1">
-                                    <span className="inline-block h-2 w-2 rounded-full bg-red-400" /> Canceled
+                                    <span className="inline-block h-2 w-2 rounded-full bg-red-400" />{' '}
+                                    Canceled
                                 </span>
                             </div>
                         </CardContent>
@@ -297,8 +343,12 @@ export default function RevenueAnalytics({
                     {/* Plan Distribution */}
                     <Card>
                         <CardHeader>
-                            <CardTitle className="text-base">Plan Distribution</CardTitle>
-                            <CardDescription>Active &amp; trialing subscriptions by plan</CardDescription>
+                            <CardTitle className="text-base">
+                                Plan Distribution
+                            </CardTitle>
+                            <CardDescription>
+                                Active &amp; trialing subscriptions by plan
+                            </CardDescription>
                         </CardHeader>
                         <CardContent>
                             {planDistribution.length === 0 ? (
@@ -308,8 +358,12 @@ export default function RevenueAnalytics({
                             ) : (
                                 <div className="space-y-3">
                                     {planDistribution.map((plan, i) => {
-                                        const pct = ((plan.count / totalDistribution) * 100).toFixed(1);
-                                        const color = planColors[i % planColors.length];
+                                        const pct = (
+                                            (plan.count / totalDistribution) *
+                                            100
+                                        ).toFixed(1);
+                                        const color =
+                                            planColors[i % planColors.length];
 
                                         return (
                                             <div key={plan.price_id}>
@@ -322,7 +376,9 @@ export default function RevenueAnalytics({
                                                 <div className="h-2 overflow-hidden rounded-full bg-muted">
                                                     <div
                                                         className={`h-full rounded-full transition-all ${color}`}
-                                                        style={{ width: `${pct}%` }}
+                                                        style={{
+                                                            width: `${pct}%`,
+                                                        }}
                                                     />
                                                 </div>
                                             </div>
@@ -336,8 +392,12 @@ export default function RevenueAnalytics({
                     {/* Revenue by Plan */}
                     <Card>
                         <CardHeader>
-                            <CardTitle className="text-base">Revenue by Plan</CardTitle>
-                            <CardDescription>Estimated MRR breakdown by subscription plan</CardDescription>
+                            <CardTitle className="text-base">
+                                Revenue by Plan
+                            </CardTitle>
+                            <CardDescription>
+                                Estimated MRR breakdown by subscription plan
+                            </CardDescription>
                         </CardHeader>
                         <CardContent>
                             {revenueByPlan.length === 0 ? (
@@ -347,26 +407,49 @@ export default function RevenueAnalytics({
                             ) : (
                                 <div className="space-y-4">
                                     {revenueByPlan.map((plan, i) => {
-                                        const pct = totalMrr > 0 ? ((plan.estimated_mrr / totalMrr) * 100).toFixed(1) : '0.0';
-                                        const color = planColors[i % planColors.length];
+                                        const pct =
+                                            totalMrr > 0
+                                                ? (
+                                                      (plan.estimated_mrr /
+                                                          totalMrr) *
+                                                      100
+                                                  ).toFixed(1)
+                                                : '0.0';
+                                        const color =
+                                            planColors[i % planColors.length];
 
                                         return (
-                                            <div key={plan.plan} className="rounded-lg border p-3">
+                                            <div
+                                                key={plan.plan}
+                                                className="rounded-lg border p-3"
+                                            >
                                                 <div className="flex items-center justify-between">
-                                                    <span className="font-medium">{plan.plan}</span>
+                                                    <span className="font-medium">
+                                                        {plan.plan}
+                                                    </span>
                                                     <span className="text-lg font-bold">
-                                                        ${plan.estimated_mrr.toLocaleString()}/mo
+                                                        $
+                                                        {plan.estimated_mrr.toLocaleString()}
+                                                        /mo
                                                     </span>
                                                 </div>
                                                 <div className="mt-2 flex gap-4 text-xs text-muted-foreground">
-                                                    <span>{plan.monthly_subs} monthly</span>
-                                                    <span>{plan.yearly_subs} yearly</span>
+                                                    <span>
+                                                        {plan.monthly_subs}{' '}
+                                                        monthly
+                                                    </span>
+                                                    <span>
+                                                        {plan.yearly_subs}{' '}
+                                                        yearly
+                                                    </span>
                                                     <span>{pct}% of MRR</span>
                                                 </div>
                                                 <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-muted">
                                                     <div
                                                         className={`h-full rounded-full ${color}`}
-                                                        style={{ width: `${pct}%` }}
+                                                        style={{
+                                                            width: `${pct}%`,
+                                                        }}
                                                     />
                                                 </div>
                                             </div>

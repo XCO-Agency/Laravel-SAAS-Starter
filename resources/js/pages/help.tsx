@@ -1,24 +1,46 @@
-import { Head } from '@inertiajs/react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import AppLayout from '@/layouts/app-layout';
-import { Search, Book, MessageCircle, Ticket, FileText, Mail, ArrowRight } from 'lucide-react';
+import { Head, Link } from '@inertiajs/react';
+import {
+    ArrowRight,
+    Book,
+    FileText,
+    Mail,
+    MessageCircle,
+    Search,
+    Ticket,
+} from 'lucide-react';
 import { useState } from 'react';
-import { Link } from '@inertiajs/react';
 
 const helpCategories = [
     {
         icon: Book,
         title: 'Getting Started',
-        description: 'Learn the basics of setting up your workspace and account.',
-        articles: ['Quick Start Guide', 'Workspace Setup', 'Inviting Team Members'],
+        description:
+            'Learn the basics of setting up your workspace and account.',
+        articles: [
+            'Quick Start Guide',
+            'Workspace Setup',
+            'Inviting Team Members',
+        ],
     },
     {
         icon: MessageCircle,
         title: 'Account & Billing',
         description: 'Manage your subscription, billing, and account settings.',
-        articles: ['Subscription Plans', 'Payment Methods', 'Cancel Subscription'],
+        articles: [
+            'Subscription Plans',
+            'Payment Methods',
+            'Cancel Subscription',
+        ],
     },
     {
         icon: Ticket,
@@ -47,21 +69,24 @@ export default function HelpCenter() {
         <AppLayout breadcrumbs={[{ title: 'Help Center', href: '/help' }]}>
             <Head title="Help Center" />
 
-            <div className="container mx-auto max-w-6xl py-8 px-4">
+            <div className="container mx-auto max-w-6xl px-4 py-8">
                 {/* Header */}
-                <div className="text-center mb-12">
-                    <h1 className="text-4xl font-bold mb-4">How can we help you?</h1>
-                    <p className="text-muted-foreground text-lg mb-8 max-w-2xl mx-auto">
-                        Search our knowledge base or browse categories to find answers to your questions.
+                <div className="mb-12 text-center">
+                    <h1 className="mb-4 text-4xl font-bold">
+                        How can we help you?
+                    </h1>
+                    <p className="mx-auto mb-8 max-w-2xl text-lg text-muted-foreground">
+                        Search our knowledge base or browse categories to find
+                        answers to your questions.
                     </p>
 
                     {/* Search */}
-                    <div className="relative max-w-xl mx-auto">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                    <div className="relative mx-auto max-w-xl">
+                        <Search className="absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
                         <Input
                             type="text"
                             placeholder="Search for articles, guides, or topics..."
-                            className="pl-10 h-12"
+                            className="h-12 pl-10"
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                         />
@@ -69,12 +94,12 @@ export default function HelpCenter() {
                 </div>
 
                 {/* Quick Links */}
-                <div className="grid gap-4 md:grid-cols-3 mb-12">
+                <div className="mb-12 grid gap-4 md:grid-cols-3">
                     {quickLinks.map((link) => (
                         <Link
                             key={link.title}
                             href={link.href}
-                            className="flex items-center gap-4 p-4 rounded-lg border bg-card hover:bg-accent transition-colors"
+                            className="flex items-center gap-4 rounded-lg border bg-card p-4 transition-colors hover:bg-accent"
                         >
                             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
                                 <link.icon className="h-5 w-5 text-primary" />
@@ -90,15 +115,22 @@ export default function HelpCenter() {
                 {/* Categories */}
                 <div className="grid gap-6 md:grid-cols-2">
                     {helpCategories.map((category) => (
-                        <Card key={category.title} className="hover:shadow-md transition-shadow">
+                        <Card
+                            key={category.title}
+                            className="transition-shadow hover:shadow-md"
+                        >
                             <CardHeader>
                                 <div className="flex items-center gap-3">
                                     <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
                                         <category.icon className="h-5 w-5 text-primary" />
                                     </div>
                                     <div>
-                                        <CardTitle className="text-lg">{category.title}</CardTitle>
-                                        <CardDescription>{category.description}</CardDescription>
+                                        <CardTitle className="text-lg">
+                                            {category.title}
+                                        </CardTitle>
+                                        <CardDescription>
+                                            {category.description}
+                                        </CardDescription>
                                     </div>
                                 </div>
                             </CardHeader>
@@ -108,7 +140,7 @@ export default function HelpCenter() {
                                         <li key={article}>
                                             <Button
                                                 variant="ghost"
-                                                className="w-full justify-start text-left h-auto py-2"
+                                                className="h-auto w-full justify-start py-2 text-left"
                                                 asChild
                                             >
                                                 <Link href="#">
@@ -126,11 +158,14 @@ export default function HelpCenter() {
 
                 {/* Contact Section */}
                 <Card className="mt-12 bg-muted/50">
-                    <CardContent className="flex flex-col md:flex-row items-center justify-between p-8 gap-6">
+                    <CardContent className="flex flex-col items-center justify-between gap-6 p-8 md:flex-row">
                         <div>
-                            <h3 className="text-xl font-bold mb-2">Still need help?</h3>
+                            <h3 className="mb-2 text-xl font-bold">
+                                Still need help?
+                            </h3>
                             <p className="text-muted-foreground">
-                                Can't find what you're looking for? Our support team is here to help.
+                                Can't find what you're looking for? Our support
+                                team is here to help.
                             </p>
                         </div>
                         <Button size="lg" asChild>

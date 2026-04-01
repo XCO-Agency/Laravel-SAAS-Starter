@@ -20,11 +20,16 @@ export default function Appearance() {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title={t('settings.appearance.title', 'Appearance settings')} />
+            <Head
+                title={t('settings.appearance.title', 'Appearance settings')}
+            />
 
             <ProfileLayout
                 title={t('settings.appearance.title', 'Appearance settings')}
-                description={t('settings.appearance.description', "Update your account's appearance settings")}
+                description={t(
+                    'settings.appearance.description',
+                    "Update your account's appearance settings",
+                )}
                 fullWidth
             >
                 <div className="space-y-6">

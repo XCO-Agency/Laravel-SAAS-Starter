@@ -1,15 +1,15 @@
 import '../css/app.css';
 
 import { createInertiaApp } from '@inertiajs/react';
+import { configureEcho } from '@laravel/echo-react';
+import * as Sentry from '@sentry/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { I18nextProvider } from 'react-i18next';
-import * as Sentry from '@sentry/react';
 import { ToastProvider } from './components/ui/toast';
 import { initializeTheme } from './hooks/use-appearance';
 import i18n from './lib/i18n';
-import { configureEcho } from '@laravel/echo-react';
 
 if (import.meta.env.VITE_REVERB_APP_KEY) {
     configureEcho({
@@ -77,7 +77,8 @@ createInertiaApp({
         const root = createRoot(el);
 
         // Set locale from Inertia shared data if available
-        const locale = (props.initialPage.props as { locale?: string })?.locale || 'en';
+        const locale =
+            (props.initialPage.props as { locale?: string })?.locale || 'en';
         if (i18n.language !== locale) {
             i18n.changeLanguage(locale);
         }

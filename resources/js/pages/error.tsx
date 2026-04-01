@@ -12,19 +12,23 @@ const ERROR_MESSAGES: Record<number, { title: string; description: string }> = {
     },
     404: {
         title: 'Page Not Found',
-        description: "The page you're looking for doesn't exist or has been moved.",
+        description:
+            "The page you're looking for doesn't exist or has been moved.",
     },
     429: {
         title: 'Too Many Requests',
-        description: 'You have made too many requests. Please wait a moment before trying again.',
+        description:
+            'You have made too many requests. Please wait a moment before trying again.',
     },
     500: {
         title: 'Server Error',
-        description: "Something went wrong on our end. We've been notified and are working on a fix.",
+        description:
+            "Something went wrong on our end. We've been notified and are working on a fix.",
     },
     503: {
         title: 'Service Unavailable',
-        description: 'The service is temporarily unavailable. Please check back shortly.',
+        description:
+            'The service is temporarily unavailable. Please check back shortly.',
     },
 };
 
@@ -37,12 +41,21 @@ export default function ErrorPage({ status }: ErrorPageProps) {
     return (
         <>
             <Head title={`${status} — ${error.title}`} />
-            <div className="bg-background flex min-h-screen flex-col items-center justify-center p-6 text-center">
-                <p className="text-muted-foreground mb-2 text-sm font-semibold uppercase tracking-widest">Error {status}</p>
-                <h1 className="mb-3 text-4xl font-bold tracking-tight">{error.title}</h1>
-                <p className="text-muted-foreground mb-8 max-w-md text-base">{error.description}</p>
+            <div className="flex min-h-screen flex-col items-center justify-center bg-background p-6 text-center">
+                <p className="mb-2 text-sm font-semibold tracking-widest text-muted-foreground uppercase">
+                    Error {status}
+                </p>
+                <h1 className="mb-3 text-4xl font-bold tracking-tight">
+                    {error.title}
+                </h1>
+                <p className="mb-8 max-w-md text-base text-muted-foreground">
+                    {error.description}
+                </p>
                 <div className="flex items-center gap-3">
-                    <Button variant="outline" onClick={() => window.history.back()}>
+                    <Button
+                        variant="outline"
+                        onClick={() => window.history.back()}
+                    >
                         Go Back
                     </Button>
                     <Button onClick={() => router.visit('/')}>Go Home</Button>

@@ -1,6 +1,12 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem, type Workspace } from '@/types';
 import { Head, Link } from '@inertiajs/react';
@@ -25,9 +31,20 @@ function CodeBlock({ code, language }: { code: string; language: string }) {
     return (
         <div className="relative">
             <div className="flex items-center justify-between rounded-t-md border border-b-0 bg-muted px-3 py-1.5">
-                <span className="text-xs text-muted-foreground">{language}</span>
-                <Button variant="ghost" size="sm" className="h-6 gap-1 px-2 text-xs" onClick={handleCopy}>
-                    {copied ? <CheckCircle className="h-3 w-3 text-green-500" /> : <Copy className="h-3 w-3" />}
+                <span className="text-xs text-muted-foreground">
+                    {language}
+                </span>
+                <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-6 gap-1 px-2 text-xs"
+                    onClick={handleCopy}
+                >
+                    {copied ? (
+                        <CheckCircle className="h-3 w-3 text-green-500" />
+                    ) : (
+                        <Copy className="h-3 w-3" />
+                    )}
                     {copied ? 'Copied!' : 'Copy'}
                 </Button>
             </div>
@@ -113,7 +130,11 @@ def handle_webhook():
     # Handle event...
     return '', 200`;
 
-export default function WebhookVerificationGuide({ workspace, signatureHeader, algorithm }: Props) {
+export default function WebhookVerificationGuide({
+    workspace,
+    signatureHeader,
+    algorithm,
+}: Props) {
     const breadcrumbs: BreadcrumbItem[] = [
         { title: 'Webhooks', href: `/workspaces/${workspace.id}/webhooks` },
         { title: 'Signature Verification Guide', href: '#' },
@@ -138,7 +159,8 @@ export default function WebhookVerificationGuide({ workspace, signatureHeader, a
                         Webhook Signature Verification
                     </h1>
                     <p className="mt-1 text-muted-foreground">
-                        Verify incoming webhook requests to ensure they originate from this platform.
+                        Verify incoming webhook requests to ensure they
+                        originate from this platform.
                     </p>
                 </div>
 
@@ -150,7 +172,9 @@ export default function WebhookVerificationGuide({ workspace, signatureHeader, a
                             How Signatures Work
                         </CardTitle>
                         <CardDescription>
-                            Every webhook request is signed using HMAC-{algorithm.toUpperCase()} with your endpoint's secret key.
+                            Every webhook request is signed using HMAC-
+                            {algorithm.toUpperCase()} with your endpoint's
+                            secret key.
                         </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
@@ -160,9 +184,11 @@ export default function WebhookVerificationGuide({ workspace, signatureHeader, a
                                     1
                                 </span>
                                 <span>
-                                    The payload is serialised as JSON and signed with{' '}
+                                    The payload is serialised as JSON and signed
+                                    with{' '}
                                     <code className="rounded bg-muted px-1 py-0.5 text-xs">
-                                        hash_hmac('{algorithm}', json_payload, secret)
+                                        hash_hmac('{algorithm}', json_payload,
+                                        secret)
                                     </code>
                                 </span>
                             </li>
@@ -172,7 +198,10 @@ export default function WebhookVerificationGuide({ workspace, signatureHeader, a
                                 </span>
                                 <span>
                                     The signature is sent in the{' '}
-                                    <Badge variant="outline" className="font-mono text-xs">
+                                    <Badge
+                                        variant="outline"
+                                        className="font-mono text-xs"
+                                    >
                                         {signatureHeader}
                                     </Badge>{' '}
                                     HTTP header as a hex string.
@@ -183,18 +212,29 @@ export default function WebhookVerificationGuide({ workspace, signatureHeader, a
                                     3
                                 </span>
                                 <span>
-                                    Your server recomputes the signature using the raw request body and your secret, then
-                                    compares it using a timing-safe comparison function.
+                                    Your server recomputes the signature using
+                                    the raw request body and your secret, then
+                                    compares it using a timing-safe comparison
+                                    function.
                                 </span>
                             </li>
                         </ol>
 
                         <div className="rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800 dark:border-amber-800 dark:bg-amber-950/30 dark:text-amber-400">
-                            <strong>Important:</strong> Always use a timing-safe comparison (e.g.{' '}
-                            <code className="rounded bg-amber-100 px-1 py-0.5 text-xs dark:bg-amber-900/40">hash_equals</code> in PHP,{' '}
-                            <code className="rounded bg-amber-100 px-1 py-0.5 text-xs dark:bg-amber-900/40">crypto.timingSafeEqual</code>{' '}
+                            <strong>Important:</strong> Always use a timing-safe
+                            comparison (e.g.{' '}
+                            <code className="rounded bg-amber-100 px-1 py-0.5 text-xs dark:bg-amber-900/40">
+                                hash_equals
+                            </code>{' '}
+                            in PHP,{' '}
+                            <code className="rounded bg-amber-100 px-1 py-0.5 text-xs dark:bg-amber-900/40">
+                                crypto.timingSafeEqual
+                            </code>{' '}
                             in Node.js) to prevent timing attacks. Do not use{' '}
-                            <code className="rounded bg-amber-100 px-1 py-0.5 text-xs dark:bg-amber-900/40">===</code>.
+                            <code className="rounded bg-amber-100 px-1 py-0.5 text-xs dark:bg-amber-900/40">
+                                ===
+                            </code>
+                            .
                         </div>
                     </CardContent>
                 </Card>
@@ -204,8 +244,11 @@ export default function WebhookVerificationGuide({ workspace, signatureHeader, a
                     <CardHeader>
                         <CardTitle>Verification Examples</CardTitle>
                         <CardDescription>
-                            Replace <code className="rounded bg-muted px-1 py-0.5 text-xs">your-webhook-secret</code> with the
-                            secret shown on your webhook endpoint.
+                            Replace{' '}
+                            <code className="rounded bg-muted px-1 py-0.5 text-xs">
+                                your-webhook-secret
+                            </code>{' '}
+                            with the secret shown on your webhook endpoint.
                         </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-6">
@@ -214,12 +257,22 @@ export default function WebhookVerificationGuide({ workspace, signatureHeader, a
                             <CodeBlock code={PHP_EXAMPLE} language="php" />
                         </div>
                         <div>
-                            <h3 className="mb-2 text-sm font-semibold">Node.js</h3>
-                            <CodeBlock code={NODE_EXAMPLE} language="javascript" />
+                            <h3 className="mb-2 text-sm font-semibold">
+                                Node.js
+                            </h3>
+                            <CodeBlock
+                                code={NODE_EXAMPLE}
+                                language="javascript"
+                            />
                         </div>
                         <div>
-                            <h3 className="mb-2 text-sm font-semibold">Python (Flask)</h3>
-                            <CodeBlock code={PYTHON_EXAMPLE} language="python" />
+                            <h3 className="mb-2 text-sm font-semibold">
+                                Python (Flask)
+                            </h3>
+                            <CodeBlock
+                                code={PYTHON_EXAMPLE}
+                                language="python"
+                            />
                         </div>
                     </CardContent>
                 </Card>

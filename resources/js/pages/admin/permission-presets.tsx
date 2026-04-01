@@ -129,7 +129,7 @@ export default function PermissionPresets({
         <div className="space-y-4">
             {Object.entries(permissionGroups).map(([group, perms]) => (
                 <div key={group} className="space-y-2">
-                    <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                    <p className="text-xs font-semibold tracking-wide text-muted-foreground uppercase">
                         {group}
                     </p>
                     <div className="space-y-2">
@@ -140,7 +140,9 @@ export default function PermissionPresets({
                             >
                                 <Checkbox
                                     id={`perm-${perm.id}`}
-                                    checked={selectedPermissions.includes(perm.id)}
+                                    checked={selectedPermissions.includes(
+                                        perm.id,
+                                    )}
                                     onCheckedChange={(checked) => {
                                         const updated = checked
                                             ? [...selectedPermissions, perm.id]
@@ -152,7 +154,7 @@ export default function PermissionPresets({
                                 />
                                 <Label
                                     htmlFor={`perm-${perm.id}`}
-                                    className="cursor-pointer text-sm font-medium leading-none"
+                                    className="cursor-pointer text-sm leading-none font-medium"
                                 >
                                     {perm.label}
                                 </Label>
@@ -219,9 +221,7 @@ export default function PermissionPresets({
                                                 variant="ghost"
                                                 size="icon"
                                                 className="h-8 w-8"
-                                                onClick={() =>
-                                                    openEdit(preset)
-                                                }
+                                                onClick={() => openEdit(preset)}
                                             >
                                                 <Pencil className="h-4 w-4" />
                                             </Button>
@@ -240,15 +240,16 @@ export default function PermissionPresets({
                                 </CardHeader>
                                 <CardContent>
                                     <div className="flex flex-wrap gap-1.5">
-                                        {Array.isArray(preset.permissions) && preset.permissions.map((perm) => (
-                                            <Badge
-                                                key={perm}
-                                                variant="secondary"
-                                                className="text-xs"
-                                            >
-                                                {permissionLabel(perm)}
-                                            </Badge>
-                                        ))}
+                                        {Array.isArray(preset.permissions) &&
+                                            preset.permissions.map((perm) => (
+                                                <Badge
+                                                    key={perm}
+                                                    variant="secondary"
+                                                    className="text-xs"
+                                                >
+                                                    {permissionLabel(perm)}
+                                                </Badge>
+                                            ))}
                                     </div>
                                 </CardContent>
                             </Card>
@@ -309,8 +310,7 @@ export default function PermissionPresets({
                             </div>
                             {renderPermissionCheckboxes(
                                 createData.permissions,
-                                (perms) =>
-                                    setCreateData('permissions', perms),
+                                (perms) => setCreateData('permissions', perms),
                             )}
                             {createErrors.permissions && (
                                 <p className="text-sm text-destructive">
@@ -326,10 +326,7 @@ export default function PermissionPresets({
                             >
                                 Cancel
                             </Button>
-                            <Button
-                                type="submit"
-                                disabled={createProcessing}
-                            >
+                            <Button type="submit" disabled={createProcessing}>
                                 Create Preset
                             </Button>
                         </DialogFooter>
@@ -386,8 +383,7 @@ export default function PermissionPresets({
                             </div>
                             {renderPermissionCheckboxes(
                                 editData.permissions,
-                                (perms) =>
-                                    setEditData('permissions', perms),
+                                (perms) => setEditData('permissions', perms),
                             )}
                             {editErrors.permissions && (
                                 <p className="text-sm text-destructive">
@@ -403,10 +399,7 @@ export default function PermissionPresets({
                             >
                                 Cancel
                             </Button>
-                            <Button
-                                type="submit"
-                                disabled={editProcessing}
-                            >
+                            <Button type="submit" disabled={editProcessing}>
                                 Save Changes
                             </Button>
                         </DialogFooter>

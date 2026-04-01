@@ -10,7 +10,13 @@ import {
 import AdminLayout from '@/layouts/admin-layout';
 import http from '@/lib/http';
 import { Head } from '@inertiajs/react';
-import { AlertCircle, CheckCircle, Clock, RefreshCw, ShieldCheck } from 'lucide-react';
+import {
+    AlertCircle,
+    CheckCircle,
+    Clock,
+    RefreshCw,
+    ShieldCheck,
+} from 'lucide-react';
 import { useState } from 'react';
 
 interface RetentionPolicy {
@@ -36,9 +42,12 @@ export default function Retention({ policies }: RetentionProps) {
         setError(null);
 
         try {
-            const { data, response } = await http.post<{ output?: string }>('/admin/retention/prune', {
-                body: { dry_run: dryRun },
-            });
+            const { data, response } = await http.post<{ output?: string }>(
+                '/admin/retention/prune',
+                {
+                    body: { dry_run: dryRun },
+                },
+            );
 
             if (!response.ok) {
                 throw new Error('Request failed');
@@ -56,14 +65,15 @@ export default function Retention({ policies }: RetentionProps) {
         <AdminLayout>
             <Head title="Data Retention" />
 
-            <div className="p-8 space-y-6">
+            <div className="space-y-6 p-8">
                 <div>
-                    <h1 className="text-2xl font-bold flex items-center gap-2">
+                    <h1 className="flex items-center gap-2 text-2xl font-bold">
                         <ShieldCheck className="h-6 w-6 text-primary" />
                         Data Retention Policies
                     </h1>
-                    <p className="text-muted-foreground mt-1">
-                        Records older than each policy's threshold are pruned automatically every day at 03:00 UTC.
+                    <p className="mt-1 text-muted-foreground">
+                        Records older than each policy's threshold are pruned
+                        automatically every day at 03:00 UTC.
                     </p>
                 </div>
 
@@ -72,7 +82,11 @@ export default function Retention({ policies }: RetentionProps) {
                     <CardHeader>
                         <CardTitle>Active Policies</CardTitle>
                         <CardDescription>
-                            Adjust thresholds in <code className="text-xs bg-muted px-1 py-0.5 rounded">config/retention.php</code> or via environment variables.
+                            Adjust thresholds in{' '}
+                            <code className="rounded bg-muted px-1 py-0.5 text-xs">
+                                config/retention.php
+                            </code>{' '}
+                            or via environment variables.
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
@@ -80,16 +94,29 @@ export default function Retention({ policies }: RetentionProps) {
                             <table className="w-full text-sm">
                                 <thead>
                                     <tr className="border-b text-left text-muted-foreground">
-                                        <th className="pb-3 font-medium">Data Type</th>
-                                        <th className="pb-3 font-medium">Retention Period</th>
-                                        <th className="pb-3 font-medium">Status</th>
-                                        <th className="pb-3 font-medium">Notes</th>
+                                        <th className="pb-3 font-medium">
+                                            Data Type
+                                        </th>
+                                        <th className="pb-3 font-medium">
+                                            Retention Period
+                                        </th>
+                                        <th className="pb-3 font-medium">
+                                            Status
+                                        </th>
+                                        <th className="pb-3 font-medium">
+                                            Notes
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y">
                                     {policies.map((policy) => (
-                                        <tr key={policy.key} className="align-top">
-                                            <td className="py-3 font-medium">{policy.label}</td>
+                                        <tr
+                                            key={policy.key}
+                                            className="align-top"
+                                        >
+                                            <td className="py-3 font-medium">
+                                                {policy.label}
+                                            </td>
                                             <td className="py-3">
                                                 <span className="flex items-center gap-1.5">
                                                     <Clock className="h-3.5 w-3.5 text-muted-foreground" />
@@ -98,12 +125,21 @@ export default function Retention({ policies }: RetentionProps) {
                                             </td>
                                             <td className="py-3">
                                                 {policy.enabled ? (
-                                                    <Badge variant="default" className="bg-emerald-500 text-white">Active</Badge>
+                                                    <Badge
+                                                        variant="default"
+                                                        className="bg-emerald-500 text-white"
+                                                    >
+                                                        Active
+                                                    </Badge>
                                                 ) : (
-                                                    <Badge variant="secondary">Disabled</Badge>
+                                                    <Badge variant="secondary">
+                                                        Disabled
+                                                    </Badge>
                                                 )}
                                             </td>
-                                            <td className="py-3 text-muted-foreground">{policy.notes || '—'}</td>
+                                            <td className="py-3 text-muted-foreground">
+                                                {policy.notes || '—'}
+                                            </td>
                                         </tr>
                                     ))}
                                 </tbody>
@@ -117,7 +153,8 @@ export default function Retention({ policies }: RetentionProps) {
                     <CardHeader>
                         <CardTitle>Manual Pruning</CardTitle>
                         <CardDescription>
-                            Run pruning on demand. Use "Dry Run" first to preview what will be deleted.
+                            Run pruning on demand. Use "Dry Run" first to
+                            preview what will be deleted.
                         </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
@@ -127,7 +164,9 @@ export default function Retention({ policies }: RetentionProps) {
                                 onClick={() => runPrune(true)}
                                 disabled={running}
                             >
-                                <RefreshCw className={`mr-2 h-4 w-4 ${running ? 'animate-spin' : ''}`} />
+                                <RefreshCw
+                                    className={`mr-2 h-4 w-4 ${running ? 'animate-spin' : ''}`}
+                                />
                                 Dry Run (Preview)
                             </Button>
                             <Button
@@ -146,7 +185,9 @@ export default function Retention({ policies }: RetentionProps) {
                                     <CheckCircle className="h-4 w-4" />
                                     Command Output
                                 </div>
-                                <pre className="text-xs text-muted-foreground whitespace-pre-wrap font-mono">{output}</pre>
+                                <pre className="font-mono text-xs whitespace-pre-wrap text-muted-foreground">
+                                    {output}
+                                </pre>
                             </div>
                         )}
 
@@ -163,19 +204,30 @@ export default function Retention({ policies }: RetentionProps) {
                 <Card>
                     <CardHeader>
                         <CardTitle>Environment Variables</CardTitle>
-                        <CardDescription>Override retention periods in your <code className="text-xs bg-muted px-1 py-0.5 rounded">.env</code> file.</CardDescription>
+                        <CardDescription>
+                            Override retention periods in your{' '}
+                            <code className="rounded bg-muted px-1 py-0.5 text-xs">
+                                .env
+                            </code>{' '}
+                            file.
+                        </CardDescription>
                     </CardHeader>
                     <CardContent>
-                        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 font-mono text-xs">
+                        <div className="grid grid-cols-1 gap-2 font-mono text-xs sm:grid-cols-2">
                             {[
                                 ['RETENTION_NOTIFICATIONS_DAYS', '90'],
                                 ['RETENTION_ACTIVITY_DAYS', '180'],
                                 ['RETENTION_WEBHOOK_LOGS_DAYS', '90'],
                                 ['RETENTION_FEEDBACK_DAYS', '180'],
                             ].map(([key, def]) => (
-                                <div key={key} className="rounded-md bg-muted px-3 py-2">
+                                <div
+                                    key={key}
+                                    className="rounded-md bg-muted px-3 py-2"
+                                >
                                     <span className="text-primary">{key}</span>
-                                    <span className="text-muted-foreground">=</span>
+                                    <span className="text-muted-foreground">
+                                        =
+                                    </span>
                                     <span>{def}</span>
                                 </div>
                             ))}

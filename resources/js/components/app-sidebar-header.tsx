@@ -1,7 +1,7 @@
 import { Breadcrumbs } from '@/components/breadcrumbs';
-import { SidebarTrigger } from '@/components/ui/sidebar';
 import { NotificationsDropdown } from '@/components/notifications-dropdown';
 import { Button } from '@/components/ui/button';
+import { SidebarTrigger } from '@/components/ui/sidebar';
 import { type BreadcrumbItem as BreadcrumbItemType } from '@/types';
 import { Search } from 'lucide-react';
 
@@ -21,7 +21,9 @@ export function AppSidebarHeader({
                     variant="ghost"
                     size="icon"
                     className="group h-9 w-9 cursor-pointer"
-                    onClick={() => window.dispatchEvent(new Event('open-command-palette'))}
+                    onClick={() =>
+                        window.dispatchEvent(new Event('open-command-palette'))
+                    }
                     title="Search (Cmd+K)"
                 >
                     <Search className="!size-5 opacity-80 group-hover:opacity-100" />

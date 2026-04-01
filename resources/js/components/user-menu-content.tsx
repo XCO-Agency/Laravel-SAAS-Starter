@@ -44,7 +44,10 @@ export function UserMenuContent({ user }: UserMenuContentProps) {
                         onClick={cleanup}
                     >
                         <Settings className="mr-2" />
-                        {t('navigation.workspace_settings', 'Workspace Settings')}
+                        {t(
+                            'navigation.workspace_settings',
+                            'Workspace Settings',
+                        )}
                     </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>

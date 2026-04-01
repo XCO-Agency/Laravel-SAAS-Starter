@@ -1,8 +1,6 @@
-import AdminLayout from '@/layouts/admin-layout';
-import { Head, router } from '@inertiajs/react';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
     Dialog,
@@ -17,7 +15,10 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Input } from '@/components/ui/input';
+import AdminLayout from '@/layouts/admin-layout';
+import { Head, router } from '@inertiajs/react';
+import { formatDistanceToNow } from 'date-fns';
 import {
     CheckCircle,
     Download,
@@ -34,7 +35,6 @@ import {
     Users,
     XCircle,
 } from 'lucide-react';
-import { formatDistanceToNow } from 'date-fns';
 import { useEffect, useState, type FormEvent } from 'react';
 
 interface UserNote {
@@ -44,7 +44,12 @@ interface UserNote {
     created_at: string;
 }
 
-function UserNotesDialog({ userId, userName, open, onClose }: {
+function UserNotesDialog({
+    userId,
+    userName,
+    open,
+    onClose,
+}: {
     userId: number;
     userName: string;
     open: boolean;
@@ -59,12 +64,13 @@ function UserNotesDialog({ userId, userName, open, onClose }: {
         if (!open) {
             return;
         }
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setLoading(true);
         fetch(`/admin/users/${userId}/notes`, {
             headers: { Accept: 'application/json' },
         })
-            .then(r => r.json())
-            .then(data => setNotes(data.notes ?? []))
+            .then((r) => r.json())
+            .then((data) => setNotes(data.notes ?? []))
             .finally(() => setLoading(false));
     }, [open, userId]);
 
@@ -74,7 +80,9 @@ function UserNotesDialog({ userId, userName, open, onClose }: {
             return;
         }
         setSubmitting(true);
-        const csrf = document.querySelector<HTMLMetaElement>('meta[name="csrf-token"]')?.content ?? '';
+        const csrf =
+            document.querySelector<HTMLMetaElement>('meta[name="csrf-token"]')
+                ?.content ?? '';
         const res = await fetch(`/admin/users/${userId}/notes`, {
             method: 'POST',
             headers: {
@@ -86,7 +94,7 @@ function UserNotesDialog({ userId, userName, open, onClose }: {
         });
         if (res.ok) {
             const data = await res.json();
-            setNotes(prev => [data.note, ...prev]);
+            setNotes((prev) => [data.note, ...prev]);
             setNewNote('');
         }
         setSubmitting(false);
@@ -96,18 +104,20 @@ function UserNotesDialog({ userId, userName, open, onClose }: {
         if (!confirm('Delete this note?')) {
             return;
         }
-        const csrf = document.querySelector<HTMLMetaElement>('meta[name="csrf-token"]')?.content ?? '';
+        const csrf =
+            document.querySelector<HTMLMetaElement>('meta[name="csrf-token"]')
+                ?.content ?? '';
         const res = await fetch(`/admin/users/${userId}/notes/${noteId}`, {
             method: 'DELETE',
             headers: { Accept: 'application/json', 'X-CSRF-TOKEN': csrf },
         });
         if (res.ok) {
-            setNotes(prev => prev.filter(n => n.id !== noteId));
+            setNotes((prev) => prev.filter((n) => n.id !== noteId));
         }
     };
 
     return (
-        <Dialog open={open} onOpenChange={v => !v && onClose()}>
+        <Dialog open={open} onOpenChange={(v) => !v && onClose()}>
             <DialogContent className="max-w-lg">
                 <DialogHeader>
                     <DialogTitle className="flex items-center gap-2">
@@ -119,25 +129,41 @@ function UserNotesDialog({ userId, userName, open, onClose }: {
                     <Input
                         placeholder="Add a private note..."
                         value={newNote}
-                        onChange={e => setNewNote(e.target.value)}
+                        onChange={(e) => setNewNote(e.target.value)}
                         disabled={submitting}
                         className="flex-1"
                     />
-                    <Button type="submit" size="sm" disabled={submitting || !newNote.trim()}>
+                    <Button
+                        type="submit"
+                        size="sm"
+                        disabled={submitting || !newNote.trim()}
+                    >
                         {submitting ? 'Saving...' : 'Add'}
                     </Button>
                 </form>
-                <div className="max-h-80 overflow-y-auto space-y-3">
+                <div className="max-h-80 space-y-3 overflow-y-auto">
                     {loading ? (
-                        <p className="text-sm text-muted-foreground text-center py-4">Loading notes...</p>
+                        <p className="py-4 text-center text-sm text-muted-foreground">
+                            Loading notes...
+                        </p>
                     ) : notes.length === 0 ? (
-                        <p className="text-sm text-muted-foreground text-center py-4">No notes yet.</p>
+                        <p className="py-4 text-center text-sm text-muted-foreground">
+                            No notes yet.
+                        </p>
                     ) : (
-                        notes.map(note => (
-                            <div key={note.id} className="rounded-lg border bg-muted/30 p-3">
+                        notes.map((note) => (
+                            <div
+                                key={note.id}
+                                className="rounded-lg border bg-muted/30 p-3"
+                            >
                                 <p className="text-sm">{note.note}</p>
                                 <div className="mt-1.5 flex items-center justify-between text-xs text-muted-foreground">
-                                    <span>{note.admin?.name ?? 'Unknown'} · {new Date(note.created_at).toLocaleDateString()}</span>
+                                    <span>
+                                        {note.admin?.name ?? 'Unknown'} ·{' '}
+                                        {new Date(
+                                            note.created_at,
+                                        ).toLocaleDateString()}
+                                    </span>
                                     <button
                                         type="button"
                                         onClick={() => deleteNote(note.id)}
@@ -187,37 +213,65 @@ interface AdminUsersProps {
 export default function AdminUsers({ users, filters }: AdminUsersProps) {
     const [search, setSearch] = useState(filters.search || '');
     const [selectedIds, setSelectedIds] = useState<number[]>([]);
-    const [notesTarget, setNotesTarget] = useState<{ id: number; name: string } | null>(null);
+    const [notesTarget, setNotesTarget] = useState<{
+        id: number;
+        name: string;
+    } | null>(null);
 
     const handleSearch = (e: FormEvent) => {
         e.preventDefault();
-        router.get('/admin/users', { search }, { preserveState: true, replace: true });
+        router.get(
+            '/admin/users',
+            { search },
+            { preserveState: true, replace: true },
+        );
     };
 
     const getInitials = (name: string) =>
-        name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+        name
+            .split(' ')
+            .map((n) => n[0])
+            .join('')
+            .toUpperCase()
+            .slice(0, 2);
 
     const toggleSuperadmin = (user: PaginatedUser) => {
-        if (confirm(`Are you sure you want to ${user.is_superadmin ? 'demote' : 'promote'} ${user.name}?`)) {
-            router.put(`/admin/users/${user.id}`, { is_superadmin: !user.is_superadmin }, { preserveScroll: true });
+        if (
+            confirm(
+                `Are you sure you want to ${user.is_superadmin ? 'demote' : 'promote'} ${user.name}?`,
+            )
+        ) {
+            router.put(
+                `/admin/users/${user.id}`,
+                { is_superadmin: !user.is_superadmin },
+                { preserveScroll: true },
+            );
         }
     };
 
     const deleteUser = (user: PaginatedUser) => {
-        if (confirm(`Are you sure you want to delete ${user.name}? The user can be restored later.`)) {
+        if (
+            confirm(
+                `Are you sure you want to delete ${user.name}? The user can be restored later.`,
+            )
+        ) {
             router.delete(`/admin/users/${user.id}`, { preserveScroll: true });
         }
     };
 
     const restoreUser = (user: PaginatedUser) => {
         if (confirm(`Restore ${user.name}?`)) {
-            router.post(`/admin/users/${user.id}/restore`, {}, { preserveScroll: true });
+            router.post(
+                `/admin/users/${user.id}/restore`,
+                {},
+                { preserveScroll: true },
+            );
         }
     };
 
     const toggleSelect = (id: number) => {
-        setSelectedIds(prev =>
-            prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id],
+        setSelectedIds((prev) =>
+            prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id],
         );
     };
 
@@ -225,25 +279,39 @@ export default function AdminUsers({ users, filters }: AdminUsersProps) {
         if (selectedIds.length === users.data.length) {
             setSelectedIds([]);
         } else {
-            setSelectedIds(users.data.map(u => u.id));
+            setSelectedIds(users.data.map((u) => u.id));
         }
     };
 
     const bulkVerifyEmail = () => {
-        if (confirm(`Verify email for ${selectedIds.length} selected user(s)?`)) {
-            router.post('/admin/users/bulk-verify-email', { user_ids: selectedIds }, {
-                preserveScroll: true,
-                onSuccess: () => setSelectedIds([]),
-            });
+        if (
+            confirm(`Verify email for ${selectedIds.length} selected user(s)?`)
+        ) {
+            router.post(
+                '/admin/users/bulk-verify-email',
+                { user_ids: selectedIds },
+                {
+                    preserveScroll: true,
+                    onSuccess: () => setSelectedIds([]),
+                },
+            );
         }
     };
 
     const bulkSuspend = () => {
-        if (confirm(`Suspend ${selectedIds.length} selected user(s)? They can be restored later.`)) {
-            router.post('/admin/users/bulk-suspend', { user_ids: selectedIds }, {
-                preserveScroll: true,
-                onSuccess: () => setSelectedIds([]),
-            });
+        if (
+            confirm(
+                `Suspend ${selectedIds.length} selected user(s)? They can be restored later.`,
+            )
+        ) {
+            router.post(
+                '/admin/users/bulk-suspend',
+                { user_ids: selectedIds },
+                {
+                    preserveScroll: true,
+                    onSuccess: () => setSelectedIds([]),
+                },
+            );
         }
     };
 
@@ -260,7 +328,7 @@ export default function AdminUsers({ users, filters }: AdminUsersProps) {
         csrfInput.value = csrfMeta?.getAttribute('content') ?? '';
         form.appendChild(csrfInput);
 
-        selectedIds.forEach(id => {
+        selectedIds.forEach((id) => {
             const input = document.createElement('input');
             input.type = 'hidden';
             input.name = 'user_ids[]';
@@ -276,7 +344,7 @@ export default function AdminUsers({ users, filters }: AdminUsersProps) {
     return (
         <AdminLayout>
             <Head title="User Management" />
-            <div className="flex h-full flex-1 flex-col gap-6 p-4 md:p-6 lg:p-8 rounded-xl border border-sidebar-border/70">
+            <div className="flex h-full flex-1 flex-col gap-6 rounded-xl border border-sidebar-border/70 p-4 md:p-6 lg:p-8">
                 <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                     <div>
                         <h2 className="flex items-center gap-2 text-2xl font-bold tracking-tight">
@@ -284,22 +352,28 @@ export default function AdminUsers({ users, filters }: AdminUsersProps) {
                             User Management
                         </h2>
                         <p className="text-sm text-muted-foreground">
-                            {users.total} user{users.total !== 1 && 's'} on the platform
+                            {users.total} user{users.total !== 1 && 's'} on the
+                            platform
                         </p>
                     </div>
 
-                    <form onSubmit={handleSearch} className="flex items-center gap-2">
+                    <form
+                        onSubmit={handleSearch}
+                        className="flex items-center gap-2"
+                    >
                         <div className="relative">
-                            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                            <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                             <Input
                                 type="text"
                                 placeholder="Search users..."
                                 value={search}
-                                onChange={e => setSearch(e.target.value)}
+                                onChange={(e) => setSearch(e.target.value)}
                                 className="w-64 pl-9"
                             />
                         </div>
-                        <Button type="submit" size="sm">Search</Button>
+                        <Button type="submit" size="sm">
+                            Search
+                        </Button>
                     </form>
                     <Button variant="outline" size="sm" asChild>
                         <a href="/admin/users/export">
@@ -316,15 +390,27 @@ export default function AdminUsers({ users, filters }: AdminUsersProps) {
                             {selectedIds.length} selected
                         </span>
                         <div className="flex items-center gap-2">
-                            <Button size="sm" variant="outline" onClick={bulkVerifyEmail}>
+                            <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={bulkVerifyEmail}
+                            >
                                 <CheckCircle className="mr-1.5 h-3.5 w-3.5" />
                                 Verify Email
                             </Button>
-                            <Button size="sm" variant="outline" onClick={bulkExport}>
+                            <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={bulkExport}
+                            >
                                 <Download className="mr-1.5 h-3.5 w-3.5" />
                                 Export CSV
                             </Button>
-                            <Button size="sm" variant="destructive" onClick={bulkSuspend}>
+                            <Button
+                                size="sm"
+                                variant="destructive"
+                                onClick={bulkSuspend}
+                            >
                                 <XCircle className="mr-1.5 h-3.5 w-3.5" />
                                 Suspend
                             </Button>
@@ -340,127 +426,206 @@ export default function AdminUsers({ users, filters }: AdminUsersProps) {
                     </div>
                 )}
 
-                <div className="rounded-xl border bg-card text-card-foreground shadow overflow-hidden">
-                    <table className="w-full text-sm text-left">
-                        <thead className="bg-muted/50 text-muted-foreground uppercase text-xs">
+                <div className="overflow-hidden rounded-xl border bg-card text-card-foreground shadow">
+                    <table className="w-full text-left text-sm">
+                        <thead className="bg-muted/50 text-xs text-muted-foreground uppercase">
                             <tr>
                                 <th className="w-12 px-4 py-3">
                                     <Checkbox
-                                        checked={users.data.length > 0 && selectedIds.length === users.data.length}
+                                        checked={
+                                            users.data.length > 0 &&
+                                            selectedIds.length ===
+                                                users.data.length
+                                        }
                                         onCheckedChange={toggleSelectAll}
                                     />
                                 </th>
                                 <th className="px-6 py-3 font-medium">User</th>
                                 <th className="px-6 py-3 font-medium">Email</th>
-                                <th className="px-6 py-3 font-medium">Status</th>
-                                <th className="px-6 py-3 font-medium">Last Seen</th>
-                                <th className="px-6 py-3 font-medium">Joined</th>
-                                <th className="px-6 py-3 font-medium text-right">Actions</th>
+                                <th className="px-6 py-3 font-medium">
+                                    Status
+                                </th>
+                                <th className="px-6 py-3 font-medium">
+                                    Last Seen
+                                </th>
+                                <th className="px-6 py-3 font-medium">
+                                    Joined
+                                </th>
+                                <th className="px-6 py-3 text-right font-medium">
+                                    Actions
+                                </th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-border">
                             {users.data.length === 0 ? (
                                 <tr>
-                                    <td colSpan={7} className="px-6 py-12 text-center text-muted-foreground">
+                                    <td
+                                        colSpan={7}
+                                        className="px-6 py-12 text-center text-muted-foreground"
+                                    >
                                         No users found matching your search.
                                     </td>
                                 </tr>
                             ) : (
-                                users.data.map(user => (
-                                    <tr key={user.id} className={`transition-colors ${user.deleted_at ? 'opacity-50 bg-destructive/5' : selectedIds.includes(user.id) ? 'bg-primary/5' : 'hover:bg-muted/50'}`}>
+                                users.data.map((user) => (
+                                    <tr
+                                        key={user.id}
+                                        className={`transition-colors ${user.deleted_at ? 'bg-destructive/5 opacity-50' : selectedIds.includes(user.id) ? 'bg-primary/5' : 'hover:bg-muted/50'}`}
+                                    >
                                         <td className="px-4 py-4">
                                             <Checkbox
-                                                checked={selectedIds.includes(user.id)}
-                                                onCheckedChange={() => toggleSelect(user.id)}
+                                                checked={selectedIds.includes(
+                                                    user.id,
+                                                )}
+                                                onCheckedChange={() =>
+                                                    toggleSelect(user.id)
+                                                }
                                             />
                                         </td>
                                         <td className="px-6 py-4">
                                             <div className="flex items-center gap-3">
                                                 <Avatar className="h-8 w-8">
-                                                    <AvatarFallback className="text-xs">{getInitials(user.name)}</AvatarFallback>
+                                                    <AvatarFallback className="text-xs">
+                                                        {getInitials(user.name)}
+                                                    </AvatarFallback>
                                                 </Avatar>
-                                                <span className="font-medium">{user.name}</span>
+                                                <span className="font-medium">
+                                                    {user.name}
+                                                </span>
                                             </div>
                                         </td>
-                                        <td className="px-6 py-4 text-muted-foreground">{user.email}</td>
+                                        <td className="px-6 py-4 text-muted-foreground">
+                                            {user.email}
+                                        </td>
                                         <td className="px-6 py-4">
                                             <div className="flex items-center gap-1.5">
                                                 {user.deleted_at ? (
-                                                    <Badge variant="destructive">Deleted</Badge>
+                                                    <Badge variant="destructive">
+                                                        Deleted
+                                                    </Badge>
                                                 ) : user.is_superadmin ? (
                                                     <Badge variant="default">
                                                         <Shield className="mr-1 h-3 w-3" />
                                                         Superadmin
                                                     </Badge>
                                                 ) : (
-                                                    <Badge variant="outline">User</Badge>
+                                                    <Badge variant="outline">
+                                                        User
+                                                    </Badge>
                                                 )}
                                             </div>
                                         </td>
                                         <td className="px-6 py-4 text-muted-foreground">
-                                            {user.last_seen_at
-                                                ? formatDistanceToNow(new Date(user.last_seen_at), { addSuffix: true })
-                                                : <span className="text-xs italic">Never</span>}
+                                            {user.last_seen_at ? (
+                                                formatDistanceToNow(
+                                                    new Date(user.last_seen_at),
+                                                    { addSuffix: true },
+                                                )
+                                            ) : (
+                                                <span className="text-xs italic">
+                                                    Never
+                                                </span>
+                                            )}
                                         </td>
                                         <td className="px-6 py-4 text-muted-foreground">
-                                            {new Date(user.created_at).toLocaleDateString()}
+                                            {new Date(
+                                                user.created_at,
+                                            ).toLocaleDateString()}
                                         </td>
                                         <td className="px-6 py-4 text-right">
                                             {user.deleted_at ? (
                                                 <Button
                                                     variant="outline"
                                                     size="sm"
-                                                    onClick={() => restoreUser(user)}
+                                                    onClick={() =>
+                                                        restoreUser(user)
+                                                    }
                                                 >
                                                     <RotateCcw className="mr-1.5 h-3.5 w-3.5" />
                                                     Restore
                                                 </Button>
                                             ) : (
                                                 <DropdownMenu>
-                                                    <DropdownMenuTrigger asChild>
-                                                        <Button variant="ghost" size="icon">
+                                                    <DropdownMenuTrigger
+                                                        asChild
+                                                    >
+                                                        <Button
+                                                            variant="ghost"
+                                                            size="icon"
+                                                        >
                                                             <MoreHorizontal className="h-4 w-4" />
                                                         </Button>
                                                     </DropdownMenuTrigger>
                                                     <DropdownMenuContent align="end">
-                                                        <DropdownMenuItem onClick={() => router.get(`/admin/users/${user.id}`)}>
+                                                        <DropdownMenuItem
+                                                            onClick={() =>
+                                                                router.get(
+                                                                    `/admin/users/${user.id}`,
+                                                                )
+                                                            }
+                                                        >
                                                             <UserCog className="mr-2 h-4 w-4" />
                                                             View Detail
                                                         </DropdownMenuItem>
                                                         <DropdownMenuSeparator />
-                                                        <DropdownMenuItem onClick={() => toggleSuperadmin(user)}>
+                                                        <DropdownMenuItem
+                                                            onClick={() =>
+                                                                toggleSuperadmin(
+                                                                    user,
+                                                                )
+                                                            }
+                                                        >
                                                             {user.is_superadmin ? (
                                                                 <>
                                                                     <ShieldOff className="mr-2 h-4 w-4" />
-                                                                    Demote from Superadmin
+                                                                    Demote from
+                                                                    Superadmin
                                                                 </>
                                                             ) : (
                                                                 <>
                                                                     <Shield className="mr-2 h-4 w-4" />
-                                                                    Promote to Superadmin
+                                                                    Promote to
+                                                                    Superadmin
                                                                 </>
                                                             )}
                                                         </DropdownMenuItem>
                                                         <DropdownMenuItem
-                                                            onClick={() => router.post(`/admin/impersonate/${user.id}`)}
+                                                            onClick={() =>
+                                                                router.post(
+                                                                    `/admin/impersonate/${user.id}`,
+                                                                )
+                                                            }
                                                         >
                                                             <UserCog className="mr-2 h-4 w-4" />
                                                             Impersonate
                                                         </DropdownMenuItem>
                                                         <DropdownMenuItem
-                                                            onClick={() => router.get(`/admin/users/${user.id}/sessions`)}
+                                                            onClick={() =>
+                                                                router.get(
+                                                                    `/admin/users/${user.id}/sessions`,
+                                                                )
+                                                            }
                                                         >
                                                             <MonitorSmartphone className="mr-2 h-4 w-4" />
                                                             Manage Sessions
                                                         </DropdownMenuItem>
                                                         <DropdownMenuItem
-                                                            onClick={() => router.get(`/admin/users/${user.id}/api-tokens`)}
+                                                            onClick={() =>
+                                                                router.get(
+                                                                    `/admin/users/${user.id}/api-tokens`,
+                                                                )
+                                                            }
                                                         >
                                                             <KeyRound className="mr-2 h-4 w-4" />
                                                             Manage API Tokens
                                                         </DropdownMenuItem>
                                                         <DropdownMenuItem
-                                                            onClick={() => setNotesTarget({ id: user.id, name: user.name })}
+                                                            onClick={() =>
+                                                                setNotesTarget({
+                                                                    id: user.id,
+                                                                    name: user.name,
+                                                                })
+                                                            }
                                                         >
                                                             <MessageSquare className="mr-2 h-4 w-4" />
                                                             View Notes
@@ -468,7 +633,9 @@ export default function AdminUsers({ users, filters }: AdminUsersProps) {
                                                         <DropdownMenuSeparator />
                                                         <DropdownMenuItem
                                                             className="text-destructive"
-                                                            onClick={() => deleteUser(user)}
+                                                            onClick={() =>
+                                                                deleteUser(user)
+                                                            }
                                                         >
                                                             <Trash2 className="mr-2 h-4 w-4" />
                                                             Delete User
@@ -493,7 +660,14 @@ export default function AdminUsers({ users, filters }: AdminUsersProps) {
                                 variant={link.active ? 'default' : 'outline'}
                                 size="sm"
                                 disabled={!link.url}
-                                onClick={() => link.url && router.get(link.url, {}, { preserveState: true })}
+                                onClick={() =>
+                                    link.url &&
+                                    router.get(
+                                        link.url,
+                                        {},
+                                        { preserveState: true },
+                                    )
+                                }
                                 dangerouslySetInnerHTML={{ __html: link.label }}
                             />
                         ))}

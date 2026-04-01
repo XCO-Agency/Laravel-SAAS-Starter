@@ -1,17 +1,6 @@
-import AdminLayout from '@/layouts/admin-layout';
-import { Head, router } from '@inertiajs/react';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 import {
     Dialog,
     DialogContent,
@@ -20,7 +9,18 @@ import {
     DialogHeader,
     DialogTitle,
 } from '@/components/ui/dialog';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import AdminLayout from '@/layouts/admin-layout';
+import { Head, router } from '@inertiajs/react';
 import {
     AlertTriangle,
     Building2,
@@ -74,48 +74,72 @@ interface AdminWorkspacesProps {
     planOptions: string[];
 }
 
-const PLAN_BADGE_VARIANT: Record<string, 'default' | 'secondary' | 'outline'> = {
-    Free: 'outline',
-    Pro: 'secondary',
-    Business: 'default',
-};
+const PLAN_BADGE_VARIANT: Record<string, 'default' | 'secondary' | 'outline'> =
+    {
+        Free: 'outline',
+        Pro: 'secondary',
+        Business: 'default',
+    };
 
-export default function AdminWorkspaces({ workspaces, filters, planOptions }: AdminWorkspacesProps) {
+export default function AdminWorkspaces({
+    workspaces,
+    filters,
+    planOptions,
+}: AdminWorkspacesProps) {
     const [search, setSearch] = useState(filters.search || '');
     const [plan, setPlan] = useState(filters.plan || '');
-    const [suspensionDialogWorkspace, setSuspensionDialogWorkspace] = useState<PaginatedWorkspace | null>(null);
+    const [suspensionDialogWorkspace, setSuspensionDialogWorkspace] =
+        useState<PaginatedWorkspace | null>(null);
     const [suspensionReason, setSuspensionReason] = useState('');
-    const [overrideDialogWorkspace, setOverrideDialogWorkspace] = useState<PaginatedWorkspace | null>(null);
+    const [overrideDialogWorkspace, setOverrideDialogWorkspace] =
+        useState<PaginatedWorkspace | null>(null);
     const [planOverrideValue, setPlanOverrideValue] = useState('');
     const [processing, setProcessing] = useState(false);
 
     const handleSearch = (e: FormEvent) => {
         e.preventDefault();
-        router.get('/admin/workspaces', { search, plan }, { preserveState: true, replace: true });
+        router.get(
+            '/admin/workspaces',
+            { search, plan },
+            { preserveState: true, replace: true },
+        );
     };
 
     const handlePlanFilter = (value: string) => {
         setPlan(value);
-        router.get('/admin/workspaces', { search, plan: value }, { preserveState: true, replace: true });
+        router.get(
+            '/admin/workspaces',
+            { search, plan: value },
+            { preserveState: true, replace: true },
+        );
     };
 
     const getInitials = (name: string) =>
-        name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+        name
+            .split(' ')
+            .map((n) => n[0])
+            .join('')
+            .toUpperCase()
+            .slice(0, 2);
 
     const handleSuspend = (e: React.FormEvent) => {
         e.preventDefault();
         if (!suspensionDialogWorkspace) return;
 
         setProcessing(true);
-        router.post(`/admin/workspaces/${suspensionDialogWorkspace.id}/suspend`, {
-            reason: suspensionReason,
-        }, {
-            onFinish: () => {
-                setProcessing(false);
-                setSuspensionDialogWorkspace(null);
-                setSuspensionReason('');
+        router.post(
+            `/admin/workspaces/${suspensionDialogWorkspace.id}/suspend`,
+            {
+                reason: suspensionReason,
             },
-        });
+            {
+                onFinish: () => {
+                    setProcessing(false);
+                    setSuspensionDialogWorkspace(null);
+                    setSuspensionReason('');
+                },
+            },
+        );
     };
 
     const handleUnsuspend = (workspace: PaginatedWorkspace) => {
@@ -144,11 +168,10 @@ export default function AdminWorkspaces({ workspaces, filters, planOptions }: Ad
         );
     };
 
-
     return (
         <AdminLayout>
             <Head title="Workspace Management" />
-            <div className="flex h-full flex-1 flex-col gap-6 p-4 md:p-6 lg:p-8 rounded-xl border border-sidebar-border/70">
+            <div className="flex h-full flex-1 flex-col gap-6 rounded-xl border border-sidebar-border/70 p-4 md:p-6 lg:p-8">
                 <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                     <div>
                         <h2 className="flex items-center gap-2 text-2xl font-bold tracking-tight">
@@ -156,86 +179,133 @@ export default function AdminWorkspaces({ workspaces, filters, planOptions }: Ad
                             Workspace Management
                         </h2>
                         <p className="text-sm text-muted-foreground">
-                            {workspaces.total} workspace{workspaces.total !== 1 && 's'} on the platform
+                            {workspaces.total} workspace
+                            {workspaces.total !== 1 && 's'} on the platform
                         </p>
                     </div>
 
-                    <div className="flex items-center gap-2 flex-wrap">
-                        <form onSubmit={handleSearch} className="flex items-center gap-2">
+                    <div className="flex flex-wrap items-center gap-2">
+                        <form
+                            onSubmit={handleSearch}
+                            className="flex items-center gap-2"
+                        >
                             <div className="relative">
-                                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                                <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                                 <Input
                                     type="text"
                                     placeholder="Search workspaces..."
                                     value={search}
-                                    onChange={e => setSearch(e.target.value)}
+                                    onChange={(e) => setSearch(e.target.value)}
                                     className="w-56 pl-9"
                                 />
                             </div>
-                            <Button type="submit" size="sm">Search</Button>
+                            <Button type="submit" size="sm">
+                                Search
+                            </Button>
                         </form>
                         <select
                             value={plan}
-                            onChange={e => handlePlanFilter(e.target.value)}
-                            className="h-9 rounded-md border border-input bg-background px-3 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                            onChange={(e) => handlePlanFilter(e.target.value)}
+                            className="h-9 rounded-md border border-input bg-background px-3 text-sm ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:outline-none"
                         >
                             <option value="">All Plans</option>
-                            {planOptions.map(p => (
-                                <option key={p} value={p}>{p}</option>
+                            {planOptions.map((p) => (
+                                <option key={p} value={p}>
+                                    {p}
+                                </option>
                             ))}
                         </select>
                     </div>
                 </div>
 
-                <div className="rounded-xl border bg-card text-card-foreground shadow overflow-hidden">
-                    <table className="w-full text-sm text-left">
-                        <thead className="bg-muted/50 text-muted-foreground uppercase text-xs">
+                <div className="overflow-hidden rounded-xl border bg-card text-card-foreground shadow">
+                    <table className="w-full text-left text-sm">
+                        <thead className="bg-muted/50 text-xs text-muted-foreground uppercase">
                             <tr>
-                                <th className="px-6 py-3 font-medium">Workspace</th>
+                                <th className="px-6 py-3 font-medium">
+                                    Workspace
+                                </th>
                                 <th className="px-6 py-3 font-medium">Owner</th>
                                 <th className="px-6 py-3 font-medium">Plan</th>
-                                <th className="px-6 py-3 font-medium">Members</th>
-                                <th className="px-6 py-3 font-medium">Status</th>
-                                <th className="px-6 py-3 font-medium">Created</th>
-                                <th className="px-6 py-3 font-medium text-right">Actions</th>
+                                <th className="px-6 py-3 font-medium">
+                                    Members
+                                </th>
+                                <th className="px-6 py-3 font-medium">
+                                    Status
+                                </th>
+                                <th className="px-6 py-3 font-medium">
+                                    Created
+                                </th>
+                                <th className="px-6 py-3 text-right font-medium">
+                                    Actions
+                                </th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-border">
                             {workspaces.data.length === 0 ? (
                                 <tr>
-                                    <td colSpan={6} className="px-6 py-12 text-center text-muted-foreground">
-                                        No workspaces found matching your search.
+                                    <td
+                                        colSpan={6}
+                                        className="px-6 py-12 text-center text-muted-foreground"
+                                    >
+                                        No workspaces found matching your
+                                        search.
                                     </td>
                                 </tr>
                             ) : (
-                                workspaces.data.map(ws => (
-                                    <tr key={ws.id} className={`transition-colors ${ws.deleted_at ? 'opacity-50 bg-destructive/5' : 'hover:bg-muted/50'}`}>
+                                workspaces.data.map((ws) => (
+                                    <tr
+                                        key={ws.id}
+                                        className={`transition-colors ${ws.deleted_at ? 'bg-destructive/5 opacity-50' : 'hover:bg-muted/50'}`}
+                                    >
                                         <td className="px-6 py-4">
                                             <div className="flex items-center gap-3">
                                                 <Avatar className="h-8 w-8">
-                                                    <AvatarFallback className="text-xs">{getInitials(ws.name)}</AvatarFallback>
+                                                    <AvatarFallback className="text-xs">
+                                                        {getInitials(ws.name)}
+                                                    </AvatarFallback>
                                                 </Avatar>
                                                 <div>
-                                                    <span className="font-medium">{ws.name}</span>
-                                                    <p className="text-xs text-muted-foreground">/{ws.slug}</p>
+                                                    <span className="font-medium">
+                                                        {ws.name}
+                                                    </span>
+                                                    <p className="text-xs text-muted-foreground">
+                                                        /{ws.slug}
+                                                    </p>
                                                 </div>
                                             </div>
                                         </td>
                                         <td className="px-6 py-4 text-muted-foreground">
                                             {ws.owner ? (
                                                 <div>
-                                                    <span className="text-foreground text-xs font-medium">{ws.owner.name}</span>
-                                                    <p className="text-xs">{ws.owner.email}</p>
+                                                    <span className="text-xs font-medium text-foreground">
+                                                        {ws.owner.name}
+                                                    </span>
+                                                    <p className="text-xs">
+                                                        {ws.owner.email}
+                                                    </p>
                                                 </div>
                                             ) : (
-                                                <span className="text-xs italic">No owner</span>
+                                                <span className="text-xs italic">
+                                                    No owner
+                                                </span>
                                             )}
                                         </td>
                                         <td className="px-6 py-4">
                                             <div className="flex flex-col gap-1">
-                                                <Badge variant={PLAN_BADGE_VARIANT[ws.plan] || 'outline'}>{ws.plan}</Badge>
+                                                <Badge
+                                                    variant={
+                                                        PLAN_BADGE_VARIANT[
+                                                            ws.plan
+                                                        ] || 'outline'
+                                                    }
+                                                >
+                                                    {ws.plan}
+                                                </Badge>
                                                 {ws.plan_override && (
-                                                    <span className="text-xs text-amber-600 dark:text-amber-400">Override</span>
+                                                    <span className="text-xs text-amber-600 dark:text-amber-400">
+                                                        Override
+                                                    </span>
                                                 )}
                                             </div>
                                         </td>
@@ -247,44 +317,85 @@ export default function AdminWorkspaces({ workspaces, filters, planOptions }: Ad
                                         </td>
                                         <td className="px-6 py-4">
                                             {ws.deleted_at ? (
-                                                <Badge variant="destructive">Deleted</Badge>
+                                                <Badge variant="destructive">
+                                                    Deleted
+                                                </Badge>
                                             ) : ws.suspended_at ? (
-                                                <Badge variant="destructive" className="bg-orange-600 hover:bg-orange-700">Suspended</Badge>
+                                                <Badge
+                                                    variant="destructive"
+                                                    className="bg-orange-600 hover:bg-orange-700"
+                                                >
+                                                    Suspended
+                                                </Badge>
                                             ) : ws.personal_workspace ? (
-                                                <Badge variant="outline">Personal</Badge>
+                                                <Badge variant="outline">
+                                                    Personal
+                                                </Badge>
                                             ) : (
-                                                <Badge variant="secondary">Team</Badge>
+                                                <Badge variant="secondary">
+                                                    Team
+                                                </Badge>
                                             )}
                                         </td>
-                                        <td className="px-6 py-4 text-muted-foreground text-xs">
-                                            {new Date(ws.created_at).toLocaleDateString()}
+                                        <td className="px-6 py-4 text-xs text-muted-foreground">
+                                            {new Date(
+                                                ws.created_at,
+                                            ).toLocaleDateString()}
                                         </td>
                                         <td className="px-6 py-4 text-right">
                                             <DropdownMenu>
                                                 <DropdownMenuTrigger asChild>
-                                                    <Button variant="ghost" className="h-8 w-8 p-0">
-                                                        <span className="sr-only">Open menu</span>
+                                                    <Button
+                                                        variant="ghost"
+                                                        className="h-8 w-8 p-0"
+                                                    >
+                                                        <span className="sr-only">
+                                                            Open menu
+                                                        </span>
                                                         <MoreHorizontal className="h-4 w-4" />
                                                     </Button>
                                                 </DropdownMenuTrigger>
                                                 <DropdownMenuContent align="end">
-                                                    <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                                                    <DropdownMenuLabel>
+                                                        Actions
+                                                    </DropdownMenuLabel>
                                                     <DropdownMenuSeparator />
-                                                    <DropdownMenuItem onClick={() => openOverrideDialog(ws)} disabled={!!ws.deleted_at}>
+                                                    <DropdownMenuItem
+                                                        onClick={() =>
+                                                            openOverrideDialog(
+                                                                ws,
+                                                            )
+                                                        }
+                                                        disabled={
+                                                            !!ws.deleted_at
+                                                        }
+                                                    >
                                                         <Settings className="mr-2 h-4 w-4" />
                                                         Override Plan
                                                     </DropdownMenuItem>
                                                     <DropdownMenuSeparator />
                                                     {ws.suspended_at ? (
-                                                        <DropdownMenuItem onClick={() => handleUnsuspend(ws)}>
+                                                        <DropdownMenuItem
+                                                            onClick={() =>
+                                                                handleUnsuspend(
+                                                                    ws,
+                                                                )
+                                                            }
+                                                        >
                                                             <CheckCircle className="mr-2 h-4 w-4" />
                                                             Unsuspend Workspace
                                                         </DropdownMenuItem>
                                                     ) : (
                                                         <DropdownMenuItem
-                                                            onClick={() => setSuspensionDialogWorkspace(ws)}
+                                                            onClick={() =>
+                                                                setSuspensionDialogWorkspace(
+                                                                    ws,
+                                                                )
+                                                            }
                                                             className="text-destructive focus:text-destructive"
-                                                            disabled={!!ws.deleted_at}
+                                                            disabled={
+                                                                !!ws.deleted_at
+                                                            }
                                                         >
                                                             <AlertTriangle className="mr-2 h-4 w-4" />
                                                             Suspend Workspace
@@ -309,7 +420,14 @@ export default function AdminWorkspaces({ workspaces, filters, planOptions }: Ad
                                 variant={link.active ? 'default' : 'outline'}
                                 size="sm"
                                 disabled={!link.url}
-                                onClick={() => link.url && router.get(link.url, {}, { preserveState: true })}
+                                onClick={() =>
+                                    link.url &&
+                                    router.get(
+                                        link.url,
+                                        {},
+                                        { preserveState: true },
+                                    )
+                                }
                                 dangerouslySetInnerHTML={{ __html: link.label }}
                             />
                         ))}
@@ -317,23 +435,34 @@ export default function AdminWorkspaces({ workspaces, filters, planOptions }: Ad
                 )}
             </div>
 
-            <Dialog open={!!overrideDialogWorkspace} onOpenChange={() => setOverrideDialogWorkspace(null)}>
+            <Dialog
+                open={!!overrideDialogWorkspace}
+                onOpenChange={() => setOverrideDialogWorkspace(null)}
+            >
                 <DialogContent>
                     <form onSubmit={handleOverridePlan}>
                         <DialogHeader>
                             <DialogTitle>Override Plan</DialogTitle>
                             <DialogDescription>
-                                Set a plan override for <strong>{overrideDialogWorkspace?.name}</strong>. This takes precedence over the Stripe subscription. Leave blank to clear the override.
+                                Set a plan override for{' '}
+                                <strong>{overrideDialogWorkspace?.name}</strong>
+                                . This takes precedence over the Stripe
+                                subscription. Leave blank to clear the override.
                             </DialogDescription>
                         </DialogHeader>
                         <div className="py-4">
-                            <Label htmlFor="plan_override" className="mb-2 block text-sm font-medium">
+                            <Label
+                                htmlFor="plan_override"
+                                className="mb-2 block text-sm font-medium"
+                            >
                                 Plan override (e.g. Pro, Business)
                             </Label>
                             <Input
                                 id="plan_override"
                                 value={planOverrideValue}
-                                onChange={(e) => setPlanOverrideValue(e.target.value)}
+                                onChange={(e) =>
+                                    setPlanOverrideValue(e.target.value)
+                                }
                                 placeholder="Leave blank to clear override"
                                 maxLength={50}
                                 list="plan-options"
@@ -345,7 +474,12 @@ export default function AdminWorkspaces({ workspaces, filters, planOptions }: Ad
                             </datalist>
                         </div>
                         <DialogFooter>
-                            <Button type="button" variant="outline" onClick={() => setOverrideDialogWorkspace(null)} disabled={processing}>
+                            <Button
+                                type="button"
+                                variant="outline"
+                                onClick={() => setOverrideDialogWorkspace(null)}
+                                disabled={processing}
+                            >
                                 Cancel
                             </Button>
                             <Button type="submit" disabled={processing}>
@@ -356,24 +490,36 @@ export default function AdminWorkspaces({ workspaces, filters, planOptions }: Ad
                 </DialogContent>
             </Dialog>
 
-            <Dialog open={!!suspensionDialogWorkspace} onOpenChange={() => setSuspensionDialogWorkspace(null)}>
+            <Dialog
+                open={!!suspensionDialogWorkspace}
+                onOpenChange={() => setSuspensionDialogWorkspace(null)}
+            >
                 <DialogContent>
                     <form onSubmit={handleSuspend}>
                         <DialogHeader>
                             <DialogTitle>Suspend Workspace</DialogTitle>
                             <DialogDescription>
-                                Are you sure you want to suspend <strong>{suspensionDialogWorkspace?.name}</strong>?
-                                Members will be redirected to a suspension page and unable to access workspace data.
+                                Are you sure you want to suspend{' '}
+                                <strong>
+                                    {suspensionDialogWorkspace?.name}
+                                </strong>
+                                ? Members will be redirected to a suspension
+                                page and unable to access workspace data.
                             </DialogDescription>
                         </DialogHeader>
                         <div className="py-4">
-                            <label htmlFor="reason" className="mb-2 block text-sm font-medium">
+                            <label
+                                htmlFor="reason"
+                                className="mb-2 block text-sm font-medium"
+                            >
                                 Reason for suspension (optional)
                             </label>
                             <Input
                                 id="reason"
                                 value={suspensionReason}
-                                onChange={e => setSuspensionReason(e.target.value)}
+                                onChange={(e) =>
+                                    setSuspensionReason(e.target.value)
+                                }
                                 placeholder="e.g. Terms of Service violation"
                                 maxLength={255}
                             />
@@ -382,13 +528,21 @@ export default function AdminWorkspaces({ workspaces, filters, planOptions }: Ad
                             <Button
                                 type="button"
                                 variant="outline"
-                                onClick={() => setSuspensionDialogWorkspace(null)}
+                                onClick={() =>
+                                    setSuspensionDialogWorkspace(null)
+                                }
                                 disabled={processing}
                             >
                                 Cancel
                             </Button>
-                            <Button type="submit" variant="destructive" disabled={processing}>
-                                {processing ? 'Suspending...' : 'Suspend Workspace'}
+                            <Button
+                                type="submit"
+                                variant="destructive"
+                                disabled={processing}
+                            >
+                                {processing
+                                    ? 'Suspending...'
+                                    : 'Suspend Workspace'}
                             </Button>
                         </DialogFooter>
                     </form>

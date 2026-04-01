@@ -7,7 +7,7 @@ import {
     DialogHeader,
     DialogTitle,
 } from '@/components/ui/dialog';
-import { useState, useRef } from 'react';
+import { useRef, useState } from 'react';
 import ReactCrop, {
     centerCrop,
     makeAspectCrop,
@@ -45,17 +45,17 @@ export default function ImageCropper({
                 },
                 aspect,
                 width,
-                height
+                height,
             ),
             width,
-            height
+            height,
         );
         setCrop(initialCrop);
     }
 
     async function getCroppedImg(
         image: HTMLImageElement,
-        crop: PixelCrop
+        crop: PixelCrop,
     ): Promise<Blob> {
         const canvas = document.createElement('canvas');
         const scaleX = image.naturalWidth / image.width;
@@ -77,7 +77,7 @@ export default function ImageCropper({
             0,
             0,
             crop.width,
-            crop.height
+            crop.height,
         );
 
         return new Promise((resolve, reject) => {
@@ -94,7 +94,10 @@ export default function ImageCropper({
     const handleSave = async () => {
         if (imgRef.current && completedCrop) {
             try {
-                const croppedBlob = await getCroppedImg(imgRef.current, completedCrop);
+                const croppedBlob = await getCroppedImg(
+                    imgRef.current,
+                    completedCrop,
+                );
                 onCropComplete(croppedBlob);
             } catch (e) {
                 console.error('Error cropping image', e);
@@ -111,7 +114,7 @@ export default function ImageCropper({
                         Adjust the selection to crop your image.
                     </DialogDescription>
                 </DialogHeader>
-                <div className="flex items-center justify-center bg-muted p-4 rounded-md overflow-hidden max-h-[400px]">
+                <div className="flex max-h-[400px] items-center justify-center overflow-hidden rounded-md bg-muted p-4">
                     <ReactCrop
                         crop={crop}
                         onChange={(_, percentCrop) => setCrop(percentCrop)}

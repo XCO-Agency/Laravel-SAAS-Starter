@@ -1,6 +1,8 @@
-import InputError from '@/components/input-error';
+import AvatarUpload from '@/components/avatar-upload';
+import { CustomFieldsManager } from '@/components/custom-fields/CustomFieldsManager';
 import { HelpTooltip } from '@/components/help-tooltip';
-import { useTranslations } from '@/hooks/use-translations';
+import InputError from '@/components/input-error';
+import { TagManager } from '@/components/tags/TagManager';
 import { Button } from '@/components/ui/button';
 import {
     Card,
@@ -9,26 +11,39 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
-import { Progress } from '@/components/ui/progress';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Progress } from '@/components/ui/progress';
 import { Spinner } from '@/components/ui/spinner';
-import {
-    type BreadcrumbItem,
-    type Workspace,
-    type WorkspaceRole,
-    type Tag as TagType,
-    type CustomField,
-} from '@/types';
-import { Head, router, useForm } from '@inertiajs/react';
-import { AlertTriangle, CalendarDays, CheckCircle2, Circle, Crown, Download, Key, Palette, Users, Tag, FileText, Save, Plus } from 'lucide-react';
-import { useState } from 'react';
-import AvatarUpload from '@/components/avatar-upload';
+import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import WorkspaceLayout from '@/layouts/settings/workspace-layout';
-import { update as updateLogo, destroy as destroyLogo } from '@/routes/workspaces/logo';
-import { TagManager } from '@/components/tags/TagManager';
-import { CustomFieldsManager } from '@/components/custom-fields/CustomFieldsManager';
+import {
+    destroy as destroyLogo,
+    update as updateLogo,
+} from '@/routes/workspaces/logo';
+import {
+    type BreadcrumbItem,
+    type CustomField,
+    type Tag as TagType,
+    type Workspace,
+    type WorkspaceRole,
+} from '@/types';
+import { Head, router, useForm } from '@inertiajs/react';
+import {
+    AlertTriangle,
+    CalendarDays,
+    CheckCircle2,
+    Circle,
+    Crown,
+    Download,
+    Key,
+    Palette,
+    Plus,
+    Save,
+    Users,
+} from 'lucide-react';
+import { useState } from 'react';
 
 interface OnboardingStep {
     key: string;
@@ -104,39 +119,68 @@ export default function WorkspaceSettings({
 
             <WorkspaceLayout
                 title={t('workspace.settings.title', 'Workspace Settings')}
-                description={t('workspace.settings.description', 'Manage your workspace settings and configuration.')}
+                description={t(
+                    'workspace.settings.description',
+                    'Manage your workspace settings and configuration.',
+                )}
                 fullWidth
             >
                 <div className="space-y-6">
-
                     {/* Quick Stats */}
                     <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
                         <div className="flex items-center gap-3 rounded-lg border bg-card p-3">
-                            <Users className="text-muted-foreground h-4 w-4 shrink-0" />
+                            <Users className="h-4 w-4 shrink-0 text-muted-foreground" />
                             <div className="min-w-0">
-                                <p className="text-muted-foreground text-xs">{t('workspace.settings.stats_members', 'Members')}</p>
-                                <p className="text-sm font-semibold">{stats.members_count}</p>
+                                <p className="text-xs text-muted-foreground">
+                                    {t(
+                                        'workspace.settings.stats_members',
+                                        'Members',
+                                    )}
+                                </p>
+                                <p className="text-sm font-semibold">
+                                    {stats.members_count}
+                                </p>
                             </div>
                         </div>
                         <div className="flex items-center gap-3 rounded-lg border bg-card p-3">
-                            <Crown className="text-muted-foreground h-4 w-4 shrink-0" />
+                            <Crown className="h-4 w-4 shrink-0 text-muted-foreground" />
                             <div className="min-w-0">
-                                <p className="text-muted-foreground text-xs">{t('workspace.settings.stats_plan', 'Plan')}</p>
-                                <p className="truncate text-sm font-semibold">{workspace.plan}</p>
+                                <p className="text-xs text-muted-foreground">
+                                    {t('workspace.settings.stats_plan', 'Plan')}
+                                </p>
+                                <p className="truncate text-sm font-semibold">
+                                    {workspace.plan}
+                                </p>
                             </div>
                         </div>
                         <div className="flex items-center gap-3 rounded-lg border bg-card p-3">
-                            <CalendarDays className="text-muted-foreground h-4 w-4 shrink-0" />
+                            <CalendarDays className="h-4 w-4 shrink-0 text-muted-foreground" />
                             <div className="min-w-0">
-                                <p className="text-muted-foreground text-xs">{t('workspace.settings.stats_created', 'Created')}</p>
-                                <p className="text-sm font-semibold">{new Date(workspace.created_at).toLocaleDateString()}</p>
+                                <p className="text-xs text-muted-foreground">
+                                    {t(
+                                        'workspace.settings.stats_created',
+                                        'Created',
+                                    )}
+                                </p>
+                                <p className="text-sm font-semibold">
+                                    {new Date(
+                                        workspace.created_at,
+                                    ).toLocaleDateString()}
+                                </p>
                             </div>
                         </div>
                         <div className="flex items-center gap-3 rounded-lg border bg-card p-3">
-                            <Key className="text-muted-foreground h-4 w-4 shrink-0" />
+                            <Key className="h-4 w-4 shrink-0 text-muted-foreground" />
                             <div className="min-w-0">
-                                <p className="text-muted-foreground text-xs">{t('workspace.settings.stats_api_keys', 'API Keys')}</p>
-                                <p className="text-sm font-semibold">{stats.api_keys_count}</p>
+                                <p className="text-xs text-muted-foreground">
+                                    {t(
+                                        'workspace.settings.stats_api_keys',
+                                        'API Keys',
+                                    )}
+                                </p>
+                                <p className="text-sm font-semibold">
+                                    {stats.api_keys_count}
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -153,18 +197,30 @@ export default function WorkspaceSettings({
                                         {onboardingProgress.score}%
                                     </span>
                                 </div>
-                                <Progress value={onboardingProgress.score} className="h-2" />
+                                <Progress
+                                    value={onboardingProgress.score}
+                                    className="h-2"
+                                />
                             </CardHeader>
                             <CardContent className="pt-0">
                                 <div className="grid gap-1.5 sm:grid-cols-2">
                                     {onboardingProgress.steps.map((step) => (
-                                        <div key={step.key} className="flex items-center gap-2 text-sm">
+                                        <div
+                                            key={step.key}
+                                            className="flex items-center gap-2 text-sm"
+                                        >
                                             {step.completed ? (
                                                 <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-500" />
                                             ) : (
                                                 <Circle className="h-4 w-4 shrink-0 text-muted-foreground/40" />
                                             )}
-                                            <span className={step.completed ? 'line-through text-muted-foreground' : ''}>
+                                            <span
+                                                className={
+                                                    step.completed
+                                                        ? 'text-muted-foreground line-through'
+                                                        : ''
+                                                }
+                                            >
                                                 {step.label}
                                             </span>
                                         </div>
@@ -177,9 +233,14 @@ export default function WorkspaceSettings({
                     {/* General Settings */}
                     <Card>
                         <CardHeader>
-                            <CardTitle>{t('navigation.general', 'General')}</CardTitle>
+                            <CardTitle>
+                                {t('navigation.general', 'General')}
+                            </CardTitle>
                             <CardDescription>
-                                {t('workspace.settings.description', 'Manage your workspace settings and configuration.')}
+                                {t(
+                                    'workspace.settings.description',
+                                    'Manage your workspace settings and configuration.',
+                                )}
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
@@ -190,10 +251,18 @@ export default function WorkspaceSettings({
                                         uploadUrl={updateLogo().url}
                                         deleteUrl={destroyLogo().url}
                                         onSuccess={() => {
-                                            router.reload({ only: ['workspace'] });
+                                            router.reload({
+                                                only: ['workspace'],
+                                            });
                                         }}
-                                        label={t('workspace.settings.logo', 'Logo')}
-                                        description={t('workspace.settings.logo_description', 'Your workspace logo appears in the sidebar, team invitations, and exported data. Recommended size: 200×200px.')}
+                                        label={t(
+                                            'workspace.settings.logo',
+                                            'Logo',
+                                        )}
+                                        description={t(
+                                            'workspace.settings.logo_description',
+                                            'Your workspace logo appears in the sidebar, team invitations, and exported data. Recommended size: 200×200px.',
+                                        )}
                                         fieldName="image"
                                     />
                                     <InputError message={errors.logo} />
@@ -201,14 +270,22 @@ export default function WorkspaceSettings({
 
                                 {/* Name */}
                                 <div className="space-y-2">
-                                    <Label htmlFor="name">{t('workspace.settings.name', 'Workspace Name')}</Label>
+                                    <Label htmlFor="name">
+                                        {t(
+                                            'workspace.settings.name',
+                                            'Workspace Name',
+                                        )}
+                                    </Label>
                                     <Input
                                         id="name"
                                         value={data.name}
                                         onChange={(e) =>
                                             setData('name', e.target.value)
                                         }
-                                        placeholder={t('workspace.settings.name', 'Workspace Name')}
+                                        placeholder={t(
+                                            'workspace.settings.name',
+                                            'Workspace Name',
+                                        )}
                                         required
                                         disabled={!isAdmin}
                                     />
@@ -217,8 +294,14 @@ export default function WorkspaceSettings({
 
                                 {/* Slug */}
                                 <div className="space-y-2">
-                                    <Label htmlFor="slug" className="flex items-center gap-1.5">
-                                        {t('workspace.settings.slug', 'Workspace Slug')}
+                                    <Label
+                                        htmlFor="slug"
+                                        className="flex items-center gap-1.5"
+                                    >
+                                        {t(
+                                            'workspace.settings.slug',
+                                            'Workspace Slug',
+                                        )}
                                         <HelpTooltip content="The URL-friendly identifier for your workspace. Used in links and API endpoints. Only letters, numbers, dashes, and underscores." />
                                     </Label>
                                     <div className="flex items-center">
@@ -231,7 +314,10 @@ export default function WorkspaceSettings({
                                             onChange={(e) =>
                                                 setData('slug', e.target.value)
                                             }
-                                            placeholder={t('workspace.create.slug_placeholder', 'my-awesome-workspace')}
+                                            placeholder={t(
+                                                'workspace.create.slug_placeholder',
+                                                'my-awesome-workspace',
+                                            )}
                                             className="rounded-l-none"
                                             disabled={!isAdmin}
                                         />
@@ -240,7 +326,8 @@ export default function WorkspaceSettings({
                                     {data.slug !== workspace.slug && (
                                         <p className="flex items-center gap-1.5 text-xs text-amber-600 dark:text-amber-400">
                                             <AlertTriangle className="h-3.5 w-3.5 shrink-0" />
-                                            Changing the slug will break any existing links to this workspace.
+                                            Changing the slug will break any
+                                            existing links to this workspace.
                                         </p>
                                     )}
                                 </div>
@@ -254,7 +341,10 @@ export default function WorkspaceSettings({
                                         {processing && (
                                             <Spinner className="mr-2" />
                                         )}
-                                        {t('workspace.settings.save', 'Save Changes')}
+                                        {t(
+                                            'workspace.settings.save',
+                                            'Save Changes',
+                                        )}
                                     </Button>
                                 )}
                             </form>
@@ -264,9 +354,15 @@ export default function WorkspaceSettings({
                     {/* Plan Information */}
                     <Card>
                         <CardHeader>
-                            <CardTitle>{t('billing.current_plan', 'Current Plan')}</CardTitle>
+                            <CardTitle>
+                                {t('billing.current_plan', 'Current Plan')}
+                            </CardTitle>
                             <CardDescription>
-                                {t('billing.your_workspace_on', 'Your workspace is on the {{plan}} plan.', { plan: workspace.plan })}
+                                {t(
+                                    'billing.your_workspace_on',
+                                    'Your workspace is on the {{plan}} plan.',
+                                    { plan: workspace.plan },
+                                )}
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
@@ -277,12 +373,23 @@ export default function WorkspaceSettings({
                                     </p>
                                     <p className="text-sm text-muted-foreground">
                                         {workspace.plan === 'Free'
-                                            ? t('billing.no_subscription_desc', 'Upgrade to a paid plan to unlock more features and team members.')
-                                            : t('billing.thank_you', 'Thank you for being a subscriber!')}
+                                            ? t(
+                                                  'billing.no_subscription_desc',
+                                                  'Upgrade to a paid plan to unlock more features and team members.',
+                                              )
+                                            : t(
+                                                  'billing.thank_you',
+                                                  'Thank you for being a subscriber!',
+                                              )}
                                     </p>
                                 </div>
                                 <Button variant="outline" asChild>
-                                    <a href="/billing">{t('billing.manage_subscription', 'Manage Subscription')}</a>
+                                    <a href="/billing">
+                                        {t(
+                                            'billing.manage_subscription',
+                                            'Manage Subscription',
+                                        )}
+                                    </a>
                                 </Button>
                             </div>
                         </CardContent>
@@ -296,27 +403,45 @@ export default function WorkspaceSettings({
                                 {t('workspace.settings.branding', 'Branding')}
                             </CardTitle>
                             <CardDescription>
-                                {t('workspace.settings.branding_description', 'Customize the accent color used across your workspace.')}
+                                {t(
+                                    'workspace.settings.branding_description',
+                                    'Customize the accent color used across your workspace.',
+                                )}
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
                             <div className="space-y-4">
                                 <div className="space-y-2">
                                     <Label htmlFor="accent_color">
-                                        {t('workspace.settings.accent_color', 'Accent Color')}
+                                        {t(
+                                            'workspace.settings.accent_color',
+                                            'Accent Color',
+                                        )}
                                     </Label>
                                     <div className="flex items-center gap-3">
                                         <input
                                             type="color"
                                             id="accent_color"
-                                            value={data.accent_color || '#6366f1'}
-                                            onChange={(e) => setData('accent_color', e.target.value)}
+                                            value={
+                                                data.accent_color || '#6366f1'
+                                            }
+                                            onChange={(e) =>
+                                                setData(
+                                                    'accent_color',
+                                                    e.target.value,
+                                                )
+                                            }
                                             className="h-10 w-14 cursor-pointer rounded-md border p-1"
                                             disabled={!isAdmin}
                                         />
                                         <Input
                                             value={data.accent_color || ''}
-                                            onChange={(e) => setData('accent_color', e.target.value)}
+                                            onChange={(e) =>
+                                                setData(
+                                                    'accent_color',
+                                                    e.target.value,
+                                                )
+                                            }
                                             placeholder="#6366f1"
                                             className="w-32 font-mono text-sm"
                                             maxLength={7}
@@ -327,9 +452,14 @@ export default function WorkspaceSettings({
                                                 type="button"
                                                 variant="ghost"
                                                 size="sm"
-                                                onClick={() => setData('accent_color', '')}
+                                                onClick={() =>
+                                                    setData('accent_color', '')
+                                                }
                                             >
-                                                {t('workspace.settings.reset_color', 'Reset')}
+                                                {t(
+                                                    'workspace.settings.reset_color',
+                                                    'Reset',
+                                                )}
                                             </Button>
                                         )}
                                     </div>
@@ -340,20 +470,42 @@ export default function WorkspaceSettings({
                                 {isAdmin && (
                                     <div className="space-y-2">
                                         <Label className="text-xs text-muted-foreground">
-                                            {t('workspace.settings.preset_colors', 'Presets')}
+                                            {t(
+                                                'workspace.settings.preset_colors',
+                                                'Presets',
+                                            )}
                                         </Label>
                                         <div className="flex flex-wrap gap-2">
-                                            {['#6366f1', '#8b5cf6', '#ec4899', '#ef4444', '#f97316', '#eab308', '#22c55e', '#06b6d4', '#3b82f6', '#64748b'].map((color) => (
+                                            {[
+                                                '#6366f1',
+                                                '#8b5cf6',
+                                                '#ec4899',
+                                                '#ef4444',
+                                                '#f97316',
+                                                '#eab308',
+                                                '#22c55e',
+                                                '#06b6d4',
+                                                '#3b82f6',
+                                                '#64748b',
+                                            ].map((color) => (
                                                 <button
                                                     key={color}
                                                     type="button"
-                                                    onClick={() => setData('accent_color', color)}
-                                                    className={`h-8 w-8 rounded-full border-2 transition-all hover:scale-110 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
-                                                        data.accent_color === color 
-                                                            ? 'border-foreground scale-110 shadow-md ring-2 ring-primary ring-offset-2' 
+                                                    onClick={() =>
+                                                        setData(
+                                                            'accent_color',
+                                                            color,
+                                                        )
+                                                    }
+                                                    className={`h-8 w-8 rounded-full border-2 transition-all hover:scale-110 focus:ring-2 focus:ring-offset-2 focus:outline-none ${
+                                                        data.accent_color ===
+                                                        color
+                                                            ? 'scale-110 border-foreground shadow-md ring-2 ring-primary ring-offset-2'
                                                             : 'border-transparent hover:border-foreground/50'
                                                     }`}
-                                                    style={{ backgroundColor: color }}
+                                                    style={{
+                                                        backgroundColor: color,
+                                                    }}
                                                     title={color}
                                                 />
                                             ))}
@@ -365,19 +517,33 @@ export default function WorkspaceSettings({
                                 {data.accent_color && (
                                     <div className="rounded-lg border p-4">
                                         <p className="mb-2 text-xs font-medium text-muted-foreground">
-                                            {t('workspace.settings.preview', 'Preview')}
+                                            {t(
+                                                'workspace.settings.preview',
+                                                'Preview',
+                                            )}
                                         </p>
                                         <div className="flex items-center gap-3">
                                             <div
                                                 className="h-8 w-8 rounded-lg"
-                                                style={{ backgroundColor: data.accent_color }}
+                                                style={{
+                                                    backgroundColor:
+                                                        data.accent_color,
+                                                }}
                                             />
                                             <div>
-                                                <p className="text-sm font-medium" style={{ color: data.accent_color }}>
+                                                <p
+                                                    className="text-sm font-medium"
+                                                    style={{
+                                                        color: data.accent_color,
+                                                    }}
+                                                >
                                                     {workspace.name}
                                                 </p>
                                                 <p className="text-xs text-muted-foreground">
-                                                    {t('workspace.settings.preview_example', 'Your brand color in action')}
+                                                    {t(
+                                                        'workspace.settings.preview_example',
+                                                        'Your brand color in action',
+                                                    )}
                                                 </p>
                                             </div>
                                         </div>
@@ -388,16 +554,25 @@ export default function WorkspaceSettings({
                                     <Button
                                         onClick={(e) => {
                                             e.preventDefault();
-                                            router.put('/workspaces/settings', data, {
-                                                forceFormData: true,
-                                                preserveScroll: true,
-                                            });
+                                            router.put(
+                                                '/workspaces/settings',
+                                                data,
+                                                {
+                                                    forceFormData: true,
+                                                    preserveScroll: true,
+                                                },
+                                            );
                                         }}
                                         disabled={processing || !isDirty}
                                         className={!isDirty ? 'opacity-50' : ''}
                                     >
-                                        {processing && <Spinner className="mr-2" />}
-                                        {t('workspace.settings.save_branding', 'Save Branding')}
+                                        {processing && (
+                                            <Spinner className="mr-2" />
+                                        )}
+                                        {t(
+                                            'workspace.settings.save_branding',
+                                            'Save Branding',
+                                        )}
                                     </Button>
                                 )}
                             </div>
@@ -429,7 +604,8 @@ export default function WorkspaceSettings({
                                     Workspace Template
                                 </CardTitle>
                                 <CardDescription>
-                                    Save this workspace configuration as a reusable template.
+                                    Save this workspace configuration as a
+                                    reusable template.
                                 </CardDescription>
                             </CardHeader>
                             <CardContent>
@@ -439,10 +615,19 @@ export default function WorkspaceSettings({
                                             Save as Template
                                         </p>
                                         <p className="text-sm text-muted-foreground">
-                                            Create a template from this workspace to quickly set up similar workspaces.
+                                            Create a template from this
+                                            workspace to quickly set up similar
+                                            workspaces.
                                         </p>
                                     </div>
-                                    <Button variant="outline" onClick={() => router.visit('/workspace-templates/create')}>
+                                    <Button
+                                        variant="outline"
+                                        onClick={() =>
+                                            router.visit(
+                                                '/workspace-templates/create',
+                                            )
+                                        }
+                                    >
                                         <Plus className="mr-2 h-4 w-4" />
                                         Create Template
                                     </Button>
@@ -455,42 +640,75 @@ export default function WorkspaceSettings({
                     {isAdmin && (
                         <Card>
                             <CardHeader>
-                                <CardTitle>{t('workspace.settings.billing_email', 'Billing Email')}</CardTitle>
+                                <CardTitle>
+                                    {t(
+                                        'workspace.settings.billing_email',
+                                        'Billing Email',
+                                    )}
+                                </CardTitle>
                                 <CardDescription>
-                                    {t('workspace.settings.billing_email_desc', 'Override the email address for billing receipts and invoices. Leave blank to use the workspace owner\'s email.')}
+                                    {t(
+                                        'workspace.settings.billing_email_desc',
+                                        "Override the email address for billing receipts and invoices. Leave blank to use the workspace owner's email.",
+                                    )}
                                 </CardDescription>
                             </CardHeader>
                             <CardContent>
                                 <div className="space-y-4">
                                     <div className="space-y-2">
                                         <Label htmlFor="billing_email">
-                                            {t('workspace.settings.billing_email_label', 'Billing Email Address')}
+                                            {t(
+                                                'workspace.settings.billing_email_label',
+                                                'Billing Email Address',
+                                            )}
                                         </Label>
                                         <Input
                                             id="billing_email"
                                             type="email"
                                             value={data.billing_email}
-                                            onChange={(e) => setData('billing_email', e.target.value)}
-                                            placeholder={t('workspace.settings.billing_email_placeholder', 'billing@yourcompany.com')}
+                                            onChange={(e) =>
+                                                setData(
+                                                    'billing_email',
+                                                    e.target.value,
+                                                )
+                                            }
+                                            placeholder={t(
+                                                'workspace.settings.billing_email_placeholder',
+                                                'billing@yourcompany.com',
+                                            )}
                                             disabled={!isAdmin}
                                         />
-                                        <InputError message={errors.billing_email} />
+                                        <InputError
+                                            message={errors.billing_email}
+                                        />
                                         <p className="text-xs text-muted-foreground">
-                                            {t('workspace.settings.billing_email_help', 'This email will receive invoices and payment notifications instead of the owner\'s email.')}
+                                            {t(
+                                                'workspace.settings.billing_email_help',
+                                                "This email will receive invoices and payment notifications instead of the owner's email.",
+                                            )}
                                         </p>
                                     </div>
                                     <Button
                                         onClick={(e) => {
                                             e.preventDefault();
-                                            router.put('/workspaces/settings', data, {
-                                                forceFormData: true,
-                                                preserveScroll: true,
-                                            });
+                                            router.put(
+                                                '/workspaces/settings',
+                                                data,
+                                                {
+                                                    forceFormData: true,
+                                                    preserveScroll: true,
+                                                },
+                                            );
                                         }}
                                         disabled={processing || !isDirty}
                                     >
-                                        {processing && <Spinner className="mr-2" />}
-                                        {t('workspace.settings.save_billing', 'Save Billing Settings')}
+                                        {processing && (
+                                            <Spinner className="mr-2" />
+                                        )}
+                                        {t(
+                                            'workspace.settings.save_billing',
+                                            'Save Billing Settings',
+                                        )}
                                     </Button>
                                 </div>
                             </CardContent>
@@ -500,24 +718,44 @@ export default function WorkspaceSettings({
                     {/* Data Management */}
                     <Card>
                         <CardHeader>
-                            <CardTitle>{t('workspace.settings.data_management', 'Data Management')}</CardTitle>
+                            <CardTitle>
+                                {t(
+                                    'workspace.settings.data_management',
+                                    'Data Management',
+                                )}
+                            </CardTitle>
                             <CardDescription>
-                                {t('workspace.settings.data_management_description', 'Export your workspace data for GDPR compliance or backup.')}
+                                {t(
+                                    'workspace.settings.data_management_description',
+                                    'Export your workspace data for GDPR compliance or backup.',
+                                )}
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
                             <div className="flex items-center justify-between">
                                 <div className="space-y-1">
                                     <p className="text-sm font-medium">
-                                        {t('workspace.settings.export_data', 'Export Workspace Data')}
+                                        {t(
+                                            'workspace.settings.export_data',
+                                            'Export Workspace Data',
+                                        )}
                                     </p>
                                     <p className="text-sm text-muted-foreground">
-                                        {t('workspace.settings.export_description', 'Download all workspace data, members, and activity logs in JSON format.')}
+                                        {t(
+                                            'workspace.settings.export_description',
+                                            'Download all workspace data, members, and activity logs in JSON format.',
+                                        )}
                                     </p>
                                 </div>
-                                <Button variant="outline" onClick={handleExport}>
+                                <Button
+                                    variant="outline"
+                                    onClick={handleExport}
+                                >
                                     <Download className="mr-2 h-4 w-4" />
-                                    {t('workspace.settings.export_button', 'Export JSON')}
+                                    {t(
+                                        'workspace.settings.export_button',
+                                        'Export JSON',
+                                    )}
                                 </Button>
                             </div>
                         </CardContent>
@@ -529,20 +767,32 @@ export default function WorkspaceSettings({
                             <CardHeader>
                                 <CardTitle className="flex items-center gap-2 text-destructive">
                                     <AlertTriangle className="h-5 w-5" />
-                                    {t('workspace.settings.danger_zone', 'Danger Zone')}
+                                    {t(
+                                        'workspace.settings.danger_zone',
+                                        'Danger Zone',
+                                    )}
                                 </CardTitle>
                                 <CardDescription>
-                                    {t('workspace.settings.delete_description', 'Once you delete a workspace, there is no going back. Please be certain.')}
+                                    {t(
+                                        'workspace.settings.delete_description',
+                                        'Once you delete a workspace, there is no going back. Please be certain.',
+                                    )}
                                 </CardDescription>
                             </CardHeader>
                             <CardContent>
                                 <p className="mb-4 text-sm text-muted-foreground">
-                                    {t('workspace.settings.delete_description', 'Once you delete a workspace, there is no going back. Please be certain.')}
+                                    {t(
+                                        'workspace.settings.delete_description',
+                                        'Once you delete a workspace, there is no going back. Please be certain.',
+                                    )}
                                 </p>
                                 <div className="space-y-4">
                                     <div className="space-y-2">
                                         <Label htmlFor="delete-confirm">
-                                            {t('workspace.settings.delete_confirm', 'Type the workspace name to confirm deletion')}
+                                            {t(
+                                                'workspace.settings.delete_confirm',
+                                                'Type the workspace name to confirm deletion',
+                                            )}
                                         </Label>
                                         <Input
                                             id="delete-confirm"
@@ -560,7 +810,10 @@ export default function WorkspaceSettings({
                                             deleteConfirm !== workspace.name
                                         }
                                     >
-                                        {t('workspace.settings.delete_button', 'Delete Workspace')}
+                                        {t(
+                                            'workspace.settings.delete_button',
+                                            'Delete Workspace',
+                                        )}
                                     </Button>
                                 </div>
                             </CardContent>
@@ -571,7 +824,10 @@ export default function WorkspaceSettings({
                         <Card className="border-muted">
                             <CardContent className="py-6">
                                 <p className="text-sm text-muted-foreground">
-                                    {t('workspace.settings.personal_workspace', 'This is your personal workspace and cannot be deleted.')}
+                                    {t(
+                                        'workspace.settings.personal_workspace',
+                                        'This is your personal workspace and cannot be deleted.',
+                                    )}
                                 </p>
                             </CardContent>
                         </Card>

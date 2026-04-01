@@ -1,9 +1,9 @@
 import AppearanceToggleDropdown from '@/components/appearance-dropdown';
+import { useTranslations } from '@/hooks/use-translations';
 import { home } from '@/routes';
 import { Link } from '@inertiajs/react';
 import { ArrowLeft, CheckCircle, Quote, Sparkles, Users } from 'lucide-react';
 import { type PropsWithChildren } from 'react';
-import { useTranslations } from '@/hooks/use-translations';
 
 interface AuthLayoutProps {
     title?: string;
@@ -23,13 +23,16 @@ export default function AuthSimpleLayout({
             <div className="relative hidden flex-col justify-between overflow-hidden bg-gradient-to-br from-primary via-primary/90 to-accent p-10 text-primary-foreground lg:flex">
                 {/* Background decoration */}
                 <div className="absolute inset-0 -z-10">
-                    <div className="absolute -left-20 -top-20 h-80 w-80 rounded-full bg-white/10 blur-3xl" />
-                    <div className="absolute -bottom-20 -right-20 h-80 w-80 rounded-full bg-white/10 blur-3xl" />
+                    <div className="absolute -top-20 -left-20 h-80 w-80 rounded-full bg-white/10 blur-3xl" />
+                    <div className="absolute -right-20 -bottom-20 h-80 w-80 rounded-full bg-white/10 blur-3xl" />
                 </div>
 
                 {/* Logo & Back Link */}
                 <div className="flex items-center justify-between">
-                    <Link href={home()} className="flex items-center gap-2 font-semibold">
+                    <Link
+                        href={home()}
+                        className="flex items-center gap-2 font-semibold"
+                    >
                         <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/20">
                             <Sparkles className="h-5 w-5" />
                         </div>
@@ -47,13 +50,19 @@ export default function AuthSimpleLayout({
                 {/* Main Content */}
                 <div className="space-y-8">
                     <div className="space-y-4">
-                        <h2 className="text-4xl font-bold leading-tight">
-                            {t('auth.layout.hero.title_line1', 'Launch Your SaaS')}
+                        <h2 className="text-4xl leading-tight font-bold">
+                            {t(
+                                'auth.layout.hero.title_line1',
+                                'Launch Your SaaS',
+                            )}
                             <br />
                             {t('auth.layout.hero.title_line2', '10x Faster')}
                         </h2>
                         <p className="text-lg text-white/80">
-                            {t('auth.layout.hero.description', 'Join thousands of developers building and shipping with Laravel SAAS Starter.')}
+                            {t(
+                                'auth.layout.hero.description',
+                                'Join thousands of developers building and shipping with Laravel SAAS Starter.',
+                            )}
                         </p>
                     </div>
 
@@ -64,8 +73,15 @@ export default function AuthSimpleLayout({
                                 <Users className="h-5 w-5" />
                             </div>
                             <div>
-                                <div className="text-2xl font-bold">10,000+</div>
-                                <div className="text-sm text-white/70">{t('auth.layout.stats.developers', 'Developers')}</div>
+                                <div className="text-2xl font-bold">
+                                    10,000+
+                                </div>
+                                <div className="text-sm text-white/70">
+                                    {t(
+                                        'auth.layout.stats.developers',
+                                        'Developers',
+                                    )}
+                                </div>
                             </div>
                         </div>
                         <div className="flex items-center gap-2">
@@ -74,7 +90,12 @@ export default function AuthSimpleLayout({
                             </div>
                             <div>
                                 <div className="text-2xl font-bold">500+</div>
-                                <div className="text-sm text-white/70">{t('auth.layout.stats.apps_launched', 'Apps Launched')}</div>
+                                <div className="text-sm text-white/70">
+                                    {t(
+                                        'auth.layout.stats.apps_launched',
+                                        'Apps Launched',
+                                    )}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -83,15 +104,30 @@ export default function AuthSimpleLayout({
                     <div className="rounded-xl bg-white/10 p-6 backdrop-blur-sm">
                         <Quote className="mb-4 h-8 w-8 text-white/40" />
                         <p className="mb-4 text-white/90">
-                            "{t('auth.layout.testimonial.quote', 'Laravel SAAS Starter saved us months of development time. We launched our MVP in just 2 weeks!')}"
+                            "
+                            {t(
+                                'auth.layout.testimonial.quote',
+                                'Laravel SAAS Starter saved us months of development time. We launched our MVP in just 2 weeks!',
+                            )}
+                            "
                         </p>
                         <div className="flex items-center gap-3">
                             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/20 text-sm font-semibold">
                                 SC
                             </div>
                             <div>
-                                <div className="font-medium">{t('auth.layout.testimonial.author', 'Sarah Chen')}</div>
-                                <div className="text-sm text-white/70">{t('auth.layout.testimonial.role', 'CTO at TechFlow')}</div>
+                                <div className="font-medium">
+                                    {t(
+                                        'auth.layout.testimonial.author',
+                                        'Sarah Chen',
+                                    )}
+                                </div>
+                                <div className="text-sm text-white/70">
+                                    {t(
+                                        'auth.layout.testimonial.role',
+                                        'CTO at TechFlow',
+                                    )}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -99,7 +135,11 @@ export default function AuthSimpleLayout({
 
                 {/* Footer */}
                 <div className="text-sm text-white/60">
-                    © {new Date().getFullYear()} {t('auth.layout.copyright', 'XCO Agency. All rights reserved.')}
+                    © {new Date().getFullYear()}{' '}
+                    {t(
+                        'auth.layout.copyright',
+                        'XCO Agency. All rights reserved.',
+                    )}
                 </div>
             </div>
 
@@ -107,7 +147,10 @@ export default function AuthSimpleLayout({
             <div className="flex flex-col">
                 {/* Mobile Header */}
                 <div className="flex items-center justify-between border-b p-4 lg:hidden">
-                    <Link href={home()} className="flex items-center gap-2 font-semibold">
+                    <Link
+                        href={home()}
+                        className="flex items-center gap-2 font-semibold"
+                    >
                         <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
                             <Sparkles className="h-4 w-4 text-primary-foreground" />
                         </div>
@@ -130,7 +173,9 @@ export default function AuthSimpleLayout({
                                 <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
                                     {title}
                                 </h1>
-                                <p className="text-sm text-muted-foreground">{description}</p>
+                                <p className="text-sm text-muted-foreground">
+                                    {description}
+                                </p>
                             </div>
 
                             {/* Form Content */}

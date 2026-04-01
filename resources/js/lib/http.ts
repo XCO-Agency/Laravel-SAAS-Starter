@@ -6,12 +6,19 @@ interface RequestOptions {
 }
 
 function csrfToken(): string {
-    return document.querySelector<HTMLMetaElement>('meta[name="csrf-token"]')?.content ?? '';
+    return (
+        document.querySelector<HTMLMetaElement>('meta[name="csrf-token"]')
+            ?.content ?? ''
+    );
 }
 
-async function request<T = unknown>(method: HttpMethod, url: string, options: RequestOptions = {}): Promise<{ data: T; response: Response }> {
+async function request<T = unknown>(
+    method: HttpMethod,
+    url: string,
+    options: RequestOptions = {},
+): Promise<{ data: T; response: Response }> {
     const headers: Record<string, string> = {
-        'Accept': 'application/json',
+        Accept: 'application/json',
         'X-CSRF-TOKEN': csrfToken(),
         ...options.headers,
     };
@@ -36,11 +43,16 @@ async function request<T = unknown>(method: HttpMethod, url: string, options: Re
 }
 
 const http = {
-    get: <T = unknown>(url: string, options?: RequestOptions) => request<T>('GET', url, options),
-    post: <T = unknown>(url: string, options?: RequestOptions) => request<T>('POST', url, options),
-    put: <T = unknown>(url: string, options?: RequestOptions) => request<T>('PUT', url, options),
-    patch: <T = unknown>(url: string, options?: RequestOptions) => request<T>('PATCH', url, options),
-    delete: <T = unknown>(url: string, options?: RequestOptions) => request<T>('DELETE', url, options),
+    get: <T = unknown>(url: string, options?: RequestOptions) =>
+        request<T>('GET', url, options),
+    post: <T = unknown>(url: string, options?: RequestOptions) =>
+        request<T>('POST', url, options),
+    put: <T = unknown>(url: string, options?: RequestOptions) =>
+        request<T>('PUT', url, options),
+    patch: <T = unknown>(url: string, options?: RequestOptions) =>
+        request<T>('PATCH', url, options),
+    delete: <T = unknown>(url: string, options?: RequestOptions) =>
+        request<T>('DELETE', url, options),
 };
 
 export default http;

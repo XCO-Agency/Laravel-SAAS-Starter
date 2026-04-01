@@ -7,23 +7,22 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import { useToast } from '@/components/ui/toast';
-import { useTranslations } from '@/hooks/use-translations';
-import http from '@/lib/http';
-import AppLayout from '@/layouts/app-layout';
-import WorkspaceLayout from '@/layouts/settings/workspace-layout';
-import { type BreadcrumbItem, type Plan, type WorkspaceRole } from '@/types';
-import { Head, router } from '@inertiajs/react';
-import { Check, HelpCircle, Minus, Sparkles, X } from 'lucide-react';
-import { useState } from 'react';
 import {
     Tooltip,
     TooltipContent,
     TooltipProvider,
     TooltipTrigger,
 } from '@/components/ui/tooltip';
+import { useTranslations } from '@/hooks/use-translations';
+import AppLayout from '@/layouts/app-layout';
+import WorkspaceLayout from '@/layouts/settings/workspace-layout';
+import http from '@/lib/http';
+import { type BreadcrumbItem, type Plan, type WorkspaceRole } from '@/types';
+import { Head, router } from '@inertiajs/react';
+import { Check, HelpCircle, Minus } from 'lucide-react';
+import { useState } from 'react';
 
 interface ComparePageProps {
     plans: Plan[];
@@ -40,25 +39,34 @@ interface FeatureComparison {
     }[];
 }
 
-export default function ComparePlans({ plans, currentPlan, userRole }: ComparePageProps) {
+export default function ComparePlans({
+    plans,
+    currentPlan,
+    userRole,
+}: ComparePageProps) {
     const { t } = useTranslations();
-    const [billingPeriod, setBillingPeriod] = useState<'monthly' | 'yearly'>('monthly');
+    const [billingPeriod, setBillingPeriod] = useState<'monthly' | 'yearly'>(
+        'monthly',
+    );
     const [processing, setProcessing] = useState<string | null>(null);
     const { addToast } = useToast();
     const isOwner = userRole === 'owner' || userRole === 'admin';
 
     const breadcrumbs: BreadcrumbItem[] = [
         { title: t('billing.title', 'Billing'), href: '/billing' },
-        { title: t('billing.compare.title', 'Compare Plans'), href: '/billing/compare' },
+        {
+            title: t('billing.compare.title', 'Compare Plans'),
+            href: '/billing/compare',
+        },
     ];
 
     // Build comparison matrix from plan features
     const buildComparisonMatrix = (): FeatureComparison[] => {
         const allFeatures = new Map<string, Set<string>>();
-        
+
         // Collect all unique features across plans
-        plans.forEach(plan => {
-            plan.features.forEach(feature => {
+        plans.forEach((plan) => {
+            plan.features.forEach((feature) => {
                 if (!allFeatures.has(feature)) {
                     allFeatures.set(feature, new Set());
                 }
@@ -70,16 +78,18 @@ export default function ComparePlans({ plans, currentPlan, userRole }: ComparePa
         return [
             {
                 category: 'Core Features',
-                features: Array.from(allFeatures.entries()).map(([feature, planIds]) => ({
-                    name: feature,
-                    description: undefined,
-                    values: Object.fromEntries(
-                        plans.map(plan => [
-                            plan.id,
-                            plan.features.includes(feature)
-                        ])
-                    ) as Record<string, boolean>,
-                })),
+                features: Array.from(allFeatures.entries()).map(
+                    ([feature]) => ({
+                        name: feature,
+                        description: undefined,
+                        values: Object.fromEntries(
+                            plans.map((plan) => [
+                                plan.id,
+                                plan.features.includes(feature),
+                            ]),
+                        ) as Record<string, boolean>,
+                    }),
+                ),
             },
         ];
     };
@@ -92,7 +102,11 @@ export default function ComparePlans({ plans, currentPlan, userRole }: ComparePa
         setProcessing(planId);
 
         try {
-            const { data } = await http.post<{ checkout_url?: string; success?: boolean; error?: string }>('/billing/subscribe', {
+            const { data } = await http.post<{
+                checkout_url?: string;
+                success?: boolean;
+                error?: string;
+            }>('/billing/subscribe', {
                 body: { plan: planId, billing_period: billingPeriod },
             });
 
@@ -112,25 +126,28 @@ export default function ComparePlans({ plans, currentPlan, userRole }: ComparePa
         }
     };
 
-    const getPlanById = (id: string) => plans.find(p => p.id === id);
-    const paidPlans = plans.filter(p => p.id !== 'free');
-    const freePlan = plans.find(p => p.id === 'free');
-
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('billing.compare.title', 'Compare Plans')} />
 
             <WorkspaceLayout
                 title={t('billing.compare.title', 'Compare Plans')}
-                description={t('billing.compare.description', 'Find the perfect plan for your team')}
+                description={t(
+                    'billing.compare.description',
+                    'Find the perfect plan for your team',
+                )}
                 fullWidth
             >
                 <div className="space-y-8">
                     {/* Billing Period Toggle */}
                     <div className="flex justify-center">
-                        <div className="inline-flex items-center gap-2 p-1 bg-muted rounded-full">
+                        <div className="inline-flex items-center gap-2 rounded-full bg-muted p-1">
                             <Button
-                                variant={billingPeriod === 'monthly' ? 'default' : 'ghost'}
+                                variant={
+                                    billingPeriod === 'monthly'
+                                        ? 'default'
+                                        : 'ghost'
+                                }
                                 size="sm"
                                 onClick={() => setBillingPeriod('monthly')}
                                 className="rounded-full px-6"
@@ -138,13 +155,20 @@ export default function ComparePlans({ plans, currentPlan, userRole }: ComparePa
                                 Monthly
                             </Button>
                             <Button
-                                variant={billingPeriod === 'yearly' ? 'default' : 'ghost'}
+                                variant={
+                                    billingPeriod === 'yearly'
+                                        ? 'default'
+                                        : 'ghost'
+                                }
                                 size="sm"
                                 onClick={() => setBillingPeriod('yearly')}
                                 className="rounded-full px-6"
                             >
                                 Yearly
-                                <Badge variant="secondary" className="ml-2 text-[10px]">
+                                <Badge
+                                    variant="secondary"
+                                    className="ml-2 text-[10px]"
+                                >
                                     Save 20%
                                 </Badge>
                             </Button>
@@ -164,24 +188,48 @@ export default function ComparePlans({ plans, currentPlan, userRole }: ComparePa
                                 <table className="w-full">
                                     <thead>
                                         <tr className="border-b bg-muted/20">
-                                            <th className="text-left p-4 font-medium text-muted-foreground min-w-[200px]">
+                                            <th className="min-w-[200px] p-4 text-left font-medium text-muted-foreground">
                                                 Feature
                                             </th>
-                                            {plans.map(plan => (
-                                                <th key={plan.id} className="p-4 text-center min-w-[150px]">
+                                            {plans.map((plan) => (
+                                                <th
+                                                    key={plan.id}
+                                                    className="min-w-[150px] p-4 text-center"
+                                                >
                                                     <div className="space-y-2">
-                                                        <div className="font-bold text-lg">{plan.name}</div>
-                                                        <div className="text-2xl font-bold text-primary">
-                                                            ${billingPeriod === 'yearly' 
-                                                                ? (plan.price.yearly / 12).toFixed(0) 
-                                                                : plan.price.monthly}
-                                                            <span className="text-sm font-normal text-muted-foreground">/mo</span>
+                                                        <div className="text-lg font-bold">
+                                                            {plan.name}
                                                         </div>
-                                                        {billingPeriod === 'yearly' && plan.price.yearly > 0 && (
-                                                            <div className="text-xs text-muted-foreground">
-                                                                ${plan.price.yearly}/year billed annually
-                                                            </div>
-                                                        )}
+                                                        <div className="text-2xl font-bold text-primary">
+                                                            $
+                                                            {billingPeriod ===
+                                                            'yearly'
+                                                                ? (
+                                                                      plan.price
+                                                                          .yearly /
+                                                                      12
+                                                                  ).toFixed(0)
+                                                                : plan.price
+                                                                      .monthly}
+                                                            <span className="text-sm font-normal text-muted-foreground">
+                                                                /mo
+                                                            </span>
+                                                        </div>
+                                                        {billingPeriod ===
+                                                            'yearly' &&
+                                                            plan.price.yearly >
+                                                                0 && (
+                                                                <div className="text-xs text-muted-foreground">
+                                                                    $
+                                                                    {
+                                                                        plan
+                                                                            .price
+                                                                            .yearly
+                                                                    }
+                                                                    /year billed
+                                                                    annually
+                                                                </div>
+                                                            )}
                                                     </div>
                                                 </th>
                                             ))}
@@ -190,100 +238,178 @@ export default function ComparePlans({ plans, currentPlan, userRole }: ComparePa
                                     <tbody>
                                         {/* Plan Limits Row */}
                                         <tr className="border-b bg-muted/5">
-                                            <td className="p-4 font-medium">Team Members</td>
-                                            {plans.map(plan => (
-                                                <td key={plan.id} className="p-4 text-center">
-                                                    {plan.limits?.members === -1 ? (
-                                                        <span className="font-bold text-primary">Unlimited</span>
+                                            <td className="p-4 font-medium">
+                                                Team Members
+                                            </td>
+                                            {plans.map((plan) => (
+                                                <td
+                                                    key={plan.id}
+                                                    className="p-4 text-center"
+                                                >
+                                                    {plan.limits?.members ===
+                                                    -1 ? (
+                                                        <span className="font-bold text-primary">
+                                                            Unlimited
+                                                        </span>
                                                     ) : (
-                                                        <span className="font-bold text-foreground">{plan.limits?.members || 0}</span>
+                                                        <span className="font-bold text-foreground">
+                                                            {plan.limits
+                                                                ?.members || 0}
+                                                        </span>
                                                     )}
                                                 </td>
                                             ))}
                                         </tr>
                                         <tr className="border-b">
-                                            <td className="p-4 font-medium">Workspaces</td>
-                                            {plans.map(plan => (
-                                                <td key={plan.id} className="p-4 text-center">
-                                                    {plan.limits?.workspaces === -1 ? (
-                                                        <span className="font-bold text-primary">Unlimited</span>
+                                            <td className="p-4 font-medium">
+                                                Workspaces
+                                            </td>
+                                            {plans.map((plan) => (
+                                                <td
+                                                    key={plan.id}
+                                                    className="p-4 text-center"
+                                                >
+                                                    {plan.limits?.workspaces ===
+                                                    -1 ? (
+                                                        <span className="font-bold text-primary">
+                                                            Unlimited
+                                                        </span>
                                                     ) : (
-                                                        <span className="font-bold text-foreground">{plan.limits?.workspaces || 1}</span>
+                                                        <span className="font-bold text-foreground">
+                                                            {plan.limits
+                                                                ?.workspaces ||
+                                                                1}
+                                                        </span>
                                                     )}
                                                 </td>
                                             ))}
                                         </tr>
                                         <tr className="border-b bg-muted/5">
-                                            <td className="p-4 font-medium">Storage</td>
-                                            {plans.map(plan => (
-                                                <td key={plan.id} className="p-4 text-center">
-                                                    <span className="font-bold text-foreground">{plan.limits?.storage || '1GB'}</span>
+                                            <td className="p-4 font-medium">
+                                                Storage
+                                            </td>
+                                            {plans.map((plan) => (
+                                                <td
+                                                    key={plan.id}
+                                                    className="p-4 text-center"
+                                                >
+                                                    <span className="font-bold text-foreground">
+                                                        {plan.limits?.storage ||
+                                                            '1GB'}
+                                                    </span>
                                                 </td>
                                             ))}
                                         </tr>
 
                                         {/* Feature Rows */}
-                                        {comparisonMatrix.map((category) => (
-                                            category.features.map((feature, idx) => (
-                                                <tr key={feature.name} className={idx % 2 === 0 ? 'bg-muted/5' : ''}>
-                                                    <td className="p-4">
-                                                        <div className="flex items-center gap-2">
-                                                            <span className="font-medium">{feature.name}</span>
-                                                            {feature.description && (
-                                                                <TooltipProvider>
-                                                                    <Tooltip>
-                                                                        <TooltipTrigger>
-                                                                            <HelpCircle className="h-4 w-4 text-muted-foreground" />
-                                                                        </TooltipTrigger>
-                                                                        <TooltipContent>
-                                                                            <p className="max-w-xs">{feature.description}</p>
-                                                                        </TooltipContent>
-                                                                    </Tooltip>
-                                                                </TooltipProvider>
-                                                            )}
-                                                        </div>
-                                                    </td>
-                                                    {plans.map(plan => {
-                                                        const value = feature.values[plan.id];
-                                                        return (
-                                                            <td key={plan.id} className="p-4 text-center">
-                                                                {typeof value === 'boolean' ? (
-                                                                    value ? (
-                                                                        <Check className="h-5 w-5 text-green-500 mx-auto" />
-                                                                    ) : (
-                                                                        <Minus className="h-5 w-5 text-muted-foreground mx-auto" />
-                                                                    )
-                                                                ) : (
-                                                                    <span className="font-medium">{String(value)}</span>
+                                        {comparisonMatrix.map((category) =>
+                                            category.features.map(
+                                                (feature, idx) => (
+                                                    <tr
+                                                        key={feature.name}
+                                                        className={
+                                                            idx % 2 === 0
+                                                                ? 'bg-muted/5'
+                                                                : ''
+                                                        }
+                                                    >
+                                                        <td className="p-4">
+                                                            <div className="flex items-center gap-2">
+                                                                <span className="font-medium">
+                                                                    {
+                                                                        feature.name
+                                                                    }
+                                                                </span>
+                                                                {feature.description && (
+                                                                    <TooltipProvider>
+                                                                        <Tooltip>
+                                                                            <TooltipTrigger>
+                                                                                <HelpCircle className="h-4 w-4 text-muted-foreground" />
+                                                                            </TooltipTrigger>
+                                                                            <TooltipContent>
+                                                                                <p className="max-w-xs">
+                                                                                    {
+                                                                                        feature.description
+                                                                                    }
+                                                                                </p>
+                                                                            </TooltipContent>
+                                                                        </Tooltip>
+                                                                    </TooltipProvider>
                                                                 )}
-                                                            </td>
-                                                        );
-                                                    })}
-                                                </tr>
-                                            ))
-                                        ))}
+                                                            </div>
+                                                        </td>
+                                                        {plans.map((plan) => {
+                                                            const value =
+                                                                feature.values[
+                                                                    plan.id
+                                                                ];
+                                                            return (
+                                                                <td
+                                                                    key={
+                                                                        plan.id
+                                                                    }
+                                                                    className="p-4 text-center"
+                                                                >
+                                                                    {typeof value ===
+                                                                    'boolean' ? (
+                                                                        value ? (
+                                                                            <Check className="mx-auto h-5 w-5 text-green-500" />
+                                                                        ) : (
+                                                                            <Minus className="mx-auto h-5 w-5 text-muted-foreground" />
+                                                                        )
+                                                                    ) : (
+                                                                        <span className="font-medium">
+                                                                            {String(
+                                                                                value,
+                                                                            )}
+                                                                        </span>
+                                                                    )}
+                                                                </td>
+                                                            );
+                                                        })}
+                                                    </tr>
+                                                ),
+                                            ),
+                                        )}
 
                                         {/* Action Row */}
                                         <tr className="border-t bg-muted/10">
                                             <td className="p-4"></td>
-                                            {plans.map(plan => (
-                                                <td key={plan.id} className="p-4 text-center">
+                                            {plans.map((plan) => (
+                                                <td
+                                                    key={plan.id}
+                                                    className="p-4 text-center"
+                                                >
                                                     {currentPlan === plan.id ? (
-                                                        <Badge variant="default" className="w-full py-2">
-                                                            <Check className="h-4 w-4 mr-1" />
+                                                        <Badge
+                                                            variant="default"
+                                                            className="w-full py-2"
+                                                        >
+                                                            <Check className="mr-1 h-4 w-4" />
                                                             Current Plan
                                                         </Badge>
                                                     ) : (
                                                         <Button
                                                             className="w-full"
-                                                            disabled={!isOwner || processing === plan.id}
-                                                            onClick={() => handleSubscribe(plan.id)}
+                                                            disabled={
+                                                                !isOwner ||
+                                                                processing ===
+                                                                    plan.id
+                                                            }
+                                                            onClick={() =>
+                                                                handleSubscribe(
+                                                                    plan.id,
+                                                                )
+                                                            }
                                                         >
-                                                            {processing === plan.id ? (
+                                                            {processing ===
+                                                            plan.id ? (
                                                                 <Spinner className="mr-2" />
-                                                            ) : plan.id === 'free' ? (
+                                                            ) : plan.id ===
+                                                              'free' ? (
                                                                 'Downgrade'
-                                                            ) : currentPlan === 'free' ? (
+                                                            ) : currentPlan ===
+                                                              'free' ? (
                                                                 'Upgrade'
                                                             ) : (
                                                                 'Switch'
@@ -304,45 +430,61 @@ export default function ComparePlans({ plans, currentPlan, userRole }: ComparePa
                         <CardHeader>
                             <CardTitle>Frequently Asked Questions</CardTitle>
                         </CardHeader>
-                        <CardContent className="grid md:grid-cols-2 gap-6">
+                        <CardContent className="grid gap-6 md:grid-cols-2">
                             <div className="space-y-2">
-                                <h4 className="font-semibold">Can I change plans anytime?</h4>
+                                <h4 className="font-semibold">
+                                    Can I change plans anytime?
+                                </h4>
                                 <p className="text-sm text-muted-foreground">
-                                    Yes! You can upgrade or downgrade at any time. Upgrades take effect immediately, 
-                                    and downgrades take effect at the end of your billing period.
+                                    Yes! You can upgrade or downgrade at any
+                                    time. Upgrades take effect immediately, and
+                                    downgrades take effect at the end of your
+                                    billing period.
                                 </p>
                             </div>
                             <div className="space-y-2">
-                                <h4 className="font-semibold">What happens if I exceed my limits?</h4>
+                                <h4 className="font-semibold">
+                                    What happens if I exceed my limits?
+                                </h4>
                                 <p className="text-sm text-muted-foreground">
-                                    We'll notify you when you're approaching your limits. You can upgrade to a higher 
-                                    plan or purchase additional capacity as needed.
+                                    We'll notify you when you're approaching
+                                    your limits. You can upgrade to a higher
+                                    plan or purchase additional capacity as
+                                    needed.
                                 </p>
                             </div>
                             <div className="space-y-2">
-                                <h4 className="font-semibold">Is there a free trial?</h4>
+                                <h4 className="font-semibold">
+                                    Is there a free trial?
+                                </h4>
                                 <p className="text-sm text-muted-foreground">
-                                    Yes! All paid plans come with a 14-day free trial. No credit card required 
-                                    to start your trial.
+                                    Yes! All paid plans come with a 14-day free
+                                    trial. No credit card required to start your
+                                    trial.
                                 </p>
                             </div>
                             <div className="space-y-2">
-                                <h4 className="font-semibold">What payment methods do you accept?</h4>
+                                <h4 className="font-semibold">
+                                    What payment methods do you accept?
+                                </h4>
                                 <p className="text-sm text-muted-foreground">
-                                    We accept all major credit cards (Visa, Mastercard, American Express) 
-                                    and PayPal. Enterprise customers can pay by invoice.
+                                    We accept all major credit cards (Visa,
+                                    Mastercard, American Express) and PayPal.
+                                    Enterprise customers can pay by invoice.
                                 </p>
                             </div>
                         </CardContent>
                     </Card>
 
                     {/* CTA */}
-                    <div className="text-center py-8">
-                        <p className="text-muted-foreground mb-4">
+                    <div className="py-8 text-center">
+                        <p className="mb-4 text-muted-foreground">
                             Still have questions? We're here to help.
                         </p>
                         <Button variant="outline" asChild>
-                            <a href="mailto:support@example.com">Contact Sales</a>
+                            <a href="mailto:support@example.com">
+                                Contact Sales
+                            </a>
                         </Button>
                     </div>
                 </div>

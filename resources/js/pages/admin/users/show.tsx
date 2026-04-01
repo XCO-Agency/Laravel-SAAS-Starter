@@ -1,10 +1,16 @@
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 import AdminLayout from '@/layouts/admin-layout';
 import { Head, Link } from '@inertiajs/react';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { formatDistanceToNow } from 'date-fns';
-import { Activity, ArrowLeft, Shield, ShieldOff, UserCog } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Activity, ArrowLeft, Shield, UserCog } from 'lucide-react';
 
 interface UserDetail {
     id: number;
@@ -39,7 +45,11 @@ interface Props {
     activityLog: ActivityEntry[];
 }
 
-export default function AdminUserShow({ user, impersonationLogs, activityLog }: Props) {
+export default function AdminUserShow({
+    user,
+    impersonationLogs,
+    activityLog,
+}: Props) {
     return (
         <AdminLayout>
             <Head title={`User: ${user.name}`} />
@@ -53,10 +63,14 @@ export default function AdminUserShow({ user, impersonationLogs, activityLog }: 
                         </Link>
                     </Button>
                     <div>
-                        <h2 className="text-2xl font-bold tracking-tight">{user.name}</h2>
-                        <p className="text-sm text-muted-foreground">{user.email}</p>
+                        <h2 className="text-2xl font-bold tracking-tight">
+                            {user.name}
+                        </h2>
+                        <p className="text-sm text-muted-foreground">
+                            {user.email}
+                        </p>
                     </div>
-                    <div className="flex items-center gap-2 ml-auto">
+                    <div className="ml-auto flex items-center gap-2">
                         {user.is_superadmin && (
                             <Badge variant="destructive">
                                 <Shield className="mr-1 h-3 w-3" />
@@ -64,7 +78,10 @@ export default function AdminUserShow({ user, impersonationLogs, activityLog }: 
                             </Badge>
                         )}
                         {user.deleted_at && (
-                            <Badge variant="outline" className="text-red-600 border-red-300">
+                            <Badge
+                                variant="outline"
+                                className="border-red-300 text-red-600"
+                            >
                                 Suspended
                             </Badge>
                         )}
@@ -89,22 +106,36 @@ export default function AdminUserShow({ user, impersonationLogs, activityLog }: 
                         <CardContent>
                             {impersonationLogs.length === 0 ? (
                                 <div className="flex h-24 items-center justify-center rounded-md border border-dashed">
-                                    <p className="text-sm text-muted-foreground">No impersonation history.</p>
+                                    <p className="text-sm text-muted-foreground">
+                                        No impersonation history.
+                                    </p>
                                 </div>
                             ) : (
                                 <div className="space-y-3">
                                     {impersonationLogs.map((log) => (
-                                        <div key={log.id} className="rounded-md border p-3 text-sm">
+                                        <div
+                                            key={log.id}
+                                            className="rounded-md border p-3 text-sm"
+                                        >
                                             <div className="flex items-center justify-between">
-                                                <span className="font-medium">{log.impersonator_name}</span>
+                                                <span className="font-medium">
+                                                    {log.impersonator_name}
+                                                </span>
                                                 <span className="text-xs text-muted-foreground">
-                                                    {formatDistanceToNow(new Date(log.started_at), { addSuffix: true })}
+                                                    {formatDistanceToNow(
+                                                        new Date(
+                                                            log.started_at,
+                                                        ),
+                                                        { addSuffix: true },
+                                                    )}
                                                 </span>
                                             </div>
                                             <p className="mt-0.5 text-xs text-muted-foreground">
                                                 {log.impersonator_email}
-                                                {log.ip_address && ` · ${log.ip_address}`}
-                                                {log.ended_at && ` · ended ${formatDistanceToNow(new Date(log.ended_at), { addSuffix: true })}`}
+                                                {log.ip_address &&
+                                                    ` · ${log.ip_address}`}
+                                                {log.ended_at &&
+                                                    ` · ended ${formatDistanceToNow(new Date(log.ended_at), { addSuffix: true })}`}
                                             </p>
                                         </div>
                                     ))}
@@ -127,20 +158,34 @@ export default function AdminUserShow({ user, impersonationLogs, activityLog }: 
                         <CardContent>
                             {activityLog.length === 0 ? (
                                 <div className="flex h-24 items-center justify-center rounded-md border border-dashed">
-                                    <p className="text-sm text-muted-foreground">No activity logged.</p>
+                                    <p className="text-sm text-muted-foreground">
+                                        No activity logged.
+                                    </p>
                                 </div>
                             ) : (
                                 <div className="space-y-3">
                                     {activityLog.map((entry) => (
-                                        <div key={entry.id} className="rounded-md border p-3 text-sm">
+                                        <div
+                                            key={entry.id}
+                                            className="rounded-md border p-3 text-sm"
+                                        >
                                             <div className="flex items-center justify-between">
-                                                <span className="font-medium capitalize">{entry.event ?? 'action'}</span>
+                                                <span className="font-medium capitalize">
+                                                    {entry.event ?? 'action'}
+                                                </span>
                                                 <span className="text-xs text-muted-foreground">
-                                                    {entry.created_at && formatDistanceToNow(new Date(entry.created_at), { addSuffix: true })}
+                                                    {entry.created_at &&
+                                                        formatDistanceToNow(
+                                                            new Date(
+                                                                entry.created_at,
+                                                            ),
+                                                            { addSuffix: true },
+                                                        )}
                                                 </span>
                                             </div>
                                             <p className="mt-0.5 text-xs text-muted-foreground">
-                                                {entry.description} · by {entry.causer_name}
+                                                {entry.description} · by{' '}
+                                                {entry.causer_name}
                                             </p>
                                         </div>
                                     ))}

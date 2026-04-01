@@ -1,7 +1,7 @@
-import { cn } from '@/lib/utils';
 import { useFeature } from '@/contexts/feature-context';
+import { cn } from '@/lib/utils';
 import { ChevronDown, type LucideIcon } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 interface NavItem {
     title: string;
@@ -38,8 +38,10 @@ export function AdminSidebarGroup({
 
     // Auto-expand if current route is in this group
     useEffect(() => {
-        const isActiveInGroup = items.some(item => 
-            currentPath === item.href || currentPath.startsWith(item.href + '/')
+        const isActiveInGroup = items.some(
+            (item) =>
+                currentPath === item.href ||
+                currentPath.startsWith(item.href + '/'),
         );
         if (isActiveInGroup && !isExpanded) {
             setIsExpanded(true);
@@ -49,12 +51,15 @@ export function AdminSidebarGroup({
     // Save state to localStorage
     useEffect(() => {
         if (typeof window !== 'undefined') {
-            localStorage.setItem(`admin-sidebar-${storageKey}`, String(isExpanded));
+            localStorage.setItem(
+                `admin-sidebar-${storageKey}`,
+                String(isExpanded),
+            );
         }
     }, [isExpanded, storageKey]);
 
     // Filter items by feature flag
-    const visibleItems = items.filter(item => {
+    const visibleItems = items.filter((item) => {
         if (!item.feature) return true;
         return isFeatureEnabled(item.feature);
     });
@@ -62,8 +67,10 @@ export function AdminSidebarGroup({
     // Don't render if no visible items
     if (visibleItems.length === 0) return null;
 
-    const isGroupActive = visibleItems.some(item => 
-        currentPath === item.href || currentPath.startsWith(item.href + '/')
+    const isGroupActive = visibleItems.some(
+        (item) =>
+            currentPath === item.href ||
+            currentPath.startsWith(item.href + '/'),
     );
 
     return (
@@ -71,10 +78,10 @@ export function AdminSidebarGroup({
             <button
                 onClick={() => setIsExpanded(!isExpanded)}
                 className={cn(
-                    'w-full flex items-center justify-between px-3 py-2 text-sm font-medium rounded-md transition-colors',
+                    'flex w-full items-center justify-between rounded-md px-3 py-2 text-sm font-medium transition-colors',
                     isGroupActive
-                        ? 'text-sidebar-foreground bg-sidebar-accent/50'
-                        : 'text-sidebar-foreground/70 hover:bg-sidebar-accent/30 hover:text-sidebar-foreground'
+                        ? 'bg-sidebar-accent/50 text-sidebar-foreground'
+                        : 'text-sidebar-foreground/70 hover:bg-sidebar-accent/30 hover:text-sidebar-foreground',
                 )}
             >
                 <div className="flex items-center gap-3">
@@ -84,32 +91,38 @@ export function AdminSidebarGroup({
                 <ChevronDown
                     className={cn(
                         'size-4 transition-transform duration-200',
-                        isExpanded ? 'rotate-0' : '-rotate-90'
+                        isExpanded ? 'rotate-0' : '-rotate-90',
                     )}
                 />
             </button>
-            
+
             <div
                 className={cn(
                     'overflow-hidden transition-all duration-200 ease-in-out',
-                    isExpanded ? 'max-h-96 opacity-100 mt-1' : 'max-h-0 opacity-0'
+                    isExpanded
+                        ? 'mt-1 max-h-96 opacity-100'
+                        : 'max-h-0 opacity-0',
                 )}
             >
-                <div className="flex flex-col gap-0.5 pl-4 border-l border-sidebar-border/50 ml-3">
+                <div className="ml-3 flex flex-col gap-0.5 border-l border-sidebar-border/50 pl-4">
                     {visibleItems.map((item) => {
-                        const isActive = currentPath === item.href || currentPath.startsWith(item.href + '/');
+                        const isActive =
+                            currentPath === item.href ||
+                            currentPath.startsWith(item.href + '/');
                         return (
                             <a
                                 key={item.href}
                                 href={item.href}
                                 className={cn(
-                                    'flex items-center gap-3 px-3 py-1.5 text-sm rounded-md transition-colors',
+                                    'flex items-center gap-3 rounded-md px-3 py-1.5 text-sm transition-colors',
                                     isActive
-                                        ? 'bg-sidebar-accent text-sidebar-accent-foreground font-medium'
-                                        : 'text-sidebar-foreground/60 hover:bg-sidebar-accent/50 hover:text-sidebar-accent-foreground'
+                                        ? 'bg-sidebar-accent font-medium text-sidebar-accent-foreground'
+                                        : 'text-sidebar-foreground/60 hover:bg-sidebar-accent/50 hover:text-sidebar-accent-foreground',
                                 )}
                             >
-                                {item.icon && <item.icon className="size-3.5" />}
+                                {item.icon && (
+                                    <item.icon className="size-3.5" />
+                                )}
                                 <span>{item.title}</span>
                             </a>
                         );

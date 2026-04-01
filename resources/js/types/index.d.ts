@@ -86,6 +86,8 @@ export interface Plan {
     limits: {
         workspaces: number;
         team_members: number;
+        members?: number;
+        storage?: string | number;
     };
     popular?: boolean;
 }
@@ -187,7 +189,14 @@ export type Tag = {
     description?: string | null;
 };
 
-export type FieldType = 'text' | 'textarea' | 'number' | 'date' | 'boolean' | 'select' | 'url';
+export type FieldType =
+    | 'text'
+    | 'textarea'
+    | 'number'
+    | 'date'
+    | 'boolean'
+    | 'select'
+    | 'url';
 
 export interface CustomField {
     id: number;
@@ -226,5 +235,6 @@ declare global {
     interface Window {
         Pusher: typeof import('pusher-js').default;
         Echo: import('laravel-echo').default;
+        axios: import('axios').AxiosStatic;
     }
 }

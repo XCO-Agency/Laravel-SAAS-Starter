@@ -44,7 +44,9 @@ export default function MagicLink({ status }: { status?: string }) {
                             autoComplete="email"
                             placeholder="email@example.com"
                             value={data.email}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setData('email', e.target.value)}
+                            onChange={(
+                                e: React.ChangeEvent<HTMLInputElement>,
+                            ) => setData('email', e.target.value)}
                         />
                         <InputError message={errors.email} />
                     </div>
@@ -61,8 +63,12 @@ export default function MagicLink({ status }: { status?: string }) {
                     </Button>
                 </div>
 
-                <div className="text-center text-sm text-muted-foreground mt-4">
-                    <TextLink href="/login" tabIndex={3} className="font-semibold">
+                <div className="mt-4 text-center text-sm text-muted-foreground">
+                    <TextLink
+                        href="/login"
+                        tabIndex={3}
+                        className="font-semibold"
+                    >
                         Back to password login
                     </TextLink>
                 </div>

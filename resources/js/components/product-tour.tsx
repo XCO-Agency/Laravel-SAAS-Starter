@@ -9,7 +9,7 @@ export function ProductTour() {
     }
 
     const currentStep = steps[step];
-    
+
     if (!currentStep) {
         return null;
     }

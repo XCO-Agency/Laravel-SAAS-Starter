@@ -1,10 +1,16 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
 import WorkspaceLayout from '@/layouts/settings/workspace-layout';
 import { type BreadcrumbItem } from '@/types';
-import { Head, router, useForm } from '@inertiajs/react';
+import { Head, router } from '@inertiajs/react';
 import {
     AlertTriangle,
     CheckCircle2,
@@ -46,7 +52,10 @@ const breadcrumbs: BreadcrumbItem[] = [
     { title: 'CSV Import', href: '/team/import' },
 ];
 
-const STATUS_STYLES: Record<string, { badge: string; icon: typeof CheckCircle2 }> = {
+const STATUS_STYLES: Record<
+    string,
+    { badge: string; icon: typeof CheckCircle2 }
+> = {
     valid: {
         badge: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400',
         icon: CheckCircle2,
@@ -61,11 +70,12 @@ const STATUS_STYLES: Record<string, { badge: string; icon: typeof CheckCircle2 }
     },
 };
 
-export default function TeamImport({ workspace, canInvite, memberLimitMessage, preview }: TeamImportProps) {
+export default function TeamImport({
+    canInvite,
+    memberLimitMessage,
+    preview,
+}: TeamImportProps) {
     const fileInputRef = useRef<HTMLInputElement>(null);
-    const processFileRef = useRef<HTMLInputElement>(null);
-    const previewForm = useForm<{ csv_file: File | null }>({ csv_file: null });
-    const processForm = useForm<{ csv_file: File | null }>({ csv_file: null });
 
     const handlePreview = (e: FormEvent) => {
         e.preventDefault();
@@ -92,7 +102,8 @@ export default function TeamImport({ workspace, canInvite, memberLimitMessage, p
     };
 
     const downloadTemplate = () => {
-        const csv = 'email,role\njane@example.com,member\njohn@example.com,admin\n';
+        const csv =
+            'email,role\njane@example.com,member\njohn@example.com,admin\n';
         const blob = new Blob([csv], { type: 'text/csv' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -113,48 +124,67 @@ export default function TeamImport({ workspace, canInvite, memberLimitMessage, p
                             <FileUp className="h-5 w-5" />
                             Import Team Members
                         </h3>
-                        <p className="text-sm text-muted-foreground mt-1">
-                            Bulk import team members by uploading a CSV file with email addresses and roles.
+                        <p className="mt-1 text-sm text-muted-foreground">
+                            Bulk import team members by uploading a CSV file
+                            with email addresses and roles.
                         </p>
                     </div>
 
                     {/* Plan limit info */}
                     <div className="rounded-lg border bg-muted/30 p-3 text-sm text-muted-foreground">
-                        <Users className="inline h-4 w-4 mr-1.5 -mt-0.5" />
+                        <Users className="-mt-0.5 mr-1.5 inline h-4 w-4" />
                         {memberLimitMessage}
                     </div>
 
                     {!canInvite && (
                         <div className="rounded-lg border border-destructive/50 bg-destructive/10 p-3 text-sm text-destructive">
-                            <AlertTriangle className="inline h-4 w-4 mr-1.5 -mt-0.5" />
-                            You have reached your team member limit. Please upgrade your plan to invite more members.
+                            <AlertTriangle className="-mt-0.5 mr-1.5 inline h-4 w-4" />
+                            You have reached your team member limit. Please
+                            upgrade your plan to invite more members.
                         </div>
                     )}
 
                     {/* Upload Section */}
                     <Card>
                         <CardHeader>
-                            <CardTitle className="text-base">Upload CSV File</CardTitle>
+                            <CardTitle className="text-base">
+                                Upload CSV File
+                            </CardTitle>
                             <CardDescription>
-                                Your CSV file should have an &ldquo;email&rdquo; column and optionally a &ldquo;role&rdquo; column (admin or member). Default role is member.
+                                Your CSV file should have an &ldquo;email&rdquo;
+                                column and optionally a &ldquo;role&rdquo;
+                                column (admin or member). Default role is
+                                member.
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
-                            <form onSubmit={handlePreview} className="space-y-4">
+                            <form
+                                onSubmit={handlePreview}
+                                className="space-y-4"
+                            >
                                 <div className="flex items-center gap-3">
                                     <input
                                         ref={fileInputRef}
                                         type="file"
                                         accept=".csv,.txt"
-                                        className="block w-full text-sm text-muted-foreground file:mr-4 file:rounded-md file:border-0 file:bg-primary file:px-4 file:py-2 file:text-sm file:font-medium file:text-primary-foreground hover:file:bg-primary/90 cursor-pointer"
+                                        className="block w-full cursor-pointer text-sm text-muted-foreground file:mr-4 file:rounded-md file:border-0 file:bg-primary file:px-4 file:py-2 file:text-sm file:font-medium file:text-primary-foreground hover:file:bg-primary/90"
                                     />
                                 </div>
                                 <div className="flex items-center gap-2">
-                                    <Button type="submit" size="sm" disabled={!canInvite}>
+                                    <Button
+                                        type="submit"
+                                        size="sm"
+                                        disabled={!canInvite}
+                                    >
                                         <Upload className="mr-1.5 h-4 w-4" />
                                         Preview Import
                                     </Button>
-                                    <Button type="button" variant="outline" size="sm" onClick={downloadTemplate}>
+                                    <Button
+                                        type="button"
+                                        variant="outline"
+                                        size="sm"
+                                        onClick={downloadTemplate}
+                                    >
                                         <Download className="mr-1.5 h-4 w-4" />
                                         Download Template
                                     </Button>
@@ -174,7 +204,9 @@ export default function TeamImport({ workspace, canInvite, memberLimitMessage, p
                                             <CheckCircle2 className="h-4 w-4 text-emerald-500" />
                                             Valid
                                         </div>
-                                        <p className="mt-1 text-2xl font-bold text-emerald-600 dark:text-emerald-400">{preview.valid}</p>
+                                        <p className="mt-1 text-2xl font-bold text-emerald-600 dark:text-emerald-400">
+                                            {preview.valid}
+                                        </p>
                                     </CardContent>
                                 </Card>
                                 <Card>
@@ -183,7 +215,9 @@ export default function TeamImport({ workspace, canInvite, memberLimitMessage, p
                                             <XCircle className="h-4 w-4 text-red-500" />
                                             Invalid
                                         </div>
-                                        <p className="mt-1 text-2xl font-bold text-red-600 dark:text-red-400">{preview.invalid}</p>
+                                        <p className="mt-1 text-2xl font-bold text-red-600 dark:text-red-400">
+                                            {preview.invalid}
+                                        </p>
                                     </CardContent>
                                 </Card>
                                 <Card>
@@ -192,7 +226,9 @@ export default function TeamImport({ workspace, canInvite, memberLimitMessage, p
                                             <SkipForward className="h-4 w-4 text-amber-500" />
                                             Skipped
                                         </div>
-                                        <p className="mt-1 text-2xl font-bold text-amber-600 dark:text-amber-400">{preview.skipped}</p>
+                                        <p className="mt-1 text-2xl font-bold text-amber-600 dark:text-amber-400">
+                                            {preview.skipped}
+                                        </p>
                                     </CardContent>
                                 </Card>
                             </div>
@@ -200,40 +236,69 @@ export default function TeamImport({ workspace, canInvite, memberLimitMessage, p
                             {/* Preview Table */}
                             <Card>
                                 <CardHeader>
-                                    <CardTitle className="text-base">Preview Results</CardTitle>
+                                    <CardTitle className="text-base">
+                                        Preview Results
+                                    </CardTitle>
                                     <CardDescription>
-                                        Review the parsed entries before sending invitations.
+                                        Review the parsed entries before sending
+                                        invitations.
                                     </CardDescription>
                                 </CardHeader>
                                 <CardContent>
-                                    <div className="rounded-xl border bg-card overflow-hidden">
-                                        <table className="w-full text-sm text-left">
-                                            <thead className="bg-muted/50 text-muted-foreground uppercase text-xs">
+                                    <div className="overflow-hidden rounded-xl border bg-card">
+                                        <table className="w-full text-left text-sm">
+                                            <thead className="bg-muted/50 text-xs text-muted-foreground uppercase">
                                                 <tr>
-                                                    <th className="px-4 py-3 font-medium">Email</th>
-                                                    <th className="px-4 py-3 font-medium">Role</th>
-                                                    <th className="px-4 py-3 font-medium">Status</th>
-                                                    <th className="px-4 py-3 font-medium">Details</th>
+                                                    <th className="px-4 py-3 font-medium">
+                                                        Email
+                                                    </th>
+                                                    <th className="px-4 py-3 font-medium">
+                                                        Role
+                                                    </th>
+                                                    <th className="px-4 py-3 font-medium">
+                                                        Status
+                                                    </th>
+                                                    <th className="px-4 py-3 font-medium">
+                                                        Details
+                                                    </th>
                                                 </tr>
                                             </thead>
                                             <tbody className="divide-y divide-border">
                                                 {preview.rows.map((row, i) => {
-                                                    const style = STATUS_STYLES[row.status] || STATUS_STYLES.valid;
-                                                    const StatusIcon = style.icon;
+                                                    const style =
+                                                        STATUS_STYLES[
+                                                            row.status
+                                                        ] ||
+                                                        STATUS_STYLES.valid;
+                                                    const StatusIcon =
+                                                        style.icon;
                                                     return (
-                                                        <tr key={i} className="hover:bg-muted/50 transition-colors">
-                                                            <td className="px-4 py-3 font-mono text-xs">{row.email}</td>
-                                                            <td className="px-4 py-3">
-                                                                <Badge variant="outline" className="text-[10px] capitalize">{row.role}</Badge>
+                                                        <tr
+                                                            key={i}
+                                                            className="transition-colors hover:bg-muted/50"
+                                                        >
+                                                            <td className="px-4 py-3 font-mono text-xs">
+                                                                {row.email}
                                                             </td>
                                                             <td className="px-4 py-3">
-                                                                <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-medium ${style.badge}`}>
+                                                                <Badge
+                                                                    variant="outline"
+                                                                    className="text-[10px] capitalize"
+                                                                >
+                                                                    {row.role}
+                                                                </Badge>
+                                                            </td>
+                                                            <td className="px-4 py-3">
+                                                                <span
+                                                                    className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-medium ${style.badge}`}
+                                                                >
                                                                     <StatusIcon className="h-3 w-3" />
                                                                     {row.status}
                                                                 </span>
                                                             </td>
                                                             <td className="px-4 py-3 text-xs text-muted-foreground">
-                                                                {row.error || '—'}
+                                                                {row.error ||
+                                                                    '—'}
                                                             </td>
                                                         </tr>
                                                     );
@@ -244,12 +309,17 @@ export default function TeamImport({ workspace, canInvite, memberLimitMessage, p
 
                                     {preview.valid > 0 && (
                                         <div className="mt-4 flex items-center gap-3">
-                                            <Button onClick={handleProcess} disabled={!canInvite}>
+                                            <Button
+                                                onClick={handleProcess}
+                                                disabled={!canInvite}
+                                            >
                                                 <Upload className="mr-1.5 h-4 w-4" />
-                                                Send {preview.valid} Invitation{preview.valid !== 1 ? 's' : ''}
+                                                Send {preview.valid} Invitation
+                                                {preview.valid !== 1 ? 's' : ''}
                                             </Button>
                                             <p className="text-sm text-muted-foreground">
-                                                This will send invitation emails to all valid entries.
+                                                This will send invitation emails
+                                                to all valid entries.
                                             </p>
                                         </div>
                                     )}

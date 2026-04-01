@@ -1,7 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import {
     Select,
     SelectContent,
@@ -10,10 +9,22 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { Spinner } from '@/components/ui/spinner';
+import { Textarea } from '@/components/ui/textarea';
+import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem, type Workspace } from '@/types';
 import { Head, router, useForm } from '@inertiajs/react';
-import { ArrowLeft, Save, LayoutGrid, Code, Megaphone, TrendingUp, Headphones, Folder, Kanban, Check } from 'lucide-react';
-import AppLayout from '@/layouts/app-layout';
+import {
+    ArrowLeft,
+    Check,
+    Code,
+    Folder,
+    Headphones,
+    Kanban,
+    LayoutGrid,
+    Megaphone,
+    Save,
+    TrendingUp,
+} from 'lucide-react';
 import { useState } from 'react';
 
 interface CreateTemplateProps {
@@ -34,7 +45,9 @@ const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Create', href: '#' },
 ];
 
-export default function CreateWorkspaceTemplate({ workspace }: CreateTemplateProps) {
+export default function CreateWorkspaceTemplate({
+    workspace,
+}: CreateTemplateProps) {
     const [showSuccess, setShowSuccess] = useState(false);
 
     const { data, setData, errors, processing, post } = useForm({
@@ -70,22 +83,23 @@ export default function CreateWorkspaceTemplate({ workspace }: CreateTemplatePro
                             variant="ghost"
                             size="sm"
                             onClick={() => router.visit('/workspace-templates')}
-                            className="mb-4 -ml-2 font-mono text-xs uppercase text-slate-500 hover:text-slate-900"
+                            className="mb-4 -ml-2 font-mono text-xs text-slate-500 uppercase hover:text-slate-900"
                         >
                             <ArrowLeft className="mr-1.5 h-3.5 w-3.5" />
                             Back to Templates
                         </Button>
 
                         <div className="space-y-2">
-                            <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-violet-500">
+                            <div className="flex items-center gap-2 font-mono text-xs tracking-widest text-violet-500 uppercase">
                                 <span className="h-px w-8 bg-violet-500" />
                                 Template Factory
                             </div>
-                            <h1 className="font-mono text-3xl font-black uppercase tracking-tight">
+                            <h1 className="font-mono text-3xl font-black tracking-tight uppercase">
                                 Create Template
                             </h1>
                             <p className="font-mono text-sm text-slate-500">
-                                Save your current workspace as a reusable template
+                                Save your current workspace as a reusable
+                                template
                             </p>
                         </div>
                     </div>
@@ -98,7 +112,9 @@ export default function CreateWorkspaceTemplate({ workspace }: CreateTemplatePro
                             <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center bg-emerald-500 text-white">
                                 <Check className="h-8 w-8" />
                             </div>
-                            <h3 className="font-mono text-lg font-bold uppercase">Template Created!</h3>
+                            <h3 className="font-mono text-lg font-bold uppercase">
+                                Template Created!
+                            </h3>
                             <p className="mt-2 font-mono text-sm text-slate-600">
                                 Redirecting to templates gallery...
                             </p>
@@ -107,7 +123,7 @@ export default function CreateWorkspaceTemplate({ workspace }: CreateTemplatePro
                         <form onSubmit={handleSubmit} className="space-y-6">
                             {/* Source Workspace */}
                             <section className="border-2 border-slate-200 bg-white p-6 dark:border-slate-700 dark:bg-slate-900">
-                                <div className="mb-4 flex items-center gap-2 font-mono text-xs uppercase tracking-wide text-slate-500">
+                                <div className="mb-4 flex items-center gap-2 font-mono text-xs tracking-wide text-slate-500 uppercase">
                                     <LayoutGrid className="h-4 w-4" />
                                     Source Workspace
                                 </div>
@@ -120,60 +136,89 @@ export default function CreateWorkspaceTemplate({ workspace }: CreateTemplatePro
                                         />
                                     ) : (
                                         <div className="flex h-12 w-12 items-center justify-center bg-violet-500 text-lg font-bold text-white">
-                                            {workspace.name.charAt(0).toUpperCase()}
+                                            {workspace.name
+                                                .charAt(0)
+                                                .toUpperCase()}
                                         </div>
                                     )}
                                     <div>
-                                        <p className="font-mono text-sm font-bold">{workspace.name}</p>
-                                        <p className="font-mono text-xs text-slate-500">{workspace.slug}</p>
+                                        <p className="font-mono text-sm font-bold">
+                                            {workspace.name}
+                                        </p>
+                                        <p className="font-mono text-xs text-slate-500">
+                                            {workspace.slug}
+                                        </p>
                                     </div>
                                 </div>
                             </section>
 
                             {/* Template Details */}
                             <section className="border-2 border-slate-200 bg-white p-6 dark:border-slate-700 dark:bg-slate-900">
-                                <div className="mb-6 flex items-center gap-2 font-mono text-xs uppercase tracking-wide text-slate-500">
+                                <div className="mb-6 flex items-center gap-2 font-mono text-xs tracking-wide text-slate-500 uppercase">
                                     <Save className="h-4 w-4" />
                                     Template Details
                                 </div>
 
                                 <div className="space-y-6">
                                     <div>
-                                        <Label htmlFor="name" className="font-mono text-xs uppercase tracking-wide">
-                                            Template Name <span className="text-rose-500">*</span>
+                                        <Label
+                                            htmlFor="name"
+                                            className="font-mono text-xs tracking-wide uppercase"
+                                        >
+                                            Template Name{' '}
+                                            <span className="text-rose-500">
+                                                *
+                                            </span>
                                         </Label>
                                         <Input
                                             id="name"
                                             value={data.name}
-                                            onChange={(e) => setData('name', e.target.value)}
+                                            onChange={(e) =>
+                                                setData('name', e.target.value)
+                                            }
                                             className="mt-2 border-2 border-slate-200 font-mono text-sm focus:border-violet-500 focus:ring-0 dark:border-slate-700"
                                             placeholder="e.g., Marketing Campaign Setup"
                                         />
                                         {errors.name && (
-                                            <p className="mt-1 font-mono text-xs text-rose-500">{errors.name}</p>
+                                            <p className="mt-1 font-mono text-xs text-rose-500">
+                                                {errors.name}
+                                            </p>
                                         )}
                                     </div>
 
                                     <div>
-                                        <Label htmlFor="description" className="font-mono text-xs uppercase tracking-wide">
+                                        <Label
+                                            htmlFor="description"
+                                            className="font-mono text-xs tracking-wide uppercase"
+                                        >
                                             Description
                                         </Label>
                                         <Textarea
                                             id="description"
                                             value={data.description}
-                                            onChange={(e) => setData('description', e.target.value)}
+                                            onChange={(e) =>
+                                                setData(
+                                                    'description',
+                                                    e.target.value,
+                                                )
+                                            }
                                             className="mt-2 min-h-[100px] border-2 border-slate-200 font-mono text-sm focus:border-violet-500 focus:ring-0 dark:border-slate-700"
                                             placeholder="Describe what this template includes..."
                                         />
                                     </div>
 
                                     <div>
-                                        <Label className="font-mono text-xs uppercase tracking-wide">
-                                            Category <span className="text-rose-500">*</span>
+                                        <Label className="font-mono text-xs tracking-wide uppercase">
+                                            Category{' '}
+                                            <span className="text-rose-500">
+                                                *
+                                            </span>
                                         </Label>
                                         <Select
                                             value={data.category}
-                                            onValueChange={(value) => setData('category', value)}
+                                            onValueChange={(value) =>
+                                                setData('category', value)
+                                            }
                                         >
                                             <SelectTrigger className="mt-2 border-2 border-slate-200 font-mono text-sm focus:border-violet-500 focus:ring-0 dark:border-slate-700">
                                                 <SelectValue />
@@ -182,7 +227,11 @@ export default function CreateWorkspaceTemplate({ workspace }: CreateTemplatePro
                                                 {CATEGORIES.map((cat) => {
                                                     const Icon = cat.icon;
                                                     return (
-                                                        <SelectItem key={cat.value} value={cat.value} className="font-mono text-sm">
+                                                        <SelectItem
+                                                            key={cat.value}
+                                                            value={cat.value}
+                                                            className="font-mono text-sm"
+                                                        >
                                                             <div className="flex items-center gap-2">
                                                                 <Icon className="h-4 w-4" />
                                                                 {cat.label}
@@ -193,7 +242,9 @@ export default function CreateWorkspaceTemplate({ workspace }: CreateTemplatePro
                                             </SelectContent>
                                         </Select>
                                         {errors.category && (
-                                            <p className="mt-1 font-mono text-xs text-rose-500">{errors.category}</p>
+                                            <p className="mt-1 font-mono text-xs text-rose-500">
+                                                {errors.category}
+                                            </p>
                                         )}
                                     </div>
 
@@ -202,11 +253,20 @@ export default function CreateWorkspaceTemplate({ workspace }: CreateTemplatePro
                                             type="checkbox"
                                             id="is_public"
                                             checked={data.is_public}
-                                            onChange={(e) => setData('is_public', e.target.checked)}
+                                            onChange={(e) =>
+                                                setData(
+                                                    'is_public',
+                                                    e.target.checked,
+                                                )
+                                            }
                                             className="h-4 w-4 rounded border-2 border-slate-300 text-violet-500 focus:ring-0"
                                         />
-                                        <Label htmlFor="is_public" className="font-mono text-sm">
-                                            Make this template public for all team members
+                                        <Label
+                                            htmlFor="is_public"
+                                            className="font-mono text-sm"
+                                        >
+                                            Make this template public for all
+                                            team members
                                         </Label>
                                     </div>
                                 </div>
@@ -214,7 +274,7 @@ export default function CreateWorkspaceTemplate({ workspace }: CreateTemplatePro
 
                             {/* What's Included */}
                             <section className="border-2 border-slate-200 bg-white p-6 dark:border-slate-700 dark:bg-slate-900">
-                                <div className="mb-4 font-mono text-xs uppercase tracking-wide text-slate-500">
+                                <div className="mb-4 font-mono text-xs tracking-wide text-slate-500 uppercase">
                                     What's Included
                                 </div>
                                 <ul className="space-y-2 font-mono text-sm">
@@ -225,7 +285,10 @@ export default function CreateWorkspaceTemplate({ workspace }: CreateTemplatePro
                                         'Branding settings (accent color)',
                                         'Webhook configurations',
                                     ].map((item) => (
-                                        <li key={item} className="flex items-center gap-3">
+                                        <li
+                                            key={item}
+                                            className="flex items-center gap-3"
+                                        >
                                             <span className="h-2 w-2 bg-emerald-500" />
                                             {item}
                                         </li>
@@ -233,12 +296,16 @@ export default function CreateWorkspaceTemplate({ workspace }: CreateTemplatePro
                                     <li className="flex items-center gap-3 text-slate-400 line-through">
                                         <span className="h-2 w-2 bg-slate-300" />
                                         Team members
-                                        <span className="text-xs">(not included)</span>
+                                        <span className="text-xs">
+                                            (not included)
+                                        </span>
                                     </li>
                                     <li className="flex items-center gap-3 text-slate-400 line-through">
                                         <span className="h-2 w-2 bg-slate-300" />
                                         API keys
-                                        <span className="text-xs">(not included)</span>
+                                        <span className="text-xs">
+                                            (not included)
+                                        </span>
                                     </li>
                                 </ul>
                             </section>
@@ -248,7 +315,9 @@ export default function CreateWorkspaceTemplate({ workspace }: CreateTemplatePro
                                 <Button
                                     type="button"
                                     variant="outline"
-                                    onClick={() => router.visit('/workspace-templates')}
+                                    onClick={() =>
+                                        router.visit('/workspace-templates')
+                                    }
                                     className="border-2 border-slate-200 font-mono text-xs uppercase hover:border-slate-400"
                                 >
                                     Cancel
@@ -256,7 +325,7 @@ export default function CreateWorkspaceTemplate({ workspace }: CreateTemplatePro
                                 <Button
                                     type="submit"
                                     disabled={processing}
-                                    className="border-2 border-slate-900 bg-violet-500 font-mono text-xs uppercase tracking-wide text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:bg-violet-600 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                                    className="border-2 border-slate-900 bg-violet-500 font-mono text-xs tracking-wide text-white uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:bg-violet-600 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
                                 >
                                     {processing && <Spinner className="mr-2" />}
                                     <Save className="mr-2 h-4 w-4" />

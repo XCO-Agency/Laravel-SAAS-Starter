@@ -26,16 +26,34 @@ export default function TwoFactorChallenge() {
     }>(() => {
         if (showRecoveryInput) {
             return {
-                title: t('auth.two_factor_challenge.recovery_code.title', 'Recovery Code'),
-                description: t('auth.two_factor_challenge.recovery_code.description', 'Please confirm access to your account by entering one of your emergency recovery codes.'),
-                toggleText: t('auth.two_factor_challenge.recovery_code.toggle_text', 'login using an authentication code'),
+                title: t(
+                    'auth.two_factor_challenge.recovery_code.title',
+                    'Recovery Code',
+                ),
+                description: t(
+                    'auth.two_factor_challenge.recovery_code.description',
+                    'Please confirm access to your account by entering one of your emergency recovery codes.',
+                ),
+                toggleText: t(
+                    'auth.two_factor_challenge.recovery_code.toggle_text',
+                    'login using an authentication code',
+                ),
             };
         }
 
         return {
-            title: t('auth.two_factor_challenge.authentication_code.title', 'Authentication Code'),
-            description: t('auth.two_factor_challenge.authentication_code.description', 'Enter the authentication code provided by your authenticator application.'),
-            toggleText: t('auth.two_factor_challenge.authentication_code.toggle_text', 'login using a recovery code'),
+            title: t(
+                'auth.two_factor_challenge.authentication_code.title',
+                'Authentication Code',
+            ),
+            description: t(
+                'auth.two_factor_challenge.authentication_code.description',
+                'Enter the authentication code provided by your authenticator application.',
+            ),
+            toggleText: t(
+                'auth.two_factor_challenge.authentication_code.toggle_text',
+                'login using a recovery code',
+            ),
         };
     }, [showRecoveryInput, t]);
 
@@ -50,7 +68,12 @@ export default function TwoFactorChallenge() {
             title={authConfigContent.title}
             description={authConfigContent.description}
         >
-            <Head title={t('auth.two_factor_challenge.page_title', 'Two-Factor Authentication')} />
+            <Head
+                title={t(
+                    'auth.two_factor_challenge.page_title',
+                    'Two-Factor Authentication',
+                )}
+            />
 
             <div className="space-y-6">
                 <Form
@@ -66,7 +89,10 @@ export default function TwoFactorChallenge() {
                                     <Input
                                         name="recovery_code"
                                         type="text"
-                                        placeholder={t('auth.two_factor_challenge.recovery_code.placeholder', 'Enter recovery code')}
+                                        placeholder={t(
+                                            'auth.two_factor_challenge.recovery_code.placeholder',
+                                            'Enter recovery code',
+                                        )}
                                         autoFocus={showRecoveryInput}
                                         required
                                     />
@@ -107,11 +133,19 @@ export default function TwoFactorChallenge() {
                                 className="w-full"
                                 disabled={processing}
                             >
-                                {t('auth.two_factor_challenge.continue', 'Continue')}
+                                {t(
+                                    'auth.two_factor_challenge.continue',
+                                    'Continue',
+                                )}
                             </Button>
 
                             <div className="text-center text-sm text-muted-foreground">
-                                <span>{t('auth.two_factor_challenge.or_you_can', 'or you can')} </span>
+                                <span>
+                                    {t(
+                                        'auth.two_factor_challenge.or_you_can',
+                                        'or you can',
+                                    )}{' '}
+                                </span>
                                 <button
                                     type="button"
                                     className="cursor-pointer text-foreground underline decoration-neutral-300 underline-offset-4 transition-colors duration-300 ease-out hover:decoration-current! dark:decoration-neutral-500"

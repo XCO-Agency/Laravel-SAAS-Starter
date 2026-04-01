@@ -1,7 +1,12 @@
-import { useEffect, useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 import {
     Dialog,
     DialogContent,
@@ -13,16 +18,17 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
+import { router } from '@inertiajs/react';
 import {
-    Monitor,
-    Smartphone,
-    Tablet,
     AlertCircle,
     CheckCircle,
     LogOut,
+    Monitor,
     Shield,
+    Smartphone,
+    Tablet,
 } from 'lucide-react';
-import { router } from '@inertiajs/react';
+import { useEffect, useState } from 'react';
 
 interface SessionSummaryData {
     total_sessions: number;
@@ -85,7 +91,9 @@ export function SessionSummaryCard() {
         if (!password) return;
 
         setSigningOut(true);
-        const csrf = document.querySelector<HTMLMetaElement>('meta[name="csrf-token"]')?.content ?? '';
+        const csrf =
+            document.querySelector<HTMLMetaElement>('meta[name="csrf-token"]')
+                ?.content ?? '';
 
         try {
             const res = await fetch('/settings/sessions', {
@@ -135,14 +143,21 @@ export function SessionSummaryCard() {
                 <CardContent className="p-6">
                     <div className="flex items-center gap-2 text-red-600">
                         <AlertCircle className="h-5 w-5" />
-                        <p className="text-sm">Failed to load session summary</p>
+                        <p className="text-sm">
+                            Failed to load session summary
+                        </p>
                     </div>
                 </CardContent>
             </Card>
         );
     }
 
-    const { total_sessions, other_sessions_count, current_session, last_other_activity } = data;
+    const {
+        total_sessions,
+        other_sessions_count,
+        current_session,
+        last_other_activity,
+    } = data;
 
     return (
         <>
@@ -158,7 +173,13 @@ export function SessionSummaryCard() {
                                 Manage your active sessions across devices
                             </CardDescription>
                         </div>
-                        <Badge variant={other_sessions_count > 0 ? 'secondary' : 'outline'}>
+                        <Badge
+                            variant={
+                                other_sessions_count > 0
+                                    ? 'secondary'
+                                    : 'outline'
+                            }
+                        >
                             {total_sessions} active
                         </Badge>
                     </div>
@@ -172,17 +193,24 @@ export function SessionSummaryCard() {
                             </div>
                             <div className="flex-1">
                                 <div className="flex items-center gap-2">
-                                    <span className="font-medium">Current Session</span>
-                                    <Badge variant="outline" className="text-green-600 border-green-200 dark:border-green-800">
+                                    <span className="font-medium">
+                                        Current Session
+                                    </span>
+                                    <Badge
+                                        variant="outline"
+                                        className="border-green-200 text-green-600 dark:border-green-800"
+                                    >
                                         <CheckCircle className="mr-1 h-3 w-3" />
                                         Active
                                     </Badge>
                                 </div>
-                                <p className="text-sm text-muted-foreground mt-1">
-                                    {current_session.platform} • {current_session.browser}
+                                <p className="mt-1 text-sm text-muted-foreground">
+                                    {current_session.platform} •{' '}
+                                    {current_session.browser}
                                 </p>
                                 <p className="text-xs text-muted-foreground">
-                                    IP: {current_session.ip_address} • {current_session.last_active}
+                                    IP: {current_session.ip_address} •{' '}
+                                    {current_session.last_active}
                                 </p>
                             </div>
                         </div>
@@ -192,21 +220,28 @@ export function SessionSummaryCard() {
                     {other_sessions_count > 0 ? (
                         <div className="rounded-lg border border-amber-200 bg-amber-50 p-4 dark:border-amber-800 dark:bg-amber-950/30">
                             <div className="flex items-start gap-3">
-                                <AlertCircle className="h-5 w-5 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
+                                <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-amber-600 dark:text-amber-400" />
                                 <div className="flex-1">
                                     <p className="text-sm font-medium text-amber-900 dark:text-amber-300">
-                                        {other_sessions_count} other active session{other_sessions_count !== 1 && 's'}
+                                        {other_sessions_count} other active
+                                        session
+                                        {other_sessions_count !== 1 && 's'}
                                     </p>
                                     {last_other_activity && (
-                                        <p className="text-xs text-amber-700 dark:text-amber-400 mt-1">
-                                            Last activity: {last_other_activity.platform} • {last_other_activity.device} • {last_other_activity.last_active}
+                                        <p className="mt-1 text-xs text-amber-700 dark:text-amber-400">
+                                            Last activity:{' '}
+                                            {last_other_activity.platform} •{' '}
+                                            {last_other_activity.device} •{' '}
+                                            {last_other_activity.last_active}
                                         </p>
                                     )}
                                     <Button
                                         variant="outline"
                                         size="sm"
                                         className="mt-3 border-amber-300 text-amber-700 hover:bg-amber-100 dark:border-amber-700 dark:text-amber-300 dark:hover:bg-amber-900/50"
-                                        onClick={() => router.get('/settings/sessions')}
+                                        onClick={() =>
+                                            router.get('/settings/sessions')
+                                        }
                                     >
                                         View All Sessions
                                     </Button>
@@ -217,7 +252,8 @@ export function SessionSummaryCard() {
                         <div className="flex items-center gap-3 rounded-lg border border-green-200 bg-green-50 p-4 dark:border-green-800 dark:bg-green-950/30">
                             <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400" />
                             <p className="text-sm text-green-800 dark:text-green-300">
-                                No other active sessions. Your account is secure.
+                                No other active sessions. Your account is
+                                secure.
                             </p>
                         </div>
                     )}
@@ -237,13 +273,19 @@ export function SessionSummaryCard() {
             </Card>
 
             {/* Sign Out Others Dialog */}
-            <Dialog open={showSignOutDialog} onOpenChange={setShowSignOutDialog}>
+            <Dialog
+                open={showSignOutDialog}
+                onOpenChange={setShowSignOutDialog}
+            >
                 <DialogContent>
                     <form onSubmit={handleSignOutOthers}>
                         <DialogHeader>
-                            <DialogTitle>Sign Out All Other Devices</DialogTitle>
+                            <DialogTitle>
+                                Sign Out All Other Devices
+                            </DialogTitle>
                             <DialogDescription>
-                                This will immediately sign you out of all other active sessions. Enter your password to confirm.
+                                This will immediately sign you out of all other
+                                active sessions. Enter your password to confirm.
                             </DialogDescription>
                         </DialogHeader>
                         <div className="py-4">
@@ -272,7 +314,9 @@ export function SessionSummaryCard() {
                                 variant="destructive"
                                 disabled={signingOut || !password}
                             >
-                                {signingOut && <Spinner className="mr-2 h-4 w-4" />}
+                                {signingOut && (
+                                    <Spinner className="mr-2 h-4 w-4" />
+                                )}
                                 Sign Out All Others
                             </Button>
                         </DialogFooter>

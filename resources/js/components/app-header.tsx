@@ -1,5 +1,7 @@
 import { Breadcrumbs } from '@/components/breadcrumbs';
+import { ChangelogWidget } from '@/components/changelog-widget';
 import { Icon } from '@/components/icon';
+import { NotificationsDropdown } from '@/components/notifications-dropdown';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
@@ -27,8 +29,6 @@ import {
     TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { UserMenuContent } from '@/components/user-menu-content';
-import { NotificationsDropdown } from '@/components/notifications-dropdown';
-import { ChangelogWidget } from '@/components/changelog-widget';
 import { useInitials } from '@/hooks/use-initials';
 import { cn, isSameUrl, resolveUrl } from '@/lib/utils';
 import { dashboard } from '@/routes';
@@ -37,7 +37,6 @@ import { Link, usePage } from '@inertiajs/react';
 import { BookOpen, Folder, LayoutGrid, Menu, Search } from 'lucide-react';
 import AppLogo from './app-logo';
 import AppLogoIcon from './app-logo-icon';
-
 
 const activeItemStyles =
     'text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100';
@@ -197,7 +196,11 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                 variant="ghost"
                                 size="icon"
                                 className="group h-9 w-9 cursor-pointer"
-                                onClick={() => window.dispatchEvent(new Event('open-command-palette'))}
+                                onClick={() =>
+                                    window.dispatchEvent(
+                                        new Event('open-command-palette'),
+                                    )
+                                }
                                 title="Search (Cmd+K)"
                             >
                                 <Search className="!size-5 opacity-80 group-hover:opacity-100" />
@@ -245,7 +248,10 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                 >
                                     <Avatar className="size-8 overflow-hidden rounded-full">
                                         <AvatarImage
-                                            src={auth.user.avatar_url || auth.user.avatar}
+                                            src={
+                                                auth.user.avatar_url ||
+                                                auth.user.avatar
+                                            }
                                             alt={auth.user.name}
                                         />
                                         <AvatarFallback className="rounded-lg bg-neutral-200 text-black dark:bg-neutral-700 dark:text-white">

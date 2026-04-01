@@ -1,28 +1,37 @@
-import { Head, router, useForm, usePage } from '@inertiajs/react';
+import AppLogo from '@/components/app-logo';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
+import { cn } from '@/lib/utils';
+import { SharedData } from '@/types';
+import { Head, router, useForm, usePage } from '@inertiajs/react';
 import {
     Building2,
+    Check,
     CheckCircle,
     ChevronRight,
-    Store,
-    Zap,
-    Users,
-    Infinity,
-    Check,
+    Infinity as InfinityIcon,
     Sparkles,
+    Store,
 } from 'lucide-react';
 import { useState } from 'react';
-import AppLogo from '@/components/app-logo';
-import { SharedData } from '@/types';
-import { cn } from '@/lib/utils';
 
 const trackStep = (step: string, action: string) => {
-    router.post('/onboarding/track-step', { step, action }, { preserveState: true, preserveScroll: true });
+    router.post(
+        '/onboarding/track-step',
+        { step, action },
+        { preserveState: true, preserveScroll: true },
+    );
 };
 
 interface Plan {
@@ -46,7 +55,14 @@ const PLANS: Plan[] = [
         description: 'Perfect for getting started',
         monthlyPrice: 0,
         yearlyPrice: 0,
-        features: ['1 Workspace', '2 Team Members', '2 API Keys', '1 Webhook', 'Basic Features', 'Community Support'],
+        features: [
+            '1 Workspace',
+            '2 Team Members',
+            '2 API Keys',
+            '1 Webhook',
+            'Basic Features',
+            'Community Support',
+        ],
         limits: { workspaces: 1, team_members: 2 },
     },
     {
@@ -55,7 +71,15 @@ const PLANS: Plan[] = [
         description: 'For growing teams',
         monthlyPrice: 19,
         yearlyPrice: 190,
-        features: ['5 Workspaces', '10 Team Members', '10 API Keys', '5 Webhooks', 'All Features', 'Priority Support', 'Advanced Analytics'],
+        features: [
+            '5 Workspaces',
+            '10 Team Members',
+            '10 API Keys',
+            '5 Webhooks',
+            'All Features',
+            'Priority Support',
+            'Advanced Analytics',
+        ],
         popular: true,
         limits: { workspaces: 5, team_members: 10 },
     },
@@ -65,7 +89,16 @@ const PLANS: Plan[] = [
         description: 'For larger organizations',
         monthlyPrice: 49,
         yearlyPrice: 490,
-        features: ['Unlimited Workspaces', 'Unlimited Team Members', 'Unlimited API Keys', 'Unlimited Webhooks', 'All Features', 'Dedicated Support', 'Advanced Analytics', 'Custom Integrations'],
+        features: [
+            'Unlimited Workspaces',
+            'Unlimited Team Members',
+            'Unlimited API Keys',
+            'Unlimited Webhooks',
+            'All Features',
+            'Dedicated Support',
+            'Advanced Analytics',
+            'Custom Integrations',
+        ],
         limits: { workspaces: -1, team_members: -1 },
     },
 ];
@@ -81,7 +114,8 @@ function PlanCard({
     billingPeriod: 'monthly' | 'yearly';
     onSelect: () => void;
 }) {
-    const price = billingPeriod === 'monthly' ? plan.monthlyPrice : plan.yearlyPrice;
+    const price =
+        billingPeriod === 'monthly' ? plan.monthlyPrice : plan.yearlyPrice;
     const isFree = price === 0;
 
     return (
@@ -91,7 +125,7 @@ function PlanCard({
                 'relative cursor-pointer rounded-xl border-2 p-6 transition-all duration-200 hover:shadow-lg',
                 isSelected
                     ? 'border-primary bg-primary/5 shadow-md'
-                    : 'border-border bg-card hover:border-primary/50'
+                    : 'border-border bg-card hover:border-primary/50',
             )}
         >
             {plan.popular && (
@@ -105,7 +139,9 @@ function PlanCard({
 
             <div className="mb-4">
                 <h3 className="text-xl font-bold">{plan.name}</h3>
-                <p className="text-sm text-muted-foreground">{plan.description}</p>
+                <p className="text-sm text-muted-foreground">
+                    {plan.description}
+                </p>
             </div>
 
             <div className="mb-4">
@@ -114,12 +150,15 @@ function PlanCard({
                         {isFree ? 'Free' : `$${price}`}
                     </span>
                     {!isFree && (
-                        <span className="text-muted-foreground">/{billingPeriod === 'monthly' ? 'mo' : 'yr'}</span>
+                        <span className="text-muted-foreground">
+                            /{billingPeriod === 'monthly' ? 'mo' : 'yr'}
+                        </span>
                     )}
                 </div>
                 {!isFree && billingPeriod === 'yearly' && (
                     <p className="text-xs text-green-600 dark:text-green-400">
-                        Save ${plan.monthlyPrice * 12 - plan.yearlyPrice} per year
+                        Save ${plan.monthlyPrice * 12 - plan.yearlyPrice} per
+                        year
                     </p>
                 )}
             </div>
@@ -175,7 +214,8 @@ export default function OnboardingWizard() {
         setStep(3);
     };
 
-    const selectedPlan = PLANS.find((p) => p.id === data.onboarding_plan) || PLANS[1];
+    const selectedPlan =
+        PLANS.find((p) => p.id === data.onboarding_plan) || PLANS[1];
 
     return (
         <div className="flex min-h-screen flex-col items-center justify-center bg-muted/40 p-4 md:p-8">
@@ -194,47 +234,72 @@ export default function OnboardingWizard() {
                         <div
                             className={cn(
                                 'flex h-8 w-8 items-center justify-center rounded-full text-sm font-medium transition-colors',
-                                step >= 1 ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
+                                step >= 1
+                                    ? 'bg-primary text-primary-foreground'
+                                    : 'bg-muted text-muted-foreground',
                             )}
                         >
                             1
                         </div>
-                        <span className="mt-2 text-xs font-medium text-muted-foreground">Welcome</span>
+                        <span className="mt-2 text-xs font-medium text-muted-foreground">
+                            Welcome
+                        </span>
                     </div>
-                    <div className={cn('h-px flex-1 mx-4 transition-colors', step >= 2 ? 'bg-primary' : 'bg-border')} />
+                    <div
+                        className={cn(
+                            'mx-4 h-px flex-1 transition-colors',
+                            step >= 2 ? 'bg-primary' : 'bg-border',
+                        )}
+                    />
                     <div className="flex flex-col items-center">
                         <div
                             className={cn(
                                 'flex h-8 w-8 items-center justify-center rounded-full text-sm font-medium transition-colors',
-                                step >= 2 ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
+                                step >= 2
+                                    ? 'bg-primary text-primary-foreground'
+                                    : 'bg-muted text-muted-foreground',
                             )}
                         >
                             2
                         </div>
-                        <span className="mt-2 text-xs font-medium text-muted-foreground">Workspace</span>
+                        <span className="mt-2 text-xs font-medium text-muted-foreground">
+                            Workspace
+                        </span>
                     </div>
-                    <div className={cn('h-px flex-1 mx-4 transition-colors', step >= 3 ? 'bg-primary' : 'bg-border')} />
+                    <div
+                        className={cn(
+                            'mx-4 h-px flex-1 transition-colors',
+                            step >= 3 ? 'bg-primary' : 'bg-border',
+                        )}
+                    />
                     <div className="flex flex-col items-center">
                         <div
                             className={cn(
                                 'flex h-8 w-8 items-center justify-center rounded-full text-sm font-medium transition-colors',
-                                step >= 3 ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
+                                step >= 3
+                                    ? 'bg-primary text-primary-foreground'
+                                    : 'bg-muted text-muted-foreground',
                             )}
                         >
                             3
                         </div>
-                        <span className="mt-2 text-xs font-medium text-muted-foreground">Plan</span>
+                        <span className="mt-2 text-xs font-medium text-muted-foreground">
+                            Plan
+                        </span>
                     </div>
                 </div>
 
                 <div className="relative overflow-hidden">
                     {/* Step 1: Welcome & Overview */}
                     {step === 1 && (
-                        <Card className="border-none shadow-lg animate-in fade-in slide-in-from-right-4 duration-500 max-w-md mx-auto">
+                        <Card className="mx-auto max-w-md animate-in border-none shadow-lg duration-500 fade-in slide-in-from-right-4">
                             <CardHeader className="text-center">
-                                <CardTitle className="text-2xl">Welcome, {auth.user.name}!</CardTitle>
+                                <CardTitle className="text-2xl">
+                                    Welcome, {auth.user.name}!
+                                </CardTitle>
                                 <CardDescription>
-                                    Let's get your account set up. This will only take a minute.
+                                    Let's get your account set up. This will
+                                    only take a minute.
                                 </CardDescription>
                             </CardHeader>
                             <CardContent className="space-y-6">
@@ -244,11 +309,12 @@ export default function OnboardingWizard() {
                                             <Building2 className="h-4 w-4 text-primary" />
                                         </div>
                                         <div>
-                                            <h4 className="font-medium flex items-center gap-2">
+                                            <h4 className="flex items-center gap-2 font-medium">
                                                 Create your organization
                                             </h4>
                                             <p className="text-sm text-muted-foreground">
-                                                Set up your primary workspace to collaborate with your team.
+                                                Set up your primary workspace to
+                                                collaborate with your team.
                                             </p>
                                         </div>
                                     </div>
@@ -258,18 +324,23 @@ export default function OnboardingWizard() {
                                             <CheckCircle className="h-4 w-4 text-primary" />
                                         </div>
                                         <div>
-                                            <h4 className="font-medium flex items-center gap-2">
+                                            <h4 className="flex items-center gap-2 font-medium">
                                                 Start collaborating
                                             </h4>
                                             <p className="text-sm text-muted-foreground">
-                                                Invite team members and start utilizing the platform together.
+                                                Invite team members and start
+                                                utilizing the platform together.
                                             </p>
                                         </div>
                                     </div>
                                 </div>
                             </CardContent>
                             <CardFooter>
-                                <Button className="w-full" size="lg" onClick={nextStep}>
+                                <Button
+                                    className="w-full"
+                                    size="lg"
+                                    onClick={nextStep}
+                                >
                                     Get Started
                                     <ChevronRight className="ml-2 h-4 w-4" />
                                 </Button>
@@ -279,7 +350,7 @@ export default function OnboardingWizard() {
 
                     {/* Step 2: Workspace Blueprint */}
                     {step === 2 && (
-                        <Card className="border-none shadow-lg animate-in fade-in slide-in-from-right-4 duration-500 max-w-md mx-auto">
+                        <Card className="mx-auto max-w-md animate-in border-none shadow-lg duration-500 fade-in slide-in-from-right-4">
                             <form
                                 onSubmit={(e) => {
                                     e.preventDefault();
@@ -287,24 +358,36 @@ export default function OnboardingWizard() {
                                 }}
                             >
                                 <CardHeader>
-                                    <CardTitle className="text-2xl">Name your Workspace</CardTitle>
+                                    <CardTitle className="text-2xl">
+                                        Name your Workspace
+                                    </CardTitle>
                                     <CardDescription>
-                                        What's the name of your company or organization? You can change this later.
+                                        What's the name of your company or
+                                        organization? You can change this later.
                                     </CardDescription>
                                 </CardHeader>
                                 <CardContent className="space-y-4">
                                     <div className="space-y-2">
-                                        <Label htmlFor="workspace_name">Workspace Name</Label>
+                                        <Label htmlFor="workspace_name">
+                                            Workspace Name
+                                        </Label>
                                         <Input
                                             id="workspace_name"
                                             placeholder="e.g. Acme Corporation"
                                             value={data.workspace_name}
-                                            onChange={(e) => setData('workspace_name', e.target.value)}
+                                            onChange={(e) =>
+                                                setData(
+                                                    'workspace_name',
+                                                    e.target.value,
+                                                )
+                                            }
                                             autoFocus
                                             required
                                         />
                                         {errors.workspace_name && (
-                                            <p className="text-sm text-destructive">{errors.workspace_name}</p>
+                                            <p className="text-sm text-destructive">
+                                                {errors.workspace_name}
+                                            </p>
                                         )}
                                     </div>
 
@@ -313,13 +396,20 @@ export default function OnboardingWizard() {
                                             <Store className="h-4 w-4 text-muted-foreground" />
                                             What is a Workspace?
                                         </h4>
-                                        <p className="text-xs text-muted-foreground leading-relaxed">
-                                            A workspace is a dedicated environment where you and your team can collaborate securely. You are designated as the owner.
+                                        <p className="text-xs leading-relaxed text-muted-foreground">
+                                            A workspace is a dedicated
+                                            environment where you and your team
+                                            can collaborate securely. You are
+                                            designated as the owner.
                                         </p>
                                     </div>
                                 </CardContent>
                                 <CardFooter className="flex justify-between">
-                                    <Button type="button" variant="ghost" onClick={() => setStep(1)}>
+                                    <Button
+                                        type="button"
+                                        variant="ghost"
+                                        onClick={() => setStep(1)}
+                                    >
                                         Back
                                     </Button>
                                     <Button
@@ -337,26 +427,51 @@ export default function OnboardingWizard() {
 
                     {/* Step 3: Plan Selection with Cards */}
                     {step === 3 && (
-                        <div className="animate-in fade-in slide-in-from-right-4 duration-500">
-                            <div className="text-center mb-8">
-                                <h2 className="text-3xl font-bold mb-2">Choose your plan</h2>
+                        <div className="animate-in duration-500 fade-in slide-in-from-right-4">
+                            <div className="mb-8 text-center">
+                                <h2 className="mb-2 text-3xl font-bold">
+                                    Choose your plan
+                                </h2>
                                 <p className="text-muted-foreground">
-                                    Select the plan that fits your needs. You can upgrade or downgrade at any time.
+                                    Select the plan that fits your needs. You
+                                    can upgrade or downgrade at any time.
                                 </p>
                             </div>
 
                             {/* Billing Period Toggle */}
-                            <div className="flex items-center justify-center gap-4 mb-8">
-                                <span className={cn('text-sm', data.onboarding_billing_period === 'monthly' ? 'text-foreground font-medium' : 'text-muted-foreground')}>
+                            <div className="mb-8 flex items-center justify-center gap-4">
+                                <span
+                                    className={cn(
+                                        'text-sm',
+                                        data.onboarding_billing_period ===
+                                            'monthly'
+                                            ? 'font-medium text-foreground'
+                                            : 'text-muted-foreground',
+                                    )}
+                                >
                                     Monthly
                                 </span>
                                 <Switch
-                                    checked={data.onboarding_billing_period === 'yearly'}
+                                    checked={
+                                        data.onboarding_billing_period ===
+                                        'yearly'
+                                    }
                                     onCheckedChange={(checked) =>
-                                        setData('onboarding_billing_period', checked ? 'yearly' : 'monthly')
+                                        setData(
+                                            'onboarding_billing_period',
+                                            checked ? 'yearly' : 'monthly',
+                                        )
                                     }
                                 />
-                                <span className={cn('text-sm', data.onboarding_billing_period === 'yearly' ? 'text-foreground font-medium' : 'text-muted-foreground')}>
+                                <span
+                                    className={cn(
+                                        'text-sm',
+                                        data.onboarding_billing_period ===
+                                            'yearly'
+                                            ? 'font-medium text-foreground'
+                                            : 'text-muted-foreground',
+                                    )}
+                                >
                                     Yearly
                                 </span>
                                 <Badge variant="secondary" className="ml-2">
@@ -365,44 +480,65 @@ export default function OnboardingWizard() {
                             </div>
 
                             {/* Plan Cards */}
-                            <div className="grid gap-6 md:grid-cols-3 mb-8">
+                            <div className="mb-8 grid gap-6 md:grid-cols-3">
                                 {PLANS.map((plan) => (
                                     <PlanCard
                                         key={plan.id}
                                         plan={plan}
-                                        isSelected={data.onboarding_plan === plan.id}
-                                        billingPeriod={data.onboarding_billing_period}
-                                        onSelect={() => setData('onboarding_plan', plan.id as 'free' | 'pro' | 'business')}
+                                        isSelected={
+                                            data.onboarding_plan === plan.id
+                                        }
+                                        billingPeriod={
+                                            data.onboarding_billing_period
+                                        }
+                                        onSelect={() =>
+                                            setData(
+                                                'onboarding_plan',
+                                                plan.id as
+                                                    | 'free'
+                                                    | 'pro'
+                                                    | 'business',
+                                            )
+                                        }
                                     />
                                 ))}
                             </div>
 
                             {/* Summary & Actions */}
-                            <Card className="border-none shadow max-w-2xl mx-auto">
+                            <Card className="mx-auto max-w-2xl border-none shadow">
                                 <CardContent className="p-6">
-                                    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                                    <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                                         <div>
-                                            <p className="text-sm text-muted-foreground">Selected plan</p>
+                                            <p className="text-sm text-muted-foreground">
+                                                Selected plan
+                                            </p>
                                             <div className="flex items-baseline gap-2">
-                                                <h3 className="text-xl font-bold">{selectedPlan.name}</h3>
+                                                <h3 className="text-xl font-bold">
+                                                    {selectedPlan.name}
+                                                </h3>
                                                 <span className="text-muted-foreground">
-                                                    {data.onboarding_billing_period === 'monthly'
+                                                    {data.onboarding_billing_period ===
+                                                    'monthly'
                                                         ? `$${selectedPlan.monthlyPrice}/month`
                                                         : `$${selectedPlan.yearlyPrice}/year`}
                                                 </span>
                                             </div>
                                             <p className="text-xs text-muted-foreground">
-                                                {selectedPlan.limits.workspaces === -1 ? (
+                                                {selectedPlan.limits
+                                                    .workspaces === -1 ? (
                                                     <span className="flex items-center gap-1">
-                                                        <Infinity className="h-3 w-3" /> Unlimited workspaces
+                                                        <InfinityIcon className="h-3 w-3" />{' '}
+                                                        Unlimited workspaces
                                                     </span>
                                                 ) : (
                                                     `${selectedPlan.limits.workspaces} workspace${selectedPlan.limits.workspaces !== 1 ? 's' : ''}`
                                                 )}
                                                 {' · '}
-                                                {selectedPlan.limits.team_members === -1 ? (
+                                                {selectedPlan.limits
+                                                    .team_members === -1 ? (
                                                     <span className="flex items-center gap-1">
-                                                        <Infinity className="h-3 w-3" /> Unlimited members
+                                                        <InfinityIcon className="h-3 w-3" />{' '}
+                                                        Unlimited members
                                                     </span>
                                                 ) : (
                                                     `${selectedPlan.limits.team_members} team member${selectedPlan.limits.team_members !== 1 ? 's' : ''}`
@@ -410,7 +546,10 @@ export default function OnboardingWizard() {
                                             </p>
                                         </div>
                                         <div className="flex gap-3">
-                                            <Button variant="ghost" onClick={() => setStep(2)}>
+                                            <Button
+                                                variant="ghost"
+                                                onClick={() => setStep(2)}
+                                            >
                                                 Back
                                             </Button>
                                             <Button
@@ -421,9 +560,10 @@ export default function OnboardingWizard() {
                                             >
                                                 {processing
                                                     ? 'Setting up...'
-                                                    : selectedPlan.monthlyPrice === 0
-                                                        ? 'Start Free'
-                                                        : 'Continue to Payment'}
+                                                    : selectedPlan.monthlyPrice ===
+                                                        0
+                                                      ? 'Start Free'
+                                                      : 'Continue to Payment'}
                                             </Button>
                                         </div>
                                     </div>
@@ -431,7 +571,9 @@ export default function OnboardingWizard() {
                             </Card>
 
                             {errors.onboarding_plan && (
-                                <p className="text-sm text-destructive text-center mt-4">{errors.onboarding_plan}</p>
+                                <p className="mt-4 text-center text-sm text-destructive">
+                                    {errors.onboarding_plan}
+                                </p>
                             )}
                         </div>
                     )}

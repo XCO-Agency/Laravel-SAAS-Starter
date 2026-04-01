@@ -3,6 +3,7 @@ import { store } from '@/routes/register';
 import { Form, Head } from '@inertiajs/react';
 
 import InputError from '@/components/input-error';
+import SocialLoginButtons from '@/components/social-login-buttons';
 import TextLink from '@/components/text-link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -10,7 +11,6 @@ import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import { useTranslations } from '@/hooks/use-translations';
 import AuthLayout from '@/layouts/auth-layout';
-import SocialLoginButtons from '@/components/social-login-buttons';
 
 interface RegisterProps {
     email?: string;
@@ -81,7 +81,10 @@ export default function Register({ email, redirect }: RegisterProps) {
                                     tabIndex={2}
                                     autoComplete="email"
                                     name="email"
-                                    placeholder={t('auth.email_placeholder', 'email@example.com')}
+                                    placeholder={t(
+                                        'auth.email_placeholder',
+                                        'email@example.com',
+                                    )}
                                     defaultValue={email}
                                     readOnly={!!email}
                                     className={email ? 'bg-muted' : ''}
@@ -151,7 +154,11 @@ export default function Register({ email, redirect }: RegisterProps) {
 
                         <div className="text-center text-sm text-muted-foreground">
                             {t('auth.have_account', 'Already have an account?')}{' '}
-                            <TextLink href={loginUrl()} tabIndex={6} className="font-semibold">
+                            <TextLink
+                                href={loginUrl()}
+                                tabIndex={6}
+                                className="font-semibold"
+                            >
                                 {t('auth.log_in', 'Sign in')}
                             </TextLink>
                         </div>

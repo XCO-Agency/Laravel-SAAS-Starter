@@ -1,13 +1,13 @@
+import AppearanceToggleDropdown from '@/components/appearance-dropdown';
+import { LanguageSwitcher } from '@/components/language-switcher';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { useTranslations } from '@/hooks/use-translations';
 import { dashboard, login, register } from '@/routes';
 import { type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import { Menu, Sparkles } from 'lucide-react';
 import { useState } from 'react';
-import { LanguageSwitcher } from '@/components/language-switcher';
-import AppearanceToggleDropdown from '@/components/appearance-dropdown';
-import { useTranslations } from '@/hooks/use-translations';
 
 interface LandingHeaderProps {
     canRegister?: boolean;
@@ -21,7 +21,10 @@ export function LandingHeader({ canRegister = true }: LandingHeaderProps) {
     const navLinks = [
         { href: '#features', label: t('landing.nav.features', 'Features') },
         { href: '#pricing', label: t('landing.nav.pricing', 'Pricing') },
-        { href: '#testimonials', label: t('landing.nav.testimonials', 'Testimonials') },
+        {
+            href: '#testimonials',
+            label: t('landing.nav.testimonials', 'Testimonials'),
+        },
         { href: '#faq', label: t('landing.nav.faq', 'FAQ') },
     ];
 
@@ -33,7 +36,9 @@ export function LandingHeader({ canRegister = true }: LandingHeaderProps) {
                     <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary">
                         <Sparkles className="h-5 w-5 text-primary-foreground" />
                     </div>
-                    <span className="text-xl font-bold tracking-tight">Laravel SAAS Starter</span>
+                    <span className="text-xl font-bold tracking-tight">
+                        Laravel SAAS Starter
+                    </span>
                 </Link>
 
                 {/* Desktop Navigation */}
@@ -46,8 +51,13 @@ export function LandingHeader({ canRegister = true }: LandingHeaderProps) {
                             onClick={(e) => {
                                 if (link.href.startsWith('#')) {
                                     e.preventDefault();
-                                    const element = document.querySelector(link.href);
-                                    element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                    const element = document.querySelector(
+                                        link.href,
+                                    );
+                                    element?.scrollIntoView({
+                                        behavior: 'smooth',
+                                        block: 'start',
+                                    });
                                 }
                             }}
                         >
@@ -61,16 +71,25 @@ export function LandingHeader({ canRegister = true }: LandingHeaderProps) {
                     <AppearanceToggleDropdown />
                     {auth.user ? (
                         <Button asChild>
-                            <Link href={dashboard()}>{t('landing.nav.dashboard', 'Dashboard')}</Link>
+                            <Link href={dashboard()}>
+                                {t('landing.nav.dashboard', 'Dashboard')}
+                            </Link>
                         </Button>
                     ) : (
                         <>
                             <Button variant="ghost" asChild>
-                                <Link href={login()}>{t('landing.nav.signin', 'Sign In')}</Link>
+                                <Link href={login()}>
+                                    {t('landing.nav.signin', 'Sign In')}
+                                </Link>
                             </Button>
                             {canRegister && (
                                 <Button asChild>
-                                    <Link href={register()}>{t('landing.hero.get_started', 'Get Started')}</Link>
+                                    <Link href={register()}>
+                                        {t(
+                                            'landing.hero.get_started',
+                                            'Get Started',
+                                        )}
+                                    </Link>
                                 </Button>
                             )}
                         </>
@@ -81,14 +100,20 @@ export function LandingHeader({ canRegister = true }: LandingHeaderProps) {
                 <div className="flex items-center gap-2 md:hidden">
                     <LanguageSwitcher currentLocale={locale} />
                     <AppearanceToggleDropdown />
-                    <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+                    <Sheet
+                        open={mobileMenuOpen}
+                        onOpenChange={setMobileMenuOpen}
+                    >
                         <SheetTrigger asChild>
                             <Button variant="ghost" size="icon">
                                 <Menu className="h-5 w-5" />
                                 <span className="sr-only">Open menu</span>
                             </Button>
                         </SheetTrigger>
-                        <SheetContent side="right" className="w-full sm:max-w-sm">
+                        <SheetContent
+                            side="right"
+                            className="w-full sm:max-w-sm"
+                        >
                             <div className="flex flex-col gap-6 pt-6">
                                 <nav className="flex flex-col gap-4">
                                     {navLinks.map((link) => (
@@ -100,8 +125,17 @@ export function LandingHeader({ canRegister = true }: LandingHeaderProps) {
                                                 if (link.href.startsWith('#')) {
                                                     e.preventDefault();
                                                     setTimeout(() => {
-                                                        const element = document.querySelector(link.href);
-                                                        element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                                        const element =
+                                                            document.querySelector(
+                                                                link.href,
+                                                            );
+                                                        element?.scrollIntoView(
+                                                            {
+                                                                behavior:
+                                                                    'smooth',
+                                                                block: 'start',
+                                                            },
+                                                        );
                                                     }, 100);
                                                 }
                                             }}
@@ -114,16 +148,38 @@ export function LandingHeader({ canRegister = true }: LandingHeaderProps) {
                                 <div className="flex flex-col gap-3">
                                     {auth.user ? (
                                         <Button asChild className="w-full">
-                                            <Link href={dashboard()}>{t('landing.nav.dashboard', 'Dashboard')}</Link>
+                                            <Link href={dashboard()}>
+                                                {t(
+                                                    'landing.nav.dashboard',
+                                                    'Dashboard',
+                                                )}
+                                            </Link>
                                         </Button>
                                     ) : (
                                         <>
-                                            <Button variant="outline" asChild className="w-full">
-                                                <Link href={login()}>{t('landing.nav.signin', 'Sign In')}</Link>
+                                            <Button
+                                                variant="outline"
+                                                asChild
+                                                className="w-full"
+                                            >
+                                                <Link href={login()}>
+                                                    {t(
+                                                        'landing.nav.signin',
+                                                        'Sign In',
+                                                    )}
+                                                </Link>
                                             </Button>
                                             {canRegister && (
-                                                <Button asChild className="w-full">
-                                                    <Link href={register()}>{t('landing.hero.get_started', 'Get Started')}</Link>
+                                                <Button
+                                                    asChild
+                                                    className="w-full"
+                                                >
+                                                    <Link href={register()}>
+                                                        {t(
+                                                            'landing.hero.get_started',
+                                                            'Get Started',
+                                                        )}
+                                                    </Link>
                                                 </Button>
                                             )}
                                         </>

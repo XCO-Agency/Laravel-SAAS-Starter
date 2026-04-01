@@ -1,14 +1,9 @@
-import AdminLayout from '@/layouts/admin-layout';
-import { Head, router, useForm } from '@inertiajs/react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import {
-    Edit2,
-    Globe,
-    Plus,
-    Trash2,
-} from 'lucide-react';
+import AdminLayout from '@/layouts/admin-layout';
+import { Head, router, useForm } from '@inertiajs/react';
+import { Edit2, Globe, Plus, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 
 interface SeoEntry {
@@ -32,7 +27,13 @@ interface Props {
     entries: SeoEntry[];
 }
 
-function SeoForm({ entry, onCancel }: { entry?: SeoEntry; onCancel: () => void }) {
+function SeoForm({
+    entry,
+    onCancel,
+}: {
+    entry?: SeoEntry;
+    onCancel: () => void;
+}) {
     const form = useForm({
         path: entry?.path ?? '',
         title: entry?.title ?? '',
@@ -52,20 +53,34 @@ function SeoForm({ entry, onCancel }: { entry?: SeoEntry; onCancel: () => void }
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (entry) {
-            form.put(`/admin/seo/${entry.id}`, { onSuccess: onCancel, preserveScroll: true });
+            form.put(`/admin/seo/${entry.id}`, {
+                onSuccess: onCancel,
+                preserveScroll: true,
+            });
         } else {
-            form.post('/admin/seo', { onSuccess: () => { form.reset(); onCancel(); }, preserveScroll: true });
+            form.post('/admin/seo', {
+                onSuccess: () => {
+                    form.reset();
+                    onCancel();
+                },
+                preserveScroll: true,
+            });
         }
     };
 
     return (
-        <form onSubmit={handleSubmit} className="rounded-xl border bg-card p-6 space-y-4">
-            <div className="flex items-center gap-2 mb-2">
+        <form
+            onSubmit={handleSubmit}
+            className="space-y-4 rounded-xl border bg-card p-6"
+        >
+            <div className="mb-2 flex items-center gap-2">
                 <label className="flex items-center gap-2 text-sm">
                     <input
                         type="checkbox"
                         checked={form.data.is_global}
-                        onChange={e => form.setData('is_global', e.target.checked)}
+                        onChange={(e) =>
+                            form.setData('is_global', e.target.checked)
+                        }
                         className="rounded"
                     />
                     Global fallback (applies to all pages without specific SEO)
@@ -77,11 +92,15 @@ function SeoForm({ entry, onCancel }: { entry?: SeoEntry; onCancel: () => void }
                     <label className="text-sm font-medium">Path</label>
                     <Input
                         value={form.data.path}
-                        onChange={e => form.setData('path', e.target.value)}
+                        onChange={(e) => form.setData('path', e.target.value)}
                         placeholder="/about"
                         className="mt-1"
                     />
-                    {form.errors.path && <p className="text-xs text-destructive mt-1">{form.errors.path}</p>}
+                    {form.errors.path && (
+                        <p className="mt-1 text-xs text-destructive">
+                            {form.errors.path}
+                        </p>
+                    )}
                 </div>
             )}
 
@@ -90,7 +109,7 @@ function SeoForm({ entry, onCancel }: { entry?: SeoEntry; onCancel: () => void }
                     <label className="text-sm font-medium">Meta Title</label>
                     <Input
                         value={form.data.title}
-                        onChange={e => form.setData('title', e.target.value)}
+                        onChange={(e) => form.setData('title', e.target.value)}
                         placeholder="Page Title | My App"
                         className="mt-1"
                     />
@@ -99,7 +118,9 @@ function SeoForm({ entry, onCancel }: { entry?: SeoEntry; onCancel: () => void }
                     <label className="text-sm font-medium">Keywords</label>
                     <Input
                         value={form.data.keywords}
-                        onChange={e => form.setData('keywords', e.target.value)}
+                        onChange={(e) =>
+                            form.setData('keywords', e.target.value)
+                        }
                         placeholder="saas, billing, teams"
                         className="mt-1"
                     />
@@ -110,21 +131,27 @@ function SeoForm({ entry, onCancel }: { entry?: SeoEntry; onCancel: () => void }
                 <label className="text-sm font-medium">Meta Description</label>
                 <textarea
                     value={form.data.description}
-                    onChange={e => form.setData('description', e.target.value)}
+                    onChange={(e) =>
+                        form.setData('description', e.target.value)
+                    }
                     placeholder="A brief description of this page for search engines..."
                     rows={2}
                     className="mt-1 flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                 />
             </div>
 
-            <details className="border rounded-lg p-3">
-                <summary className="text-sm font-medium cursor-pointer">Open Graph Settings</summary>
-                <div className="grid gap-4 md:grid-cols-2 mt-3">
+            <details className="rounded-lg border p-3">
+                <summary className="cursor-pointer text-sm font-medium">
+                    Open Graph Settings
+                </summary>
+                <div className="mt-3 grid gap-4 md:grid-cols-2">
                     <div>
                         <label className="text-sm font-medium">OG Title</label>
                         <Input
                             value={form.data.og_title}
-                            onChange={e => form.setData('og_title', e.target.value)}
+                            onChange={(e) =>
+                                form.setData('og_title', e.target.value)
+                            }
                             placeholder="Leave blank to use meta title"
                             className="mt-1"
                         />
@@ -133,7 +160,9 @@ function SeoForm({ entry, onCancel }: { entry?: SeoEntry; onCancel: () => void }
                         <label className="text-sm font-medium">OG Type</label>
                         <select
                             value={form.data.og_type}
-                            onChange={e => form.setData('og_type', e.target.value)}
+                            onChange={(e) =>
+                                form.setData('og_type', e.target.value)
+                            }
                             className="mt-1 flex h-9 w-full rounded-md border border-input bg-background px-3 text-sm"
                         >
                             <option value="website">website</option>
@@ -142,20 +171,28 @@ function SeoForm({ entry, onCancel }: { entry?: SeoEntry; onCancel: () => void }
                         </select>
                     </div>
                     <div className="md:col-span-2">
-                        <label className="text-sm font-medium">OG Description</label>
+                        <label className="text-sm font-medium">
+                            OG Description
+                        </label>
                         <textarea
                             value={form.data.og_description}
-                            onChange={e => form.setData('og_description', e.target.value)}
+                            onChange={(e) =>
+                                form.setData('og_description', e.target.value)
+                            }
                             placeholder="Leave blank to use meta description"
                             rows={2}
                             className="mt-1 flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                         />
                     </div>
                     <div className="md:col-span-2">
-                        <label className="text-sm font-medium">OG Image URL</label>
+                        <label className="text-sm font-medium">
+                            OG Image URL
+                        </label>
                         <Input
                             value={form.data.og_image}
-                            onChange={e => form.setData('og_image', e.target.value)}
+                            onChange={(e) =>
+                                form.setData('og_image', e.target.value)
+                            }
                             placeholder="https://example.com/og-image.png"
                             className="mt-1"
                         />
@@ -163,45 +200,63 @@ function SeoForm({ entry, onCancel }: { entry?: SeoEntry; onCancel: () => void }
                 </div>
             </details>
 
-            <details className="border rounded-lg p-3">
-                <summary className="text-sm font-medium cursor-pointer">Twitter Card Settings</summary>
-                <div className="grid gap-4 md:grid-cols-2 mt-3">
+            <details className="rounded-lg border p-3">
+                <summary className="cursor-pointer text-sm font-medium">
+                    Twitter Card Settings
+                </summary>
+                <div className="mt-3 grid gap-4 md:grid-cols-2">
                     <div>
                         <label className="text-sm font-medium">Card Type</label>
                         <select
                             value={form.data.twitter_card}
-                            onChange={e => form.setData('twitter_card', e.target.value)}
+                            onChange={(e) =>
+                                form.setData('twitter_card', e.target.value)
+                            }
                             className="mt-1 flex h-9 w-full rounded-md border border-input bg-background px-3 text-sm"
                         >
                             <option value="summary">summary</option>
-                            <option value="summary_large_image">summary_large_image</option>
+                            <option value="summary_large_image">
+                                summary_large_image
+                            </option>
                             <option value="app">app</option>
                             <option value="player">player</option>
                         </select>
                     </div>
                     <div>
-                        <label className="text-sm font-medium">Twitter @site</label>
+                        <label className="text-sm font-medium">
+                            Twitter @site
+                        </label>
                         <Input
                             value={form.data.twitter_site}
-                            onChange={e => form.setData('twitter_site', e.target.value)}
+                            onChange={(e) =>
+                                form.setData('twitter_site', e.target.value)
+                            }
                             placeholder="@myapp"
                             className="mt-1"
                         />
                     </div>
                     <div>
-                        <label className="text-sm font-medium">Twitter @creator</label>
+                        <label className="text-sm font-medium">
+                            Twitter @creator
+                        </label>
                         <Input
                             value={form.data.twitter_creator}
-                            onChange={e => form.setData('twitter_creator', e.target.value)}
+                            onChange={(e) =>
+                                form.setData('twitter_creator', e.target.value)
+                            }
                             placeholder="@author"
                             className="mt-1"
                         />
                     </div>
                     <div>
-                        <label className="text-sm font-medium">Twitter Image URL</label>
+                        <label className="text-sm font-medium">
+                            Twitter Image URL
+                        </label>
                         <Input
                             value={form.data.twitter_image}
-                            onChange={e => form.setData('twitter_image', e.target.value)}
+                            onChange={(e) =>
+                                form.setData('twitter_image', e.target.value)
+                            }
                             placeholder="https://example.com/twitter-card.png"
                             className="mt-1"
                         />
@@ -211,7 +266,11 @@ function SeoForm({ entry, onCancel }: { entry?: SeoEntry; onCancel: () => void }
 
             <div className="flex gap-2">
                 <Button type="submit" disabled={form.processing}>
-                    {form.processing ? 'Saving...' : entry ? 'Update' : 'Create'}
+                    {form.processing
+                        ? 'Saving...'
+                        : entry
+                          ? 'Update'
+                          : 'Create'}
                 </Button>
                 <Button type="button" variant="outline" onClick={onCancel}>
                     Cancel
@@ -226,7 +285,11 @@ export default function SeoMetadata({ entries }: Props) {
     const [editingId, setEditingId] = useState<number | null>(null);
 
     const deleteEntry = (entry: SeoEntry) => {
-        if (confirm(`Delete SEO entry for "${entry.is_global ? 'Global' : entry.path}"?`)) {
+        if (
+            confirm(
+                `Delete SEO entry for "${entry.is_global ? 'Global' : entry.path}"?`,
+            )
+        ) {
             router.delete(`/admin/seo/${entry.id}`, { preserveScroll: true });
         }
     };
@@ -242,10 +305,17 @@ export default function SeoMetadata({ entries }: Props) {
                             SEO Management
                         </h2>
                         <p className="text-sm text-muted-foreground">
-                            Manage meta tags for specific pages or set global fallback defaults.
+                            Manage meta tags for specific pages or set global
+                            fallback defaults.
                         </p>
                     </div>
-                    <Button onClick={() => { setShowForm(!showForm); setEditingId(null); }} size="sm">
+                    <Button
+                        onClick={() => {
+                            setShowForm(!showForm);
+                            setEditingId(null);
+                        }}
+                        size="sm"
+                    >
                         <Plus className="mr-1.5 h-4 w-4" />
                         New Entry
                     </Button>
@@ -258,10 +328,11 @@ export default function SeoMetadata({ entries }: Props) {
                 <div className="space-y-3">
                     {entries.length === 0 ? (
                         <div className="rounded-xl border bg-card p-12 text-center text-muted-foreground">
-                            No SEO metadata entries yet. Create a global entry for site-wide defaults, or add per-page entries.
+                            No SEO metadata entries yet. Create a global entry
+                            for site-wide defaults, or add per-page entries.
                         </div>
                     ) : (
-                        entries.map(entry => {
+                        entries.map((entry) => {
                             if (editingId === entry.id) {
                                 return (
                                     <SeoForm
@@ -280,27 +351,32 @@ export default function SeoMetadata({ entries }: Props) {
                                     <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
                                         <Globe className="h-4 w-4" />
                                     </div>
-                                    <div className="flex-1 min-w-0">
-                                        <div className="flex items-center gap-2 flex-wrap">
+                                    <div className="min-w-0 flex-1">
+                                        <div className="flex flex-wrap items-center gap-2">
                                             {entry.is_global ? (
                                                 <Badge className="bg-amber-500/10 text-amber-600 dark:text-amber-400">
                                                     Global Default
                                                 </Badge>
                                             ) : (
-                                                <Badge variant="outline" className="font-mono text-xs">
+                                                <Badge
+                                                    variant="outline"
+                                                    className="font-mono text-xs"
+                                                >
                                                     {entry.path}
                                                 </Badge>
                                             )}
                                             {entry.title && (
-                                                <span className="font-medium truncate">{entry.title}</span>
+                                                <span className="truncate font-medium">
+                                                    {entry.title}
+                                                </span>
                                             )}
                                         </div>
                                         {entry.description && (
-                                            <p className="text-sm text-muted-foreground mt-1 line-clamp-2">
+                                            <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">
                                                 {entry.description}
                                             </p>
                                         )}
-                                        <div className="flex items-center gap-2 mt-1 flex-wrap">
+                                        <div className="mt-1 flex flex-wrap items-center gap-2">
                                             {entry.og_type && (
                                                 <span className="text-xs text-muted-foreground">
                                                     og:{entry.og_type}
@@ -312,17 +388,20 @@ export default function SeoMetadata({ entries }: Props) {
                                                 </span>
                                             )}
                                             {entry.keywords && (
-                                                <span className="text-xs text-muted-foreground truncate max-w-xs">
+                                                <span className="max-w-xs truncate text-xs text-muted-foreground">
                                                     {entry.keywords}
                                                 </span>
                                             )}
                                         </div>
                                     </div>
-                                    <div className="flex items-center gap-1 shrink-0">
+                                    <div className="flex shrink-0 items-center gap-1">
                                         <Button
                                             variant="ghost"
                                             size="icon"
-                                            onClick={() => { setEditingId(entry.id); setShowForm(false); }}
+                                            onClick={() => {
+                                                setEditingId(entry.id);
+                                                setShowForm(false);
+                                            }}
                                             title="Edit"
                                         >
                                             <Edit2 className="h-4 w-4" />

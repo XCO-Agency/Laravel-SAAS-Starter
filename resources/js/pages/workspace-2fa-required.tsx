@@ -1,7 +1,7 @@
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Head, Link, router } from '@inertiajs/react';
 import { Building2, Crown, ShieldAlert } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
 
 interface WorkspaceItem {
     id: number;
@@ -19,7 +19,11 @@ interface Props {
     is_owner: boolean;
 }
 
-export default function WorkspaceTwoFactorRequired({ workspace_name, workspaces, is_owner }: Props) {
+export default function WorkspaceTwoFactorRequired({
+    workspace_name,
+    workspaces,
+    is_owner,
+}: Props) {
     const switchTo = (workspaceId: number) => {
         router.post(`/workspaces/${workspaceId}/switch`);
     };
@@ -34,10 +38,16 @@ export default function WorkspaceTwoFactorRequired({ workspace_name, workspaces,
                 </div>
 
                 <div className="space-y-2">
-                    <h1 className="text-2xl font-bold tracking-tight">2FA Required</h1>
+                    <h1 className="text-2xl font-bold tracking-tight">
+                        2FA Required
+                    </h1>
                     {workspace_name && (
                         <p className="text-sm text-muted-foreground">
-                            <span className="font-medium text-foreground">{workspace_name}</span> requires two-factor authentication before you can access it.
+                            <span className="font-medium text-foreground">
+                                {workspace_name}
+                            </span>{' '}
+                            requires two-factor authentication before you can
+                            access it.
                         </p>
                     )}
                 </div>
@@ -67,39 +77,49 @@ export default function WorkspaceTwoFactorRequired({ workspace_name, workspaces,
                 {/* Inline workspace picker */}
                 {workspaces.length > 0 && (
                     <div className="space-y-3 text-left">
-                        <p className="text-center text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                        <p className="text-center text-xs font-medium tracking-wider text-muted-foreground uppercase">
                             Or switch to another workspace
                         </p>
-                        <div className="divide-y rounded-xl border bg-card overflow-hidden">
+                        <div className="divide-y overflow-hidden rounded-xl border bg-card">
                             {workspaces.map((ws) => (
                                 <button
                                     key={ws.id}
                                     onClick={() => switchTo(ws.id)}
-                                    className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm hover:bg-muted/50 transition-colors"
+                                    className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm transition-colors hover:bg-muted/50"
                                 >
                                     <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
                                         {ws.logo_url ? (
-                                            <img src={ws.logo_url} alt={ws.name} className="h-4 w-4 rounded-sm object-cover" />
+                                            <img
+                                                src={ws.logo_url}
+                                                alt={ws.name}
+                                                className="h-4 w-4 rounded-sm object-cover"
+                                            />
                                         ) : (
                                             <Building2 className="h-4 w-4" />
                                         )}
                                     </div>
-                                    <span className="font-medium truncate flex-1">{ws.name}</span>
+                                    <span className="flex-1 truncate font-medium">
+                                        {ws.name}
+                                    </span>
                                     {ws.plan && (
                                         <Badge
-                                            variant={ws.plan === 'Free' ? 'outline' : 'secondary'}
-                                            className="text-[10px] px-1.5 py-0 shrink-0"
+                                            variant={
+                                                ws.plan === 'Free'
+                                                    ? 'outline'
+                                                    : 'secondary'
+                                            }
+                                            className="shrink-0 px-1.5 py-0 text-[10px]"
                                         >
                                             {ws.plan}
                                         </Badge>
                                     )}
                                     {ws.personal_workspace && (
-                                        <span className="text-xs text-muted-foreground shrink-0">
+                                        <span className="shrink-0 text-xs text-muted-foreground">
                                             Personal
                                         </span>
                                     )}
                                     {ws.role === 'owner' && (
-                                        <Crown className="size-4 text-yellow-500 shrink-0" />
+                                        <Crown className="size-4 shrink-0 text-yellow-500" />
                                     )}
                                 </button>
                             ))}

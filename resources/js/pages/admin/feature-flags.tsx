@@ -1,8 +1,8 @@
-import AdminLayout from '@/layouts/admin-layout';
-import { Head, router, useForm } from '@inertiajs/react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import AdminLayout from '@/layouts/admin-layout';
+import { Head, router, useForm } from '@inertiajs/react';
 import { Edit2, Plus, ToggleLeft, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -39,7 +39,9 @@ interface Props {
 }
 
 export default function AdminFeatureFlags({ flags, workspaces }: Props) {
-    const [editingFlag, setEditingFlag] = useState<FeatureFlagItem | null>(null);
+    const [editingFlag, setEditingFlag] = useState<FeatureFlagItem | null>(
+        null,
+    );
     const [showForm, setShowForm] = useState(false);
 
     const form = useForm({
@@ -93,14 +95,19 @@ export default function AdminFeatureFlags({ flags, workspaces }: Props) {
 
     const deleteFlag = (flag: FeatureFlagItem) => {
         if (confirm(`Delete feature flag "${flag.name}"?`)) {
-            router.delete(`/admin/feature-flags/${flag.id}`, { preserveScroll: true });
+            router.delete(`/admin/feature-flags/${flag.id}`, {
+                preserveScroll: true,
+            });
         }
     };
 
     const toggleWorkspace = (id: number) => {
         const current = form.data.workspace_ids;
         if (current.includes(id)) {
-            form.setData('workspace_ids', current.filter(wId => wId !== id));
+            form.setData(
+                'workspace_ids',
+                current.filter((wId) => wId !== id),
+            );
         } else {
             form.setData('workspace_ids', [...current, id]);
         }
@@ -109,7 +116,7 @@ export default function AdminFeatureFlags({ flags, workspaces }: Props) {
     return (
         <AdminLayout>
             <Head title="Feature Flags" />
-            <div className="flex h-full flex-1 flex-col gap-6 p-4 md:p-6 lg:p-8 rounded-xl border border-sidebar-border/70">
+            <div className="flex h-full flex-1 flex-col gap-6 rounded-xl border border-sidebar-border/70 p-4 md:p-6 lg:p-8">
                 <div className="flex items-center justify-between">
                     <div>
                         <h2 className="flex items-center gap-2 text-2xl font-bold tracking-tight">
@@ -117,7 +124,8 @@ export default function AdminFeatureFlags({ flags, workspaces }: Props) {
                             Feature Flags
                         </h2>
                         <p className="text-sm text-muted-foreground">
-                            Manage feature rollouts locally across all workspaces
+                            Manage feature rollouts locally across all
+                            workspaces
                         </p>
                     </div>
                     <Button onClick={openCreateForm} size="sm">
@@ -129,66 +137,119 @@ export default function AdminFeatureFlags({ flags, workspaces }: Props) {
                 {/* Form Modal (Inline for now, could be dialog) */}
                 {showForm && (
                     <div className="rounded-xl border bg-card p-6 shadow-sm">
-                        <h3 className="mb-4 text-lg font-medium">{editingFlag ? 'Edit Feature Flag' : 'Create Feature Flag'}</h3>
+                        <h3 className="mb-4 text-lg font-medium">
+                            {editingFlag
+                                ? 'Edit Feature Flag'
+                                : 'Create Feature Flag'}
+                        </h3>
                         <form onSubmit={handleSubmit} className="space-y-4">
                             <div className="grid gap-4 md:grid-cols-2">
                                 <div>
-                                    <label className="text-sm font-medium">Flag Key (slug format) *</label>
+                                    <label className="text-sm font-medium">
+                                        Flag Key (slug format) *
+                                    </label>
                                     <Input
                                         value={form.data.key}
-                                        onChange={e => form.setData('key', e.target.value)}
+                                        onChange={(e) =>
+                                            form.setData('key', e.target.value)
+                                        }
                                         placeholder="e.g. new-dashboard"
                                         className="mt-1"
                                     />
-                                    {form.errors.key && <p className="text-xs text-destructive mt-1">{form.errors.key}</p>}
+                                    {form.errors.key && (
+                                        <p className="mt-1 text-xs text-destructive">
+                                            {form.errors.key}
+                                        </p>
+                                    )}
                                 </div>
                                 <div>
-                                    <label className="text-sm font-medium">Display Name *</label>
+                                    <label className="text-sm font-medium">
+                                        Display Name *
+                                    </label>
                                     <Input
                                         value={form.data.name}
-                                        onChange={e => form.setData('name', e.target.value)}
+                                        onChange={(e) =>
+                                            form.setData('name', e.target.value)
+                                        }
                                         placeholder="e.g. New Dashboard UI"
                                         className="mt-1"
                                     />
-                                    {form.errors.name && <p className="text-xs text-destructive mt-1">{form.errors.name}</p>}
+                                    {form.errors.name && (
+                                        <p className="mt-1 text-xs text-destructive">
+                                            {form.errors.name}
+                                        </p>
+                                    )}
                                 </div>
                             </div>
                             <div>
-                                <label className="text-sm font-medium">Description</label>
+                                <label className="text-sm font-medium">
+                                    Description
+                                </label>
                                 <textarea
                                     value={form.data.description}
-                                    onChange={e => form.setData('description', e.target.value)}
+                                    onChange={(e) =>
+                                        form.setData(
+                                            'description',
+                                            e.target.value,
+                                        )
+                                    }
                                     rows={2}
                                     className="mt-1 flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                                     placeholder="Brief explanation of what this flag controls..."
                                 />
-                                {form.errors.description && <p className="text-xs text-destructive mt-1">{form.errors.description}</p>}
+                                {form.errors.description && (
+                                    <p className="mt-1 text-xs text-destructive">
+                                        {form.errors.description}
+                                    </p>
+                                )}
                             </div>
 
-                            <div className="rounded-lg border p-4 bg-muted/30">
-                                <label className="flex items-center gap-2 text-sm font-medium mb-3">
+                            <div className="rounded-lg border bg-muted/30 p-4">
+                                <label className="mb-3 flex items-center gap-2 text-sm font-medium">
                                     <input
                                         type="checkbox"
                                         checked={form.data.is_global}
-                                        onChange={e => form.setData('is_global', e.target.checked)}
+                                        onChange={(e) =>
+                                            form.setData(
+                                                'is_global',
+                                                e.target.checked,
+                                            )
+                                        }
                                         className="rounded border-input text-primary"
                                     />
                                     Global Rollout (Enabled for ALL Workspaces)
                                 </label>
 
                                 {!form.data.is_global && (
-                                    <div className="mt-4 pt-4 border-t">
-                                        <label className="text-sm font-medium mb-2 block">Enabled Workspaces (Specific Rollout)</label>
-                                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
-                                            {workspaces.map(w => (
-                                                <label key={w.id} className="flex items-center gap-2 text-sm p-2 rounded border hover:bg-accent cursor-pointer">
+                                    <div className="mt-4 border-t pt-4">
+                                        <label className="mb-2 block text-sm font-medium">
+                                            Enabled Workspaces (Specific
+                                            Rollout)
+                                        </label>
+                                        <div className="grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4">
+                                            {workspaces.map((w) => (
+                                                <label
+                                                    key={w.id}
+                                                    className="flex cursor-pointer items-center gap-2 rounded border p-2 text-sm hover:bg-accent"
+                                                >
                                                     <input
                                                         type="checkbox"
-                                                        checked={form.data.workspace_ids.includes(w.id)}
-                                                        onChange={() => toggleWorkspace(w.id)}
+                                                        checked={form.data.workspace_ids.includes(
+                                                            w.id,
+                                                        )}
+                                                        onChange={() =>
+                                                            toggleWorkspace(
+                                                                w.id,
+                                                            )
+                                                        }
                                                         className="rounded border-input"
                                                     />
-                                                    <span className="truncate" title={w.name}>{w.name}</span>
+                                                    <span
+                                                        className="truncate"
+                                                        title={w.name}
+                                                    >
+                                                        {w.name}
+                                                    </span>
                                                 </label>
                                             ))}
                                         </div>
@@ -196,12 +257,23 @@ export default function AdminFeatureFlags({ flags, workspaces }: Props) {
                                 )}
                             </div>
 
-                            <div className="flex gap-2 justify-end pt-2">
-                                <Button type="button" variant="outline" onClick={closeForm}>
+                            <div className="flex justify-end gap-2 pt-2">
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    onClick={closeForm}
+                                >
                                     Cancel
                                 </Button>
-                                <Button type="submit" disabled={form.processing}>
-                                    {form.processing ? 'Saving...' : (editingFlag ? 'Save Changes' : 'Create Flag')}
+                                <Button
+                                    type="submit"
+                                    disabled={form.processing}
+                                >
+                                    {form.processing
+                                        ? 'Saving...'
+                                        : editingFlag
+                                          ? 'Save Changes'
+                                          : 'Create Flag'}
                                 </Button>
                             </div>
                         </form>
@@ -215,46 +287,102 @@ export default function AdminFeatureFlags({ flags, workspaces }: Props) {
                             No feature flags configured.
                         </div>
                     ) : (
-                        flags.data.map(flag => (
-                            <div key={flag.id} className="flex items-center gap-4 rounded-xl border bg-card p-4 transition-colors hover:bg-muted/30">
-                                <div className="flex-1 min-w-0">
-                                    <div className="flex items-center gap-2 mb-1">
-                                        <span className="font-semibold">{flag.name}</span>
-                                        <Badge variant="outline" className="font-mono text-[10px] bg-muted">
+                        flags.data.map((flag) => (
+                            <div
+                                key={flag.id}
+                                className="flex items-center gap-4 rounded-xl border bg-card p-4 transition-colors hover:bg-muted/30"
+                            >
+                                <div className="min-w-0 flex-1">
+                                    <div className="mb-1 flex items-center gap-2">
+                                        <span className="font-semibold">
+                                            {flag.name}
+                                        </span>
+                                        <Badge
+                                            variant="outline"
+                                            className="bg-muted font-mono text-[10px]"
+                                        >
                                             {flag.key}
                                         </Badge>
-                                        <Badge variant={flag.is_global ? 'default' : 'secondary'} className="text-[10px]">
-                                            {flag.is_global ? 'Global' : 'Targeted'}
+                                        <Badge
+                                            variant={
+                                                flag.is_global
+                                                    ? 'default'
+                                                    : 'secondary'
+                                            }
+                                            className="text-[10px]"
+                                        >
+                                            {flag.is_global
+                                                ? 'Global'
+                                                : 'Targeted'}
                                         </Badge>
                                     </div>
                                     {flag.description && (
-                                        <p className="text-sm text-muted-foreground mb-2">{flag.description}</p>
+                                        <p className="mb-2 text-sm text-muted-foreground">
+                                            {flag.description}
+                                        </p>
                                     )}
                                     {!flag.is_global && (
-                                        <div className="flex items-center gap-1.5 flex-wrap">
-                                            <span className="text-xs text-muted-foreground mr-1">Enabled for:</span>
+                                        <div className="flex flex-wrap items-center gap-1.5">
+                                            <span className="mr-1 text-xs text-muted-foreground">
+                                                Enabled for:
+                                            </span>
                                             {flag.workspace_ids.length === 0 ? (
-                                                <span className="text-xs text-muted-foreground italic">No workspaces</span>
+                                                <span className="text-xs text-muted-foreground italic">
+                                                    No workspaces
+                                                </span>
                                             ) : (
-                                                flag.workspace_ids.slice(0, 5).map(id => {
-                                                    const w = workspaces.find(ws => ws.id === id);
-                                                    return w ? <Badge key={id} variant="outline" className="text-[10px] bg-background">{w.name}</Badge> : null;
-                                                })
+                                                flag.workspace_ids
+                                                    .slice(0, 5)
+                                                    .map((id) => {
+                                                        const w =
+                                                            workspaces.find(
+                                                                (ws) =>
+                                                                    ws.id ===
+                                                                    id,
+                                                            );
+                                                        return w ? (
+                                                            <Badge
+                                                                key={id}
+                                                                variant="outline"
+                                                                className="bg-background text-[10px]"
+                                                            >
+                                                                {w.name}
+                                                            </Badge>
+                                                        ) : null;
+                                                    })
                                             )}
                                             {flag.workspace_ids.length > 5 && (
-                                                <span className="text-xs text-muted-foreground">+{flag.workspace_ids.length - 5} more</span>
+                                                <span className="text-xs text-muted-foreground">
+                                                    +
+                                                    {flag.workspace_ids.length -
+                                                        5}{' '}
+                                                    more
+                                                </span>
                                             )}
                                         </div>
                                     )}
                                 </div>
-                                <div className="flex flex-col sm:flex-row gap-1.5 shrink-0">
-                                    <Button variant="ghost" size="sm" onClick={() => openEditForm(flag)}>
+                                <div className="flex shrink-0 flex-col gap-1.5 sm:flex-row">
+                                    <Button
+                                        variant="ghost"
+                                        size="sm"
+                                        onClick={() => openEditForm(flag)}
+                                    >
                                         <Edit2 className="h-4 w-4 sm:mr-1.5" />
-                                        <span className="sr-only sm:not-sr-only">Edit</span>
+                                        <span className="sr-only sm:not-sr-only">
+                                            Edit
+                                        </span>
                                     </Button>
-                                    <Button variant="ghost" size="sm" onClick={() => deleteFlag(flag)} className="text-destructive hover:text-destructive hover:bg-destructive/10">
+                                    <Button
+                                        variant="ghost"
+                                        size="sm"
+                                        onClick={() => deleteFlag(flag)}
+                                        className="text-destructive hover:bg-destructive/10 hover:text-destructive"
+                                    >
                                         <Trash2 className="h-4 w-4 sm:mr-1.5" />
-                                        <span className="sr-only sm:not-sr-only">Delete</span>
+                                        <span className="sr-only sm:not-sr-only">
+                                            Delete
+                                        </span>
                                     </Button>
                                 </div>
                             </div>
@@ -269,11 +397,22 @@ export default function AdminFeatureFlags({ flags, workspaces }: Props) {
                             {flags.links.map((link, i) => (
                                 <Button
                                     key={i}
-                                    variant={link.active ? 'default' : 'outline'}
+                                    variant={
+                                        link.active ? 'default' : 'outline'
+                                    }
                                     size="sm"
                                     disabled={!link.url}
-                                    onClick={() => link.url && router.get(link.url, {}, { preserveState: true })}
-                                    dangerouslySetInnerHTML={{ __html: link.label }}
+                                    onClick={() =>
+                                        link.url &&
+                                        router.get(
+                                            link.url,
+                                            {},
+                                            { preserveState: true },
+                                        )
+                                    }
+                                    dangerouslySetInnerHTML={{
+                                        __html: link.label,
+                                    }}
                                 />
                             ))}
                         </div>

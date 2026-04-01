@@ -1,13 +1,33 @@
-import React from 'react';
+import { Button } from '@/components/ui/button';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
+import {
+    Pagination,
+    PaginationContent,
+    PaginationItem,
+    PaginationLink,
+    PaginationNext,
+    PaginationPrevious,
+} from '@/components/ui/pagination';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/components/ui/table';
+import { useTranslations } from '@/hooks/use-translations';
 import AdminLayout from '@/layouts/admin-layout';
 import { Head, router } from '@inertiajs/react';
-import { useTranslations } from '@/hooks/use-translations';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
 import { formatDistanceToNow } from 'date-fns';
 import { Edit, Mail } from 'lucide-react';
+import React from 'react';
 
 interface TemplateProps {
     id: number;
@@ -41,25 +61,39 @@ export default function MailTemplatesIndex({ templates }: IndexProps) {
                             {t('admin.mail_templates.title', 'Email Templates')}
                         </h1>
                         <p className="text-muted-foreground">
-                            {t('admin.mail_templates.description', 'Customize default SaaS system emails dynamically.')}
+                            {t(
+                                'admin.mail_templates.description',
+                                'Customize default SaaS system emails dynamically.',
+                            )}
                         </p>
                     </div>
                 </div>
 
                 <Card>
                     <CardHeader>
-                        <CardTitle>{t('admin.mail_templates.list', 'System Email Library')}</CardTitle>
+                        <CardTitle>
+                            {t(
+                                'admin.mail_templates.list',
+                                'System Email Library',
+                            )}
+                        </CardTitle>
                         <CardDescription>
-                            {t('admin.mail_templates.list_description', 'These templates natively override code-defined Mailable classes during dispatch.')}
+                            {t(
+                                'admin.mail_templates.list_description',
+                                'These templates natively override code-defined Mailable classes during dispatch.',
+                            )}
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
                         {templates.data.length === 0 ? (
-                            <div className="flex flex-col items-center justify-center p-8 text-center border rounded-lg bg-muted/20">
-                                <Mail className="h-8 w-8 text-muted-foreground mb-4" />
-                                <h3 className="font-medium text-lg">No email templates found</h3>
-                                <p className="text-muted-foreground mt-1 max-w-sm">
-                                    No dynamic email templates have been seeded or registered in the database yet.
+                            <div className="flex flex-col items-center justify-center rounded-lg border bg-muted/20 p-8 text-center">
+                                <Mail className="mb-4 h-8 w-8 text-muted-foreground" />
+                                <h3 className="text-lg font-medium">
+                                    No email templates found
+                                </h3>
+                                <p className="mt-1 max-w-sm text-muted-foreground">
+                                    No dynamic email templates have been seeded
+                                    or registered in the database yet.
                                 </p>
                             </div>
                         ) : (
@@ -67,10 +101,14 @@ export default function MailTemplatesIndex({ templates }: IndexProps) {
                                 <Table>
                                     <TableHeader>
                                         <TableRow>
-                                            <TableHead>Mailable Class</TableHead>
+                                            <TableHead>
+                                                Mailable Class
+                                            </TableHead>
                                             <TableHead>Subject Line</TableHead>
                                             <TableHead>Last Updated</TableHead>
-                                            <TableHead className="text-right">Actions</TableHead>
+                                            <TableHead className="text-right">
+                                                Actions
+                                            </TableHead>
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
@@ -82,17 +120,30 @@ export default function MailTemplatesIndex({ templates }: IndexProps) {
                                                         {template.mailable}
                                                     </div>
                                                 </TableCell>
-                                                <TableCell>{template.subject}</TableCell>
                                                 <TableCell>
-                                                    {formatDistanceToNow(new Date(template.updated_at), { addSuffix: true })}
+                                                    {template.subject}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {formatDistanceToNow(
+                                                        new Date(
+                                                            template.updated_at,
+                                                        ),
+                                                        { addSuffix: true },
+                                                    )}
                                                 </TableCell>
                                                 <TableCell className="text-right">
                                                     <Button
                                                         variant="ghost"
                                                         size="sm"
-                                                        onClick={() => router.visit('/admin/mail-templates/' + template.id + '/edit')}
+                                                        onClick={() =>
+                                                            router.visit(
+                                                                '/admin/mail-templates/' +
+                                                                    template.id +
+                                                                    '/edit',
+                                                            )
+                                                        }
                                                     >
-                                                        <Edit className="h-4 w-4 mr-2" />
+                                                        <Edit className="mr-2 h-4 w-4" />
                                                         Edit
                                                     </Button>
                                                 </TableCell>
@@ -110,36 +161,80 @@ export default function MailTemplatesIndex({ templates }: IndexProps) {
                                         {templates.current_page > 1 && (
                                             <PaginationItem>
                                                 <PaginationPrevious
-                                                    href={templates.links[0].url || '#'}
-                                                    onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
+                                                    href={
+                                                        templates.links[0]
+                                                            .url || '#'
+                                                    }
+                                                    onClick={(
+                                                        e: React.MouseEvent<HTMLAnchorElement>,
+                                                    ) => {
                                                         e.preventDefault();
-                                                        if (templates.links[0].url) router.visit(templates.links[0].url as string);
+                                                        if (
+                                                            templates.links[0]
+                                                                .url
+                                                        )
+                                                            router.visit(
+                                                                templates
+                                                                    .links[0]
+                                                                    .url as string,
+                                                            );
                                                     }}
                                                 />
                                             </PaginationItem>
                                         )}
-                                        {templates.links.slice(1, -1).map((link, i) => (
-                                            <PaginationItem key={i}>
-                                                <PaginationLink
-                                                    href={link.url || '#'}
-                                                    isActive={link.active}
-                                                    onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
-                                                        e.preventDefault();
-                                                        if (link.url) router.visit(link.url as string);
-                                                    }}
-                                                >
-                                                    <span dangerouslySetInnerHTML={{ __html: link.label }}></span>
-                                                </PaginationLink>
-                                            </PaginationItem>
-                                        ))}
-                                        {templates.current_page < templates.last_page && (
+                                        {templates.links
+                                            .slice(1, -1)
+                                            .map((link, i) => (
+                                                <PaginationItem key={i}>
+                                                    <PaginationLink
+                                                        href={link.url || '#'}
+                                                        isActive={link.active}
+                                                        onClick={(
+                                                            e: React.MouseEvent<HTMLAnchorElement>,
+                                                        ) => {
+                                                            e.preventDefault();
+                                                            if (link.url)
+                                                                router.visit(
+                                                                    link.url as string,
+                                                                );
+                                                        }}
+                                                    >
+                                                        <span
+                                                            dangerouslySetInnerHTML={{
+                                                                __html: link.label,
+                                                            }}
+                                                        ></span>
+                                                    </PaginationLink>
+                                                </PaginationItem>
+                                            ))}
+                                        {templates.current_page <
+                                            templates.last_page && (
                                             <PaginationItem>
                                                 <PaginationNext
-                                                    href={templates.links[templates.links.length - 1].url || '#'}
-                                                    onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
+                                                    href={
+                                                        templates.links[
+                                                            templates.links
+                                                                .length - 1
+                                                        ].url || '#'
+                                                    }
+                                                    onClick={(
+                                                        e: React.MouseEvent<HTMLAnchorElement>,
+                                                    ) => {
                                                         e.preventDefault();
-                                                        if (templates.links[templates.links.length - 1].url) {
-                                                            router.visit(templates.links[templates.links.length - 1].url as string);
+                                                        if (
+                                                            templates.links[
+                                                                templates.links
+                                                                    .length - 1
+                                                            ].url
+                                                        ) {
+                                                            router.visit(
+                                                                templates.links[
+                                                                    templates
+                                                                        .links
+                                                                        .length -
+                                                                        1
+                                                                ].url as string,
+                                                            );
                                                         }
                                                     }}
                                                 />

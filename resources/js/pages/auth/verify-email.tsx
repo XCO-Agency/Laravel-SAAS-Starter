@@ -14,22 +14,38 @@ export default function VerifyEmail({ status }: { status?: string }) {
     return (
         <AuthLayout
             title={t('auth.verify_email.title', 'Verify Your Email Address')}
-            description={t('auth.verify_email.description', 'Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.')}
+            description={t(
+                'auth.verify_email.description',
+                "Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn't receive the email, we will gladly send you another.",
+            )}
         >
-            <Head title={t('auth.verify_email.page_title', 'Email verification')} />
+            <Head
+                title={t('auth.verify_email.page_title', 'Email verification')}
+            />
 
             {status === 'verification-link-sent' && (
                 <div className="mb-4 text-center text-sm font-medium text-green-600">
-                    {t('auth.verify_email.link_sent', 'A new verification link has been sent to the email address you provided during registration.')}
+                    {t(
+                        'auth.verify_email.link_sent',
+                        'A new verification link has been sent to the email address you provided during registration.',
+                    )}
                 </div>
             )}
 
             <Form {...send.form()} className="space-y-6 text-center">
                 {({ processing }) => (
                     <>
-                        <Button disabled={processing} variant="default" size="lg" className="w-full">
+                        <Button
+                            disabled={processing}
+                            variant="default"
+                            size="lg"
+                            className="w-full"
+                        >
                             {processing && <Spinner />}
-                            {t('auth.verify_email.button', 'Resend Verification Email')}
+                            {t(
+                                'auth.verify_email.button',
+                                'Resend Verification Email',
+                            )}
                         </Button>
 
                         <TextLink

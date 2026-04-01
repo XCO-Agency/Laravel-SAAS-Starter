@@ -1,7 +1,7 @@
-import AdminLayout from '@/layouts/admin-layout';
-import { Head, Link, router } from '@inertiajs/react';
-import { type BreadcrumbItem } from '@/types';
-import { formatDistanceToNow } from 'date-fns';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import {
     Table,
     TableBody,
@@ -10,18 +10,10 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import AdminLayout from '@/layouts/admin-layout';
+import { Head, Link, router } from '@inertiajs/react';
+import { formatDistanceToNow } from 'date-fns';
 import { Ticket } from 'lucide-react';
-
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Support Tickets',
-        href: '/admin/tickets',
-    },
-];
 
 interface User {
     id: number;
@@ -43,7 +35,7 @@ interface TicketData {
 interface IndexProps {
     tickets: {
         data: TicketData[];
-        links: any[];
+        links: unknown[];
     };
     filters: {
         status?: string;
@@ -55,10 +47,14 @@ export default function AdminTicketsIndex({ tickets, filters }: IndexProps) {
     const handleFilterChange = (key: string, value: string) => {
         const newFilters = { ...filters, [key]: value || undefined };
 
-        router.get('/admin/tickets', newFilters as Record<string, any>, {
-            preserveState: true,
-            replace: true,
-        });
+        router.get(
+            '/admin/tickets',
+            newFilters as Record<string, string | undefined>,
+            {
+                preserveState: true,
+                replace: true,
+            },
+        );
     };
 
     const getStatusColor = (status: TicketData['status']) => {
@@ -94,8 +90,12 @@ export default function AdminTicketsIndex({ tickets, filters }: IndexProps) {
             <div className="flex h-full flex-1 flex-col space-y-6">
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                        <h2 className="text-xl font-bold tracking-tight">Support Tickets</h2>
-                        <p className="text-muted-foreground">Manage and resolve user support requests.</p>
+                        <h2 className="text-xl font-bold tracking-tight">
+                            Support Tickets
+                        </h2>
+                        <p className="text-muted-foreground">
+                            Manage and resolve user support requests.
+                        </p>
                     </div>
                 </div>
 
@@ -103,14 +103,18 @@ export default function AdminTicketsIndex({ tickets, filters }: IndexProps) {
                     <Input
                         placeholder="Search tickets by subject..."
                         defaultValue={filters.search}
-                        onChange={(e) => handleFilterChange('search', e.target.value)}
+                        onChange={(e) =>
+                            handleFilterChange('search', e.target.value)
+                        }
                         className="max-w-sm"
                     />
 
                     <select
                         defaultValue={filters.status || ''}
-                        onChange={(e) => handleFilterChange('status', e.target.value)}
-                        className="flex h-9 rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+                        onChange={(e) =>
+                            handleFilterChange('status', e.target.value)
+                        }
+                        className="flex h-9 rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
                     >
                         <option value="">All Statuses</option>
                         <option value="open">Open</option>
@@ -130,7 +134,9 @@ export default function AdminTicketsIndex({ tickets, filters }: IndexProps) {
                                     <TableHead>Status</TableHead>
                                     <TableHead>Priority</TableHead>
                                     <TableHead>Requested</TableHead>
-                                    <TableHead className="text-right">Action</TableHead>
+                                    <TableHead className="text-right">
+                                        Action
+                                    </TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
@@ -139,32 +145,74 @@ export default function AdminTicketsIndex({ tickets, filters }: IndexProps) {
                                         <TableCell>
                                             <div className="flex items-center gap-3">
                                                 <Avatar className="h-8 w-8">
-                                                    <AvatarImage src={ticket.user.avatar_url || ''} />
-                                                    <AvatarFallback>{ticket.user.name.substring(0, 2).toUpperCase()}</AvatarFallback>
+                                                    <AvatarImage
+                                                        src={
+                                                            ticket.user
+                                                                .avatar_url ||
+                                                            ''
+                                                        }
+                                                    />
+                                                    <AvatarFallback>
+                                                        {ticket.user.name
+                                                            .substring(0, 2)
+                                                            .toUpperCase()}
+                                                    </AvatarFallback>
                                                 </Avatar>
                                                 <div className="flex flex-col">
-                                                    <span className="font-medium text-sm leading-none">{ticket.user.name}</span>
-                                                    <span className="text-xs text-muted-foreground mt-1">{ticket.user.email}</span>
+                                                    <span className="text-sm leading-none font-medium">
+                                                        {ticket.user.name}
+                                                    </span>
+                                                    <span className="mt-1 text-xs text-muted-foreground">
+                                                        {ticket.user.email}
+                                                    </span>
                                                 </div>
                                             </div>
                                         </TableCell>
-                                        <TableCell className="font-medium">{ticket.subject}</TableCell>
+                                        <TableCell className="font-medium">
+                                            {ticket.subject}
+                                        </TableCell>
                                         <TableCell>
-                                            <Badge variant="secondary" className={getStatusColor(ticket.status)}>
-                                                {ticket.status.replace('_', ' ').toUpperCase()}
+                                            <Badge
+                                                variant="secondary"
+                                                className={getStatusColor(
+                                                    ticket.status,
+                                                )}
+                                            >
+                                                {ticket.status
+                                                    .replace('_', ' ')
+                                                    .toUpperCase()}
                                             </Badge>
                                         </TableCell>
                                         <TableCell>
-                                            <Badge variant="outline" className={getPriorityColor(ticket.priority)}>
+                                            <Badge
+                                                variant="outline"
+                                                className={getPriorityColor(
+                                                    ticket.priority,
+                                                )}
+                                            >
                                                 {ticket.priority.toUpperCase()}
                                             </Badge>
                                         </TableCell>
-                                        <TableCell suppressHydrationWarning className="text-muted-foreground whitespace-nowrap">
-                                            {formatDistanceToNow(new Date(ticket.created_at), { addSuffix: true })}
+                                        <TableCell
+                                            suppressHydrationWarning
+                                            className="whitespace-nowrap text-muted-foreground"
+                                        >
+                                            {formatDistanceToNow(
+                                                new Date(ticket.created_at),
+                                                { addSuffix: true },
+                                            )}
                                         </TableCell>
                                         <TableCell className="text-right">
-                                            <Button variant="ghost" size="sm" asChild>
-                                                <Link href={`/admin/tickets/${ticket.id}`}>Review</Link>
+                                            <Button
+                                                variant="ghost"
+                                                size="sm"
+                                                asChild
+                                            >
+                                                <Link
+                                                    href={`/admin/tickets/${ticket.id}`}
+                                                >
+                                                    Review
+                                                </Link>
                                             </Button>
                                         </TableCell>
                                     </TableRow>
@@ -177,9 +225,12 @@ export default function AdminTicketsIndex({ tickets, filters }: IndexProps) {
                         <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
                             <Ticket className="h-6 w-6 text-primary" />
                         </div>
-                        <h3 className="mt-4 text-lg font-semibold">No tickets found</h3>
+                        <h3 className="mt-4 text-lg font-semibold">
+                            No tickets found
+                        </h3>
                         <p className="mt-2 text-sm text-muted-foreground">
-                            There are currently no support tickets matching your filters.
+                            There are currently no support tickets matching your
+                            filters.
                         </p>
                     </div>
                 )}

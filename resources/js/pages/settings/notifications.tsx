@@ -1,14 +1,14 @@
+import { HelpTooltip } from '@/components/help-tooltip';
 import { type BreadcrumbItem } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
-import { HelpTooltip } from '@/components/help-tooltip';
 
-import { useTranslations } from '@/hooks/use-translations';
 import { Button } from '@/components/ui/button';
-import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
-import { Transition } from '@headlessui/react';
+import { Switch } from '@/components/ui/switch';
+import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import ProfileLayout from '@/layouts/settings/profile-layout';
+import { Transition } from '@headlessui/react';
 
 export default function Notifications({
     notification_preferences,
@@ -50,13 +50,18 @@ export default function Notifications({
 
             <ProfileLayout
                 title={t('settings.notifications.title', 'Notifications')}
-                description={t('settings.notifications.description', 'Manage how you receive alerts and communications.')}
+                description={t(
+                    'settings.notifications.description',
+                    'Manage how you receive alerts and communications.',
+                )}
             >
                 <form onSubmit={submit} className="space-y-6">
                     <div className="space-y-4">
                         <div className="flex items-center justify-between rounded-lg border p-4">
                             <div className="space-y-0.5">
-                                <Label htmlFor="channel-email">Email notifications</Label>
+                                <Label htmlFor="channel-email">
+                                    Email notifications
+                                </Label>
                                 <p className="text-sm text-muted-foreground">
                                     Receive notifications in your inbox.
                                 </p>
@@ -67,7 +72,10 @@ export default function Notifications({
                                 onCheckedChange={(val) =>
                                     setData('preferences', {
                                         ...data.preferences,
-                                        channels: { ...data.preferences.channels, email: val },
+                                        channels: {
+                                            ...data.preferences.channels,
+                                            email: val,
+                                        },
                                     })
                                 }
                             />
@@ -75,9 +83,12 @@ export default function Notifications({
 
                         <div className="flex items-center justify-between rounded-lg border p-4">
                             <div className="space-y-0.5">
-                                <Label htmlFor="channel-in-app">In-app notifications</Label>
+                                <Label htmlFor="channel-in-app">
+                                    In-app notifications
+                                </Label>
                                 <p className="text-sm text-muted-foreground">
-                                    Receive notifications in the app notification center.
+                                    Receive notifications in the app
+                                    notification center.
                                 </p>
                             </div>
                             <Switch
@@ -86,14 +97,19 @@ export default function Notifications({
                                 onCheckedChange={(val) =>
                                     setData('preferences', {
                                         ...data.preferences,
-                                        channels: { ...data.preferences.channels, in_app: val },
+                                        channels: {
+                                            ...data.preferences.channels,
+                                            in_app: val,
+                                        },
                                     })
                                 }
                             />
                         </div>
 
                         <div className="rounded-lg border border-dashed p-4">
-                            <p className="text-sm font-medium">Notification categories</p>
+                            <p className="text-sm font-medium">
+                                Notification categories
+                            </p>
                             <p className="mt-1 text-xs text-muted-foreground">
                                 Category toggles apply to both enabled channels.
                             </p>
@@ -101,9 +117,17 @@ export default function Notifications({
 
                         <div className="flex items-center justify-between rounded-lg border p-4">
                             <div className="space-y-0.5">
-                                <Label htmlFor="marketing">{t('settings.notifications.marketing', 'Marketing emails')}</Label>
+                                <Label htmlFor="marketing">
+                                    {t(
+                                        'settings.notifications.marketing',
+                                        'Marketing emails',
+                                    )}
+                                </Label>
                                 <p className="text-sm text-muted-foreground">
-                                    {t('settings.notifications.marketing_desc', 'Receive updates about new products, features, and announcements.')}
+                                    {t(
+                                        'settings.notifications.marketing_desc',
+                                        'Receive updates about new products, features, and announcements.',
+                                    )}
                                 </p>
                             </div>
                             <Switch
@@ -112,7 +136,10 @@ export default function Notifications({
                                 onCheckedChange={(val) =>
                                     setData('preferences', {
                                         ...data.preferences,
-                                        categories: { ...data.preferences.categories, marketing: val },
+                                        categories: {
+                                            ...data.preferences.categories,
+                                            marketing: val,
+                                        },
                                     })
                                 }
                             />
@@ -120,12 +147,21 @@ export default function Notifications({
 
                         <div className="flex items-center justify-between rounded-lg border p-4">
                             <div className="space-y-0.5">
-                                <Label htmlFor="security" className="flex items-center gap-1.5">
-                                    {t('settings.notifications.security', 'Security alerts')}
+                                <Label
+                                    htmlFor="security"
+                                    className="flex items-center gap-1.5"
+                                >
+                                    {t(
+                                        'settings.notifications.security',
+                                        'Security alerts',
+                                    )}
                                     <HelpTooltip content="Critical security alerts cannot be disabled, but you can opt out of regular security digests." />
                                 </Label>
                                 <p className="text-sm text-muted-foreground">
-                                    {t('settings.notifications.security_desc', 'Receive alerts about account security activity.')}
+                                    {t(
+                                        'settings.notifications.security_desc',
+                                        'Receive alerts about account security activity.',
+                                    )}
                                 </p>
                             </div>
                             <Switch
@@ -134,7 +170,10 @@ export default function Notifications({
                                 onCheckedChange={(val) =>
                                     setData('preferences', {
                                         ...data.preferences,
-                                        categories: { ...data.preferences.categories, security: val },
+                                        categories: {
+                                            ...data.preferences.categories,
+                                            security: val,
+                                        },
                                     })
                                 }
                             />
@@ -142,9 +181,17 @@ export default function Notifications({
 
                         <div className="flex items-center justify-between rounded-lg border p-4">
                             <div className="space-y-0.5">
-                                <Label htmlFor="team">{t('settings.notifications.team', 'Team updates')}</Label>
+                                <Label htmlFor="team">
+                                    {t(
+                                        'settings.notifications.team',
+                                        'Team updates',
+                                    )}
+                                </Label>
                                 <p className="text-sm text-muted-foreground">
-                                    {t('settings.notifications.team_desc', 'Receive updates when team members join or leave your workspace.')}
+                                    {t(
+                                        'settings.notifications.team_desc',
+                                        'Receive updates when team members join or leave your workspace.',
+                                    )}
                                 </p>
                             </div>
                             <Switch
@@ -153,7 +200,10 @@ export default function Notifications({
                                 onCheckedChange={(val) =>
                                     setData('preferences', {
                                         ...data.preferences,
-                                        categories: { ...data.preferences.categories, team: val },
+                                        categories: {
+                                            ...data.preferences.categories,
+                                            team: val,
+                                        },
                                     })
                                 }
                             />
@@ -161,21 +211,35 @@ export default function Notifications({
 
                         <div className="flex items-center justify-between rounded-lg border p-4">
                             <div className="space-y-0.5">
-                                <Label htmlFor="billing" className="flex items-center gap-1.5">
-                                    {t('settings.notifications.billing', 'Billing alerts')}
+                                <Label
+                                    htmlFor="billing"
+                                    className="flex items-center gap-1.5"
+                                >
+                                    {t(
+                                        'settings.notifications.billing',
+                                        'Billing alerts',
+                                    )}
                                     <HelpTooltip content="Invoices and payment receipts will always be sent. This toggles upcoming renewal and budget alerts." />
                                 </Label>
                                 <p className="text-sm text-muted-foreground">
-                                    {t('settings.notifications.billing_desc', 'Receive updates about your subscription and billing status.')}
+                                    {t(
+                                        'settings.notifications.billing_desc',
+                                        'Receive updates about your subscription and billing status.',
+                                    )}
                                 </p>
                             </div>
                             <Switch
                                 id="billing"
-                                checked={data.preferences.categories.billing ?? true}
+                                checked={
+                                    data.preferences.categories.billing ?? true
+                                }
                                 onCheckedChange={(val) =>
                                     setData('preferences', {
                                         ...data.preferences,
-                                        categories: { ...data.preferences.categories, billing: val },
+                                        categories: {
+                                            ...data.preferences.categories,
+                                            billing: val,
+                                        },
                                     })
                                 }
                             />
@@ -184,7 +248,10 @@ export default function Notifications({
 
                     <div className="flex items-center gap-4">
                         <Button disabled={processing}>
-                            {t('settings.notifications.save', 'Save preferences')}
+                            {t(
+                                'settings.notifications.save',
+                                'Save preferences',
+                            )}
                         </Button>
 
                         <Transition

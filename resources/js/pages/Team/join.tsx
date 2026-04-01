@@ -59,7 +59,8 @@ export default function Join({ inviteLink }: JoinProps) {
                             Join {inviteLink.workspace_name}
                         </CardTitle>
                         <CardDescription>
-                            You&apos;ve been invited to join this workspace via a shareable link.
+                            You&apos;ve been invited to join this workspace via
+                            a shareable link.
                         </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-6">
@@ -67,7 +68,10 @@ export default function Join({ inviteLink }: JoinProps) {
                             <div className="flex items-center gap-3 text-sm">
                                 <UserCheck className="h-4 w-4 text-muted-foreground" />
                                 <span>
-                                    Role: <Badge variant="outline">{formatRole(inviteLink.role)}</Badge>
+                                    Role:{' '}
+                                    <Badge variant="outline">
+                                        {formatRole(inviteLink.role)}
+                                    </Badge>
                                 </span>
                             </div>
                         </div>
@@ -85,7 +89,8 @@ export default function Join({ inviteLink }: JoinProps) {
                         ) : (
                             <div className="space-y-4">
                                 <p className="text-center text-sm text-muted-foreground">
-                                    Sign in or create an account to join this workspace.
+                                    Sign in or create an account to join this
+                                    workspace.
                                 </p>
                                 <div className="grid gap-2">
                                     <Button className="w-full" asChild>
@@ -113,7 +118,8 @@ export default function Join({ inviteLink }: JoinProps) {
                 </Card>
 
                 <p className="mt-8 text-center text-sm text-muted-foreground">
-                    If you weren&apos;t expecting this link, you can safely ignore it.
+                    If you weren&apos;t expecting this link, you can safely
+                    ignore it.
                 </p>
             </div>
         </>

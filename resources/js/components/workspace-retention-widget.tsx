@@ -14,7 +14,9 @@ export function WorkspaceRetentionWidget() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch('/workspace-retention-insights', { headers: { Accept: 'application/json' } })
+        fetch('/workspace-retention-insights', {
+            headers: { Accept: 'application/json' },
+        })
             .then((r) => r.json())
             .then((d) => {
                 setData(d);
@@ -33,7 +35,9 @@ export function WorkspaceRetentionWidget() {
     return (
         <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Member Retention (30d)</CardTitle>
+                <CardTitle className="text-sm font-medium">
+                    Member Retention (30d)
+                </CardTitle>
                 <TrendingUp className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -48,13 +52,19 @@ export function WorkspaceRetentionWidget() {
                         <div className={`text-2xl font-bold ${rateColor}`}>
                             {data.retention_rate}%
                         </div>
-                        <Progress value={data.retention_rate} className="h-1.5" />
+                        <Progress
+                            value={data.retention_rate}
+                            className="h-1.5"
+                        />
                         <p className="text-xs text-muted-foreground">
-                            {data.active_last_30_days} of {data.total_members} members active
+                            {data.active_last_30_days} of {data.total_members}{' '}
+                            members active
                         </p>
                     </div>
                 ) : (
-                    <p className="text-sm text-muted-foreground">No data available.</p>
+                    <p className="text-sm text-muted-foreground">
+                        No data available.
+                    </p>
                 )}
             </CardContent>
         </Card>

@@ -21,7 +21,9 @@ interface WorkspaceSuspendedProps {
     workspace: SuspendedWorkspace;
 }
 
-export default function WorkspaceSuspended({ workspace }: WorkspaceSuspendedProps) {
+export default function WorkspaceSuspended({
+    workspace,
+}: WorkspaceSuspendedProps) {
     const breadcrumbs: BreadcrumbItem[] = [
         { title: 'Workspace Suspended', href: '#' },
     ];
@@ -36,11 +38,19 @@ export default function WorkspaceSuspended({ workspace }: WorkspaceSuspendedProp
                         <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-destructive/10">
                             <AlertTriangle className="h-8 w-8 text-destructive" />
                         </div>
-                        <CardTitle className="text-xl">Workspace Suspended</CardTitle>
+                        <CardTitle className="text-xl">
+                            Workspace Suspended
+                        </CardTitle>
                         <CardDescription>
                             <strong>{workspace.name}</strong> has been suspended
                             {workspace.suspended_at && (
-                                <> on {new Date(workspace.suspended_at).toLocaleDateString()}</>
+                                <>
+                                    {' '}
+                                    on{' '}
+                                    {new Date(
+                                        workspace.suspended_at,
+                                    ).toLocaleDateString()}
+                                </>
                             )}
                             .
                         </CardDescription>
@@ -49,11 +59,14 @@ export default function WorkspaceSuspended({ workspace }: WorkspaceSuspendedProp
                         {workspace.suspension_reason && (
                             <div className="rounded-lg bg-muted p-4 text-left text-sm">
                                 <p className="mb-1 font-medium">Reason:</p>
-                                <p className="text-muted-foreground">{workspace.suspension_reason}</p>
+                                <p className="text-muted-foreground">
+                                    {workspace.suspension_reason}
+                                </p>
                             </div>
                         )}
                         <p className="text-sm text-muted-foreground">
-                            Contact your administrator or support team to resolve this issue and restore access.
+                            Contact your administrator or support team to
+                            resolve this issue and restore access.
                         </p>
                         <Button variant="outline" asChild>
                             <Link href="/workspaces">

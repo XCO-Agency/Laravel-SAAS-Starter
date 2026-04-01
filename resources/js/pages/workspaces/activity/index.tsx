@@ -1,7 +1,13 @@
 import { HelpTooltip } from '@/components/help-tooltip';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 import {
     Select,
     SelectContent,
@@ -50,7 +56,10 @@ interface ActivityFeedProps {
     currentFilter: string;
 }
 
-const eventConfig: Record<string, { icon: typeof ActivityIcon; color: string; label: string }> = {
+const eventConfig: Record<
+    string,
+    { icon: typeof ActivityIcon; color: string; label: string }
+> = {
     created: { icon: Plus, color: 'text-emerald-500', label: 'Created' },
     updated: { icon: Edit, color: 'text-blue-500', label: 'Updated' },
     deleted: { icon: Trash2, color: 'text-red-500', label: 'Deleted' },
@@ -61,10 +70,21 @@ const eventConfig: Record<string, { icon: typeof ActivityIcon; color: string; la
 };
 
 function getEventConfig(event: string) {
-    return eventConfig[event] || { icon: ActivityIcon, color: 'text-muted-foreground', label: event };
+    return (
+        eventConfig[event] || {
+            icon: ActivityIcon,
+            color: 'text-muted-foreground',
+            label: event,
+        }
+    );
 }
 
-export default function WorkspaceActivity({ workspace, activities, eventTypes, currentFilter }: ActivityFeedProps) {
+export default function WorkspaceActivity({
+    workspace,
+    activities,
+    eventTypes,
+    currentFilter,
+}: ActivityFeedProps) {
     const { t } = useTranslations();
 
     const handleFilterChange = (value: string) => {
@@ -78,15 +98,24 @@ export default function WorkspaceActivity({ workspace, activities, eventTypes, c
     return (
         <AppLayout
             breadcrumbs={[
-                { title: t('workspace.settings.title', 'Workspace Settings'), href: '/workspaces/settings' },
-                { title: t('workspace.activity.title', 'Activity Feed'), href: '' },
+                {
+                    title: t('workspace.settings.title', 'Workspace Settings'),
+                    href: '/workspaces/settings',
+                },
+                {
+                    title: t('workspace.activity.title', 'Activity Feed'),
+                    href: '',
+                },
             ]}
         >
             <Head title={t('workspace.activity.page_title', 'Activity Feed')} />
 
             <WorkspaceLayout
                 title={t('workspace.activity.heading', 'Activity Feed')}
-                description={t('workspace.activity.description', 'Live feed of workspace events — member changes, settings updates, and more.')}
+                description={t(
+                    'workspace.activity.description',
+                    'Live feed of workspace events — member changes, settings updates, and more.',
+                )}
                 fullWidth
             >
                 <div className="space-y-6">
@@ -96,35 +125,50 @@ export default function WorkspaceActivity({ workspace, activities, eventTypes, c
                                 <div>
                                     <CardTitle className="flex items-center gap-2">
                                         <ActivityIcon className="h-5 w-5" />
-                                        {t('workspace.activity.recent', 'Recent Activity')}
+                                        {t(
+                                            'workspace.activity.recent',
+                                            'Recent Activity',
+                                        )}
                                         <HelpTooltip content="This feed shows actions taken by workspace members, including settings changes, member additions, and other key events. Activity is retained for 90 days." />
                                     </CardTitle>
                                     <CardDescription className="mt-1">
-                                        {t('workspace.activity.showing', 'Showing the latest workspace events.')}
+                                        {t(
+                                            'workspace.activity.showing',
+                                            'Showing the latest workspace events.',
+                                        )}
                                     </CardDescription>
                                 </div>
                                 <div className="flex items-center gap-2">
                                     {eventTypes.length > 0 && (
-                                        <Select value={currentFilter} onValueChange={handleFilterChange}>
+                                        <Select
+                                            value={currentFilter}
+                                            onValueChange={handleFilterChange}
+                                        >
                                             <SelectTrigger className="w-36">
                                                 <SelectValue placeholder="Filter" />
                                             </SelectTrigger>
                                             <SelectContent>
-                                                <SelectItem value="all">All Events</SelectItem>
+                                                <SelectItem value="all">
+                                                    All Events
+                                                </SelectItem>
                                                 {eventTypes.map((type) => (
-                                                    <SelectItem key={type} value={type}>
-                                                        {getEventConfig(type).label}
+                                                    <SelectItem
+                                                        key={type}
+                                                        value={type}
+                                                    >
+                                                        {
+                                                            getEventConfig(type)
+                                                                .label
+                                                        }
                                                     </SelectItem>
                                                 ))}
                                             </SelectContent>
                                         </Select>
                                     )}
-                                    <Button
-                                        variant="outline"
-                                        size="sm"
-                                        asChild
-                                    >
-                                        <a href={`/workspaces/${workspace.id}/activity/export`}>
+                                    <Button variant="outline" size="sm" asChild>
+                                        <a
+                                            href={`/workspaces/${workspace.id}/activity/export`}
+                                        >
                                             <Download className="mr-1.5 h-4 w-4" />
                                             Export CSV
                                         </a>
@@ -136,19 +180,31 @@ export default function WorkspaceActivity({ workspace, activities, eventTypes, c
                             {activities.data.length === 0 ? (
                                 <div className="flex h-32 items-center justify-center rounded-md border border-dashed">
                                     <p className="text-sm text-muted-foreground">
-                                        {t('workspace.activity.empty', 'No activity logged yet.')}
+                                        {t(
+                                            'workspace.activity.empty',
+                                            'No activity logged yet.',
+                                        )}
                                     </p>
                                 </div>
                             ) : (
                                 <div className="relative ml-3 border-l border-border pb-4">
                                     {activities.data.map((activity) => {
-                                        const config = getEventConfig(activity.event);
+                                        const config = getEventConfig(
+                                            activity.event,
+                                        );
                                         const Icon = config.icon;
 
                                         return (
-                                            <div key={activity.id} className="mb-6 ml-6 flex flex-col gap-1">
-                                                <div className={`absolute -left-2.5 mt-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-background ring-4 ring-background`}>
-                                                    <Icon className={`h-3.5 w-3.5 ${config.color}`} />
+                                            <div
+                                                key={activity.id}
+                                                className="mb-6 ml-6 flex flex-col gap-1"
+                                            >
+                                                <div
+                                                    className={`absolute -left-2.5 mt-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-background ring-4 ring-background`}
+                                                >
+                                                    <Icon
+                                                        className={`h-3.5 w-3.5 ${config.color}`}
+                                                    />
                                                 </div>
                                                 <div className="flex items-center gap-2">
                                                     <span className="text-sm font-semibold">
@@ -157,30 +213,64 @@ export default function WorkspaceActivity({ workspace, activities, eventTypes, c
                                                     <span className="text-sm text-muted-foreground">
                                                         {activity.description}
                                                     </span>
-                                                    <Badge variant="outline" className="text-xs">
+                                                    <Badge
+                                                        variant="outline"
+                                                        className="text-xs"
+                                                    >
                                                         {activity.subject_type}
                                                     </Badge>
                                                 </div>
                                                 {activity.properties &&
-                                                    Object.keys(activity.properties).length > 0 &&
-                                                    activity.properties.attributes && (
+                                                    Object.keys(
+                                                        activity.properties,
+                                                    ).length > 0 &&
+                                                    !!activity.properties
+                                                        .attributes && (
                                                         <div className="mt-1 rounded-md bg-muted/50 px-3 py-2 text-xs text-muted-foreground">
                                                             {Object.entries(
-                                                                activity.properties.attributes as Record<string, unknown>,
+                                                                activity
+                                                                    .properties
+                                                                    .attributes as Record<
+                                                                    string,
+                                                                    unknown
+                                                                >,
                                                             )
                                                                 .slice(0, 3)
-                                                                .map(([key, val]) => (
-                                                                    <span key={key} className="mr-3">
-                                                                        <span className="font-medium">{key}:</span>{' '}
-                                                                        {String(val)}
-                                                                    </span>
-                                                                ))}
+                                                                .map(
+                                                                    ([
+                                                                        key,
+                                                                        val,
+                                                                    ]) => (
+                                                                        <span
+                                                                            key={
+                                                                                key
+                                                                            }
+                                                                            className="mr-3"
+                                                                        >
+                                                                            <span className="font-medium">
+                                                                                {
+                                                                                    key
+                                                                                }
+
+                                                                                :
+                                                                            </span>{' '}
+                                                                            {String(
+                                                                                val,
+                                                                            )}
+                                                                        </span>
+                                                                    ),
+                                                                )}
                                                         </div>
                                                     )}
                                                 <time className="text-xs text-muted-foreground">
-                                                    {formatDistanceToNow(new Date(activity.created_at), {
-                                                        addSuffix: true,
-                                                    })}
+                                                    {formatDistanceToNow(
+                                                        new Date(
+                                                            activity.created_at,
+                                                        ),
+                                                        {
+                                                            addSuffix: true,
+                                                        },
+                                                    )}
                                                 </time>
                                             </div>
                                         );
@@ -189,7 +279,8 @@ export default function WorkspaceActivity({ workspace, activities, eventTypes, c
                             )}
 
                             {/* Pagination */}
-                            {(activities.prev_page_url || activities.next_page_url) && (
+                            {(activities.prev_page_url ||
+                                activities.next_page_url) && (
                                 <div className="flex items-center justify-between border-t pt-4">
                                     <Link
                                         href={activities.prev_page_url || '#'}
@@ -198,7 +289,8 @@ export default function WorkspaceActivity({ workspace, activities, eventTypes, c
                                         ← Previous
                                     </Link>
                                     <span className="text-xs text-muted-foreground">
-                                        Page {activities.current_page} of {activities.last_page}
+                                        Page {activities.current_page} of{' '}
+                                        {activities.last_page}
                                     </span>
                                     <Link
                                         href={activities.next_page_url || '#'}

@@ -1,4 +1,5 @@
 import InputError from '@/components/input-error';
+import SocialLoginButtons from '@/components/social-login-buttons';
 import TextLink from '@/components/text-link';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -11,7 +12,6 @@ import { register } from '@/routes';
 import { store } from '@/routes/login';
 import { request } from '@/routes/password';
 import { Form, Head, Link } from '@inertiajs/react';
-import SocialLoginButtons from '@/components/social-login-buttons';
 
 interface LoginProps {
     status?: string;
@@ -69,7 +69,10 @@ export default function Login({
                                     autoFocus={!email}
                                     tabIndex={1}
                                     autoComplete="email"
-                                    placeholder={t('auth.email_placeholder', 'email@example.com')}
+                                    placeholder={t(
+                                        'auth.email_placeholder',
+                                        'email@example.com',
+                                    )}
                                     defaultValue={email}
                                 />
                                 <InputError message={errors.email} />
@@ -112,7 +115,10 @@ export default function Login({
                                     name="remember"
                                     tabIndex={3}
                                 />
-                                <Label htmlFor="remember" className="cursor-pointer text-sm font-normal">
+                                <Label
+                                    htmlFor="remember"
+                                    className="cursor-pointer text-sm font-normal"
+                                >
                                     {t('auth.remember_me', 'Remember me')}
                                 </Label>
                             </div>
@@ -150,29 +156,42 @@ export default function Login({
                                     Sign in with Magic Link
                                 </Button>
                             </Link>
-
                         </div>
 
                         {canRegister && (
                             <div className="text-center text-sm text-muted-foreground">
                                 {t('auth.no_account', "Don't have an account?")}{' '}
-                                <TextLink href={registerUrl()} tabIndex={5} className="font-semibold">
+                                <TextLink
+                                    href={registerUrl()}
+                                    tabIndex={5}
+                                    className="font-semibold"
+                                >
                                     {t('auth.sign_up', 'Sign up')}
                                 </TextLink>
                             </div>
                         )}
-                        <div className="space-y-3 pt-4 border-t mt-2">
-                            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Developer Quick Login</span>
+                        <div className="mt-2 space-y-3 border-t pt-4">
+                            <span className="text-xs font-medium tracking-wider text-muted-foreground uppercase">
+                                Developer Quick Login
+                            </span>
                             <div className="grid grid-cols-3 gap-2">
                                 <Button
                                     type="button"
                                     variant="secondary"
                                     size="sm"
-                                    className="text-xs h-8 px-2 bg-red-100 text-red-800 hover:bg-red-200 dark:bg-red-900/30 dark:text-red-400 dark:hover:bg-red-900/50"
+                                    className="h-8 bg-red-100 px-2 text-xs text-red-800 hover:bg-red-200 dark:bg-red-900/30 dark:text-red-400 dark:hover:bg-red-900/50"
                                     onClick={() => {
-                                        const e = document.getElementById('email') as HTMLInputElement;
-                                        const p = document.getElementById('password') as HTMLInputElement;
-                                        if (e && p) { e.value = 'superadmin@example.com'; p.value = 'password'; e.form?.requestSubmit(); }
+                                        const e = document.getElementById(
+                                            'email',
+                                        ) as HTMLInputElement;
+                                        const p = document.getElementById(
+                                            'password',
+                                        ) as HTMLInputElement;
+                                        if (e && p) {
+                                            e.value = 'superadmin@example.com';
+                                            p.value = 'password';
+                                            e.form?.requestSubmit();
+                                        }
                                     }}
                                 >
                                     Super Admin
@@ -181,11 +200,19 @@ export default function Login({
                                     type="button"
                                     variant="secondary"
                                     size="sm"
-                                    className="text-xs h-8 px-2"
+                                    className="h-8 px-2 text-xs"
                                     onClick={() => {
-                                        const e = document.getElementById('email') as HTMLInputElement;
-                                        const p = document.getElementById('password') as HTMLInputElement;
-                                        if (e && p) { e.value = 'admin@example.com'; p.value = 'password'; e.form?.requestSubmit(); }
+                                        const e = document.getElementById(
+                                            'email',
+                                        ) as HTMLInputElement;
+                                        const p = document.getElementById(
+                                            'password',
+                                        ) as HTMLInputElement;
+                                        if (e && p) {
+                                            e.value = 'admin@example.com';
+                                            p.value = 'password';
+                                            e.form?.requestSubmit();
+                                        }
                                     }}
                                 >
                                     Admin
@@ -194,11 +221,19 @@ export default function Login({
                                     type="button"
                                     variant="secondary"
                                     size="sm"
-                                    className="text-xs h-8 px-2"
+                                    className="h-8 px-2 text-xs"
                                     onClick={() => {
-                                        const e = document.getElementById('email') as HTMLInputElement;
-                                        const p = document.getElementById('password') as HTMLInputElement;
-                                        if (e && p) { e.value = 'demo@example.com'; p.value = 'password'; e.form?.requestSubmit(); }
+                                        const e = document.getElementById(
+                                            'email',
+                                        ) as HTMLInputElement;
+                                        const p = document.getElementById(
+                                            'password',
+                                        ) as HTMLInputElement;
+                                        if (e && p) {
+                                            e.value = 'demo@example.com';
+                                            p.value = 'password';
+                                            e.form?.requestSubmit();
+                                        }
                                     }}
                                 >
                                     Demo
