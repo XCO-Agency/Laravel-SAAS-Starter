@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.1.2](https://github.com/XCO-Agency/Laravel-SAAS-Starter/compare/v0.1.1...v0.1.2) (2026-04-04)
+
+
+### Features
+
+* add product tour component to dashboard and implement tour completion endpoint ([78c9ebe](https://github.com/XCO-Agency/Laravel-SAAS-Starter/commit/78c9ebe6869c77fc0bd86cd5f4a17df1902c0633))
+* **billing:** add usage trend chart component and integrate into billing pages ([8d2fa77](https://github.com/XCO-Agency/Laravel-SAAS-Starter/commit/8d2fa77c56109d8227fe58b629389fbfd15bbdbc))
+* **config:** add serializable_classes option to cache configuration ([3060ddb](https://github.com/XCO-Agency/Laravel-SAAS-Starter/commit/3060ddbe9c591341a1c3f876494665fe0a82dcdf))
+* create public status page to display system status and incidents ([78c9ebe](https://github.com/XCO-Agency/Laravel-SAAS-Starter/commit/78c9ebe6869c77fc0bd86cd5f4a17df1902c0633))
+* **docs:** update README and feature documentation; add global announcements, connected accounts, and workspace retention insights; remove user session management and update related links ([8b355ef](https://github.com/XCO-Agency/Laravel-SAAS-Starter/commit/8b355ef9710eea5b78a0fd51965d26061ac8626b))
+* enhance workspace security settings with allowed email domains restriction ([78c9ebe](https://github.com/XCO-Agency/Laravel-SAAS-Starter/commit/78c9ebe6869c77fc0bd86cd5f4a17df1902c0633))
+* implement weekly workspace activity digest notifications ([78c9ebe](https://github.com/XCO-Agency/Laravel-SAAS-Starter/commit/78c9ebe6869c77fc0bd86cd5f4a17df1902c0633))
+* **settings:** update security routes and components for two-factor authentication ([24d1c04](https://github.com/XCO-Agency/Laravel-SAAS-Starter/commit/24d1c04fd01b38143d31d556ed6ade935737239f))
+
+
+### Bug Fixes
+
+* **sanctum:** replace ValidateCsrfToken middleware with PreventRequestForgery ([3060ddb](https://github.com/XCO-Agency/Laravel-SAAS-Starter/commit/3060ddbe9c591341a1c3f876494665fe0a82dcdf))
+* **workflows:** downgrade actions versions to v4 for consistency ([dea21b0](https://github.com/XCO-Agency/Laravel-SAAS-Starter/commit/dea21b0932ae60b7b882aefa2a088384817b8d20))
+
 ## [0.1.1](https://github.com/XCO-Agency/Laravel-SAAS-Starter/compare/v0.1.0...v0.1.1) (2026-03-12)
 
 
