@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('sender_id')->constrained('users')->cascadeOnDelete();
             $table->string('subject');
             $table->text('body');
+            $table->string('action_url')->nullable();
             $table->boolean('send_via_email')->default(false);
             $table->boolean('send_via_in_app')->default(true);
             $table->string('target_segment')->default('all_users');
