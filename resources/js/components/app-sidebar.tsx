@@ -17,7 +17,6 @@ import {
     BarChart3,
     BookOpen,
     LayoutGrid,
-    Save,
     Settings,
     ShieldAlert,
 } from 'lucide-react';
@@ -42,11 +41,6 @@ const getMainNavItems = (
             title: t('navigation.workspace_settings', 'Workspace Settings'),
             href: '/workspaces/settings',
             icon: Settings,
-        },
-        {
-            title: t('navigation.templates', 'Templates'),
-            href: '/workspace-templates',
-            icon: Save,
         },
     ];
 

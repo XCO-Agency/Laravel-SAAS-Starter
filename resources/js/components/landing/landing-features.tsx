@@ -162,7 +162,7 @@ export function LandingFeatures() {
                             'landing.features.title.part1',
                             'Everything You Need to',
                         )}{' '}
-                        <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                        <span className="text-primary">
                             {t('landing.features.title.part2', 'Ship Faster')}
                         </span>
                     </h2>
@@ -175,23 +175,21 @@ export function LandingFeatures() {
                 </div>
 
                 {/* Features Grid */}
-                <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                     {features.map((feature) => (
                         <div
                             key={feature.title}
-                            className="group relative rounded-2xl border bg-card p-6 transition-all hover:-translate-y-1 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5"
+                            className="group relative rounded-md border bg-card p-5 transition-colors hover:border-primary/40 hover:bg-card"
                         >
                             <div
-                                className={`inline-flex h-12 w-12 items-center justify-center rounded-xl transition-transform group-hover:scale-110 ${feature.bgColor}`}
+                                className={`inline-flex h-10 w-10 items-center justify-center rounded-md ${feature.bgColor}`}
                             >
-                                <feature.icon
-                                    className={`h-6 w-6 ${feature.color}`}
-                                />
+                                <feature.icon className={`h-5 w-5 ${feature.color}`} />
                             </div>
-                            <h3 className="mt-4 text-lg font-semibold">
+                            <h3 className="mt-3 text-sm font-semibold">
                                 {feature.title}
                             </h3>
-                            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                            <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
                                 {feature.description}
                             </p>
                         </div>

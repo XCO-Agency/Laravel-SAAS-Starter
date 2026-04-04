@@ -80,7 +80,7 @@ export default function WorkspaceTwoFactorRequired({
                         <p className="text-center text-xs font-medium tracking-wider text-muted-foreground uppercase">
                             Or switch to another workspace
                         </p>
-                        <div className="divide-y overflow-hidden rounded-xl border bg-card">
+                        <div className="divide-y overflow-hidden rounded-md border bg-card">
                             {workspaces.map((ws) => (
                                 <button
                                     key={ws.id}

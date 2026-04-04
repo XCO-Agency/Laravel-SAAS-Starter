@@ -83,7 +83,7 @@ export default function UserApiTokens({ user, tokens }: UserApiTokensProps) {
         <AdminLayout>
             <Head title={`API Tokens - ${user.name}`} />
 
-            <div className="flex h-full flex-1 flex-col gap-6 rounded-xl border border-sidebar-border/70 p-4 md:p-6 lg:p-8">
+            <div className="flex h-full flex-1 flex-col gap-6 rounded-md border border-sidebar-border/70 p-4 md:p-6 lg:p-8">
                 <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                     <div>
                         <div className="mb-2 flex items-center gap-2">
@@ -110,7 +110,7 @@ export default function UserApiTokens({ user, tokens }: UserApiTokensProps) {
 
                 <form
                     onSubmit={createToken}
-                    className="space-y-4 rounded-xl border bg-card p-4"
+                    className="space-y-4 rounded-md border bg-card p-4"
                 >
                     <h3 className="text-base font-semibold">
                         Create new token
@@ -158,7 +158,7 @@ export default function UserApiTokens({ user, tokens }: UserApiTokensProps) {
                     <h3 className="text-lg font-medium">Active Tokens</h3>
 
                     {tokens.length === 0 ? (
-                        <div className="rounded-xl border border-dashed p-6 text-center text-sm text-muted-foreground">
+                        <div className="rounded-md border border-dashed p-6 text-center text-sm text-muted-foreground">
                             No API tokens found for this user.
                         </div>
                     ) : (
@@ -166,7 +166,7 @@ export default function UserApiTokens({ user, tokens }: UserApiTokensProps) {
                             {tokens.map((token) => (
                                 <div
                                     key={token.id}
-                                    className="flex items-center justify-between rounded-xl border bg-card p-4 text-card-foreground shadow-sm"
+                                    className="flex items-center justify-between rounded-md border bg-card p-4 text-card-foreground shadow-sm"
                                 >
                                     <div>
                                         <div className="font-medium">

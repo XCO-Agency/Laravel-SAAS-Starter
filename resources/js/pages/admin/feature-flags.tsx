@@ -116,7 +116,7 @@ export default function AdminFeatureFlags({ flags, workspaces }: Props) {
     return (
         <AdminLayout>
             <Head title="Feature Flags" />
-            <div className="flex h-full flex-1 flex-col gap-6 rounded-xl border border-sidebar-border/70 p-4 md:p-6 lg:p-8">
+            <div className="flex h-full flex-1 flex-col gap-6 rounded-md border border-sidebar-border/70 p-4 md:p-6 lg:p-8">
                 <div className="flex items-center justify-between">
                     <div>
                         <h2 className="flex items-center gap-2 text-2xl font-bold tracking-tight">
@@ -136,7 +136,7 @@ export default function AdminFeatureFlags({ flags, workspaces }: Props) {
 
                 {/* Form Modal (Inline for now, could be dialog) */}
                 {showForm && (
-                    <div className="rounded-xl border bg-card p-6 shadow-sm">
+                    <div className="rounded-md border bg-card p-6 shadow-sm">
                         <h3 className="mb-4 text-lg font-medium">
                             {editingFlag
                                 ? 'Edit Feature Flag'
@@ -283,14 +283,14 @@ export default function AdminFeatureFlags({ flags, workspaces }: Props) {
                 {/* Flags List */}
                 <div className="space-y-3">
                     {flags.data.length === 0 && !showForm ? (
-                        <div className="rounded-xl border bg-card p-12 text-center text-muted-foreground">
+                        <div className="rounded-md border bg-card p-12 text-center text-muted-foreground">
                             No feature flags configured.
                         </div>
                     ) : (
                         flags.data.map((flag) => (
                             <div
                                 key={flag.id}
-                                className="flex items-center gap-4 rounded-xl border bg-card p-4 transition-colors hover:bg-muted/30"
+                                className="flex items-center gap-4 rounded-md border bg-card p-4 transition-colors hover:bg-muted/30"
                             >
                                 <div className="min-w-0 flex-1">
                                     <div className="mb-1 flex items-center gap-2">

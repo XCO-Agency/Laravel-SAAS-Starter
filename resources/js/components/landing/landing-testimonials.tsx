@@ -70,7 +70,7 @@ export function LandingTestimonials() {
                 <div className="mx-auto max-w-3xl text-center">
                     <h2 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
                         {t('landing.testimonials.title.part1', 'Loved by')}{' '}
-                        <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                        <span className="text-primary">
                             {t(
                                 'landing.testimonials.title.part2',
                                 'Developers',
@@ -87,16 +87,16 @@ export function LandingTestimonials() {
                 </div>
 
                 {/* Stats */}
-                <div className="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-4 lg:gap-8">
+                <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
                     {stats.map((stat) => (
                         <div
                             key={stat.label}
-                            className="rounded-xl border bg-card p-4 text-center lg:p-6"
+                            className="rounded-md border bg-card p-4 text-center"
                         >
-                            <div className="text-2xl font-bold text-primary sm:text-3xl">
+                            <div className="text-2xl font-bold tabular-nums text-foreground sm:text-3xl">
                                 {stat.value}
                             </div>
-                            <div className="mt-1 text-sm text-muted-foreground">
+                            <div className="mt-1 text-xs font-medium uppercase tracking-wider text-muted-foreground">
                                 {stat.label}
                             </div>
                         </div>
@@ -104,39 +104,39 @@ export function LandingTestimonials() {
                 </div>
 
                 {/* Testimonials */}
-                <div className="mt-16 grid gap-8 md:grid-cols-3">
+                <div className="mt-10 grid gap-4 md:grid-cols-3">
                     {testimonials.map((testimonial, index) => (
                         <Card key={index} className="relative">
-                            <CardContent className="pt-6">
-                                <Quote className="h-8 w-8 text-primary/20" />
+                            <CardContent className="pt-5">
+                                <Quote className="h-6 w-6 text-muted-foreground/30" />
 
                                 {/* Stars */}
-                                <div className="mt-4 flex gap-1">
+                                <div className="mt-3 flex gap-0.5">
                                     {Array.from({
                                         length: testimonial.rating,
                                     }).map((_, i) => (
                                         <Star
                                             key={i}
-                                            className="h-4 w-4 fill-yellow-400 text-yellow-400"
+                                            className="h-3.5 w-3.5 fill-accent text-accent"
                                         />
                                     ))}
                                 </div>
 
                                 {/* Quote */}
-                                <blockquote className="mt-4 text-sm leading-relaxed text-muted-foreground">
+                                <blockquote className="mt-3 text-sm leading-relaxed text-muted-foreground">
                                     "{testimonial.quote}"
                                 </blockquote>
 
                                 {/* Author */}
-                                <div className="mt-6 flex items-center gap-3">
-                                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-primary">
+                                <div className="mt-5 flex items-center gap-3">
+                                    <div className="flex h-8 w-8 items-center justify-center rounded-sm bg-foreground text-xs font-semibold text-background">
                                         {testimonial.author
                                             .split(' ')
                                             .map((n) => n[0])
                                             .join('')}
                                     </div>
                                     <div>
-                                        <div className="font-medium">
+                                        <div className="text-sm font-medium">
                                             {testimonial.author}
                                         </div>
                                         <div className="text-xs text-muted-foreground">
@@ -157,12 +157,12 @@ export function LandingTestimonials() {
                             'Join the community',
                         )}
                     </p>
-                    <div className="mt-6 flex flex-wrap items-center justify-center gap-6">
+                    <div className="mt-5 flex flex-wrap items-center justify-center gap-3">
                         <a
                             href="https://github.com/xco-agency/laravel-saas-starter"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center gap-2 rounded-lg border bg-card px-4 py-2 text-sm font-medium transition-colors hover:bg-muted"
+                            className="flex items-center gap-2 rounded-md border px-3 py-1.5 text-sm font-medium transition-colors hover:bg-muted"
                         >
                             <Github className="h-4 w-4" />
                             {t(
@@ -174,7 +174,7 @@ export function LandingTestimonials() {
                             href="https://github.com/xco-agency/laravel-saas-starter/issues"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center gap-2 rounded-lg border bg-card px-4 py-2 text-sm font-medium transition-colors hover:bg-muted"
+                            className="flex items-center gap-2 rounded-md border px-3 py-1.5 text-sm font-medium transition-colors hover:bg-muted"
                         >
                             {t(
                                 'landing.testimonials.community.issues',
@@ -185,7 +185,7 @@ export function LandingTestimonials() {
                             href="https://github.com/xco-agency/laravel-saas-starter/discussions"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center gap-2 rounded-lg border bg-card px-4 py-2 text-sm font-medium transition-colors hover:bg-muted"
+                            className="flex items-center gap-2 rounded-md border px-3 py-1.5 text-sm font-medium transition-colors hover:bg-muted"
                         >
                             {t(
                                 'landing.testimonials.community.discussions',

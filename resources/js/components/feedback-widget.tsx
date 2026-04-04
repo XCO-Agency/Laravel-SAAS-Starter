@@ -98,7 +98,7 @@ export function FeedbackWidget() {
         <div className="fixed right-6 bottom-6 z-50" ref={panelRef}>
             {/* Panel */}
             {open && (
-                <div className="mb-3 w-80 overflow-hidden rounded-2xl border bg-popover shadow-2xl ring-1 ring-black/5 dark:ring-white/10">
+                <div className="mb-3 w-80 overflow-hidden rounded-lg border bg-popover shadow-sm ring-1 ring-black/5 dark:ring-white/10">
                     {/* Header */}
                     <div className="flex items-center justify-between border-b px-4 py-3">
                         <div className="flex items-center gap-2">
@@ -139,7 +139,7 @@ export function FeedbackWidget() {
                                         type="button"
                                         onClick={() => setType(t.value)}
                                         className={cn(
-                                            'flex flex-col items-center gap-1 rounded-xl border px-2 py-2 text-xs transition',
+                                            'flex flex-col items-center gap-1 rounded-md border px-2 py-2 text-xs transition',
                                             type === t.value
                                                 ? 'border-primary bg-primary/5 font-medium'
                                                 : 'border-transparent hover:border-border hover:bg-muted',
@@ -167,7 +167,7 @@ export function FeedbackWidget() {
                                     }
                                     rows={4}
                                     maxLength={2000}
-                                    className="w-full resize-none rounded-xl border bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus:ring-2 focus:ring-primary/50 focus:outline-none"
+                                    className="w-full resize-none rounded-md border bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus:ring-2 focus:ring-primary/50 focus:outline-none"
                                 />
                                 <div className="mt-1 flex items-center justify-between">
                                     {errors.message ? (

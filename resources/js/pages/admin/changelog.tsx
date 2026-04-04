@@ -86,7 +86,7 @@ function EntryForm({
     return (
         <form
             onSubmit={handleSubmit}
-            className="space-y-4 rounded-xl border bg-card p-6"
+            className="space-y-4 rounded-md border bg-card p-6"
         >
             <div className="grid gap-4 md:grid-cols-3">
                 <div>
@@ -220,7 +220,7 @@ export default function AdminChangelog({ entries }: Props) {
 
                 <div className="space-y-3">
                     {entries.length === 0 ? (
-                        <div className="rounded-xl border bg-card p-12 text-center text-muted-foreground">
+                        <div className="rounded-md border bg-card p-12 text-center text-muted-foreground">
                             No changelog entries yet. Create one to share
                             updates with your users.
                         </div>
@@ -244,7 +244,7 @@ export default function AdminChangelog({ entries }: Props) {
                             return (
                                 <div
                                     key={entry.id}
-                                    className={`flex items-start gap-4 rounded-xl border bg-card p-4 transition-opacity ${!entry.is_published ? 'opacity-50' : ''}`}
+                                    className={`flex items-start gap-4 rounded-md border bg-card p-4 transition-opacity ${!entry.is_published ? 'opacity-50' : ''}`}
                                 >
                                     <div
                                         className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${config.color}`}

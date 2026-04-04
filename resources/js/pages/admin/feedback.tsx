@@ -131,7 +131,7 @@ export default function AdminFeedback({ feedback, filters, counts }: Props) {
     return (
         <AdminLayout>
             <Head title="User Feedback" />
-            <div className="flex h-full flex-1 flex-col gap-6 rounded-xl border border-sidebar-border/70 p-4 md:p-6 lg:p-8">
+            <div className="flex h-full flex-1 flex-col gap-6 rounded-md border border-sidebar-border/70 p-4 md:p-6 lg:p-8">
                 {/* Header */}
                 <div className="flex items-center justify-between">
                     <div>
@@ -193,7 +193,7 @@ export default function AdminFeedback({ feedback, filters, counts }: Props) {
 
                 {/* Table */}
                 {feedback.data.length === 0 ? (
-                    <div className="rounded-xl border bg-card p-12 text-center text-muted-foreground">
+                    <div className="rounded-md border bg-card p-12 text-center text-muted-foreground">
                         No feedback submissions match the current filter.
                     </div>
                 ) : (
@@ -206,7 +206,7 @@ export default function AdminFeedback({ feedback, filters, counts }: Props) {
                             return (
                                 <div
                                     key={item.id}
-                                    className="flex gap-4 rounded-xl border bg-card p-4"
+                                    className="flex gap-4 rounded-md border bg-card p-4"
                                 >
                                     <Icon
                                         className={cn(

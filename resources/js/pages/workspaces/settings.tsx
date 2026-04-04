@@ -1,8 +1,6 @@
 import AvatarUpload from '@/components/avatar-upload';
-import { CustomFieldsManager } from '@/components/custom-fields/CustomFieldsManager';
 import { HelpTooltip } from '@/components/help-tooltip';
 import InputError from '@/components/input-error';
-import { TagManager } from '@/components/tags/TagManager';
 import { Button } from '@/components/ui/button';
 import {
     Card,
@@ -24,8 +22,6 @@ import {
 } from '@/routes/workspaces/logo';
 import {
     type BreadcrumbItem,
-    type CustomField,
-    type Tag as TagType,
     type Workspace,
     type WorkspaceRole,
 } from '@/types';
@@ -578,63 +574,6 @@ export default function WorkspaceSettings({
                             </div>
                         </CardContent>
                     </Card>
-
-                    {/* Tags */}
-                    <TagManager
-                        workspaceId={workspace.id}
-                        tags={tags}
-                        isAdmin={isAdmin}
-                    />
-
-                    {/* Custom Fields */}
-                    {isAdmin && (
-                        <CustomFieldsManager
-                            workspaceId={workspace.id}
-                            fields={customFields}
-                            isAdmin={isAdmin}
-                        />
-                    )}
-
-                    {/* Save as Template */}
-                    {isOwner && (
-                        <Card>
-                            <CardHeader>
-                                <CardTitle className="flex items-center gap-2">
-                                    <Save className="h-5 w-5" />
-                                    Workspace Template
-                                </CardTitle>
-                                <CardDescription>
-                                    Save this workspace configuration as a
-                                    reusable template.
-                                </CardDescription>
-                            </CardHeader>
-                            <CardContent>
-                                <div className="flex items-center justify-between">
-                                    <div className="space-y-1">
-                                        <p className="text-sm font-medium">
-                                            Save as Template
-                                        </p>
-                                        <p className="text-sm text-muted-foreground">
-                                            Create a template from this
-                                            workspace to quickly set up similar
-                                            workspaces.
-                                        </p>
-                                    </div>
-                                    <Button
-                                        variant="outline"
-                                        onClick={() =>
-                                            router.visit(
-                                                '/workspace-templates/create',
-                                            )
-                                        }
-                                    >
-                                        <Plus className="mr-2 h-4 w-4" />
-                                        Create Template
-                                    </Button>
-                                </div>
-                            </CardContent>
-                        </Card>
-                    )}
 
                     {/* Billing Email */}
                     {isAdmin && (

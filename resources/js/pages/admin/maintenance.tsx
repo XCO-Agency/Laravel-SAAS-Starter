@@ -56,7 +56,7 @@ export default function AdminMaintenance({ maintenance, isDown }: Props) {
     return (
         <AdminLayout>
             <Head title="Maintenance Mode" />
-            <div className="flex h-full flex-1 flex-col gap-6 rounded-xl border border-sidebar-border/70 p-4 md:p-6 lg:p-8">
+            <div className="flex h-full flex-1 flex-col gap-6 rounded-md border border-sidebar-border/70 p-4 md:p-6 lg:p-8">
                 <div className="flex items-center justify-between">
                     <div>
                         <h2 className="flex items-center gap-2 text-2xl font-bold tracking-tight">

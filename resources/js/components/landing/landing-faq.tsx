@@ -86,7 +86,7 @@ export function LandingFaq() {
                 <div className="text-center">
                     <h2 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
                         {t('landing.faq.title.part1', 'Frequently Asked')}{' '}
-                        <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                        <span className="text-primary">
                             {t('landing.faq.title.part2', 'Questions')}
                         </span>
                     </h2>
@@ -99,11 +99,11 @@ export function LandingFaq() {
                 </div>
 
                 {/* FAQ Accordion */}
-                <div className="mt-12 space-y-4">
+                <div className="mt-10 space-y-2">
                     {faqs.map((faq, index) => (
                         <div
                             key={index}
-                            className="overflow-hidden rounded-xl border bg-card"
+                            className="overflow-hidden rounded-md border bg-card"
                         >
                             <button
                                 onClick={() =>
@@ -111,7 +111,7 @@ export function LandingFaq() {
                                         openIndex === index ? null : index,
                                     )
                                 }
-                                className="flex w-full items-center justify-between p-4 text-left font-medium transition-colors hover:bg-muted/50 sm:p-6"
+                                className="flex w-full items-center justify-between p-4 text-left text-sm font-medium transition-colors hover:bg-muted/50 sm:px-5 sm:py-4"
                             >
                                 <span>{faq.question}</span>
                                 <ChevronDown

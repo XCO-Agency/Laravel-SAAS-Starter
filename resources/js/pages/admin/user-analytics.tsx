@@ -82,7 +82,7 @@ export default function UserAnalytics({
     return (
         <AdminLayout>
             <Head title="User Analytics" />
-            <div className="flex h-full flex-1 flex-col gap-6 rounded-xl border border-sidebar-border/70 p-4 md:p-6 lg:p-8">
+            <div className="flex h-full flex-1 flex-col gap-6 rounded-md border border-sidebar-border/70 p-4 md:p-6 lg:p-8">
                 <div>
                     <h2 className="flex items-center gap-2 text-2xl font-bold tracking-tight">
                         <BarChart3 className="h-6 w-6" />

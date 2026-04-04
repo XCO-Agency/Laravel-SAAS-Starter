@@ -380,7 +380,7 @@ export default function Logs({ files, currentFile, logs }: LogsProps) {
                                     </CardContent>
                                 </>
                             ) : (
-                                <div className="m-4 flex h-full flex-col items-center justify-center rounded-xl border-2 border-dashed p-8 text-center text-muted-foreground">
+                                <div className="m-4 flex h-full flex-col items-center justify-center rounded-md border-2 border-dashed p-8 text-center text-muted-foreground">
                                     <FileText className="mb-4 size-10 opacity-20" />
                                     <p className="text-lg font-medium">
                                         No file selected

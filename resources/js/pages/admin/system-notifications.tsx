@@ -149,7 +149,7 @@ export default function SystemNotifications({
     return (
         <AdminLayout>
             <Head title="System Alerts" />
-            <div className="flex h-full flex-1 flex-col gap-6 rounded-xl border border-sidebar-border/70 p-4 md:p-6 lg:p-8">
+            <div className="flex h-full flex-1 flex-col gap-6 rounded-md border border-sidebar-border/70 p-4 md:p-6 lg:p-8">
                 {/* Header */}
                 <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                     <div>
@@ -179,7 +179,7 @@ export default function SystemNotifications({
 
                 {/* Summary Cards */}
                 <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-                    <div className="rounded-xl border bg-card p-4 shadow-sm">
+                    <div className="rounded-md border bg-card p-4 shadow-sm">
                         <div className="flex items-center gap-2 text-sm text-muted-foreground">
                             <Bell className="h-4 w-4" />
                             Total
@@ -188,7 +188,7 @@ export default function SystemNotifications({
                             {summary.total}
                         </p>
                     </div>
-                    <div className="rounded-xl border bg-card p-4 shadow-sm">
+                    <div className="rounded-md border bg-card p-4 shadow-sm">
                         <div className="flex items-center gap-2 text-sm text-muted-foreground">
                             <Info className="h-4 w-4" />
                             Unread
@@ -197,7 +197,7 @@ export default function SystemNotifications({
                             {summary.unread}
                         </p>
                     </div>
-                    <div className="rounded-xl border bg-card p-4 shadow-sm">
+                    <div className="rounded-md border bg-card p-4 shadow-sm">
                         <div className="flex items-center gap-2 text-sm text-red-600 dark:text-red-400">
                             <XCircle className="h-4 w-4" />
                             Critical
@@ -206,7 +206,7 @@ export default function SystemNotifications({
                             {summary.critical}
                         </p>
                     </div>
-                    <div className="rounded-xl border bg-card p-4 shadow-sm">
+                    <div className="rounded-md border bg-card p-4 shadow-sm">
                         <div className="flex items-center gap-2 text-sm text-amber-600 dark:text-amber-400">
                             <AlertTriangle className="h-4 w-4" />
                             Warnings
@@ -259,7 +259,7 @@ export default function SystemNotifications({
                 {/* Notification List */}
                 <div className="space-y-3">
                     {notifications.data.length === 0 ? (
-                        <div className="rounded-xl border bg-card p-12 text-center text-muted-foreground">
+                        <div className="rounded-md border bg-card p-12 text-center text-muted-foreground">
                             <ShieldAlert className="mx-auto mb-3 h-10 w-10 opacity-50" />
                             <p className="text-lg font-medium">
                                 No notifications found
@@ -280,7 +280,7 @@ export default function SystemNotifications({
                             return (
                                 <div
                                     key={notification.id}
-                                    className={`rounded-xl border bg-card p-4 shadow-sm transition-colors ${isUnread ? 'border-l-4 border-l-primary' : 'opacity-75'}`}
+                                    className={`rounded-md border bg-card p-4 shadow-sm transition-colors ${isUnread ? 'border-l-4 border-l-primary' : 'opacity-75'}`}
                                 >
                                     <div className="flex items-start gap-3">
                                         <div className="mt-0.5">

@@ -248,7 +248,7 @@ export default function PlansPage({
                                 key={plan.id}
                                 className={`glass animate-fade-in-up relative flex flex-col border-primary/20 transition-all duration-500 hover:scale-105 hover:border-primary active:scale-95 delay-${(index + 1) * 100} ${
                                     isExactCurrentPlan(plan)
-                                        ? 'z-10 border-primary shadow-2xl ring-2 ring-primary/20'
+                                        ? 'z-10 border-primary shadow-md ring-2 ring-primary/20'
                                         : recommendedPlan === plan.id
                                           ? 'border-primary/50 shadow-xl'
                                           : plan.popular
@@ -323,7 +323,7 @@ export default function PlansPage({
                                     {plan.id === 'free' ? (
                                         <Button
                                             variant="outline"
-                                            className="h-12 w-full rounded-xl font-bold transition-all hover:bg-muted"
+                                            className="h-12 w-full rounded-md font-bold transition-all hover:bg-muted"
                                             disabled={
                                                 currentPlan === 'free' ||
                                                 !isOwner ||
@@ -345,7 +345,7 @@ export default function PlansPage({
                                                       ? 'default'
                                                       : 'outline'
                                             }
-                                            className={`h-12 w-full rounded-xl font-bold transition-all active:scale-95 ${
+                                            className={`h-12 w-full rounded-md font-bold transition-all active:scale-95 ${
                                                 !isExactCurrentPlan(plan) &&
                                                 (plan.popular ||
                                                     plan.id === recommendedPlan)

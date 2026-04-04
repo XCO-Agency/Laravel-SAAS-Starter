@@ -88,7 +88,7 @@ function IncidentForm({
     return (
         <form
             onSubmit={handleSubmit}
-            className="space-y-4 rounded-xl border p-5"
+            className="space-y-4 rounded-md border p-5"
         >
             <h3 className="font-semibold">
                 {incident ? 'Edit Incident' : 'Create Incident'}
@@ -178,7 +178,7 @@ export default function AdminStatusPage({
     return (
         <AdminLayout>
             <Head title="Status Page" />
-            <div className="flex h-full flex-1 flex-col gap-6 rounded-xl border border-sidebar-border/70 p-4 md:p-6 lg:p-8">
+            <div className="flex h-full flex-1 flex-col gap-6 rounded-md border border-sidebar-border/70 p-4 md:p-6 lg:p-8">
                 <div className="flex items-center justify-between">
                     <div>
                         <h2 className="flex items-center gap-2 text-2xl font-bold tracking-tight">
@@ -238,7 +238,7 @@ export default function AdminStatusPage({
                             return (
                                 <div
                                     key={incident.id}
-                                    className="flex items-start justify-between gap-4 rounded-xl border p-4"
+                                    className="flex items-start justify-between gap-4 rounded-md border p-4"
                                 >
                                     <div className="min-w-0 flex-1">
                                         <div className="mb-1.5 flex flex-wrap items-center gap-2">

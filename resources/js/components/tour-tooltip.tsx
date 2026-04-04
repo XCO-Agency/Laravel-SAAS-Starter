@@ -101,7 +101,7 @@ export function TourTooltip({
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
                     <div
                         ref={tooltipRef}
-                        className="w-80 rounded-xl border bg-card p-4 shadow-xl"
+                        className="w-80 rounded-md border bg-card p-4 shadow-xl"
                     >
                         <div className="mb-3 flex items-center justify-between">
                             <div className="flex gap-1.5">
@@ -171,7 +171,7 @@ export function TourTooltip({
             {/* Tooltip card */}
             <div
                 ref={tooltipRef}
-                className="fixed z-50 w-80 rounded-xl border bg-card p-4 shadow-xl"
+                className="fixed z-50 w-80 rounded-md border bg-card p-4 shadow-xl"
                 style={{ top: position.top, left: position.left }}
             >
                 {/* Progress dots */}

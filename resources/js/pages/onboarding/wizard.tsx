@@ -122,7 +122,7 @@ function PlanCard({
         <div
             onClick={onSelect}
             className={cn(
-                'relative cursor-pointer rounded-xl border-2 p-6 transition-all duration-200 hover:shadow-lg',
+                'relative cursor-pointer rounded-md border-2 p-6 transition-all duration-200 hover:shadow-lg',
                 isSelected
                     ? 'border-primary bg-primary/5 shadow-md'
                     : 'border-border bg-card hover:border-primary/50',

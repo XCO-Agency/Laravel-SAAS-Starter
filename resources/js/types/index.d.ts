@@ -181,56 +181,6 @@ export interface SessionSummary {
     } | null;
 }
 
-export type Tag = {
-    id: number;
-    name: string;
-    slug: string;
-    color: string;
-    description?: string | null;
-};
-
-export type FieldType =
-    | 'text'
-    | 'textarea'
-    | 'number'
-    | 'date'
-    | 'boolean'
-    | 'select'
-    | 'url';
-
-export interface CustomField {
-    id: number;
-    name: string;
-    field_type: FieldType;
-    options: string[] | null;
-    is_required: boolean;
-    sort_order: number;
-}
-
-export interface WorkspaceTemplate {
-    id: number;
-    name: string;
-    description: string | null;
-    category: string;
-    is_public: boolean;
-    usage_count: number;
-    created_at: string;
-    updated_at: string;
-    creator?: {
-        id: number;
-        name: string;
-    };
-    configuration?: {
-        settings?: Record<string, unknown>;
-        custom_fields?: unknown[];
-        tags?: unknown[];
-        branding?: {
-            accent_color: string | null;
-        };
-        webhooks?: unknown[];
-    };
-}
-
 declare global {
     interface Window {
         Pusher: typeof import('pusher-js').default;

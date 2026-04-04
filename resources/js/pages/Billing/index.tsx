@@ -666,7 +666,7 @@ export default function BillingIndex({
                                     </CardDescription>
                                 </CardHeader>
                                 <CardContent>
-                                    <div className="overflow-hidden rounded-xl border border-muted-foreground/10 bg-background/30">
+                                    <div className="overflow-hidden rounded-md border border-muted-foreground/10 bg-background/30">
                                         <table className="w-full text-sm">
                                             <thead>
                                                 <tr className="border-b border-muted-foreground/10 bg-muted/30 text-[10px] font-bold tracking-widest text-muted-foreground uppercase">

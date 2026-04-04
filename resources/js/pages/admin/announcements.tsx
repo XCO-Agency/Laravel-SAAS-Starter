@@ -161,7 +161,7 @@ export default function AdminAnnouncements({ announcements, filter }: Props) {
     return (
         <AdminLayout>
             <Head title="Announcements" />
-            <div className="flex h-full flex-1 flex-col gap-6 rounded-xl border border-sidebar-border/70 p-4 md:p-6 lg:p-8">
+            <div className="flex h-full flex-1 flex-col gap-6 rounded-md border border-sidebar-border/70 p-4 md:p-6 lg:p-8">
                 <div className="flex items-center justify-between">
                     <div>
                         <h2 className="flex items-center gap-2 text-2xl font-bold tracking-tight">
@@ -199,7 +199,7 @@ export default function AdminAnnouncements({ announcements, filter }: Props) {
                 {showForm && (
                     <form
                         onSubmit={handleSubmit}
-                        className="space-y-4 rounded-xl border bg-card p-6"
+                        className="space-y-4 rounded-md border bg-card p-6"
                     >
                         <div className="grid gap-4 md:grid-cols-2">
                             <div>
@@ -379,7 +379,7 @@ export default function AdminAnnouncements({ announcements, filter }: Props) {
                 {/* Announcements List */}
                 <div className="space-y-3">
                     {announcements.data.length === 0 ? (
-                        <div className="rounded-xl border bg-card p-12 text-center text-muted-foreground">
+                        <div className="rounded-md border bg-card p-12 text-center text-muted-foreground">
                             {filter === 'all'
                                 ? 'No announcements yet. Create one to display a banner to all users.'
                                 : `No ${filter} announcements.`}
@@ -394,7 +394,7 @@ export default function AdminAnnouncements({ announcements, filter }: Props) {
                             return (
                                 <div
                                     key={a.id}
-                                    className={`flex items-center gap-4 rounded-xl border bg-card p-4 transition-opacity ${a.status === 'inactive' || a.status === 'expired' ? 'opacity-60' : ''}`}
+                                    className={`flex items-center gap-4 rounded-md border bg-card p-4 transition-opacity ${a.status === 'inactive' || a.status === 'expired' ? 'opacity-60' : ''}`}
                                 >
                                     <Icon
                                         className={`h-5 w-5 shrink-0 ${TYPE_COLORS[a.type] || ''}`}

@@ -105,7 +105,7 @@ export default function CookieConsentBanner() {
             {showBanner && !showManager && (
                 <div className="pb-safe fixed right-0 bottom-0 left-0 z-50 p-4 sm:p-6">
                     <div className="mx-auto max-w-7xl">
-                        <div className="flex flex-col items-center justify-between gap-4 rounded-xl border border-border bg-background p-6 shadow-2xl sm:flex-row dark:shadow-black/50">
+                        <div className="flex flex-col items-center justify-between gap-4 rounded-md border border-border bg-background p-6 shadow-2xl sm:flex-row dark:shadow-black/50">
                             <div className="max-w-3xl flex-1 text-sm text-muted-foreground">
                                 <span className="mb-1 block font-semibold text-foreground">
                                     We value your privacy

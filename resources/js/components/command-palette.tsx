@@ -128,7 +128,7 @@ export default function CommandPalette() {
             className="fixed inset-0 z-50 flex items-start justify-center bg-black/50 backdrop-blur-sm sm:pt-[10vh]"
             loop
         >
-            <div className="w-full max-w-[600px] animate-in overflow-hidden rounded-xl bg-background shadow-2xl ring-1 ring-border zoom-in-95 fade-in data-[state=closed]:animate-out data-[state=closed]:zoom-out-95 data-[state=closed]:fade-out">
+            <div className="w-full max-w-[600px] animate-in overflow-hidden rounded-md bg-background shadow-2xl ring-1 ring-border zoom-in-95 fade-in data-[state=closed]:animate-out data-[state=closed]:zoom-out-95 data-[state=closed]:fade-out">
                 <div className="relative border-b border-border">
                     <Command.Input
                         value={search}

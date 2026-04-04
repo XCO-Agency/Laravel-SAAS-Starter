@@ -162,7 +162,7 @@ export default function ApiTokens({ tokens }: { tokens: Token[] }) {
                                     {tokens.map((token) => (
                                         <div
                                             key={token.id}
-                                            className="flex items-center justify-between rounded-xl border bg-card p-4 text-card-foreground shadow-sm"
+                                            className="flex items-center justify-between rounded-md border bg-card p-4 text-card-foreground shadow-sm"
                                         >
                                             <div>
                                                 <div className="font-medium">

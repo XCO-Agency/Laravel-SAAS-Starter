@@ -111,7 +111,7 @@ export default function Status({ incidents, overallStatus }: StatusProps) {
 
                     {/* Overall status banner */}
                     <div
-                        className={`mb-8 flex items-center gap-3 rounded-xl border p-4 ${overall.bannerClass}`}
+                        className={`mb-8 flex items-center gap-3 rounded-md border p-4 ${overall.bannerClass}`}
                     >
                         <OverallIcon className="h-5 w-5 shrink-0" />
                         <span className="font-semibold">{overall.label}</span>
@@ -141,7 +141,7 @@ export default function Status({ incidents, overallStatus }: StatusProps) {
                                 return (
                                     <div
                                         key={incident.id}
-                                        className="rounded-xl border p-4"
+                                        className="rounded-md border p-4"
                                     >
                                         <div className="mb-2 flex flex-wrap items-center gap-2">
                                             <span

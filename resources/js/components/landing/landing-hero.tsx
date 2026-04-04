@@ -7,7 +7,6 @@ import {
     ArrowRight,
     CheckCircle,
     Github,
-    Play,
     Sparkles,
     Users,
     Zap,
@@ -45,19 +44,16 @@ export function LandingHero() {
     ];
 
     return (
-        <section className="relative overflow-hidden py-20 sm:py-32 lg:py-40">
-            {/* Background gradient */}
+        <section className="relative overflow-hidden py-20 sm:py-28 lg:py-36">
+            {/* Subtle background */}
             <div className="absolute inset-0 -z-10">
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-accent/5" />
-                <div className="absolute top-0 left-1/2 -z-10 h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-primary/10 blur-3xl" />
-                <div className="absolute right-0 bottom-0 -z-10 h-[400px] w-[400px] rounded-full bg-accent/10 blur-3xl" />
+                <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-muted/30" />
             </div>
 
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                <div className="mx-auto max-w-4xl text-center">
-                    {/* Badge */}
-                    <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-sm font-medium text-primary">
-                        <Sparkles className="h-4 w-4" />
+                <div className="mx-auto max-w-3xl text-center">
+                    <div className="mb-6 inline-flex items-center gap-2 rounded-sm border border-accent/40 bg-accent/15 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-foreground">
+                        <Sparkles className="h-3.5 w-3.5 text-accent-foreground" />
                         <span>
                             {t(
                                 'landing.hero.badge',
@@ -66,12 +62,12 @@ export function LandingHero() {
                         </span>
                     </div>
 
-                    {/* Headline */}
-                    <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
+                    {/* Headline — clean, data-forward */}
+                    <h1 className="text-4xl font-extrabold tracking-tight text-foreground sm:text-5xl md:text-6xl lg:text-7xl">
                         <span className="block">
                             {t('landing.hero.title.part1', 'Build Your SaaS')}
                         </span>
-                        <span className="block bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
+                        <span className="block text-primary">
                             {t('landing.hero.title.part2', '10x Faster')}
                         </span>
                     </h1>
@@ -91,140 +87,79 @@ export function LandingHero() {
                     </p>
 
                     {/* CTA Buttons */}
-                    <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-                        <Button
-                            size="lg"
-                            asChild
-                            className="h-12 px-8 text-base"
-                        >
+                    <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+                        <Button size="lg" asChild className="h-11 px-7 text-sm font-semibold">
                             <Link href={auth.user ? '/dashboard' : register()}>
-                                {t(
-                                    'landing.hero.cta.get_started',
-                                    'Get Started Free',
-                                )}
+                                {t('landing.hero.cta.get_started', 'Get Started Free')}
                                 <ArrowRight className="ml-2 h-4 w-4" />
                             </Link>
                         </Button>
-                        <Button
-                            size="lg"
-                            variant="outline"
-                            asChild
-                            className="h-12 px-8 text-base"
-                        >
-                            <a
-                                href="https://github.com/xco-agency/laravel-saas-starter"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
+                        <Button size="lg" variant="outline" asChild className="h-11 px-7 text-sm">
+                            <a href="https://github.com/xco-agency/laravel-saas-starter" target="_blank" rel="noopener noreferrer">
                                 <Github className="mr-2 h-4 w-4" />
                                 {t('landing.hero.cta.github', 'View on GitHub')}
-                            </a>
-                        </Button>
-                        <Button
-                            size="lg"
-                            variant="ghost"
-                            asChild
-                            className="h-12 px-8 text-base"
-                        >
-                            <a
-                                href="#features"
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    const element =
-                                        document.querySelector('#features');
-                                    element?.scrollIntoView({
-                                        behavior: 'smooth',
-                                        block: 'start',
-                                    });
-                                }}
-                            >
-                                <Play className="mr-2 h-4 w-4" />
-                                {t('landing.hero.cta.features', 'See Features')}
                             </a>
                         </Button>
                     </div>
 
                     {/* Quick Features */}
-                    <div className="mt-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-3">
+                    <div className="mt-8 flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
                         {features.map((feature) => (
-                            <div
-                                key={feature}
-                                className="flex items-center gap-2 text-sm text-muted-foreground"
-                            >
-                                <CheckCircle className="h-4 w-4 text-green-500" />
+                            <div key={feature} className="flex items-center gap-1.5 text-sm text-muted-foreground">
+                                <CheckCircle className="h-3.5 w-3.5 text-primary" />
                                 {feature}
                             </div>
                         ))}
                     </div>
                 </div>
 
-                {/* Stats */}
-                <div className="mx-auto mt-16 grid max-w-3xl grid-cols-3 gap-8">
+                <div className="mx-auto mt-14 grid max-w-2xl grid-cols-3 divide-x divide-border border-y">
                     {stats.map((stat) => (
-                        <div key={stat.label} className="text-center">
-                            <div className="flex justify-center">
-                                <stat.icon className="h-6 w-6 text-primary" />
-                            </div>
-                            <div className="mt-2 text-2xl font-bold sm:text-3xl">
+                        <div key={stat.label} className="py-6 text-center">
+                            <div className="text-2xl font-bold tabular-nums sm:text-3xl">
                                 {stat.value}
                             </div>
-                            <div className="text-sm text-muted-foreground">
+                            <div className="mt-1 text-xs font-medium uppercase tracking-wider text-muted-foreground">
                                 {stat.label}
                             </div>
                         </div>
                     ))}
                 </div>
 
-                {/* Hero Image/Preview */}
-                <div className="relative mx-auto mt-16 max-w-5xl">
-                    <div className="group relative aspect-video overflow-hidden rounded-xl border bg-gradient-to-br from-muted/50 to-muted shadow-2xl transition-all hover:shadow-primary/20">
-                        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5" />
-                        <div className="relative flex h-full items-center justify-center p-8">
+                {/* Hero preview card — clean dark product UI mock */}
+                <div className="relative mx-auto mt-12 max-w-5xl">
+                    <div className="overflow-hidden rounded-lg border bg-foreground shadow-xl">
+                        {/* Window chrome bar */}
+                        <div className="flex items-center gap-1.5 border-b border-white/10 bg-foreground px-4 py-3">
+                            <span className="h-3 w-3 rounded-full bg-red-500/70" />
+                            <span className="h-3 w-3 rounded-full bg-yellow-500/70" />
+                            <span className="h-3 w-3 rounded-full bg-green-500/70" />
+                            <div className="ml-4 flex-1 rounded bg-white/10 py-1 px-3 text-xs text-white/40">
+                                app.yoursaas.com/dashboard
+                            </div>
+                        </div>
+                        <div className="flex h-64 items-center justify-center p-8 sm:h-80">
                             <div className="text-center">
                                 <div className="mb-4 flex justify-center">
-                                    <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10 transition-transform group-hover:scale-110">
-                                        <Sparkles className="h-8 w-8 text-primary" />
+                                    <div className="flex h-14 w-14 items-center justify-center rounded-md bg-primary/20">
+                                        <Sparkles className="h-7 w-7 text-primary" />
                                     </div>
                                 </div>
-                                <p className="text-lg font-semibold text-foreground">
-                                    {t(
-                                        'landing.hero.preview.title',
-                                        'Production-Ready Dashboard',
-                                    )}
+                                <p className="text-base font-semibold text-white">
+                                    {t('landing.hero.preview.title', 'Production-Ready Dashboard')}
                                 </p>
-                                <p className="mt-2 text-sm text-muted-foreground">
-                                    {t(
-                                        'landing.hero.preview.description',
-                                        'Beautiful UI with dark mode, workspaces, and team management',
-                                    )}
+                                <p className="mt-2 text-sm text-white/50">
+                                    {t('landing.hero.preview.description', 'Beautiful UI with dark mode, workspaces, and team management')}
                                 </p>
-                                <div className="mt-4 flex flex-wrap justify-center gap-2">
+                                <div className="mt-5 flex flex-wrap justify-center gap-2">
                                     {[
-                                        t(
-                                            'landing.hero.preview.tags.multi_tenant',
-                                            'Multi-tenant',
-                                        ),
-                                        t(
-                                            'landing.hero.preview.tags.stripe_billing',
-                                            'Stripe Billing',
-                                        ),
-                                        t(
-                                            'landing.hero.preview.tags.admin_panel',
-                                            'Super Admin',
-                                        ),
-                                        t(
-                                            'landing.hero.preview.tags.team_roles',
-                                            'Team Roles',
-                                        ),
-                                        t(
-                                            'landing.hero.preview.tags.feature_flags',
-                                            'Pennant Flags',
-                                        ),
+                                        t('landing.hero.preview.tags.multi_tenant', 'Multi-tenant'),
+                                        t('landing.hero.preview.tags.stripe_billing', 'Stripe Billing'),
+                                        t('landing.hero.preview.tags.admin_panel', 'Super Admin'),
+                                        t('landing.hero.preview.tags.team_roles', 'Team Roles'),
+                                        t('landing.hero.preview.tags.feature_flags', 'Pennant Flags'),
                                     ].map((tag) => (
-                                        <span
-                                            key={tag}
-                                            className="rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary"
-                                        >
+                                        <span key={tag} className="rounded-sm border border-white/10 bg-white/5 px-2.5 py-1 text-xs font-medium text-white/70">
                                             {tag}
                                         </span>
                                     ))}
@@ -232,9 +167,6 @@ export function LandingHero() {
                             </div>
                         </div>
                     </div>
-                    {/* Decorative elements */}
-                    <div className="absolute -top-4 -left-4 hidden h-24 w-24 rounded-lg border bg-background shadow-lg lg:block" />
-                    <div className="absolute -right-4 -bottom-4 hidden h-24 w-24 rounded-lg border bg-background shadow-lg lg:block" />
                 </div>
             </div>
         </section>

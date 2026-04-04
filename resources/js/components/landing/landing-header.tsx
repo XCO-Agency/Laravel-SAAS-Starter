@@ -29,20 +29,20 @@ export function LandingHeader({ canRegister = true }: LandingHeaderProps) {
     ];
 
     return (
-        <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60">
-            <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur-sm">
+            <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
                 {/* Logo */}
                 <Link href="/" className="flex items-center gap-2">
-                    <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary">
-                        <Sparkles className="h-5 w-5 text-primary-foreground" />
+                    <div className="flex h-7 w-7 items-center justify-center rounded-sm bg-foreground">
+                        <Sparkles className="h-4 w-4 text-background" />
                     </div>
-                    <span className="text-xl font-bold tracking-tight">
+                    <span className="text-base font-bold tracking-tight">
                         Laravel SAAS Starter
                     </span>
                 </Link>
 
                 {/* Desktop Navigation */}
-                <nav className="hidden items-center gap-8 md:flex">
+                <nav className="hidden items-center gap-6 md:flex">
                     {navLinks.map((link) => (
                         <a
                             key={link.href}

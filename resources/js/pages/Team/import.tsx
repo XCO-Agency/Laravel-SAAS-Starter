@@ -245,7 +245,7 @@ export default function TeamImport({
                                     </CardDescription>
                                 </CardHeader>
                                 <CardContent>
-                                    <div className="overflow-hidden rounded-xl border bg-card">
+                                    <div className="overflow-hidden rounded-md border bg-card">
                                         <table className="w-full text-left text-sm">
                                             <thead className="bg-muted/50 text-xs text-muted-foreground uppercase">
                                                 <tr>

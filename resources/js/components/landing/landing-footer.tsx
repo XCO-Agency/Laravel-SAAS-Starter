@@ -103,24 +103,24 @@ export function LandingFooter() {
         },
     ];
     return (
-        <footer className="border-t bg-muted/30">
+        <footer className="border-t border-white/10 bg-foreground text-white">
             <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
                 {/* Top section */}
                 <div className="grid gap-8 lg:grid-cols-6">
                     {/* Logo & Description */}
                     <div className="lg:col-span-2">
                         <Link href="/" className="flex items-center gap-2">
-                            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary">
-                                <Sparkles className="h-5 w-5 text-primary-foreground" />
+                            <div className="flex h-7 w-7 items-center justify-center rounded-sm bg-accent">
+                                <Sparkles className="h-4 w-4 text-foreground" />
                             </div>
-                            <span className="text-xl font-bold tracking-tight">
+                            <span className="text-base font-bold tracking-tight text-white">
                                 {t(
                                     'landing.footer.brand',
                                     'Laravel SAAS Starter',
                                 )}
                             </span>
                         </Link>
-                        <p className="mt-4 max-w-xs text-sm text-muted-foreground">
+                        <p className="mt-4 max-w-xs text-sm text-white/50">
                             {t(
                                 'landing.footer.description',
                                 'The ultimate Laravel SaaS starter kit by XCO Agency. Build and launch your product 10x faster.',
@@ -132,7 +132,7 @@ export function LandingFooter() {
                                 <a
                                     key={social.label}
                                     href={social.href}
-                                    className="text-muted-foreground transition-colors hover:text-foreground"
+                                    className="text-white/40 transition-colors hover:text-white"
                                     aria-label={social.label}
                                 >
                                     <social.icon className="h-5 w-5" />
@@ -144,13 +144,13 @@ export function LandingFooter() {
                     {/* Links */}
                     {Object.values(footerLinks).map((section) => (
                         <div key={section.title}>
-                            <h3 className="font-semibold">{section.title}</h3>
+                            <h3 className="text-xs font-semibold uppercase tracking-wider text-white/70">{section.title}</h3>
                             <ul className="mt-4 space-y-3">
                                 {section.links.map((link) => (
                                     <li key={link.label}>
                                         <a
                                             href={link.href}
-                                            className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                                            className="text-sm text-white/40 transition-colors hover:text-white"
                                             target={
                                                 link.href.startsWith('http')
                                                     ? '_blank'
@@ -172,8 +172,8 @@ export function LandingFooter() {
                 </div>
 
                 {/* Bottom section */}
-                <div className="mt-12 border-t pt-8">
-                    <p className="text-center text-sm text-muted-foreground">
+                <div className="mt-12 border-t border-white/10 pt-8">
+                    <p className="text-center text-sm text-white/30">
                         © {new Date().getFullYear()}{' '}
                         {t(
                             'landing.footer.copyright',

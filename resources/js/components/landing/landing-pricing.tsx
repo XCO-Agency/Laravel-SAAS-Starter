@@ -22,7 +22,7 @@ export function LandingPricing() {
                 <div className="mx-auto max-w-3xl text-center">
                     <h2 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
                         {t('landing.pricing.title.part1', 'Completely')}{' '}
-                        <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                        <span className="text-primary">
                             {t('landing.pricing.title.part2', 'Free')}
                         </span>{' '}
                         & {t('landing.pricing.title.part3', 'Open Source')}
@@ -37,10 +37,10 @@ export function LandingPricing() {
 
                 {/* Open Source Benefits */}
                 <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                    <Card className="relative border-primary/20">
+                    <Card className="relative border-border">
                         <CardHeader>
-                            <div className="mb-2 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
-                                <Sparkles className="h-6 w-6 text-primary" />
+                            <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-md bg-primary/10">
+                                <Sparkles className="h-5 w-5 text-primary" />
                             </div>
                             <CardTitle className="text-xl">
                                 {t(
@@ -57,10 +57,10 @@ export function LandingPricing() {
                         </CardHeader>
                     </Card>
 
-                    <Card className="relative border-primary/20">
+                    <Card className="relative border-border">
                         <CardHeader>
-                            <div className="mb-2 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
-                                <Check className="h-6 w-6 text-primary" />
+                            <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-md bg-primary/10">
+                                <Check className="h-5 w-5 text-primary" />
                             </div>
                             <CardTitle className="text-xl">
                                 {t(
@@ -77,10 +77,10 @@ export function LandingPricing() {
                         </CardHeader>
                     </Card>
 
-                    <Card className="relative border-primary/20">
+                    <Card className="relative border-border">
                         <CardHeader>
-                            <div className="mb-2 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
-                                <Sparkles className="h-6 w-6 text-primary" />
+                            <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-md bg-primary/10">
+                                <Sparkles className="h-5 w-5 text-primary" />
                             </div>
                             <CardTitle className="text-xl">
                                 {t(

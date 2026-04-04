@@ -71,7 +71,7 @@ function SeoForm({
     return (
         <form
             onSubmit={handleSubmit}
-            className="space-y-4 rounded-xl border bg-card p-6"
+            className="space-y-4 rounded-md border bg-card p-6"
         >
             <div className="mb-2 flex items-center gap-2">
                 <label className="flex items-center gap-2 text-sm">
@@ -327,7 +327,7 @@ export default function SeoMetadata({ entries }: Props) {
 
                 <div className="space-y-3">
                     {entries.length === 0 ? (
-                        <div className="rounded-xl border bg-card p-12 text-center text-muted-foreground">
+                        <div className="rounded-md border bg-card p-12 text-center text-muted-foreground">
                             No SEO metadata entries yet. Create a global entry
                             for site-wide defaults, or add per-page entries.
                         </div>
@@ -346,7 +346,7 @@ export default function SeoMetadata({ entries }: Props) {
                             return (
                                 <div
                                     key={entry.id}
-                                    className="flex items-start gap-4 rounded-xl border bg-card p-4"
+                                    className="flex items-start gap-4 rounded-md border bg-card p-4"
                                 >
                                     <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
                                         <Globe className="h-4 w-4" />

@@ -50,7 +50,7 @@ export default function UserSessions({ user, sessions }: UserSessionsProps) {
         <AdminLayout>
             <Head title={`Sessions - ${user.name}`} />
 
-            <div className="flex h-full flex-1 flex-col gap-6 rounded-xl border border-sidebar-border/70 p-4 md:p-6 lg:p-8">
+            <div className="flex h-full flex-1 flex-col gap-6 rounded-md border border-sidebar-border/70 p-4 md:p-6 lg:p-8">
                 <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                     <div>
                         <div className="mb-2 flex items-center gap-2">
@@ -87,7 +87,7 @@ export default function UserSessions({ user, sessions }: UserSessionsProps) {
                     </div>
                 </div>
 
-                <div className="overflow-hidden rounded-xl border bg-card text-card-foreground shadow">
+                <div className="overflow-hidden rounded-md border bg-card text-card-foreground shadow">
                     <table className="w-full text-left text-sm">
                         <thead className="bg-muted/50 text-xs text-muted-foreground uppercase">
                             <tr>

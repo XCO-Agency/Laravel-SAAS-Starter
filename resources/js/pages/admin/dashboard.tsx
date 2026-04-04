@@ -73,7 +73,7 @@ interface AdminDashboardProps {
 
 function Sparkline({
     data,
-    color = 'hsl(var(--primary))',
+    color = '#1d4aff',
 }: {
     data: number[];
     color?: string;
@@ -140,12 +140,7 @@ function GrowthBadge({
     );
 }
 
-const COLORS = [
-    'hsl(var(--primary))',
-    'hsl(var(--primary) / 0.7)',
-    'hsl(var(--primary) / 0.4)',
-    'hsl(var(--muted))',
-];
+const COLORS = ['#1d4aff', '#cd68d4', '#2ab7a9', '#6aa84f'];
 
 export default function AdminDashboard({
     metrics,
@@ -314,12 +309,12 @@ export default function AdminDashboard({
                                             >
                                                 <stop
                                                     offset="5%"
-                                                    stopColor="hsl(var(--primary))"
+                                                    stopColor="#1d4aff"
                                                     stopOpacity={0.3}
                                                 />
                                                 <stop
                                                     offset="95%"
-                                                    stopColor="hsl(var(--primary))"
+                                                    stopColor="#1d4aff"
                                                     stopOpacity={0}
                                                 />
                                             </linearGradient>
@@ -332,26 +327,26 @@ export default function AdminDashboard({
                                             >
                                                 <stop
                                                     offset="5%"
-                                                    stopColor="hsl(var(--foreground))"
+                                                    stopColor="#cd68d4"
                                                     stopOpacity={0.3}
                                                 />
                                                 <stop
                                                     offset="95%"
-                                                    stopColor="hsl(var(--foreground))"
+                                                    stopColor="#cd68d4"
                                                     stopOpacity={0}
                                                 />
                                             </linearGradient>
                                         </defs>
                                         <XAxis
                                             dataKey="date"
-                                            stroke="hsl(var(--muted-foreground))"
+                                            stroke="#9ca3af"
                                             fontSize={12}
                                             tickLine={false}
                                             axisLine={false}
                                             dy={10}
                                         />
                                         <YAxis
-                                            stroke="hsl(var(--muted-foreground))"
+                                            stroke="#9ca3af"
                                             fontSize={12}
                                             tickLine={false}
                                             axisLine={false}
@@ -362,18 +357,18 @@ export default function AdminDashboard({
                                         <CartesianGrid
                                             strokeDasharray="3 3"
                                             vertical={false}
-                                            stroke="hsl(var(--border))"
+                                            stroke="#e5e7eb"
+                                            strokeOpacity={0.5}
                                         />
                                         <Tooltip
                                             contentStyle={{
-                                                backgroundColor:
-                                                    'hsl(var(--card))',
-                                                borderColor:
-                                                    'hsl(var(--border))',
-                                                borderRadius: '8px',
+                                                backgroundColor: '#1d1d1d',
+                                                borderColor: '#404040',
+                                                borderRadius: '4px',
+                                                border: '1px solid #404040',
                                             }}
                                             itemStyle={{
-                                                color: 'hsl(var(--foreground))',
+                                                color: '#f5f5f5',
                                             }}
                                         />
                                         <Legend
@@ -385,7 +380,7 @@ export default function AdminDashboard({
                                             type="monotone"
                                             dataKey="users"
                                             name="New Users"
-                                            stroke="hsl(var(--primary))"
+                                            stroke="#1d4aff"
                                             strokeWidth={2}
                                             fillOpacity={1}
                                             fill="url(#colorUsers)"
@@ -394,7 +389,7 @@ export default function AdminDashboard({
                                             type="monotone"
                                             dataKey="workspaces"
                                             name="New Workspaces"
-                                            stroke="hsl(var(--foreground))"
+                                            stroke="#cd68d4"
                                             strokeWidth={2}
                                             fillOpacity={1}
                                             fill="url(#colorWorkspaces)"
@@ -444,14 +439,13 @@ export default function AdminDashboard({
                                         </Pie>
                                         <Tooltip
                                             contentStyle={{
-                                                backgroundColor:
-                                                    'hsl(var(--card))',
-                                                borderColor:
-                                                    'hsl(var(--border))',
-                                                borderRadius: '8px',
+                                                backgroundColor: '#1d1d1d',
+                                                borderColor: '#404040',
+                                                borderRadius: '4px',
+                                                border: '1px solid #404040',
                                             }}
                                             itemStyle={{
-                                                color: 'hsl(var(--foreground))',
+                                                color: '#f5f5f5',
                                             }}
                                             formatter={
                                                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -482,7 +476,7 @@ export default function AdminDashboard({
                             <Link href="/admin/users">View All Users →</Link>
                         </Button>
                     </div>
-                    <div className="overflow-hidden rounded-xl border bg-card text-card-foreground shadow-sm">
+                    <div className="overflow-hidden rounded-md border bg-card text-card-foreground shadow-sm">
                         <table className="w-full text-left text-sm">
                             <thead className="bg-muted/50 text-xs text-muted-foreground uppercase">
                                 <tr>
