@@ -18,7 +18,7 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->index(['workspace_id', 'commentable_type', 'commentable_id']);
+            $table->index(['workspace_id', 'commentable_type', 'commentable_id'], 'ws_comments_ws_commentable_idx');
             $table->index(['parent_id']);
             $table->index(['created_at']);
         });
