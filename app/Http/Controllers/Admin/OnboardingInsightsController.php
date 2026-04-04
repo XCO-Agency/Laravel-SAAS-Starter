@@ -98,7 +98,7 @@ class OnboardingInsightsController extends Controller
         // ── Average time to complete (onboarded users registered in last 30d) ──
         $avgMinutes = User::whereNotNull('onboarded_at')
             ->where('created_at', '>=', $thirtyDaysAgo)
-            ->selectRaw('AVG(CAST((julianday(onboarded_at) - julianday(created_at)) * 1440 AS INTEGER)) as avg_minutes')
+            ->selectRaw('AVG(TIMESTAMPDIFF(MINUTE, created_at, onboarded_at)) as avg_minutes')
             ->value('avg_minutes');
 
         $avgTimeMinutes = $avgMinutes !== null ? round((float) $avgMinutes, 1) : null;
