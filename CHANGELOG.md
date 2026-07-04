@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.1.4](https://github.com/XCO-Agency/Laravel-SAAS-Starter/compare/v0.1.3...v0.1.4) (2026-07-04)
+
+
+### Features
+
+* **tickets:** priority enum cast and urgent-first ticket sorting ([6e7ef7b](https://github.com/XCO-Agency/Laravel-SAAS-Starter/commit/6e7ef7ba887bc2c3116b0da4a744be7923a09218))
+
+
+### Bug Fixes
+
+* guard priority sort column and expose request_id attribute ([04ff439](https://github.com/XCO-Agency/Laravel-SAAS-Starter/commit/04ff4391de140e83e3c736aa86a6fcc783de80e5))
+
 ## [0.1.3](https://github.com/XCO-Agency/Laravel-SAAS-Starter/compare/v0.1.2...v0.1.3) (2026-07-04)
 
 
