@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.1.3](https://github.com/XCO-Agency/Laravel-SAAS-Starter/compare/v0.1.2...v0.1.3) (2026-07-04)
+
+
+### Features
+
+* add RequestId middleware for request correlation ([fd8fea2](https://github.com/XCO-Agency/Laravel-SAAS-Starter/commit/fd8fea2bafc1ddca3cb82c426a435f029701e83a))
+* add RequestId middleware for request correlation, closes [#75](https://github.com/XCO-Agency/Laravel-SAAS-Starter/issues/75) ([91a3a8e](https://github.com/XCO-Agency/Laravel-SAAS-Starter/commit/91a3a8e414bceb2dcfd6b1e3c30f106c1151238f))
+* add unauthenticated GET /api/health endpoint ([b4e2fa6](https://github.com/XCO-Agency/Laravel-SAAS-Starter/commit/b4e2fa66b699efeab0d0db755827a88e3bd72090))
+* add unauthenticated GET /api/health endpoint, closes [#72](https://github.com/XCO-Agency/Laravel-SAAS-Starter/issues/72) ([f583e6a](https://github.com/XCO-Agency/Laravel-SAAS-Starter/commit/f583e6a3770e4126c272d711421556f6eb329bb5))
+
 ## [0.1.2](https://github.com/XCO-Agency/Laravel-SAAS-Starter/compare/v0.1.1...v0.1.2) (2026-04-04)
 
 
