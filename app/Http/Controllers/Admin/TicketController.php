@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\TicketPriority;
 use App\Http\Controllers\Controller;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
@@ -28,7 +29,11 @@ class TicketController extends Controller
             $query->where('subject', 'like', '%'.$request->search.'%');
         }
 
-        $tickets = $query->latest()->paginate(20)->withQueryString();
+        $tickets = $query
+            ->orderByRaw(TicketPriority::sortOrderByRaw())
+            ->latest()
+            ->paginate(20)
+            ->withQueryString();
 
         return Inertia::render('admin/tickets/index', [
             'tickets' => $tickets,
@@ -55,7 +60,7 @@ class TicketController extends Controller
     {
         $validated = $request->validate([
             'status' => ['sometimes', 'required', Rule::in(['open', 'in_progress', 'resolved', 'closed'])],
-            'priority' => ['sometimes', 'required', Rule::in(['low', 'normal', 'high', 'urgent'])],
+            'priority' => ['sometimes', 'required', Rule::enum(TicketPriority::class)],
         ]);
 
         $ticket->update($validated);

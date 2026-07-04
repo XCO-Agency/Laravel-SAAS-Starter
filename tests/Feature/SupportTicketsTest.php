@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\TicketPriority;
 use App\Models\Ticket;
 use App\Models\User;
 use App\Models\Workspace;
@@ -29,6 +30,40 @@ describe('User Ticket Portal', function () {
 
         $response->assertSuccessful();
         $response->assertInertia(fn ($page) => $page->component('settings/tickets/index'));
+    });
+
+    it('lists tickets ordered by priority, most urgent first', function () {
+        foreach (['normal', 'urgent', 'low', 'high'] as $priority) {
+            Ticket::factory()->create([
+                'user_id' => $this->user->id,
+                'workspace_id' => $this->workspace->id,
+                'priority' => $priority,
+            ]);
+        }
+
+        $response = $this->actingAs($this->user)->get('/settings/tickets');
+
+        $response->assertSuccessful();
+        $response->assertInertia(fn ($page) => $page
+            ->component('settings/tickets/index')
+            ->where('tickets.data.0.priority', 'urgent')
+            ->where('tickets.data.1.priority', 'high')
+            ->where('tickets.data.2.priority', 'normal')
+            ->where('tickets.data.3.priority', 'low')
+        );
+    });
+
+    it('rejects an invalid priority when creating a ticket', function () {
+        $response = $this->actingAs($this->user)
+            ->from('/settings/tickets')
+            ->post('/settings/tickets', [
+                'subject' => 'Broken thing',
+                'content' => 'Something is off.',
+                'priority' => 'critical',
+            ]);
+
+        $response->assertSessionHasErrors('priority');
+        $this->assertDatabaseCount('tickets', 0);
     });
 
     it('can create a new ticket', function () {
@@ -118,6 +153,30 @@ describe('Admin Ticket Portal', function () {
         $response->assertInertia(fn ($page) => $page->component('admin/tickets/index'));
     });
 
+    it('lists tickets ordered by priority with the status filter applied', function () {
+        foreach (['normal', 'urgent', 'low', 'high'] as $priority) {
+            Ticket::factory()->create([
+                'status' => 'open',
+                'priority' => $priority,
+            ]);
+        }
+
+        // A closed ticket that the status filter must exclude.
+        Ticket::factory()->create(['status' => 'closed', 'priority' => 'urgent']);
+
+        $response = $this->actingAs($this->superAdmin)->get('/admin/tickets?status=open');
+
+        $response->assertSuccessful();
+        $response->assertInertia(fn ($page) => $page
+            ->component('admin/tickets/index')
+            ->has('tickets.data', 4)
+            ->where('tickets.data.0.priority', 'urgent')
+            ->where('tickets.data.1.priority', 'high')
+            ->where('tickets.data.2.priority', 'normal')
+            ->where('tickets.data.3.priority', 'low')
+        );
+    });
+
     it('non-admin cannot view admin tickets index page', function () {
         $response = $this->actingAs($this->user)->get('/admin/tickets');
 
@@ -151,7 +210,7 @@ describe('Admin Ticket Portal', function () {
         ]);
 
         $response->assertRedirect();
-        $this->assertEquals('high', $ticket->fresh()->priority);
+        $this->assertEquals(TicketPriority::High, $ticket->fresh()->priority);
     });
 
     it('can reply to a ticket as an admin', function () {

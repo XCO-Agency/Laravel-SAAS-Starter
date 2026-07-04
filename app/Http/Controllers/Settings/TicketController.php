@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Settings;
 
+use App\Enums\TicketPriority;
 use App\Http\Controllers\Controller;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -17,6 +19,7 @@ class TicketController extends Controller
     {
         $tickets = $request->user()->tickets()
             ->withCount('replies')
+            ->orderByRaw(TicketPriority::sortOrderByRaw())
             ->latest()
             ->paginate(15);
 
@@ -33,7 +36,7 @@ class TicketController extends Controller
         $validated = $request->validate([
             'subject' => ['required', 'string', 'max:255'],
             'content' => ['required', 'string'],
-            'priority' => ['required', 'in:low,normal,high,urgent'],
+            'priority' => ['required', Rule::enum(TicketPriority::class)],
         ]);
 
         $ticket = $request->user()->tickets()->create([
