@@ -48,12 +48,17 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         $middleware->web(append: [
+            RequestId::class,
             SetLocale::class,
             HandleAppearance::class,
             HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,
             EnsurePasswordNotExpired::class,
             TrackLastSeen::class,
+        ]);
+
+        $middleware->api(append: [
+            RequestId::class,
         ]);
 
         $middleware->alias([
