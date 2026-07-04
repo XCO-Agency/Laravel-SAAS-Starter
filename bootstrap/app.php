@@ -12,6 +12,7 @@ use App\Http\Middleware\EnsureWorkspaceOwner;
 use App\Http\Middleware\HandleAppearance;
 use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\PreventRequestsDuringMaintenance;
+use App\Http\Middleware\RequestId;
 use App\Http\Middleware\RequireTwoFactor;
 use App\Http\Middleware\SetLocale;
 use App\Http\Middleware\TrackLastSeen;
@@ -36,6 +37,9 @@ return Application::configure(basePath: dirname(__DIR__))
             Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance::class,
             PreventRequestsDuringMaintenance::class
         );
+
+        $middleware->web(prepend: [RequestId::class]);
+        $middleware->api(prepend: [RequestId::class]);
 
         $middleware->encryptCookies(except: ['appearance', 'sidebar_state']);
 
