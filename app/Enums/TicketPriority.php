@@ -29,6 +29,10 @@ enum TicketPriority: string
      */
     public static function sortOrderByRaw(string $column = 'priority'): string
     {
+        if (! preg_match('/^[a-zA-Z0-9_.]+$/', $column)) {
+            throw new \InvalidArgumentException('Invalid column name for priority sort.');
+        }
+
         $whens = '';
         foreach (self::cases() as $case) {
             $whens .= sprintf("WHEN '%s' THEN %d ", $case->value, $case->weight());

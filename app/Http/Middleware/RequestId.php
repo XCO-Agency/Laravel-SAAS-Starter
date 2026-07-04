@@ -26,6 +26,7 @@ class RequestId
 
         Context::add('request_id', $id);
 
+        $request->attributes->set('request_id', $id);
         $request->headers->set('X-Request-Id', $id);
 
         $response = $next($request);
