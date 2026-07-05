@@ -11,6 +11,7 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
+import { useDateFormatter } from '@/hooks/use-date-formatter';
 import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import ProfileLayout from '@/layouts/settings/profile-layout';
@@ -37,6 +38,7 @@ export default function LoginActivity({
     activities: LoginActivityItem[];
 }) {
     const { t } = useTranslations();
+    const { formatDate: formatDatePreference } = useDateFormatter();
 
     const formatDate = (dateStr: string) => {
         const date = new Date(dateStr);
@@ -54,14 +56,7 @@ export default function LoginActivity({
         if (diffDays < 7) {
             return `${diffDays} ${diffDays === 1 ? t('login_history.day_ago', 'day ago') : t('login_history.days_ago', 'days ago')}`;
         }
-        return date.toLocaleDateString(undefined, {
-            month: 'short',
-            day: 'numeric',
-            year:
-                date.getFullYear() !== now.getFullYear()
-                    ? 'numeric'
-                    : undefined,
-        });
+        return formatDatePreference(dateStr);
     };
 
     return (

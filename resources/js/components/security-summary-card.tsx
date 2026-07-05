@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Spinner } from '@/components/ui/spinner';
+import { useDateFormatter } from '@/hooks/use-date-formatter';
 import axios from 'axios';
 import {
     AlertCircle,
@@ -82,16 +83,8 @@ function getPriorityColor(priority: string): string {
     }
 }
 
-function formatDate(dateString: string | null): string {
-    if (!dateString) return 'Never';
-    return new Date(dateString).toLocaleDateString(undefined, {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-    });
-}
-
 export function SecuritySummaryCard() {
+    const { formatDate } = useDateFormatter();
     const [data, setData] = useState<SecuritySummaryData | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -104,7 +97,10 @@ export function SecuritySummaryCard() {
                 setLoading(false);
             })
             .catch((err) => {
-                setError(err.response?.data?.message ?? 'Failed to load security summary');
+                setError(
+                    err.response?.data?.message ??
+                        'Failed to load security summary',
+                );
                 setLoading(false);
             });
     }, []);
@@ -202,6 +198,7 @@ export function SecuritySummaryCard() {
                             Last changed:{' '}
                             {formatDate(
                                 authentication.password.last_changed_at,
+                                { fallback: 'Never' },
                             )}
                         </p>
                         {!authentication.password.enabled && (
@@ -251,7 +248,7 @@ export function SecuritySummaryCard() {
                         </div>
                         <p className="mt-1 text-xs text-muted-foreground">
                             {authentication.two_factor.enabled
-                                ? `Enabled on ${formatDate(authentication.two_factor.confirmed_at)}`
+                                ? `Enabled on ${formatDate(authentication.two_factor.confirmed_at, { fallback: 'Never' })}`
                                 : 'Add an extra layer of security to your account'}
                         </p>
                         {!authentication.two_factor.enabled && (
