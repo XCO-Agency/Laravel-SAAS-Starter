@@ -221,19 +221,17 @@ class DashboardController extends Controller
             ->selectRaw('ticket_id, MIN(created_at) as first_reply_at')
             ->groupBy('ticket_id');
 
-        $rows = Ticket::query()
+        // Stream the joined rows with a cursor and average in constant memory,
+        // so the metric stays DB-portable (delta computed in PHP) without
+        // materialising every replied ticket on each dashboard load.
+        $averageSeconds = Ticket::query()
             ->joinSub($firstReplies, 'first_replies', 'first_replies.ticket_id', '=', 'tickets.id')
-            ->get(['tickets.created_at', 'first_replies.first_reply_at']);
+            ->toBase()
+            ->select('tickets.created_at', 'first_replies.first_reply_at')
+            ->cursor()
+            ->avg(fn ($row): float => Carbon::parse($row->created_at)
+                ->diffInSeconds(Carbon::parse($row->first_reply_at), true));
 
-        if ($rows->isEmpty()) {
-            return 0;
-        }
-
-        $totalSeconds = $rows->sum(
-            fn ($row): float => Carbon::parse($row->created_at)
-                ->diffInSeconds(Carbon::parse($row->first_reply_at), true)
-        );
-
-        return (int) round($totalSeconds / $rows->count());
+        return (int) round($averageSeconds ?? 0);
     }
 }
