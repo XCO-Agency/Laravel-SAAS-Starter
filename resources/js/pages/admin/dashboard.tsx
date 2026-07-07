@@ -12,6 +12,7 @@ import {
     Activity,
     ArrowDownRight,
     ArrowUpRight,
+    Clock,
     CreditCard,
     DollarSign,
     Users,
@@ -39,6 +40,7 @@ interface Metrics {
     workspace_growth_percent: number;
     mrr: number;
     churn_rate: number;
+    avg_first_response_seconds: number;
 }
 
 interface DailyStat {
@@ -170,6 +172,26 @@ export default function AdminDashboard({
         }).format(value);
     };
 
+    const formatDuration = (seconds: number) => {
+        if (seconds <= 0) {
+            return '—';
+        }
+
+        const hours = Math.floor(seconds / 3600);
+        const minutes = Math.floor((seconds % 3600) / 60);
+        const remainingSeconds = Math.floor(seconds % 60);
+
+        if (hours > 0) {
+            return `${hours}h ${minutes}m`;
+        }
+
+        if (minutes > 0) {
+            return `${minutes}m ${remainingSeconds}s`;
+        }
+
+        return `${remainingSeconds}s`;
+    };
+
     return (
         <AdminLayout>
             <Head title="Admin Dashboard" />
@@ -271,6 +293,27 @@ export default function AdminDashboard({
                                     from previous 30d
                                 </p>
                                 <Sparkline data={sparklines.new_users} />
+                            </div>
+                        </CardContent>
+                    </Card>
+
+                    <Card>
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                            <CardTitle className="text-sm font-medium">
+                                Avg. First Response
+                            </CardTitle>
+                            <Clock className="h-4 w-4 text-muted-foreground" />
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-2xl font-bold">
+                                {formatDuration(
+                                    metrics.avg_first_response_seconds,
+                                )}
+                            </div>
+                            <div className="mt-2">
+                                <p className="text-xs text-muted-foreground">
+                                    From ticket creation to first reply
+                                </p>
                             </div>
                         </CardContent>
                     </Card>

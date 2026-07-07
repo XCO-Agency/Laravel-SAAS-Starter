@@ -55,6 +55,7 @@ it('allows superadmins to access the dashboard and see system metrics', function
                     ->has('workspace_growth_percent')
                     ->has('mrr')
                     ->has('churn_rate')
+                    ->has('avg_first_response_seconds')
             )
             ->has('dailySignups')
             ->has('planDistribution')
