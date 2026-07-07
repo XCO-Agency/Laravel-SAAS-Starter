@@ -24,6 +24,9 @@ class WorkspaceCommentController extends Controller
             ->when($commentableType && $commentableId, function ($query) use ($commentableType, $commentableId) {
                 $query->forCommentable($commentableType, $commentableId);
             })
+            ->when($request->filled('resolved'), function ($query) use ($request) {
+                $request->boolean('resolved') ? $query->resolved() : $query->unresolved();
+            })
             ->rootComments()
             ->orderByDesc('created_at')
             ->paginate(20);
@@ -94,6 +97,29 @@ class WorkspaceCommentController extends Controller
 
         return response()->json([
             'message' => 'Comment deleted successfully.',
+        ]);
+    }
+
+    public function resolve(Request $request, Workspace $workspace, WorkspaceComment $comment)
+    {
+        $user = $request->user();
+        $isOwner = $user->id === $comment->user_id;
+        $isAdmin = $user->ownsWorkspace($workspace) || $user->userIsAdmin($workspace);
+
+        if (! $isOwner && ! $isAdmin) {
+            return response()->json(['message' => 'Unauthorized.'], 403);
+        }
+
+        $resolved = $request->boolean('resolved');
+
+        $comment->update([
+            'resolved_at' => $resolved ? now() : null,
+        ]);
+        $comment->load('user');
+
+        return response()->json([
+            'message' => $resolved ? 'Comment resolved.' : 'Comment unresolved.',
+            'data' => $comment,
         ]);
     }
 
