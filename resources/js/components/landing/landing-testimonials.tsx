@@ -1,6 +1,7 @@
+import { Github } from '@/components/brand-icons';
 import { Card, CardContent } from '@/components/ui/card';
 import { useTranslations } from '@/hooks/use-translations';
-import { Github, Quote, Star } from 'lucide-react';
+import { Quote, Star } from 'lucide-react';
 
 export function LandingTestimonials() {
     const { t } = useTranslations();
@@ -93,10 +94,10 @@ export function LandingTestimonials() {
                             key={stat.label}
                             className="rounded-md border bg-card p-4 text-center"
                         >
-                            <div className="text-2xl font-bold tabular-nums text-foreground sm:text-3xl">
+                            <div className="text-2xl font-bold text-foreground tabular-nums sm:text-3xl">
                                 {stat.value}
                             </div>
-                            <div className="mt-1 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                            <div className="mt-1 text-xs font-medium tracking-wider text-muted-foreground uppercase">
                                 {stat.label}
                             </div>
                         </div>

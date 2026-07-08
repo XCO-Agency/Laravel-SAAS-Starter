@@ -1,6 +1,7 @@
+import { Github, Twitter } from '@/components/brand-icons';
 import { useTranslations } from '@/hooks/use-translations';
 import { Link } from '@inertiajs/react';
-import { Github, Sparkles, Twitter } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 
 export function LandingFooter() {
     const { t } = useTranslations();
@@ -144,7 +145,9 @@ export function LandingFooter() {
                     {/* Links */}
                     {Object.values(footerLinks).map((section) => (
                         <div key={section.title}>
-                            <h3 className="text-xs font-semibold uppercase tracking-wider text-white/70">{section.title}</h3>
+                            <h3 className="text-xs font-semibold tracking-wider text-white/70 uppercase">
+                                {section.title}
+                            </h3>
                             <ul className="mt-4 space-y-3">
                                 {section.links.map((link) => (
                                     <li key={link.label}>

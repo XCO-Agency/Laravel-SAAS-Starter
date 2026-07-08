@@ -1,3 +1,4 @@
+import { Github } from '@/components/brand-icons';
 import { Button } from '@/components/ui/button';
 import {
     Card,
@@ -10,7 +11,7 @@ import AppLayout from '@/layouts/app-layout';
 import ProfileLayout from '@/layouts/settings/profile-layout';
 import { type SharedData } from '@/types';
 import { Head, router, usePage } from '@inertiajs/react';
-import { CheckCircle2, Github, Link2Off, Unlink } from 'lucide-react';
+import { CheckCircle2, Link2Off, Unlink } from 'lucide-react';
 
 interface ConnectedAccount {
     provider: string;

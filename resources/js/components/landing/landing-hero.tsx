@@ -1,16 +1,10 @@
+import { Github } from '@/components/brand-icons';
 import { Button } from '@/components/ui/button';
 import { useTranslations } from '@/hooks/use-translations';
 import { register } from '@/routes';
 import { type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import {
-    ArrowRight,
-    CheckCircle,
-    Github,
-    Sparkles,
-    Users,
-    Zap,
-} from 'lucide-react';
+import { ArrowRight, CheckCircle, Sparkles, Users, Zap } from 'lucide-react';
 
 export function LandingHero() {
     const { auth } = usePage<SharedData>().props;
@@ -52,7 +46,7 @@ export function LandingHero() {
 
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="mx-auto max-w-3xl text-center">
-                    <div className="mb-6 inline-flex items-center gap-2 rounded-sm border border-accent/40 bg-accent/15 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-foreground">
+                    <div className="mb-6 inline-flex items-center gap-2 rounded-sm border border-accent/40 bg-accent/15 px-3 py-1 text-xs font-semibold tracking-wider text-foreground uppercase">
                         <Sparkles className="h-3.5 w-3.5 text-accent-foreground" />
                         <span>
                             {t(
@@ -88,14 +82,30 @@ export function LandingHero() {
 
                     {/* CTA Buttons */}
                     <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-                        <Button size="lg" asChild className="h-11 px-7 text-sm font-semibold">
+                        <Button
+                            size="lg"
+                            asChild
+                            className="h-11 px-7 text-sm font-semibold"
+                        >
                             <Link href={auth.user ? '/dashboard' : register()}>
-                                {t('landing.hero.cta.get_started', 'Get Started Free')}
+                                {t(
+                                    'landing.hero.cta.get_started',
+                                    'Get Started Free',
+                                )}
                                 <ArrowRight className="ml-2 h-4 w-4" />
                             </Link>
                         </Button>
-                        <Button size="lg" variant="outline" asChild className="h-11 px-7 text-sm">
-                            <a href="https://github.com/xco-agency/laravel-saas-starter" target="_blank" rel="noopener noreferrer">
+                        <Button
+                            size="lg"
+                            variant="outline"
+                            asChild
+                            className="h-11 px-7 text-sm"
+                        >
+                            <a
+                                href="https://github.com/xco-agency/laravel-saas-starter"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
                                 <Github className="mr-2 h-4 w-4" />
                                 {t('landing.hero.cta.github', 'View on GitHub')}
                             </a>
@@ -105,7 +115,10 @@ export function LandingHero() {
                     {/* Quick Features */}
                     <div className="mt-8 flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
                         {features.map((feature) => (
-                            <div key={feature} className="flex items-center gap-1.5 text-sm text-muted-foreground">
+                            <div
+                                key={feature}
+                                className="flex items-center gap-1.5 text-sm text-muted-foreground"
+                            >
                                 <CheckCircle className="h-3.5 w-3.5 text-primary" />
                                 {feature}
                             </div>
@@ -119,7 +132,7 @@ export function LandingHero() {
                             <div className="text-2xl font-bold tabular-nums sm:text-3xl">
                                 {stat.value}
                             </div>
-                            <div className="mt-1 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                            <div className="mt-1 text-xs font-medium tracking-wider text-muted-foreground uppercase">
                                 {stat.label}
                             </div>
                         </div>
@@ -134,7 +147,7 @@ export function LandingHero() {
                             <span className="h-3 w-3 rounded-full bg-red-500/70" />
                             <span className="h-3 w-3 rounded-full bg-yellow-500/70" />
                             <span className="h-3 w-3 rounded-full bg-green-500/70" />
-                            <div className="ml-4 flex-1 rounded bg-white/10 py-1 px-3 text-xs text-white/40">
+                            <div className="ml-4 flex-1 rounded bg-white/10 px-3 py-1 text-xs text-white/40">
                                 app.yoursaas.com/dashboard
                             </div>
                         </div>
@@ -146,20 +159,44 @@ export function LandingHero() {
                                     </div>
                                 </div>
                                 <p className="text-base font-semibold text-white">
-                                    {t('landing.hero.preview.title', 'Production-Ready Dashboard')}
+                                    {t(
+                                        'landing.hero.preview.title',
+                                        'Production-Ready Dashboard',
+                                    )}
                                 </p>
                                 <p className="mt-2 text-sm text-white/50">
-                                    {t('landing.hero.preview.description', 'Beautiful UI with dark mode, workspaces, and team management')}
+                                    {t(
+                                        'landing.hero.preview.description',
+                                        'Beautiful UI with dark mode, workspaces, and team management',
+                                    )}
                                 </p>
                                 <div className="mt-5 flex flex-wrap justify-center gap-2">
                                     {[
-                                        t('landing.hero.preview.tags.multi_tenant', 'Multi-tenant'),
-                                        t('landing.hero.preview.tags.stripe_billing', 'Stripe Billing'),
-                                        t('landing.hero.preview.tags.admin_panel', 'Super Admin'),
-                                        t('landing.hero.preview.tags.team_roles', 'Team Roles'),
-                                        t('landing.hero.preview.tags.feature_flags', 'Pennant Flags'),
+                                        t(
+                                            'landing.hero.preview.tags.multi_tenant',
+                                            'Multi-tenant',
+                                        ),
+                                        t(
+                                            'landing.hero.preview.tags.stripe_billing',
+                                            'Stripe Billing',
+                                        ),
+                                        t(
+                                            'landing.hero.preview.tags.admin_panel',
+                                            'Super Admin',
+                                        ),
+                                        t(
+                                            'landing.hero.preview.tags.team_roles',
+                                            'Team Roles',
+                                        ),
+                                        t(
+                                            'landing.hero.preview.tags.feature_flags',
+                                            'Pennant Flags',
+                                        ),
                                     ].map((tag) => (
-                                        <span key={tag} className="rounded-sm border border-white/10 bg-white/5 px-2.5 py-1 text-xs font-medium text-white/70">
+                                        <span
+                                            key={tag}
+                                            className="rounded-sm border border-white/10 bg-white/5 px-2.5 py-1 text-xs font-medium text-white/70"
+                                        >
                                             {tag}
                                         </span>
                                     ))}
