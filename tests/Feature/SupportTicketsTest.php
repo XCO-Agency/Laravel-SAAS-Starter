@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\TicketPriority;
+use App\Enums\TicketStatus;
 use App\Models\Ticket;
 use App\Models\User;
 use App\Models\Workspace;
@@ -133,7 +134,7 @@ describe('User Ticket Portal', function () {
         $response->assertSessionHasNoErrors();
 
         // Should reopen the ticket
-        $this->assertEquals('open', $ticket->fresh()->status);
+        $this->assertEquals(TicketStatus::Open, $ticket->fresh()->status);
 
         $this->assertDatabaseHas('ticket_replies', [
             'ticket_id' => $ticket->id,
@@ -177,6 +178,32 @@ describe('Admin Ticket Portal', function () {
         );
     });
 
+    it('ignores an unknown status filter instead of returning an empty result set', function () {
+        Ticket::factory()->create(['status' => 'open']);
+        Ticket::factory()->create(['status' => 'closed']);
+
+        $response = $this->actingAs($this->superAdmin)->get('/admin/tickets?status=bogus');
+
+        $response->assertSuccessful();
+        $response->assertInertia(fn ($page) => $page
+            ->component('admin/tickets/index')
+            ->has('tickets.data', 2)
+        );
+    });
+
+    it('ignores an array status filter instead of throwing a warning', function () {
+        Ticket::factory()->create(['status' => 'open']);
+        Ticket::factory()->create(['status' => 'closed']);
+
+        $response = $this->actingAs($this->superAdmin)->get('/admin/tickets?status[]=open');
+
+        $response->assertSuccessful();
+        $response->assertInertia(fn ($page) => $page
+            ->component('admin/tickets/index')
+            ->has('tickets.data', 2)
+        );
+    });
+
     it('non-admin cannot view admin tickets index page', function () {
         $response = $this->actingAs($this->user)->get('/admin/tickets');
 
@@ -203,7 +230,7 @@ describe('Admin Ticket Portal', function () {
         ]);
 
         $response->assertRedirect();
-        $this->assertEquals('in_progress', $ticket->fresh()->status);
+        $this->assertEquals(TicketStatus::InProgress, $ticket->fresh()->status);
 
         $response = $this->actingAs($this->superAdmin)->patch("/admin/tickets/{$ticket->id}", [
             'priority' => 'high',
@@ -211,6 +238,23 @@ describe('Admin Ticket Portal', function () {
 
         $response->assertRedirect();
         $this->assertEquals(TicketPriority::High, $ticket->fresh()->priority);
+    });
+
+    it('casts the status attribute to a TicketStatus enum', function () {
+        $ticket = Ticket::factory()->create(['status' => 'resolved']);
+
+        expect($ticket->fresh()->status)->toBe(TicketStatus::Resolved);
+    });
+
+    it('rejects an invalid status when updating and leaves it unchanged', function () {
+        $ticket = Ticket::factory()->create(['status' => 'open']);
+
+        $response = $this->actingAs($this->superAdmin)->patch("/admin/tickets/{$ticket->id}", [
+            'status' => 'bogus',
+        ]);
+
+        $response->assertSessionHasErrors('status');
+        $this->assertEquals(TicketStatus::Open, $ticket->fresh()->status);
     });
 
     it('can reply to a ticket as an admin', function () {
@@ -224,7 +268,7 @@ describe('Admin Ticket Portal', function () {
         $response->assertSessionHasNoErrors();
 
         // Should auto-change to in_progress from open
-        $this->assertEquals('in_progress', $ticket->fresh()->status);
+        $this->assertEquals(TicketStatus::InProgress, $ticket->fresh()->status);
 
         $this->assertDatabaseHas('ticket_replies', [
             'ticket_id' => $ticket->id,

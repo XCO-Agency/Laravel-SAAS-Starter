@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Enums\TicketPriority;
+use App\Enums\TicketStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
@@ -19,9 +20,8 @@ class TicketController extends Controller
     {
         $query = Ticket::query()->with(['user:id,name,email,avatar_url']);
 
-        // Filter by status if provided
-        if ($request->filled('status')) {
-            $query->where('status', $request->status);
+        if (is_string($request->status) && $status = TicketStatus::tryFrom($request->status)) {
+            $query->where('status', $status);
         }
 
         // Search by subject
@@ -59,7 +59,7 @@ class TicketController extends Controller
     public function update(Request $request, Ticket $ticket)
     {
         $validated = $request->validate([
-            'status' => ['sometimes', 'required', Rule::in(['open', 'in_progress', 'resolved', 'closed'])],
+            'status' => ['sometimes', 'required', Rule::enum(TicketStatus::class)],
             'priority' => ['sometimes', 'required', Rule::enum(TicketPriority::class)],
         ]);
 
@@ -84,8 +84,8 @@ class TicketController extends Controller
         ]);
 
         // Default to moving the ticket to 'in_progress' if an admin responds and it was 'open'
-        if ($ticket->status === 'open') {
-            $ticket->update(['status' => 'in_progress']);
+        if ($ticket->status === TicketStatus::Open) {
+            $ticket->update(['status' => TicketStatus::InProgress]);
         }
 
         return back()->with('success', 'Reply submitted successfully.');

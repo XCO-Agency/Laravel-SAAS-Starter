@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\TicketPriority;
+use App\Enums\TicketStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -26,6 +27,7 @@ class Ticket extends Model
     {
         return [
             'priority' => TicketPriority::class,
+            'status' => TicketStatus::class,
         ];
     }
 
