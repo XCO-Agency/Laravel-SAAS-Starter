@@ -37,6 +37,13 @@ class WorkspaceCommentFactory extends Factory
         ]);
     }
 
+    public function resolved(): self
+    {
+        return $this->state(fn (array $attributes) => [
+            'resolved_at' => now(),
+        ]);
+    }
+
     public function byUser(User $user): self
     {
         return $this->state(fn (array $attributes) => [

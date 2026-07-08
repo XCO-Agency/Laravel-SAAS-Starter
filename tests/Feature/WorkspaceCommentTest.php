@@ -210,3 +210,162 @@ it('filters comments by commentable type and id', function () {
     $response->assertOk()
         ->assertJsonCount(3, 'data');
 });
+
+it('allows comment author to resolve their comment', function () {
+    $comment = WorkspaceComment::factory()->create([
+        'workspace_id' => $this->workspace->id,
+        'user_id' => $this->user->id,
+    ]);
+
+    $response = $this->actingAs($this->user)
+        ->postJson("/workspaces/{$this->workspace->id}/comments/{$comment->id}/resolve", [
+            'resolved' => true,
+        ]);
+
+    $response->assertOk();
+    expect($response->json('data.resolved_at'))->not->toBeNull();
+
+    expect($comment->fresh()->resolved_at)->not->toBeNull();
+});
+
+it('allows comment author to unresolve their comment', function () {
+    $comment = WorkspaceComment::factory()->resolved()->create([
+        'workspace_id' => $this->workspace->id,
+        'user_id' => $this->user->id,
+    ]);
+
+    $response = $this->actingAs($this->user)
+        ->postJson("/workspaces/{$this->workspace->id}/comments/{$comment->id}/resolve", [
+            'resolved' => false,
+        ]);
+
+    $response->assertOk();
+    expect($response->json('data.resolved_at'))->toBeNull();
+
+    expect($comment->fresh()->resolved_at)->toBeNull();
+});
+
+it('allows workspace admin to resolve any comment', function () {
+    $admin = User::factory()->create();
+    $admin->workspaces()->attach($this->workspace, ['role' => 'admin']);
+    $admin->switchWorkspace($this->workspace);
+
+    $member = User::factory()->create();
+    $member->workspaces()->attach($this->workspace, ['role' => 'member']);
+
+    $comment = WorkspaceComment::factory()->create([
+        'workspace_id' => $this->workspace->id,
+        'user_id' => $member->id,
+    ]);
+
+    $response = $this->actingAs($admin)
+        ->postJson("/workspaces/{$this->workspace->id}/comments/{$comment->id}/resolve", [
+            'resolved' => true,
+        ]);
+
+    $response->assertOk();
+    expect($comment->fresh()->resolved_at)->not->toBeNull();
+});
+
+it('prevents non-author, non-admin member from resolving comment', function () {
+    $member = User::factory()->create();
+    $member->workspaces()->attach($this->workspace, ['role' => 'member']);
+    $member->switchWorkspace($this->workspace);
+
+    $comment = WorkspaceComment::factory()->create([
+        'workspace_id' => $this->workspace->id,
+        'user_id' => $this->user->id,
+    ]);
+
+    $response = $this->actingAs($member)
+        ->postJson("/workspaces/{$this->workspace->id}/comments/{$comment->id}/resolve", [
+            'resolved' => true,
+        ]);
+
+    $response->assertForbidden();
+    expect($comment->fresh()->resolved_at)->toBeNull();
+});
+
+it('prevents non-member from resolving comment', function () {
+    $nonMember = User::factory()->create();
+    $nonMemberWorkspace = Workspace::factory()->create(['owner_id' => $nonMember->id]);
+    $nonMember->workspaces()->attach($nonMemberWorkspace, ['role' => 'owner']);
+    $nonMember->switchWorkspace($nonMemberWorkspace);
+
+    $comment = WorkspaceComment::factory()->create([
+        'workspace_id' => $this->workspace->id,
+        'user_id' => $this->user->id,
+    ]);
+
+    $response = $this->actingAs($nonMember)
+        ->postJson("/workspaces/{$this->workspace->id}/comments/{$comment->id}/resolve", [
+            'resolved' => true,
+        ]);
+
+    $response->assertForbidden();
+    expect($comment->fresh()->resolved_at)->toBeNull();
+});
+
+it('hides resolved comments when filtering resolved=false', function () {
+    WorkspaceComment::factory()->count(2)->resolved()->create([
+        'workspace_id' => $this->workspace->id,
+        'user_id' => $this->user->id,
+    ]);
+    WorkspaceComment::factory()->count(3)->create([
+        'workspace_id' => $this->workspace->id,
+        'user_id' => $this->user->id,
+    ]);
+
+    $response = $this->actingAs($this->user)
+        ->getJson("/workspaces/{$this->workspace->id}/comments?resolved=false");
+
+    $response->assertOk()
+        ->assertJsonCount(3, 'data');
+});
+
+it('returns only resolved comments when filtering resolved=true', function () {
+    WorkspaceComment::factory()->count(2)->resolved()->create([
+        'workspace_id' => $this->workspace->id,
+        'user_id' => $this->user->id,
+    ]);
+    WorkspaceComment::factory()->count(3)->create([
+        'workspace_id' => $this->workspace->id,
+        'user_id' => $this->user->id,
+    ]);
+
+    $response = $this->actingAs($this->user)
+        ->getJson("/workspaces/{$this->workspace->id}/comments?resolved=true");
+
+    $response->assertOk()
+        ->assertJsonCount(2, 'data');
+});
+
+it('returns all comments when no resolved filter is provided', function () {
+    WorkspaceComment::factory()->count(2)->resolved()->create([
+        'workspace_id' => $this->workspace->id,
+        'user_id' => $this->user->id,
+    ]);
+    WorkspaceComment::factory()->count(3)->create([
+        'workspace_id' => $this->workspace->id,
+        'user_id' => $this->user->id,
+    ]);
+
+    $response = $this->actingAs($this->user)
+        ->getJson("/workspaces/{$this->workspace->id}/comments");
+
+    $response->assertOk()
+        ->assertJsonCount(5, 'data');
+});
+
+it('includes resolved_at in the comment payload', function () {
+    WorkspaceComment::factory()->resolved()->create([
+        'workspace_id' => $this->workspace->id,
+        'user_id' => $this->user->id,
+    ]);
+
+    $response = $this->actingAs($this->user)
+        ->getJson("/workspaces/{$this->workspace->id}/comments");
+
+    $response->assertOk();
+    expect($response->json('data.0.resolved_at'))->not->toBeNull();
+});
