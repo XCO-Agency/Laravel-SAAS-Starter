@@ -19,12 +19,14 @@ class WorkspaceComment extends Model
         'commentable_type',
         'commentable_id',
         'content',
+        'resolved_at',
     ];
 
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime',
+        'resolved_at' => 'datetime',
     ];
 
     public function workspace(): BelongsTo
@@ -61,6 +63,21 @@ class WorkspaceComment extends Model
     {
         return $query->where('commentable_type', $commentableType)
             ->where('commentable_id', $commentableId);
+    }
+
+    public function scopeResolved($query)
+    {
+        return $query->whereNotNull('resolved_at');
+    }
+
+    public function scopeUnresolved($query)
+    {
+        return $query->whereNull('resolved_at');
+    }
+
+    public function isResolved(): bool
+    {
+        return $this->resolved_at !== null;
     }
 
     public function scopeWithReplies($query)

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Ticket;
+use App\Models\TicketReply;
 use App\Models\User;
 use App\Models\Workspace;
 use Illuminate\Http\JsonResponse;
@@ -45,6 +47,9 @@ class DashboardController extends Controller
         // ── MRR Calculation ──
         $plans = config('billing.plans', []);
         $mrr = $this->calculateMrr($plans);
+
+        // ── Average first-response time (ticket creation → first reply) ──
+        $avgFirstResponseSeconds = $this->averageFirstResponseSeconds();
 
         // ── Churn rate (canceled in last 30 days / active at start of period) ──
         $canceledLast30 = Subscription::where('stripe_status', 'canceled')
@@ -148,6 +153,7 @@ class DashboardController extends Controller
                 'workspace_growth_percent' => $workspaceGrowthPercent,
                 'mrr' => $mrr,
                 'churn_rate' => $churnRate,
+                'avg_first_response_seconds' => $avgFirstResponseSeconds,
             ],
             'sparklines' => $sparklines,
             'dailySignups' => $dailySignups,
@@ -202,5 +208,30 @@ class DashboardController extends Controller
         }
 
         return round($mrr, 2);
+    }
+
+    /**
+     * Average elapsed time, in seconds, between a ticket's creation and its
+     * first reply. Only tickets with at least one reply contribute; the diff
+     * is computed in PHP (not SQL) so SQLite and Postgres agree.
+     */
+    private function averageFirstResponseSeconds(): int
+    {
+        $firstReplies = TicketReply::query()
+            ->selectRaw('ticket_id, MIN(created_at) as first_reply_at')
+            ->groupBy('ticket_id');
+
+        // Stream the joined rows with a cursor and average in constant memory,
+        // so the metric stays DB-portable (delta computed in PHP) without
+        // materialising every replied ticket on each dashboard load.
+        $averageSeconds = Ticket::query()
+            ->joinSub($firstReplies, 'first_replies', 'first_replies.ticket_id', '=', 'tickets.id')
+            ->toBase()
+            ->select('tickets.created_at', 'first_replies.first_reply_at')
+            ->cursor()
+            ->avg(fn ($row): float => Carbon::parse($row->created_at)
+                ->diffInSeconds(Carbon::parse($row->first_reply_at), true));
+
+        return (int) round($averageSeconds ?? 0);
     }
 }

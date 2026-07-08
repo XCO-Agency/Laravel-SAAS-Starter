@@ -50,3 +50,47 @@ test('invalid date formats are rejected', function () {
 
     $response->assertSessionHasErrors('date_format');
 });
+
+test('invalid timezones are rejected', function () {
+    $user = User::factory()->create();
+
+    $response = $this
+        ->actingAs($user)
+        ->patch('/settings/profile', [
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+            'timezone' => 'Not/A_Timezone',
+            'date_format' => 'Y-m-d',
+        ]);
+
+    $response->assertSessionHasErrors('timezone');
+});
+
+test('locale preference can be updated', function () {
+    $user = User::factory()->create(['locale' => 'en']);
+
+    $response = $this
+        ->actingAs($user)
+        ->patch('/locale', [
+            'locale' => 'fr',
+        ]);
+
+    $response->assertSessionHasNoErrors();
+
+    expect($user->refresh()->locale)->toBe('fr');
+});
+
+test('the profile page exposes the timezone and date format preference', function () {
+    $user = User::factory()->create([
+        'timezone' => 'America/New_York',
+        'date_format' => 'd/m/Y',
+    ]);
+
+    $this
+        ->actingAs($user)
+        ->get('/settings/profile')
+        ->assertInertia(fn ($page) => $page
+            ->where('auth.user.timezone', 'America/New_York')
+            ->where('auth.user.date_format', 'd/m/Y')
+        );
+});

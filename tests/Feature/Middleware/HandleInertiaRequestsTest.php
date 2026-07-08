@@ -20,6 +20,7 @@ it('shares auth user data with inertia', function () {
         ->where('auth.user.email', $user->email)
         ->where('auth.user.name', $user->name)
         ->has('auth.user.timezone')
+        ->has('auth.user.date_format')
     );
 });
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Settings;
 
 use App\Enums\TicketPriority;
+use App\Enums\TicketStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
@@ -89,8 +90,8 @@ class TicketController extends Controller
         ]);
 
         // Automatically reopen the ticket if a user replies and it was resolved or closed
-        if (in_array($ticket->status, ['resolved', 'closed'])) {
-            $ticket->update(['status' => 'open']);
+        if (in_array($ticket->status, [TicketStatus::Resolved, TicketStatus::Closed], true)) {
+            $ticket->update(['status' => TicketStatus::Open]);
         }
 
         return back()->with('success', 'Reply submitted successfully.');
