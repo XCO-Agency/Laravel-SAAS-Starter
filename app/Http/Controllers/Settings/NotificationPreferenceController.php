@@ -55,7 +55,13 @@ class NotificationPreferenceController extends Controller
      */
     public function sendTest(Request $request): RedirectResponse
     {
-        $request->user()->notify(new TestNotification);
+        $user = $request->user();
+
+        if (! $user->notificationChannelEnabled('email') && ! $user->notificationChannelEnabled('in_app')) {
+            return back()->with('error', __('Enable at least one notification channel to send a test.'));
+        }
+
+        $user->notify(new TestNotification);
 
         return back()->with('success', __('Test notification sent.'));
     }

@@ -50,6 +50,10 @@ export default function Notifications({
         put('/settings/notifications', { preserveScroll: true });
     };
 
+    const noChannelsEnabled =
+        !notification_preferences.channels.email &&
+        !notification_preferences.channels.in_app;
+
     const sendTest = () => {
         postTest('/settings/notifications/test', { preserveScroll: true });
     };
@@ -308,7 +312,7 @@ export default function Notifications({
                         <Button
                             type="button"
                             variant="outline"
-                            disabled={testProcessing}
+                            disabled={testProcessing || noChannelsEnabled}
                             onClick={sendTest}
                         >
                             {t(

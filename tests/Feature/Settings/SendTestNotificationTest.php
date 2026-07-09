@@ -65,7 +65,7 @@ it('delivers only through the in-app channel when only in_app is enabled', funct
     );
 });
 
-it('delivers through no channels but still succeeds when both channels are disabled', function () {
+it('fails with an error and sends nothing when both channels are disabled', function () {
     Notification::fake();
 
     $user = User::factory()->create([
@@ -77,7 +77,7 @@ it('delivers through no channels but still succeeds when both channels are disab
     $this->actingAs($user)
         ->post('/settings/notifications/test')
         ->assertRedirect()
-        ->assertSessionHas('success');
+        ->assertSessionHas('error');
 
     Notification::assertNotSentTo($user, TestNotification::class);
 });
