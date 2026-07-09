@@ -281,7 +281,7 @@ export default function Notifications({
                 </form>
 
                 <div className="mt-6 flex items-center justify-between rounded-lg border p-4">
-                    <div className="space-y-0.5">
+                    <div className="flex flex-col gap-0.5">
                         <Label>
                             {t(
                                 'settings.notifications.test',
