@@ -6,6 +6,7 @@ use App\Enums\TicketPriority;
 use App\Enums\TicketStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Ticket;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
@@ -100,7 +101,7 @@ class TicketController extends Controller
     /**
      * Close the specified ticket.
      */
-    public function close(Request $request, Ticket $ticket)
+    public function close(Request $request, Ticket $ticket): RedirectResponse
     {
         if ($ticket->user_id !== $request->user()->id) {
             abort(403);
@@ -116,7 +117,7 @@ class TicketController extends Controller
     /**
      * Reopen the specified ticket.
      */
-    public function reopen(Request $request, Ticket $ticket)
+    public function reopen(Request $request, Ticket $ticket): RedirectResponse
     {
         if ($ticket->user_id !== $request->user()->id) {
             abort(403);
