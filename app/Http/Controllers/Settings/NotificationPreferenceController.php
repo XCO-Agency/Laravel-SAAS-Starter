@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
+use App\Notifications\TestNotification;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -47,5 +48,15 @@ class NotificationPreferenceController extends Controller
         ]);
 
         return back()->with('success', __('Notification preferences updated.'));
+    }
+
+    /**
+     * Send a test notification to the authenticated user through their enabled channels.
+     */
+    public function sendTest(Request $request): RedirectResponse
+    {
+        $request->user()->notify(new TestNotification);
+
+        return back()->with('success', __('Test notification sent.'));
     }
 }

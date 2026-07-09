@@ -1,3 +1,4 @@
+import { sendTest } from '@/actions/App/Http/Controllers/Settings/NotificationPreferenceController';
 import { HelpTooltip } from '@/components/help-tooltip';
 import { type BreadcrumbItem } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
@@ -42,6 +43,13 @@ export default function Notifications({
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
         put('/settings/notifications', { preserveScroll: true });
+    };
+
+    const testForm = useForm({});
+
+    const sendTestNotification = (e: React.FormEvent) => {
+        e.preventDefault();
+        testForm.submit(sendTest(), { preserveScroll: true });
     };
 
     return (
@@ -266,6 +274,59 @@ export default function Notifications({
                             </p>
                         </Transition>
                     </div>
+                </form>
+
+                <form
+                    onSubmit={sendTestNotification}
+                    className="mt-6 space-y-4"
+                >
+                    <div className="flex items-center justify-between rounded-lg border p-4">
+                        <div className="space-y-0.5">
+                            <Label>
+                                {t(
+                                    'settings.notifications.test',
+                                    'Send test notification',
+                                )}
+                            </Label>
+                            <p className="text-sm text-muted-foreground">
+                                {t(
+                                    'settings.notifications.test_desc',
+                                    'Send yourself a test notification through your currently enabled channels.',
+                                )}
+                            </p>
+                        </div>
+                        <Button
+                            type="submit"
+                            variant="outline"
+                            disabled={testForm.processing}
+                        >
+                            {t('settings.notifications.test_send', 'Send test')}
+                        </Button>
+                    </div>
+
+                    <Transition
+                        show={!!testForm.recentlySuccessful}
+                        enter="transition ease-in-out"
+                        enterFrom="opacity-0"
+                        leave="transition ease-in-out"
+                        leaveTo="opacity-0"
+                    >
+                        <p className="text-sm text-neutral-600">
+                            {t(
+                                'settings.notifications.test_sent',
+                                'Test notification sent.',
+                            )}
+                        </p>
+                    </Transition>
+
+                    {Object.keys(testForm.errors).length > 0 && (
+                        <p className="text-sm text-red-600 dark:text-red-400">
+                            {t(
+                                'settings.notifications.test_failed',
+                                'Could not send the test notification. Please try again.',
+                            )}
+                        </p>
+                    )}
                 </form>
             </ProfileLayout>
         </AppLayout>
