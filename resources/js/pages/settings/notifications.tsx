@@ -39,9 +39,19 @@ export default function Notifications({
         preferences: notification_preferences,
     });
 
+    const {
+        post: postTest,
+        processing: testProcessing,
+        recentlySuccessful: testRecentlySuccessful,
+    } = useForm({});
+
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
         put('/settings/notifications', { preserveScroll: true });
+    };
+
+    const sendTest = () => {
+        postTest('/settings/notifications/test', { preserveScroll: true });
     };
 
     return (
@@ -267,6 +277,47 @@ export default function Notifications({
                         </Transition>
                     </div>
                 </form>
+
+                <div className="mt-6 flex items-center justify-between rounded-lg border p-4">
+                    <div className="space-y-0.5">
+                        <Label>
+                            {t(
+                                'settings.notifications.test',
+                                'Send test notification',
+                            )}
+                        </Label>
+                        <p className="text-sm text-muted-foreground">
+                            {t(
+                                'settings.notifications.test_desc',
+                                'Send yourself a test notification through your enabled channels to verify your settings.',
+                            )}
+                        </p>
+                    </div>
+                    <div className="flex items-center gap-4">
+                        <Transition
+                            show={!!testRecentlySuccessful}
+                            enter="transition ease-in-out"
+                            enterFrom="opacity-0"
+                            leave="transition ease-in-out"
+                            leaveTo="opacity-0"
+                        >
+                            <p className="text-sm text-neutral-600">
+                                {t('settings.notifications.test_sent', 'Sent')}
+                            </p>
+                        </Transition>
+                        <Button
+                            type="button"
+                            variant="outline"
+                            disabled={testProcessing}
+                            onClick={sendTest}
+                        >
+                            {t(
+                                'settings.notifications.test',
+                                'Send test notification',
+                            )}
+                        </Button>
+                    </div>
+                </div>
             </ProfileLayout>
         </AppLayout>
     );
