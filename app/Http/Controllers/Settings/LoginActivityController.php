@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
+use App\Models\LoginActivity;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -39,25 +40,24 @@ class LoginActivityController extends Controller
      */
     public function export(Request $request): StreamedResponse
     {
-        $activities = $request->user()->loginActivities()
-            ->latest('login_at')
-            ->get();
-
         $filename = 'login-history-'.now()->format('Y-m-d').'.csv';
 
-        return response()->streamDownload(function () use ($activities): void {
+        return response()->streamDownload(function () use ($request): void {
             $handle = fopen('php://output', 'w');
             fputcsv($handle, ['Date', 'IP', 'Device/User-Agent', 'Location', 'Status']);
 
-            foreach ($activities as $activity) {
-                fputcsv($handle, [
-                    $activity->login_at?->toDateTimeString(),
-                    $activity->ip_address ?? '',
-                    $activity->parsedDevice(),
-                    '',
-                    $activity->is_successful ? 'Success' : 'Failed',
-                ]);
-            }
+            $request->user()->loginActivities()
+                ->latest('login_at')
+                ->lazy()
+                ->each(function (LoginActivity $activity) use ($handle): void {
+                    fputcsv($handle, [
+                        $activity->login_at?->toDateTimeString(),
+                        $activity->ip_address ?? '',
+                        $activity->parsedDevice(),
+                        '',
+                        $activity->is_successful ? 'Success' : 'Failed',
+                    ]);
+                });
 
             fclose($handle);
         }, $filename, ['Content-Type' => 'text/csv']);

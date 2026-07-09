@@ -1,6 +1,7 @@
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
 
+import { exportMethod } from '@/actions/App/Http/Controllers/Settings/LoginActivityController';
 import { HelpTooltip } from '@/components/help-tooltip';
 
 import { Badge } from '@/components/ui/badge';
@@ -99,7 +100,7 @@ export default function LoginActivity({
                                 </CardDescription>
                             </div>
                             <Button variant="outline" size="sm" asChild>
-                                <a href="/settings/login-history/export">
+                                <a href={exportMethod.url()}>
                                     <Download className="mr-1.5 h-4 w-4" />
                                     {t('login_history.export', 'Export CSV')}
                                 </a>
