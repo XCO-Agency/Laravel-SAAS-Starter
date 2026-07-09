@@ -259,7 +259,7 @@ export default function Translations({
                                                     ([key, pair]) => (
                                                         <TableRow key={key}>
                                                             <TableCell className="align-top">
-                                                                <div className="mb-1 text-xs font-medium break-all text-slate-500">
+                                                                <div className="mb-1 text-xs font-medium break-all text-muted-foreground">
                                                                     {key}
                                                                 </div>
                                                                 <div className="text-sm">

@@ -127,8 +127,8 @@ export function LandingFeatures() {
                 'landing.features.items.dark_mode.description',
                 'Beautiful light and dark themes with system preference detection and manual toggle.',
             ),
-            color: 'text-slate-500',
-            bgColor: 'bg-slate-500/10',
+            color: 'text-slate-500 dark:text-slate-400',
+            bgColor: 'bg-slate-500/10 dark:bg-slate-400/10',
         },
         {
             icon: Zap,

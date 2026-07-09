@@ -66,7 +66,11 @@ const eventConfig: Record<
     login: { icon: LogIn, color: 'text-indigo-500', label: 'Sign In' },
     invited: { icon: UserPlus, color: 'text-violet-500', label: 'Invited' },
     billing: { icon: CreditCard, color: 'text-amber-500', label: 'Billing' },
-    settings: { icon: Settings, color: 'text-slate-500', label: 'Settings' },
+    settings: {
+        icon: Settings,
+        color: 'text-slate-500 dark:text-slate-400',
+        label: 'Settings',
+    },
 };
 
 function getEventConfig(event: string) {
