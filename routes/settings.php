@@ -64,7 +64,9 @@ Route::middleware('auth')->group(function () {
     // Notifications
     Route::get('settings/notifications', [NotificationPreferenceController::class, 'show'])->name('notifications.show');
     Route::put('settings/notifications', [NotificationPreferenceController::class, 'update'])->name('notifications.update');
-    Route::post('settings/notifications/test', [NotificationPreferenceController::class, 'sendTest'])->name('notifications.test');
+    Route::post('settings/notifications/test', [NotificationPreferenceController::class, 'sendTest'])
+        ->middleware('throttle:5,1')
+        ->name('notifications.test');
 
     // Sessions
     Route::get('settings/sessions', [SessionController::class, 'index'])->name('sessions.index');

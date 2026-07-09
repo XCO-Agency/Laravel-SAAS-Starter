@@ -47,8 +47,18 @@ export default function Notifications({
 
     const testForm = useForm({});
 
+    const isPreferencesDirty =
+        JSON.stringify(data.preferences) !==
+        JSON.stringify(notification_preferences);
+    const hasEnabledChannels =
+        data.preferences.channels.email || data.preferences.channels.in_app;
+    const canSendTest = !isPreferencesDirty && hasEnabledChannels;
+
     const sendTestNotification = (e: React.FormEvent) => {
         e.preventDefault();
+        if (!canSendTest) {
+            return;
+        }
         testForm.submit(sendTest(), { preserveScroll: true });
     };
 
@@ -289,16 +299,32 @@ export default function Notifications({
                                 )}
                             </Label>
                             <p className="text-sm text-muted-foreground">
-                                {t(
-                                    'settings.notifications.test_desc',
-                                    'Send yourself a test notification through your currently enabled channels.',
+                                {isPreferencesDirty ? (
+                                    <span className="text-amber-600 dark:text-amber-400">
+                                        {t(
+                                            'settings.notifications.test_save_first',
+                                            'Save your preferences before sending a test notification.',
+                                        )}
+                                    </span>
+                                ) : !hasEnabledChannels ? (
+                                    <span className="text-amber-600 dark:text-amber-400">
+                                        {t(
+                                            'settings.notifications.test_no_channels',
+                                            'Enable at least one notification channel to send a test.',
+                                        )}
+                                    </span>
+                                ) : (
+                                    t(
+                                        'settings.notifications.test_desc',
+                                        'Send yourself a test notification through your currently enabled channels.',
+                                    )
                                 )}
                             </p>
                         </div>
                         <Button
                             type="submit"
                             variant="outline"
-                            disabled={testForm.processing}
+                            disabled={testForm.processing || !canSendTest}
                         >
                             {t('settings.notifications.test_send', 'Send test')}
                         </Button>
@@ -318,15 +344,6 @@ export default function Notifications({
                             )}
                         </p>
                     </Transition>
-
-                    {Object.keys(testForm.errors).length > 0 && (
-                        <p className="text-sm text-red-600 dark:text-red-400">
-                            {t(
-                                'settings.notifications.test_failed',
-                                'Could not send the test notification. Please try again.',
-                            )}
-                        </p>
-                    )}
                 </form>
             </ProfileLayout>
         </AppLayout>

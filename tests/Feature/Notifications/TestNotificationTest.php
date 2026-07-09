@@ -26,6 +26,23 @@ it('sends a test notification to the authenticated user and flashes success', fu
     Notification::assertSentTo($user, TestNotification::class);
 });
 
+it('does not send and flashes an error when no channels are enabled', function () {
+    Notification::fake();
+
+    $user = User::factory()->create([
+        'notification_preferences' => [
+            'channels' => ['email' => false, 'in_app' => false],
+        ],
+    ]);
+
+    $this->actingAs($user)
+        ->post('/settings/notifications/test')
+        ->assertRedirect()
+        ->assertSessionHas('error');
+
+    Notification::assertNothingSent();
+});
+
 it('delivers through both channels when both are enabled', function () {
     $user = User::factory()->create([
         'notification_preferences' => [
