@@ -122,7 +122,7 @@ class TicketController extends Controller
             $ticket->update(['status' => TicketStatus::Closed]);
         }
 
-        return back()->with('success', 'Support ticket closed successfully.');
+        return back()->with('success', 'Ticket closed successfully.');
     }
 
     /**
@@ -138,6 +138,6 @@ class TicketController extends Controller
             $ticket->update(['status' => TicketStatus::Open]);
         }
 
-        return back()->with('success', 'Support ticket reopened successfully.');
+        return back()->with('success', 'Ticket reopened successfully.');
     }
 }

@@ -3,12 +3,12 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
-import { useToast } from '@/components/ui/toast';
 import AppLayout from '@/layouts/app-layout';
 import ProfileLayout from '@/layouts/settings/profile-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, router, useForm } from '@inertiajs/react';
 import { formatDistanceToNow } from 'date-fns';
+import { toast } from 'sonner';
 
 interface User {
     id: number;
@@ -54,8 +54,6 @@ export default function TicketShow({ ticket }: ShowProps) {
         content: '',
     });
 
-    const { addToast } = useToast();
-
     const getStatusColor = (status: TicketData['status']) => {
         switch (status) {
             case 'open':
@@ -95,7 +93,7 @@ export default function TicketShow({ ticket }: ShowProps) {
             {},
             {
                 preserveScroll: true,
-                onSuccess: () => addToast('Ticket closed.', 'success'),
+                onSuccess: () => toast.success('Ticket closed.'),
             },
         );
     };
@@ -106,7 +104,7 @@ export default function TicketShow({ ticket }: ShowProps) {
             {},
             {
                 preserveScroll: true,
-                onSuccess: () => addToast('Ticket reopened.', 'success'),
+                onSuccess: () => toast.success('Ticket reopened.'),
             },
         );
     };
@@ -149,16 +147,24 @@ export default function TicketShow({ ticket }: ShowProps) {
                                 </Badge>
                             </div>
                         </div>
-                        <div className="flex gap-2">
+                        <div className="flex items-center gap-2">
                             {ticket.status !== 'closed' && (
-                                <Button variant="outline" onClick={closeTicket}>
-                                    Close Ticket
+                                <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={closeTicket}
+                                >
+                                    Close ticket
                                 </Button>
                             )}
                             {(ticket.status === 'closed' ||
                                 ticket.status === 'resolved') && (
-                                <Button onClick={reopenTicket}>
-                                    Reopen Ticket
+                                <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={reopenTicket}
+                                >
+                                    Reopen ticket
                                 </Button>
                             )}
                         </div>

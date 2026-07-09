@@ -223,63 +223,44 @@ describe('User Ticket Portal', function () {
         $ticket = Ticket::factory()->create([
             'user_id' => $this->user->id,
             'workspace_id' => $this->workspace->id,
+            'status' => 'open',
         ]);
 
         $this->post("/settings/tickets/{$ticket->id}/close")->assertRedirect('/login');
         $this->post("/settings/tickets/{$ticket->id}/reopen")->assertRedirect('/login');
+
+        expect($ticket->fresh()->status)->toBe(TicketStatus::Open);
     });
 
-    it('lets the owner close an open ticket', function () {
+    it('owner can close an open, in-progress, or resolved ticket', function (string $status) {
         $ticket = Ticket::factory()->create([
             'user_id' => $this->user->id,
             'workspace_id' => $this->workspace->id,
-            'status' => 'open',
+            'status' => $status,
         ]);
 
         $response = $this->actingAs($this->user)->post("/settings/tickets/{$ticket->id}/close");
 
         $response->assertRedirect();
         $response->assertSessionHasNoErrors();
-        $this->assertEquals(TicketStatus::Closed, $ticket->fresh()->status);
-    });
+        expect($ticket->fresh()->status)->toBe(TicketStatus::Closed);
+    })->with(['open', 'in_progress', 'resolved']);
 
-    it('lets the owner close a resolved ticket', function () {
+    it('owner can reopen a closed or resolved ticket', function (string $status) {
         $ticket = Ticket::factory()->create([
             'user_id' => $this->user->id,
             'workspace_id' => $this->workspace->id,
-            'status' => 'resolved',
-        ]);
-
-        $this->actingAs($this->user)->post("/settings/tickets/{$ticket->id}/close")->assertRedirect();
-        $this->assertEquals(TicketStatus::Closed, $ticket->fresh()->status);
-    });
-
-    it('lets the owner reopen a closed ticket', function () {
-        $ticket = Ticket::factory()->create([
-            'user_id' => $this->user->id,
-            'workspace_id' => $this->workspace->id,
-            'status' => 'closed',
+            'status' => $status,
         ]);
 
         $response = $this->actingAs($this->user)->post("/settings/tickets/{$ticket->id}/reopen");
 
         $response->assertRedirect();
         $response->assertSessionHasNoErrors();
-        $this->assertEquals(TicketStatus::Open, $ticket->fresh()->status);
-    });
+        expect($ticket->fresh()->status)->toBe(TicketStatus::Open);
+    })->with(['closed', 'resolved']);
 
-    it('lets the owner reopen a resolved ticket', function () {
-        $ticket = Ticket::factory()->create([
-            'user_id' => $this->user->id,
-            'workspace_id' => $this->workspace->id,
-            'status' => 'resolved',
-        ]);
-
-        $this->actingAs($this->user)->post("/settings/tickets/{$ticket->id}/reopen")->assertRedirect();
-        $this->assertEquals(TicketStatus::Open, $ticket->fresh()->status);
-    });
-
-    it('forbids a non-owner from closing or reopening a ticket', function () {
+    it('cannot close or reopen someone elses ticket', function () {
         $otherUser = User::factory()->create();
         $ticket = Ticket::factory()->create([
             'user_id' => $otherUser->id,
@@ -287,39 +268,33 @@ describe('User Ticket Portal', function () {
         ]);
 
         $this->actingAs($this->user)->post("/settings/tickets/{$ticket->id}/close")->assertForbidden();
-        $this->assertEquals(TicketStatus::Open, $ticket->fresh()->status);
-
-        $ticket->update(['status' => 'closed']);
         $this->actingAs($this->user)->post("/settings/tickets/{$ticket->id}/reopen")->assertForbidden();
-        $this->assertEquals(TicketStatus::Closed, $ticket->fresh()->status);
+
+        expect($ticket->fresh()->status)->toBe(TicketStatus::Open);
     });
 
-    it('handles a no-op close on an already-closed ticket without error', function () {
-        $ticket = Ticket::factory()->create([
+    it('handles no-op close and reopen transitions safely', function () {
+        $closed = Ticket::factory()->create([
             'user_id' => $this->user->id,
             'workspace_id' => $this->workspace->id,
             'status' => 'closed',
         ]);
 
-        $response = $this->actingAs($this->user)->post("/settings/tickets/{$ticket->id}/close");
-
+        $response = $this->actingAs($this->user)->post("/settings/tickets/{$closed->id}/close");
         $response->assertRedirect();
         $response->assertSessionHasNoErrors();
-        $this->assertEquals(TicketStatus::Closed, $ticket->fresh()->status);
-    });
+        expect($closed->fresh()->status)->toBe(TicketStatus::Closed);
 
-    it('handles a no-op reopen on an already-open ticket without error', function () {
-        $ticket = Ticket::factory()->create([
+        $open = Ticket::factory()->create([
             'user_id' => $this->user->id,
             'workspace_id' => $this->workspace->id,
             'status' => 'open',
         ]);
 
-        $response = $this->actingAs($this->user)->post("/settings/tickets/{$ticket->id}/reopen");
-
+        $response = $this->actingAs($this->user)->post("/settings/tickets/{$open->id}/reopen");
         $response->assertRedirect();
         $response->assertSessionHasNoErrors();
-        $this->assertEquals(TicketStatus::Open, $ticket->fresh()->status);
+        expect($open->fresh()->status)->toBe(TicketStatus::Open);
     });
 });
 
