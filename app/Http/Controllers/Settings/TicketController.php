@@ -20,7 +20,9 @@ class TicketController extends Controller
     {
         $query = $request->user()->tickets()->withCount('replies');
 
-        if (is_string($request->status) && $status = TicketStatus::tryFrom($request->status)) {
+        $status = is_string($request->status) ? TicketStatus::tryFrom($request->status) : null;
+
+        if ($status) {
             $query->where('status', $status);
         }
 
@@ -32,7 +34,9 @@ class TicketController extends Controller
 
         return Inertia::render('settings/tickets/index', [
             'tickets' => $tickets,
-            'filters' => $request->only(['status']),
+            'filters' => [
+                'status' => $status?->value,
+            ],
         ]);
     }
 

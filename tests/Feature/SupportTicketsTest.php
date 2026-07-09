@@ -59,6 +59,7 @@ describe('User Ticket Portal', function () {
             ->has('tickets.data', 2)
             ->where('tickets.data.0.status', 'open')
             ->where('tickets.data.1.status', 'open')
+            ->where('filters.status', 'open')
         );
     });
 
@@ -80,6 +81,7 @@ describe('User Ticket Portal', function () {
         $response->assertInertia(fn ($page) => $page
             ->component('settings/tickets/index')
             ->has('tickets.data', 2)
+            ->where('filters.status', null)
         );
     });
 
