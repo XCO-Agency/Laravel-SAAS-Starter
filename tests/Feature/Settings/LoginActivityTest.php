@@ -58,6 +58,81 @@ describe('Login Activity Page', function () {
     });
 });
 
+describe('Login Activity Export', function () {
+    it('requires authentication to export', function () {
+        $this->get('/settings/login-history/export')
+            ->assertRedirect('/login');
+    });
+
+    it('exports login history with correct csv headers', function () {
+        LoginActivity::factory()->count(2)->create(['user_id' => $this->user->id]);
+
+        $response = $this->actingAs($this->user)
+            ->get('/settings/login-history/export');
+
+        $response->assertOk()
+            ->assertHeader('Content-Type', 'text/csv; charset=UTF-8');
+
+        $content = $response->streamedContent();
+        expect($content)->toContain('Date')
+            ->toContain('IP')
+            ->toContain('Device/User-Agent')
+            ->toContain('Location')
+            ->toContain('Status');
+    });
+
+    it('exports the user rows with device and success/failed status', function () {
+        LoginActivity::factory()->create([
+            'user_id' => $this->user->id,
+            'ip_address' => '203.0.113.10',
+        ]);
+        LoginActivity::factory()->failed()->create([
+            'user_id' => $this->user->id,
+            'ip_address' => '203.0.113.11',
+        ]);
+
+        $content = $this->actingAs($this->user)
+            ->get('/settings/login-history/export')
+            ->streamedContent();
+
+        expect($content)->toContain('203.0.113.10')
+            ->toContain('203.0.113.11')
+            ->toContain('Chrome on macOS')
+            ->toContain('Success')
+            ->toContain('Failed');
+    });
+
+    it('excludes other users rows from the export', function () {
+        LoginActivity::factory()->create([
+            'user_id' => $this->user->id,
+            'ip_address' => '198.51.100.5',
+        ]);
+        $otherUser = User::factory()->create();
+        LoginActivity::factory()->create([
+            'user_id' => $otherUser->id,
+            'ip_address' => '198.51.100.99',
+        ]);
+
+        $content = $this->actingAs($this->user)
+            ->get('/settings/login-history/export')
+            ->streamedContent();
+
+        expect($content)->toContain('198.51.100.5')
+            ->not->toContain('198.51.100.99');
+    });
+
+    it('exports csv with filename containing current date', function () {
+        $response = $this->actingAs($this->user)
+            ->get('/settings/login-history/export');
+
+        $response->assertOk();
+        $disposition = $response->headers->get('Content-Disposition');
+        expect($disposition)->toContain('login-history-');
+        expect($disposition)->toContain(now()->format('Y-m-d'));
+        expect($disposition)->toContain('.csv');
+    });
+});
+
 describe('Login Activity Model', function () {
     it('parses Chrome on macOS correctly', function () {
         $activity = LoginActivity::factory()->create([

@@ -1,9 +1,11 @@
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
 
+import { exportMethod } from '@/actions/App/Http/Controllers/Settings/LoginActivityController';
 import { HelpTooltip } from '@/components/help-tooltip';
 
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import {
     Card,
     CardContent,
@@ -15,7 +17,14 @@ import { useDateFormatter } from '@/hooks/use-date-formatter';
 import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import ProfileLayout from '@/layouts/settings/profile-layout';
-import { CheckCircle, Clock, Globe, Monitor, XCircle } from 'lucide-react';
+import {
+    CheckCircle,
+    Clock,
+    Download,
+    Globe,
+    Monitor,
+    XCircle,
+} from 'lucide-react';
 
 interface LoginActivityItem {
     id: number;
@@ -73,20 +82,30 @@ export default function LoginActivity({
             >
                 <Card>
                     <CardHeader>
-                        <CardTitle className="flex items-center gap-2">
-                            <Clock className="h-5 w-5" />
-                            {t(
-                                'login_history.recent_activity',
-                                'Recent Sign-in Activity',
-                            )}
-                            <HelpTooltip content="This log tracks every sign-in attempt to your account, including the IP address, device, and whether it was successful. Use this to detect unauthorized access." />
-                        </CardTitle>
-                        <CardDescription>
-                            {t(
-                                'login_history.recent_activity_description',
-                                'Your last 50 sign-in attempts are shown below.',
-                            )}
-                        </CardDescription>
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <CardTitle className="flex items-center gap-2">
+                                    <Clock className="h-5 w-5" />
+                                    {t(
+                                        'login_history.recent_activity',
+                                        'Recent Sign-in Activity',
+                                    )}
+                                    <HelpTooltip content="This log tracks every sign-in attempt to your account, including the IP address, device, and whether it was successful. Use this to detect unauthorized access." />
+                                </CardTitle>
+                                <CardDescription className="mt-1">
+                                    {t(
+                                        'login_history.recent_activity_description',
+                                        'Your last 50 sign-in attempts are shown below.',
+                                    )}
+                                </CardDescription>
+                            </div>
+                            <Button variant="outline" size="sm" asChild>
+                                <a href={exportMethod.url()}>
+                                    <Download className="mr-1.5 h-4 w-4" />
+                                    {t('login_history.export', 'Export CSV')}
+                                </a>
+                            </Button>
+                        </div>
                     </CardHeader>
                     <CardContent>
                         {activities.length === 0 ? (
