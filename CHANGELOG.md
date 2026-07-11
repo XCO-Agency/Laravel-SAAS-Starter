@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.1.5](https://github.com/XCO-Agency/Laravel-SAAS-Starter/compare/v0.1.4...v0.1.5) (2026-07-10)
+
+
+### Features
+
+* **settings:** add CSV export for user login history ([#101](https://github.com/XCO-Agency/Laravel-SAAS-Starter/pull/101))
+* **tickets:** add status filter to user support tickets index ([#111](https://github.com/XCO-Agency/Laravel-SAAS-Starter/pull/111))
+* **tickets:** add owner close/reopen actions for support tickets ([#112](https://github.com/XCO-Agency/Laravel-SAAS-Starter/pull/112))
+* **notifications:** add "Send test notification" button to notification settings ([#116](https://github.com/XCO-Agency/Laravel-SAAS-Starter/pull/116))
+
+
+### Bug Fixes
+
+* **ui:** standardize dark mode styling across pages and shared components ([#106](https://github.com/XCO-Agency/Laravel-SAAS-Starter/pull/106))
+* **ui:** fix dark-mode contrast by flipping light-only literals to semantic tokens ([#110](https://github.com/XCO-Agency/Laravel-SAAS-Starter/pull/110))
+
 ## [0.1.4](https://github.com/XCO-Agency/Laravel-SAAS-Starter/compare/v0.1.3...v0.1.4) (2026-07-04)
 
 
@@ -41,7 +57,7 @@
 * **docs:** update README and feature documentation; add global announcements, connected accounts, and workspace retention insights; remove user session management and update related links ([8b355ef](https://github.com/XCO-Agency/Laravel-SAAS-Starter/commit/8b355ef9710eea5b78a0fd51965d26061ac8626b))
 * enhance workspace security settings with allowed email domains restriction ([78c9ebe](https://github.com/XCO-Agency/Laravel-SAAS-Starter/commit/78c9ebe6869c77fc0bd86cd5f4a17df1902c0633))
 * implement weekly workspace activity digest notifications ([78c9ebe](https://github.com/XCO-Agency/Laravel-SAAS-Starter/commit/78c9ebe6869c77fc0bd86cd5f4a17df1902c0633))
-* **settings:** update security routes and components for two-factor authentication ([24d1c04](https://github.com/XCO-Agency/Laravel-SAAS-Starter/commit/24d1c04fd01b38143d31d556ed6ade935737239f))
+* **settings:** update security routes and components for two-factor authentication ([24d1c04](https://github.com/XCO-Agency/Laravel-SAAS-Starter/commit/24d1c04fd01b38143d31d556ade935737239f))
 
 
 ### Bug Fixes
