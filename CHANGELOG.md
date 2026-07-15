@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.6](https://github.com/XCO-Agency/Laravel-SAAS-Starter/compare/v0.1.5...v0.1.6) (2026-07-13)
+
+
+### Features
+
+* **tickets:** allow ticket owner to close and reopen their support ticket ([#108](https://github.com/XCO-Agency/Laravel-SAAS-Starter/pull/108))
+* **tickets:** add status filter tabs to the user-facing support tickets index ([#107](https://github.com/XCO-Agency/Laravel-SAAS-Starter/pull/107))
+
 ## [0.1.5](https://github.com/XCO-Agency/Laravel-SAAS-Starter/compare/v0.1.4...v0.1.5) (2026-07-10)
 
 
