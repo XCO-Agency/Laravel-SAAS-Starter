@@ -1,5 +1,54 @@
 # Changelog
 
+## [0.1.5](https://github.com/XCO-Agency/Laravel-SAAS-Starter/compare/v0.1.4...v0.1.5) (2026-07-15)
+
+
+### Features
+
+* add "Send test notification" button to notification settings ([9c6db59](https://github.com/XCO-Agency/Laravel-SAAS-Starter/commit/9c6db59f0aaedf4be112586c295f9de2d50737ca))
+* add app:version artisan command ([9924578](https://github.com/XCO-Agency/Laravel-SAAS-Starter/commit/99245787e4e30bcbb2da41eded5236357373695f))
+* add app:version artisan command, closes [#87](https://github.com/XCO-Agency/Laravel-SAAS-Starter/issues/87) ([059134b](https://github.com/XCO-Agency/Laravel-SAAS-Starter/commit/059134ba642749614ef53214d0497e704f28fcd8))
+* add owner close/reopen actions for support tickets, closes [#103](https://github.com/XCO-Agency/Laravel-SAAS-Starter/issues/103) ([3f592ac](https://github.com/XCO-Agency/Laravel-SAAS-Starter/commit/3f592ac5d5534b543ae9fba94360e3af63b3c632))
+* add resolve/unresolve to workspace comments, closes [#97](https://github.com/XCO-Agency/Laravel-SAAS-Starter/issues/97) ([8d7262f](https://github.com/XCO-Agency/Laravel-SAAS-Starter/commit/8d7262f08cc7fa98f00174fd197623cd34b075db))
+* add send test notification button to notification settings, closes [#113](https://github.com/XCO-Agency/Laravel-SAAS-Starter/issues/113) ([1f41dcd](https://github.com/XCO-Agency/Laravel-SAAS-Starter/commit/1f41dcda74118e3f6559a23c8e62879286ddb0c3))
+* **admin:** add average first-response time metric to dashboard, closes [#95](https://github.com/XCO-Agency/Laravel-SAAS-Starter/issues/95) ([d2f708a](https://github.com/XCO-Agency/Laravel-SAAS-Starter/commit/d2f708a697015f8164a124b0b4d3e7e9af638174))
+* **admin:** average first-response time metric on dashboard ([6bf2d20](https://github.com/XCO-Agency/Laravel-SAAS-Starter/commit/6bf2d20376e1c63bd58cb57b3582375310f69ba6))
+* allow ticket owner to close and reopen their support ticket ([d25048d](https://github.com/XCO-Agency/Laravel-SAAS-Starter/commit/d25048d2100ea41f70a332d5df867b833d417b90))
+* allow ticket owner to close and reopen their support ticket, closes [#103](https://github.com/XCO-Agency/Laravel-SAAS-Starter/issues/103) ([39e9e5e](https://github.com/XCO-Agency/Laravel-SAAS-Starter/commit/39e9e5e66f474963a372543b489c74b3a34b15f5))
+* owner close/reopen actions for support tickets ([9098fce](https://github.com/XCO-Agency/Laravel-SAAS-Starter/commit/9098fce793d18ca813a8b39485e9ba0a71a1ab5b))
+* render dates in user's saved timezone and date format ([521fc0e](https://github.com/XCO-Agency/Laravel-SAAS-Starter/commit/521fc0ea2703c7d97da355f92eed5fef34c26db1))
+* render dates in user's saved timezone and date format, closes [#85](https://github.com/XCO-Agency/Laravel-SAAS-Starter/issues/85) ([ca28695](https://github.com/XCO-Agency/Laravel-SAAS-Starter/commit/ca28695270788afecf6299835a2dba936f6a9901))
+* resolve/unresolve workspace comments ([#97](https://github.com/XCO-Agency/Laravel-SAAS-Starter/issues/97)) ([9b742e5](https://github.com/XCO-Agency/Laravel-SAAS-Starter/commit/9b742e5732b068c09b3a182a27fae6f26643f763))
+* **settings:** add CSV export for user login history ([4944c76](https://github.com/XCO-Agency/Laravel-SAAS-Starter/commit/4944c762d80601ea3a9e54dc6552f0bda00f6c9d))
+* **settings:** add CSV export for user login history, closes [#100](https://github.com/XCO-Agency/Laravel-SAAS-Starter/issues/100) ([df8491b](https://github.com/XCO-Agency/Laravel-SAAS-Starter/commit/df8491b6d1c5748372adc6080dedaab4769e4ece))
+* **tickets:** add status filter tabs to user support tickets index ([c1d9a0d](https://github.com/XCO-Agency/Laravel-SAAS-Starter/commit/c1d9a0d72e420ee88290b543e8a1b7c5d0930f89))
+* **tickets:** add status filter to user support tickets index ([b73d0cf](https://github.com/XCO-Agency/Laravel-SAAS-Starter/commit/b73d0cfaf451624a5dee421e3323a975d913c10e))
+* **tickets:** add status filter to user support tickets index, closes [#104](https://github.com/XCO-Agency/Laravel-SAAS-Starter/issues/104) ([b58c1ad](https://github.com/XCO-Agency/Laravel-SAAS-Starter/commit/b58c1adf717dbb27d1f94d98a998035e1bf92216))
+
+
+### Bug Fixes
+
+* add explicit return types and align rollup lockfile pin on [#112](https://github.com/XCO-Agency/Laravel-SAAS-Starter/issues/112) ([e5b0abc](https://github.com/XCO-Agency/Laravel-SAAS-Starter/commit/e5b0abc38b3f19de01f7d3cb9159b0a9292e61b5))
+* address review + CI on [#101](https://github.com/XCO-Agency/Laravel-SAAS-Starter/issues/101) ([f3c5661](https://github.com/XCO-Agency/Laravel-SAAS-Starter/commit/f3c56612545583b8a260f3c67e8c665a7e8e3298))
+* align rollup win32 lockfile specifier and use gap spacing on [#116](https://github.com/XCO-Agency/Laravel-SAAS-Starter/issues/116) ([b8ecae0](https://github.com/XCO-Agency/Laravel-SAAS-Starter/commit/b8ecae0eaf44258bee6b6c77c0d81c2cd815b0a5))
+* **deps:** align @rollup/rollup-win32-x64-msvc pin to 4.62.2 to match lockfile ([563e622](https://github.com/XCO-Agency/Laravel-SAAS-Starter/commit/563e622458a777873139672b9120990f4509f788))
+* guard admin ticket status filter against array input ([3420666](https://github.com/XCO-Agency/Laravel-SAAS-Starter/commit/34206660fe40c762e55bfff2de50d66b44dd0453))
+* honour user locale for date month names, address review on [#86](https://github.com/XCO-Agency/Laravel-SAAS-Starter/issues/86) ([e494e78](https://github.com/XCO-Agency/Laravel-SAAS-Starter/commit/e494e780212d8d02b9b26600babcec4eaed8501f))
+* mount sonner Toaster so close/reopen toasts render ([df5d40f](https://github.com/XCO-Agency/Laravel-SAAS-Starter/commit/df5d40fdce0af63f121990f72948f0af51e19ddd))
+* replace lucide-react brand icons removed in v1 ([8b92ac0](https://github.com/XCO-Agency/Laravel-SAAS-Starter/commit/8b92ac04437512d2153b1c4bf2ced3fd76be37f1))
+* sanitize ticket status filter and repair frozen-lockfile CI ([9aefc93](https://github.com/XCO-Agency/Laravel-SAAS-Starter/commit/9aefc933248a4765880e738670982669adf6105f))
+* **ui:** align rollup lockfile drift and finish dark-mode token standardization ([5d732f6](https://github.com/XCO-Agency/Laravel-SAAS-Starter/commit/5d732f61759943687041d18faadc3923bd771c52))
+* **ui:** dark-mode contrast — flip light-only literals to semantic tokens ([9193e5c](https://github.com/XCO-Agency/Laravel-SAAS-Starter/commit/9193e5ca83641f044fe2892c842d5c365e3d6155))
+* **ui:** flip light-only literals to semantic tokens for dark mode, closes [#105](https://github.com/XCO-Agency/Laravel-SAAS-Starter/issues/105) ([40fbe1a](https://github.com/XCO-Agency/Laravel-SAAS-Starter/commit/40fbe1abd3edad02d4bef8d3f1e0a08b48ba7dcb))
+* **ui:** flip light-only literals to semantic tokens for dark mode, closes [#105](https://github.com/XCO-Agency/Laravel-SAAS-Starter/issues/105) ([321faac](https://github.com/XCO-Agency/Laravel-SAAS-Starter/commit/321faac705587c54c5c1d14bf47483787788ef77))
+* **ui:** standardize dark mode styling across pages and shared components ([60d4295](https://github.com/XCO-Agency/Laravel-SAAS-Starter/commit/60d42959cc770681f6481c3fbb2849c7cd4f445e))
+* use Wayfinder for tickets filter URL and align rollup lockfile pin ([d8b749e](https://github.com/XCO-Agency/Laravel-SAAS-Starter/commit/d8b749e45feaf1b7f7d9849b8d19ae6058a5364d))
+
+
+### Performance Improvements
+
+* stream first-response average with a cursor to bound memory ([b0452fe](https://github.com/XCO-Agency/Laravel-SAAS-Starter/commit/b0452fe417980738587c369fa67760fa38a1e6c3))
+
 ## [0.1.6](https://github.com/XCO-Agency/Laravel-SAAS-Starter/compare/v0.1.5...v0.1.6) (2026-07-13)
 
 
