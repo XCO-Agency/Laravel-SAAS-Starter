@@ -45,6 +45,11 @@ class HandleInertiaRequests extends Middleware
         $user = $request->user();
         $currentWorkspace = $user?->currentWorkspace;
         $workspaces = [];
+
+        $showExperienceSurvey = $user
+            && $user->experience_feedback_at === null
+            && $user->created_at !== null
+            && $user->created_at->lte(now()->subDays((int) config('feedback.experience_survey_after_days')));
         // Locale is now handled by SetLocale middleware
         $locale = app()->getLocale();
 
@@ -90,6 +95,7 @@ class HandleInertiaRequests extends Middleware
                 ] : null,
                 'is_impersonating' => $request->session()->has('impersonated_by'),
             ],
+            'show_experience_survey' => $showExperienceSurvey,
             'locale' => $locale,
             'currentWorkspace' => $currentWorkspace ? [
                 'id' => $currentWorkspace->id,

@@ -30,6 +30,15 @@ it('casts metadata to array', function () {
     expect($feedback->metadata['screen'])->toBe('dashboard');
 });
 
+it('builds an experience survey response via the factory state', function () {
+    $feedback = Feedback::factory()->experience()->create();
+
+    expect($feedback->type)->toBe('experience')
+        ->and($feedback->metadata)->toBeArray()
+        ->and($feedback->metadata['rating'])->toBeGreaterThanOrEqual(1)
+        ->and($feedback->metadata['rating'])->toBeLessThanOrEqual(5);
+});
+
 it('has correct fillable attributes', function () {
     $feedback = new Feedback;
     expect($feedback->getFillable())->toContain(

@@ -23,4 +23,16 @@ class FeedbackFactory extends Factory
             'status' => $this->faker->randomElement(['new', 'reviewed', 'archived']),
         ];
     }
+
+    /**
+     * Indicate that the feedback is an experience-survey response.
+     */
+    public function experience(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'type' => 'experience',
+            'message' => $this->faker->optional()->sentence(12),
+            'metadata' => ['rating' => $this->faker->numberBetween(1, 5)],
+        ]);
+    }
 }

@@ -307,5 +307,14 @@
     "workspace.settings.save": "حفظ التغييرات",
     "workspace.settings.slug": "Slug مساحة العمل",
     "workspace.settings.title": "إعدادات مساحة العمل",
-    "workspace.settings.upload_logo": "تحميل الشعار"
+    "workspace.settings.upload_logo": "تحميل الشعار",
+    "feedback.experience.title": "كيف تجربتك حتى الآن؟",
+    "feedback.experience.description": "لقد مضى على انضمامك بضعة أيام. يسعدنا معرفة رأيك.",
+    "feedback.experience.message_label": "هل تود إضافة شيء؟ (اختياري)",
+    "feedback.experience.message_placeholder": "أخبرنا بما يعمل جيدًا أو ما يمكن تحسينه...",
+    "feedback.experience.star_label": "قيّم {{rating}} من 5",
+    "feedback.experience.skip": "ربما لاحقًا",
+    "feedback.experience.submit": "إرسال الملاحظات",
+    "feedback.experience.rating_required": "يرجى اختيار تقييم.",
+    "feedback.experience.error": "حدث خطأ ما. يرجى المحاولة مرة أخرى."
 }

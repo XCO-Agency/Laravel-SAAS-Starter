@@ -58,6 +58,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'onboarding_checklist_dismissed_at',
         'tour_completed_at',
         'changelog_read_at',
+        'experience_feedback_at',
         'password_updated_at',
         'last_seen_at',
     ];
@@ -100,6 +101,7 @@ class User extends Authenticatable implements MustVerifyEmail
             'onboarding_checklist_dismissed_at' => 'datetime',
             'tour_completed_at' => 'datetime',
             'changelog_read_at' => 'datetime',
+            'experience_feedback_at' => 'datetime',
             'password_updated_at' => 'datetime',
             'last_seen_at' => 'datetime',
         ];

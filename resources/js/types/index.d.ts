@@ -114,6 +114,7 @@ export interface SharedData {
     flash: Flash;
     locale?: string;
     features?: Record<string, boolean>;
+    show_experience_survey?: boolean;
     [key: string]: unknown;
 }
 

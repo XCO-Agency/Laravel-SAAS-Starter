@@ -307,5 +307,14 @@
     "workspace.settings.save": "Guardar Cambios",
     "workspace.settings.slug": "Slug del Espacio de Trabajo",
     "workspace.settings.title": "Configuración del Espacio de Trabajo",
-    "workspace.settings.upload_logo": "Subir Logo"
+    "workspace.settings.upload_logo": "Subir Logo",
+    "feedback.experience.title": "¿Qué te parece la experiencia hasta ahora?",
+    "feedback.experience.description": "Llevas unos días con nosotros. Nos encantaría saber cómo va.",
+    "feedback.experience.message_label": "¿Algo que quieras añadir? (opcional)",
+    "feedback.experience.message_placeholder": "Cuéntanos qué funciona bien o qué se podría mejorar...",
+    "feedback.experience.star_label": "Valorar {{rating}} de 5",
+    "feedback.experience.skip": "Quizás más tarde",
+    "feedback.experience.submit": "Enviar comentarios",
+    "feedback.experience.rating_required": "Selecciona una valoración.",
+    "feedback.experience.error": "Algo salió mal. Inténtalo de nuevo."
 }

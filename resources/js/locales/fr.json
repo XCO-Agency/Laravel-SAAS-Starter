@@ -307,5 +307,14 @@
     "workspace.settings.save": "Enregistrer les modifications",
     "workspace.settings.slug": "Slug de l'espace de travail",
     "workspace.settings.title": "Paramètres de l'espace de travail",
-    "workspace.settings.upload_logo": "Télécharger le logo"
+    "workspace.settings.upload_logo": "Télécharger le logo",
+    "feedback.experience.title": "Comment se passe votre expérience jusqu'ici ?",
+    "feedback.experience.description": "Vous êtes avec nous depuis quelques jours. Nous aimerions savoir comment cela se passe.",
+    "feedback.experience.message_label": "Quelque chose à ajouter ? (facultatif)",
+    "feedback.experience.message_placeholder": "Dites-nous ce qui fonctionne bien ou ce qui pourrait être amélioré...",
+    "feedback.experience.star_label": "Noter {{rating}} sur 5",
+    "feedback.experience.skip": "Plus tard",
+    "feedback.experience.submit": "Envoyer",
+    "feedback.experience.rating_required": "Veuillez sélectionner une note.",
+    "feedback.experience.error": "Une erreur est survenue. Veuillez réessayer."
 }
