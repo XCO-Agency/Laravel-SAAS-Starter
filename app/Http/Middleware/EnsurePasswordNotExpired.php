@@ -34,8 +34,9 @@ class EnsurePasswordNotExpired
         $lastUpdated = $user->password_updated_at ?? $user->created_at;
 
         if ($lastUpdated && $lastUpdated->diffInDays(now()) > $expiryDays) {
-            // Check if they are already on the password reset/confirm routes to prevent redirect loop
-            if ($request->routeIs('password.*')) {
+            // Allow the password reset/confirm routes, the redirect destination itself, and the
+            // routes needed to actually change the password, to avoid a redirect loop.
+            if ($request->routeIs('password.*', 'profile.edit', 'profile.update', 'user-password.update', 'security.authentication', 'logout')) {
                 return $next($request);
             }
 
