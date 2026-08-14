@@ -78,3 +78,41 @@ it('rejects a message that exceeds the maximum length', function () {
         ->assertUnprocessable()
         ->assertJsonValidationErrors(['message']);
 });
+
+it('rejects a second submission once the survey has been answered', function () {
+    $this->user->update(['experience_feedback_at' => now()]);
+
+    actingAs($this->user)
+        ->postJson('/experience-feedback', ['rating' => 2])
+        ->assertForbidden();
+
+    expect(Feedback::where('user_id', $this->user->id)->count())->toBe(0);
+});
+
+it('rejects a dismiss once the survey has already been answered', function () {
+    $answeredAt = now()->subDay();
+    $this->user->update(['experience_feedback_at' => $answeredAt]);
+
+    actingAs($this->user)
+        ->postJson('/experience-feedback/dismiss')
+        ->assertForbidden();
+
+    expect($this->user->fresh()->experience_feedback_at->timestamp)->toBe($answeredAt->timestamp);
+});
+
+it('stores a valid http referer as the page url', function () {
+    actingAs($this->user)
+        ->postJson('/experience-feedback', ['rating' => 4], ['Referer' => 'https://app.test/dashboard'])
+        ->assertRedirect();
+
+    expect(Feedback::where('user_id', $this->user->id)->value('page_url'))
+        ->toBe('https://app.test/dashboard');
+});
+
+it('does not store a non-http referer as the page url', function () {
+    actingAs($this->user)
+        ->postJson('/experience-feedback', ['rating' => 4], ['Referer' => 'javascript:alert(document.cookie)'])
+        ->assertRedirect();
+
+    expect(Feedback::where('user_id', $this->user->id)->value('page_url'))->toBeNull();
+});

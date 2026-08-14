@@ -46,10 +46,7 @@ class HandleInertiaRequests extends Middleware
         $currentWorkspace = $user?->currentWorkspace;
         $workspaces = [];
 
-        $showExperienceSurvey = $user
-            && $user->experience_feedback_at === null
-            && $user->created_at !== null
-            && $user->created_at->lte(now()->subDays((int) config('feedback.experience_survey_after_days')));
+        $showExperienceSurvey = (bool) $user?->qualifiesForExperienceSurvey();
         // Locale is now handled by SetLocale middleware
         $locale = app()->getLocale();
 

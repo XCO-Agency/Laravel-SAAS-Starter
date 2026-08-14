@@ -108,6 +108,20 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Determine whether the proactive experience survey should be offered to this user.
+     */
+    public function qualifiesForExperienceSurvey(): bool
+    {
+        if ($this->experience_feedback_at !== null || $this->created_at === null) {
+            return false;
+        }
+
+        $afterDays = max(0, (int) config('feedback.experience_survey_after_days'));
+
+        return $this->created_at->lte(now()->subDays($afterDays));
+    }
+
+    /**
      * Get all workspaces the user belongs to.
      */
     public function workspaces(): BelongsToMany

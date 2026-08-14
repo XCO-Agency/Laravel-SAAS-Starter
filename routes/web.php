@@ -322,8 +322,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.store');
 
     // Experience Survey (proactive, account-age gated)
-    Route::post('/experience-feedback', [ExperienceFeedbackController::class, 'store'])->name('experience-feedback.store');
-    Route::post('/experience-feedback/dismiss', [ExperienceFeedbackController::class, 'dismiss'])->name('experience-feedback.dismiss');
+    Route::post('/experience-feedback', [ExperienceFeedbackController::class, 'store'])->middleware('throttle:api')->name('experience-feedback.store');
+    Route::post('/experience-feedback/dismiss', [ExperienceFeedbackController::class, 'dismiss'])->middleware('throttle:api')->name('experience-feedback.dismiss');
 
     // Global Search
     Route::get('/api/search', [SearchController::class, 'index'])->name('search.index');

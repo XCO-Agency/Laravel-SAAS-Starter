@@ -286,17 +286,20 @@ export default function AdminFeedback({ feedback, filters, counts }: Props) {
                                                 {item.message}
                                             </p>
                                         )}
-                                        {item.page_url && (
-                                            <a
-                                                href={item.page_url}
-                                                target="_blank"
-                                                rel="noreferrer"
-                                                className="inline-flex items-center gap-1 text-[11px] text-muted-foreground transition hover:text-foreground"
-                                            >
-                                                <ExternalLink className="h-3 w-3" />
-                                                {item.page_url}
-                                            </a>
-                                        )}
+                                        {item.page_url &&
+                                            /^https?:\/\//i.test(
+                                                item.page_url,
+                                            ) && (
+                                                <a
+                                                    href={item.page_url}
+                                                    target="_blank"
+                                                    rel="noreferrer"
+                                                    className="inline-flex items-center gap-1 text-[11px] text-muted-foreground transition hover:text-foreground"
+                                                >
+                                                    <ExternalLink className="h-3 w-3" />
+                                                    {item.page_url}
+                                                </a>
+                                            )}
                                     </div>
                                     <div className="flex shrink-0 items-start gap-1">
                                         {item.status !== 'reviewed' && (
