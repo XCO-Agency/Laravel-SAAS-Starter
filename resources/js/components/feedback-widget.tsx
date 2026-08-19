@@ -95,7 +95,7 @@ export function FeedbackWidget() {
     };
 
     return (
-        <div className="fixed right-6 bottom-6 z-50" ref={panelRef}>
+        <div className="fixed inset-e-6 bottom-6 z-50" ref={panelRef}>
             {/* Panel */}
             {open && (
                 <div className="mb-3 w-80 overflow-hidden rounded-lg border bg-popover shadow-sm ring-1 ring-black/5 dark:ring-white/10">
