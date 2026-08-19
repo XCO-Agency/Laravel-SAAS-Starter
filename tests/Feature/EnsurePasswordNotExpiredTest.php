@@ -92,3 +92,50 @@ it('allows access to password reset routes even if expired', function () {
         ->assertOk()
         ->assertSee('password reset content');
 });
+
+it('does not redirect loop when visiting the profile page with an expired password', function () {
+    $user = User::factory()->create([
+        'password_updated_at' => now()->subDays(91),
+    ]);
+
+    $this->actingAs($user)
+        ->get(route('profile.edit'))
+        ->assertOk();
+});
+
+it('does not redirect loop when visiting the profile page with a null password_updated_at and expired created_at', function () {
+    $user = User::factory()->create([
+        'password_updated_at' => null,
+        'created_at' => now()->subDays(91),
+    ]);
+
+    $this->actingAs($user)
+        ->get(route('profile.edit'))
+        ->assertOk();
+});
+
+it('allows an expired user to reach the security authentication page', function () {
+    $user = User::factory()->create([
+        'password_updated_at' => now()->subDays(91),
+    ]);
+
+    $this->actingAs($user)
+        ->withSession(['auth.password_confirmed_at' => time()])
+        ->get(route('security.authentication'))
+        ->assertOk();
+});
+
+it('allows an expired user to submit the user-password.update endpoint', function () {
+    $user = User::factory()->create([
+        'password_updated_at' => now()->subDays(91),
+    ]);
+
+    $this->actingAs($user)
+        ->put(route('user-password.update'), [
+            'current_password' => 'password',
+            'password' => 'new-password',
+            'password_confirmation' => 'new-password',
+        ])
+        ->assertSessionDoesntHaveErrors(['current_password'])
+        ->assertRedirect();
+});
