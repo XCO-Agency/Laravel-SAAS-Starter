@@ -45,6 +45,8 @@ class HandleInertiaRequests extends Middleware
         $user = $request->user();
         $currentWorkspace = $user?->currentWorkspace;
         $workspaces = [];
+
+        $showExperienceSurvey = (bool) $user?->qualifiesForExperienceSurvey();
         // Locale is now handled by SetLocale middleware
         $locale = app()->getLocale();
 
@@ -90,6 +92,7 @@ class HandleInertiaRequests extends Middleware
                 ] : null,
                 'is_impersonating' => $request->session()->has('impersonated_by'),
             ],
+            'show_experience_survey' => $showExperienceSurvey,
             'locale' => $locale,
             'currentWorkspace' => $currentWorkspace ? [
                 'id' => $currentWorkspace->id,

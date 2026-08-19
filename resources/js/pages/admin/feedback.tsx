@@ -10,6 +10,7 @@ import {
     ExternalLink,
     Lightbulb,
     MessageCircle,
+    Star,
     Trash2,
 } from 'lucide-react';
 import { useState } from 'react';
@@ -27,11 +28,12 @@ interface FeedbackWorkspace {
 
 interface FeedbackItem {
     id: number;
-    type: 'bug' | 'idea' | 'general';
-    message: string;
+    type: 'bug' | 'idea' | 'general' | 'experience';
+    message: string | null;
     status: 'new' | 'reviewed' | 'archived';
     page_url: string | null;
     created_at: string;
+    metadata: { rating?: number } | null;
     user: FeedbackUser | null;
     workspace: FeedbackWorkspace | null;
 }
@@ -71,6 +73,12 @@ const TYPE_CONFIG = {
         icon: MessageCircle,
         color: 'text-blue-500',
         badge: 'outline' as const,
+    },
+    experience: {
+        label: 'Experience',
+        icon: Star,
+        color: 'text-amber-500',
+        badge: 'secondary' as const,
     },
 };
 
@@ -157,6 +165,7 @@ export default function AdminFeedback({ feedback, filters, counts }: Props) {
                         <option value="bug">🐛 Bug Reports</option>
                         <option value="idea">💡 Feature Ideas</option>
                         <option value="general">💬 General</option>
+                        <option value="experience">⭐ Experience</option>
                     </select>
                 </div>
 
@@ -247,20 +256,50 @@ export default function AdminFeedback({ feedback, filters, counts }: Props) {
                                                 ).toLocaleDateString()}
                                             </span>
                                         </div>
-                                        <p className="text-sm whitespace-pre-wrap">
-                                            {item.message}
-                                        </p>
-                                        {item.page_url && (
-                                            <a
-                                                href={item.page_url}
-                                                target="_blank"
-                                                rel="noreferrer"
-                                                className="inline-flex items-center gap-1 text-[11px] text-muted-foreground transition hover:text-foreground"
-                                            >
-                                                <ExternalLink className="h-3 w-3" />
-                                                {item.page_url}
-                                            </a>
+                                        {item.type === 'experience' &&
+                                            item.metadata?.rating != null && (
+                                                <div className="flex items-center gap-0.5">
+                                                    {[1, 2, 3, 4, 5].map(
+                                                        (value) => (
+                                                            <Star
+                                                                key={value}
+                                                                className={cn(
+                                                                    'h-4 w-4',
+                                                                    value <=
+                                                                        (item
+                                                                            .metadata
+                                                                            ?.rating ??
+                                                                            0)
+                                                                        ? 'fill-amber-400 text-amber-400'
+                                                                        : 'text-muted-foreground',
+                                                                )}
+                                                            />
+                                                        ),
+                                                    )}
+                                                    <span className="ml-1 text-xs text-muted-foreground">
+                                                        {item.metadata.rating}/5
+                                                    </span>
+                                                </div>
+                                            )}
+                                        {item.message && (
+                                            <p className="text-sm whitespace-pre-wrap">
+                                                {item.message}
+                                            </p>
                                         )}
+                                        {item.page_url &&
+                                            /^https?:\/\//i.test(
+                                                item.page_url,
+                                            ) && (
+                                                <a
+                                                    href={item.page_url}
+                                                    target="_blank"
+                                                    rel="noreferrer"
+                                                    className="inline-flex items-center gap-1 text-[11px] text-muted-foreground transition hover:text-foreground"
+                                                >
+                                                    <ExternalLink className="h-3 w-3" />
+                                                    {item.page_url}
+                                                </a>
+                                            )}
                                     </div>
                                     <div className="flex shrink-0 items-start gap-1">
                                         {item.status !== 'reviewed' && (

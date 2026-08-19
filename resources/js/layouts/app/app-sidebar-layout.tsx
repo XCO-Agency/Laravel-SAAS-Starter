@@ -3,6 +3,7 @@ import { AppContent } from '@/components/app-content';
 import { AppShell } from '@/components/app-shell';
 import { AppSidebar } from '@/components/app-sidebar';
 import { AppSidebarHeader } from '@/components/app-sidebar-header';
+import { ExperienceFeedbackModal } from '@/components/experience-feedback-modal';
 import { FeedbackWidget } from '@/components/feedback-widget';
 import { ImpersonationBanner } from '@/components/impersonation-banner';
 import { type BreadcrumbItem } from '@/types';
@@ -22,6 +23,7 @@ export default function AppSidebarLayout({
                 {children}
             </AppContent>
             <FeedbackWidget />
+            <ExperienceFeedbackModal />
         </AppShell>
     );
 }

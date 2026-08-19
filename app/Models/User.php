@@ -58,6 +58,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'onboarding_checklist_dismissed_at',
         'tour_completed_at',
         'changelog_read_at',
+        'experience_feedback_at',
         'password_updated_at',
         'last_seen_at',
     ];
@@ -100,9 +101,24 @@ class User extends Authenticatable implements MustVerifyEmail
             'onboarding_checklist_dismissed_at' => 'datetime',
             'tour_completed_at' => 'datetime',
             'changelog_read_at' => 'datetime',
+            'experience_feedback_at' => 'datetime',
             'password_updated_at' => 'datetime',
             'last_seen_at' => 'datetime',
         ];
+    }
+
+    /**
+     * Determine whether the proactive experience survey should be offered to this user.
+     */
+    public function qualifiesForExperienceSurvey(): bool
+    {
+        if ($this->experience_feedback_at !== null || $this->created_at === null) {
+            return false;
+        }
+
+        $afterDays = max(0, (int) config('feedback.experience_survey_after_days'));
+
+        return $this->created_at->lte(now()->subDays($afterDays));
     }
 
     /**

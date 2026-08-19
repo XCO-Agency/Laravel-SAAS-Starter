@@ -307,5 +307,14 @@
     "workspace.settings.save": "Save Changes",
     "workspace.settings.slug": "Workspace Slug",
     "workspace.settings.title": "Workspace Settings",
-    "workspace.settings.upload_logo": "Upload Logo"
+    "workspace.settings.upload_logo": "Upload Logo",
+    "feedback.experience.title": "How's your experience so far?",
+    "feedback.experience.description": "You've been with us for a few days. We'd love to hear how it's going.",
+    "feedback.experience.message_label": "Anything you'd like to add? (optional)",
+    "feedback.experience.message_placeholder": "Tell us what's working well or what could be better...",
+    "feedback.experience.star_label": "Rate {{rating}} out of 5",
+    "feedback.experience.skip": "Maybe later",
+    "feedback.experience.submit": "Send feedback",
+    "feedback.experience.rating_required": "Please select a rating.",
+    "feedback.experience.error": "Something went wrong. Please try again."
 }
