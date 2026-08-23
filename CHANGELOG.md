@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Bug Fixes
+
+* **rtl:** adjust feedback widget positioning styles ([#144](https://github.com/XCO-Agency/Laravel-SAAS-Starter/pull/144))
+
 ## [0.1.5](https://github.com/XCO-Agency/Laravel-SAAS-Starter/compare/v0.1.4...v0.1.5) (2026-08-19)
 
 
