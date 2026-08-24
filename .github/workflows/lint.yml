@@ -1,15 +1,8 @@
 name: linter
 
 on:
-  push:
-    branches:
-      - develop
-      - main
-  pull_request:
-    branches:
-      - develop
-      - main
-
+  # Manual only: trigger from the Actions tab (or `gh workflow run`).
+  workflow_dispatch:
 permissions:
   contents: read
 

@@ -1,17 +1,8 @@
 name: codeql
 
 on:
-  push:
-    branches:
-      - main
-      - develop
-  pull_request:
-    branches:
-      - main
-      - develop
-  schedule:
-    - cron: '35 2 * * 1'
-
+  # Manual only: trigger from the Actions tab (or `gh workflow run`).
+  workflow_dispatch:
 permissions:
   actions: read
   contents: read

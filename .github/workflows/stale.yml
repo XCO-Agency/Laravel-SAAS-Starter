@@ -1,8 +1,7 @@
 name: stale
 
 on:
-  schedule:
-    - cron: '0 4 * * 1'
+  # Manual only: trigger from the Actions tab (or `gh workflow run`).
   workflow_dispatch:
 
 permissions:
