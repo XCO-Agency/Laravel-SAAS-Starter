@@ -9,6 +9,7 @@
 [![Lint](https://github.com/XCO-Agency/Laravel-SAAS-Starter/actions/workflows/lint.yml/badge.svg)](https://github.com/XCO-Agency/Laravel-SAAS-Starter/actions/workflows/lint.yml)
 [![CodeQL](https://github.com/XCO-Agency/Laravel-SAAS-Starter/actions/workflows/codeql.yml/badge.svg)](https://github.com/XCO-Agency/Laravel-SAAS-Starter/actions/workflows/codeql.yml)
 [![Dependency Audit](https://github.com/XCO-Agency/Laravel-SAAS-Starter/actions/workflows/dependency-audit.yml/badge.svg)](https://github.com/XCO-Agency/Laravel-SAAS-Starter/actions/workflows/dependency-audit.yml)
+[![engineering momentum](https://signals.gitdealflow.com/api/badge/xco-agency)](https://signals.gitdealflow.com/startup/xco-agency)
 
 ## 🚀 Features
 
