@@ -1,0 +1,9 @@
+# pnpm 10 no longer reads the `pnpm` field in package.json — settings live here
+# instead. These overrides are security floors for transitive dependencies that
+# have no direct entry in package.json; without them pnpm is free to resolve a
+# vulnerable version again on the next lockfile change.
+overrides:
+  socket.io-parser: ">=4.2.6"
+  flatted: ">=3.4.2"
+  picomatch: ">=4.0.4"
+  brace-expansion: ">=1.1.13"
