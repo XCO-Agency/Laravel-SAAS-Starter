@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased (2026-08-31)
+
+### Documentation
+
+* add auto-updating engineering momentum badge to README ([#159](https://github.com/XCO-Agency/Laravel-SAAS-Starter/pull/159))
+
+### Bug Fixes
+
+* **deps:** clear security advisories failing the `audit` CI workflow ([#158](https://github.com/XCO-Agency/Laravel-SAAS-Starter/pull/158))
+
 ## [0.1.5](https://github.com/XCO-Agency/Laravel-SAAS-Starter/compare/v0.1.4...v0.1.5) (2026-08-19)
 
 
