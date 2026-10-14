@@ -141,13 +141,13 @@ export function LandingHero() {
 
                 {/* Hero preview card — clean dark product UI mock */}
                 <div className="relative mx-auto mt-12 max-w-5xl">
-                    <div className="overflow-hidden rounded-lg border bg-foreground shadow-xl">
+                    <div className="overflow-hidden rounded-lg border bg-slate-950 shadow-xl">
                         {/* Window chrome bar */}
-                        <div className="flex items-center gap-1.5 border-b border-white/10 bg-foreground px-4 py-3">
+                        <div className="flex items-center gap-1.5 border-b border-white/10 bg-slate-950 px-4 py-3">
                             <span className="h-3 w-3 rounded-full bg-red-500/70" />
                             <span className="h-3 w-3 rounded-full bg-yellow-500/70" />
                             <span className="h-3 w-3 rounded-full bg-green-500/70" />
-                            <div className="ml-4 flex-1 rounded bg-white/10 px-3 py-1 text-xs text-white/40">
+                            <div className="ml-4 flex-1 rounded bg-white/10 px-3 py-1 text-xs text-white/60">
                                 app.yoursaas.com/dashboard
                             </div>
                         </div>

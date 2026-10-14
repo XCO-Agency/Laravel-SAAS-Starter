@@ -60,7 +60,7 @@ export function WorkspaceSwitcher() {
                                 <span className="truncate font-semibold">
                                     {currentWorkspace.name}
                                 </span>
-                                <span className="truncate text-xs text-muted-foreground">
+                                <span className="truncate text-xs text-sidebar-foreground/70">
                                     {currentWorkspace.plan} Plan
                                 </span>
                             </div>

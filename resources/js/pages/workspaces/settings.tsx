@@ -35,8 +35,6 @@ import {
     Download,
     Key,
     Palette,
-    Plus,
-    Save,
     Users,
 } from 'lucide-react';
 import { useState } from 'react';
@@ -71,8 +69,6 @@ export default function WorkspaceSettings({
     userRole,
     stats,
     onboardingProgress,
-    tags = [],
-    customFields = [],
 }: WorkspaceSettingsProps) {
     const { t } = useTranslations();
     const { data, setData, errors, processing, isDirty } = useForm({
@@ -704,7 +700,7 @@ export default function WorkspaceSettings({
                     {isOwner && !workspace.personal_workspace && (
                         <Card className="border-destructive">
                             <CardHeader>
-                                <CardTitle className="flex items-center gap-2 text-destructive">
+                                <CardTitle className="flex items-center gap-2 text-destructive dark:text-red-400">
                                     <AlertTriangle className="h-5 w-5" />
                                     {t(
                                         'workspace.settings.danger_zone',
