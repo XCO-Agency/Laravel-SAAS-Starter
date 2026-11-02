@@ -44,7 +44,7 @@
         "sentry/sentry-laravel": "^4.20",
         "spatie/laravel-activitylog": "^4.12",
         "spatie/laravel-database-mail-templates": "^3.7",
-        "spatie/laravel-webhook-server": "^3.10"
+        "spatie/laravel-webhook-server": "^4.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
