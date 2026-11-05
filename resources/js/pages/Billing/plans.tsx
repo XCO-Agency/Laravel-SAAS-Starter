@@ -8,7 +8,6 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import { useToast } from '@/components/ui/toast';
 import { useTranslations } from '@/hooks/use-translations';
@@ -196,12 +195,13 @@ export default function PlansPage({
 
                     {/* Billing Period Toggle */}
                     <div className="animate-fade-in-up flex items-center justify-center gap-4">
-                        <Label
-                            htmlFor="billing-monthly"
-                            className={`cursor-pointer transition-colors duration-300 ${billingPeriod === 'monthly' ? 'font-bold text-foreground' : 'text-muted-foreground/60 hover:text-muted-foreground'}`}
+                        <button
+                            type="button"
+                            onClick={() => setBillingPeriod('monthly')}
+                            className={`cursor-pointer transition-colors duration-300 ${billingPeriod === 'monthly' ? 'font-bold text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
                         >
                             {t('billing.plans.monthly', 'Monthly')}
-                        </Label>
+                        </button>
                         <button
                             type="button"
                             role="switch"
@@ -227,9 +227,10 @@ export default function PlansPage({
                                 }`}
                             />
                         </button>
-                        <Label
-                            htmlFor="billing-yearly"
-                            className={`flex cursor-pointer items-center gap-2 transition-colors duration-300 ${billingPeriod === 'yearly' ? 'font-bold text-foreground' : 'text-muted-foreground/60 hover:text-muted-foreground'}`}
+                        <button
+                            type="button"
+                            onClick={() => setBillingPeriod('yearly')}
+                            className={`flex cursor-pointer items-center gap-2 transition-colors duration-300 ${billingPeriod === 'yearly' ? 'font-bold text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
                         >
                             Yearly
                             <Badge
@@ -238,7 +239,7 @@ export default function PlansPage({
                             >
                                 Save 17%
                             </Badge>
-                        </Label>
+                        </button>
                     </div>
 
                     {/* Plans Grid */}
@@ -260,7 +261,7 @@ export default function PlansPage({
                                     <div className="absolute -top-3 left-1/2 z-20 -translate-x-1/2">
                                         <Badge
                                             variant="default"
-                                            className="gap-1 bg-green-600 px-3 py-1 font-bold shadow-lg"
+                                            className="gap-1 bg-emerald-700 px-3 py-1 font-bold text-white shadow-lg dark:bg-emerald-400 dark:text-slate-950"
                                         >
                                             <Check className="h-3.5 w-3.5 stroke-[3]" />
                                             {t(
@@ -286,7 +287,7 @@ export default function PlansPage({
                                     <CardTitle className="text-2xl font-black tracking-tight">
                                         {plan.name}
                                     </CardTitle>
-                                    <CardDescription className="font-medium text-muted-foreground/80">
+                                    <CardDescription className="font-medium text-muted-foreground">
                                         {plan.description}
                                     </CardDescription>
                                     <div className="mt-6">

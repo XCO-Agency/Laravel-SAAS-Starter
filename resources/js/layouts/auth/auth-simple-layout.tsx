@@ -19,7 +19,7 @@ export default function AuthSimpleLayout({
 
     return (
         <div className="grid min-h-svh lg:grid-cols-2">
-            <div className="relative hidden flex-col justify-between overflow-hidden bg-foreground p-10 text-white lg:flex">
+            <div className="relative hidden flex-col justify-between overflow-hidden bg-slate-950 p-10 text-white lg:flex">
                 {/* Logo & Back Link */}
                 <div className="flex items-center justify-between">
                     <Link
@@ -29,7 +29,9 @@ export default function AuthSimpleLayout({
                         <div className="flex h-7 w-7 items-center justify-center rounded-sm bg-accent">
                             <Sparkles className="h-4 w-4 text-foreground" />
                         </div>
-                        <span className="text-base text-white">Laravel SAAS Starter</span>
+                        <span className="text-base text-white">
+                            Laravel SAAS Starter
+                        </span>
                     </Link>
                     <Link
                         href={home()}
@@ -49,7 +51,12 @@ export default function AuthSimpleLayout({
                                 'Launch Your SaaS',
                             )}
                             <br />
-                            <span className="text-accent">{t('auth.layout.hero.title_line2', '10x Faster')}</span>
+                            <span className="text-amber-400">
+                                {t(
+                                    'auth.layout.hero.title_line2',
+                                    '10x Faster',
+                                )}
+                            </span>
                         </h2>
                         <p className="text-lg text-white/50">
                             {t(
@@ -66,10 +73,10 @@ export default function AuthSimpleLayout({
                                 <Users className="h-5 w-5 text-white/70" />
                             </div>
                             <div>
-                                <div className="text-2xl font-bold tabular-nums text-white">
+                                <div className="text-2xl font-bold text-white tabular-nums">
                                     10,000+
                                 </div>
-                                <div className="text-sm text-white/40">
+                                <div className="text-sm text-white/70">
                                     {t(
                                         'auth.layout.stats.developers',
                                         'Developers',
@@ -82,8 +89,10 @@ export default function AuthSimpleLayout({
                                 <CheckCircle className="h-5 w-5 text-white/70" />
                             </div>
                             <div>
-                                <div className="text-2xl font-bold tabular-nums text-white">500+</div>
-                                <div className="text-sm text-white/40">
+                                <div className="text-2xl font-bold text-white tabular-nums">
+                                    500+
+                                </div>
+                                <div className="text-sm text-white/70">
                                     {t(
                                         'auth.layout.stats.apps_launched',
                                         'Apps Launched',
@@ -115,7 +124,7 @@ export default function AuthSimpleLayout({
                                         'Sarah Chen',
                                     )}
                                 </div>
-                                <div className="text-xs text-white/40">
+                                <div className="text-xs text-white/70">
                                     {t(
                                         'auth.layout.testimonial.role',
                                         'CTO at TechFlow',
@@ -127,7 +136,7 @@ export default function AuthSimpleLayout({
                 </div>
 
                 {/* Footer */}
-                <div className="text-xs text-white/30">
+                <div className="text-xs text-white/60">
                     © {new Date().getFullYear()}{' '}
                     {t(
                         'auth.layout.copyright',
