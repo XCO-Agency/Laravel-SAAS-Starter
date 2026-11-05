@@ -42,7 +42,7 @@
         "laravel/tinker": "^3.0",
         "laravel/wayfinder": "^0.1.9",
         "sentry/sentry-laravel": "^4.20",
-        "spatie/laravel-activitylog": "^4.12",
+        "spatie/laravel-activitylog": "^5.1",
         "spatie/laravel-database-mail-templates": "^3.7",
         "spatie/laravel-webhook-server": "^4.0"
     },
