@@ -212,8 +212,8 @@ importers:
         specifier: 4.62.2
         version: 4.62.2
       '@rollup/rollup-win32-x64-msvc':
-        specifier: 4.62.2
-        version: 4.62.2
+        specifier: 4.67.5
+        version: 4.67.5
       '@tailwindcss/oxide-linux-x64-gnu':
         specifier: ^4.3.2
         version: 4.3.2
@@ -1897,6 +1897,11 @@ packages:
 
   '@rollup/rollup-win32-x64-msvc@4.62.2':
     resolution: {integrity: sha512-BfzEnDJOt9T8M989/lA37EcJgat01wLRnoi5dQf3QzOH7jzpqTAzdDbVfRljVr5r+jzKqpbHeyOfAaXxAd0PAA==}
+    cpu: [x64]
+    os: [win32]
+
+  '@rollup/rollup-win32-x64-msvc@4.67.5':
+    resolution: {integrity: sha512-Khj/vrKCpdbiAWYbJAeSy4D5iep+qwW/86lNoKvdleJYGxgbRE7h87+5d5T9D7gt8NcqhNFpreRgIg8T4bLzKQ==}
     cpu: [x64]
     os: [win32]
 
@@ -5540,6 +5545,9 @@ snapshots:
     optional: true
 
   '@rollup/rollup-win32-x64-msvc@4.62.2':
+    optional: true
+
+  '@rollup/rollup-win32-x64-msvc@4.67.5':
     optional: true
 
   '@sentry/babel-plugin-component-annotate@5.3.0': {}
