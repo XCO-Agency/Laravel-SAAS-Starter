@@ -1,8 +1,17 @@
 # Project Documentation
 
-Welcome to the documentation for the Laravel SaaS Starter kit.
+Guides for running this repository, then notes for each feature that has a page under `docs/features/`.
 
-This repository contains comprehensive documentation for the architecture, features, and core functionality of the platform.
+The locked stack is PHP 8.4, Laravel 13.40.0, Inertia Laravel 3.1.1 and Inertia React 3.7.0, React 19.2.7, and Tailwind CSS 4.3.2. See the table in the [README](../README.md). Older pages that say Laravel 12 or Inertia v2 are out of date.
+
+## Run and deploy
+
+- [Getting started](./getting-started.md) — local boot and turning the kit into a product
+- [Environment variables](./environment.md) — every `.env.example` name, plus keys the config reads
+- [Queues and scheduler](./queues-and-scheduler.md)
+- [Docker](./docker.md)
+- [Coolify](./deploy-coolify.md)
+- [Tests](./testing.md)
 
 ## Features Index
 
@@ -75,14 +84,11 @@ This repository contains comprehensive documentation for the architecture, featu
 - [Activity Reactions](./features/activity-reactions.md)
 - [Billing History](./features/billing-history.md)
 - [Cancellation Flow](./features/cancellation-flow.md)
-- [Custom Fields](./features/custom-fields.md)
 - [Plan Comparison](./features/plan-comparison.md)
 - [Public Status Page](./features/public-status-page.md)
 - [User API Keys](./features/user-api-keys.md)
 - [Workspace Announcements](./features/workspace-announcements.md)
 - [Workspace Comments](./features/workspace-comments.md)
-- [Workspace Tags](./features/workspace-tags.md)
-- [Workspace Templates](./features/workspace-templates.md)
 - [Connected Accounts](./features/connected-accounts.md)
 - [Workspace Retention Insights](./features/workspace-retention-insights.md)
 
@@ -92,7 +98,7 @@ This repository contains comprehensive documentation for the architecture, featu
 
 ### Tech Stack
 
-- Frontend: React 19, Inertia v2, Tailwind CSS v4, shadcn/ui
-- Backend: Laravel 12, standard PHP 8.4 typing
-- Database: SQLite (default), MySQL, PostgreSQL compatible
-- Testing: Pest (Feature & Browser Testing)
+- Frontend: React 19.2, Inertia React 3, Tailwind CSS 4, shadcn/ui
+- Backend: Laravel 13, PHP 8.4
+- Database: SQLite by default; MySQL, MariaDB, and PostgreSQL connections are in `config/database.php`
+- Testing: Pest 4 feature and unit tests (`tests/Feature`, `tests/Unit`). No browser suite is checked in.

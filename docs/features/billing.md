@@ -6,7 +6,7 @@ Billing is tightly integrated at the **Workspace** level (not the User level). E
 
 ## Core Features
 
-- **Pricing Tiers**: Multiple plans (e.g., Basic, Pro, Enterprise) configurable via Stripe.
+- **Pricing Tiers**: `free`, `pro`, and `business` in `config/billing.php`. Paid plans use Stripe price ids from the environment.
 - **Checkout Flow**: Seamless Stripe Checkout integration for new subscriptions.
 - **Billing Portal**: Secure, Stripe-hosted customer portal for updating payment methods, downloading past invoices, and canceling subscriptions.
 - **Trial Periods**: Optional free trials before a card is charged.
@@ -17,7 +17,7 @@ Billing is tightly integrated at the **Workspace** level (not the User level). E
 - **Backend Model:** The `Workspace` model uses the `Laravel\Cashier\Billable` trait. Cashier has been configured in `AppServiceProvider` to use `Workspace::class` as the customer model instead of `User::class`.
 - **Database Tables:** Cashier migrations install `subscriptions` and `subscription_items` tables linked to the `workspaces` table via Stripe IDs.
 - **Webhooks:** Stripe webhooks (`/stripe/webhook`) automatically keep local database subscription statuses synchronized with Stripe.
-- **Frontend:** Billing plans and current subscription status are displayed on the `settings/billing` and `settings/workspace/plans` pages.
+- **Frontend:** Inertia pages `Billing/index`, `Billing/plans`, `Billing/compare`, and `Billing/history` (`resources/js/pages/Billing/`). Routes are under `/billing`.
 
 ## Billing Gates & Access Control
 

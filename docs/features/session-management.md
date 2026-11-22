@@ -17,12 +17,12 @@ The session management page displays all active browser sessions with device inf
 
 ### Frontend
 
-- **Page:** `resources/js/Pages/settings/sessions.tsx`
+- **Page:** `resources/js/pages/settings/sessions.tsx`
   - Device icons (desktop/mobile/tablet)
   - "This device" badge on current session
   - Password confirmation dialogs for revocation
 
 ### Requirements
 
-- Session driver must be set to `database` (`SESSION_DRIVER=database` in `.env`)
-- The `sessions` database table must exist (included by default in Laravel 12)
+- `SESSION_DRIVER` must be the database driver
+- The `sessions` table must exist (the default Laravel session migration ships with this app)
