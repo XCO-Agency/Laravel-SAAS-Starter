@@ -1,0 +1,16 @@
+{
+  "extraKnownMarketplaces": {
+    "xco-tools": {
+      "source": { "source": "github", "repo": "XCO-Agency/ai-config" }
+    },
+    "laravel": {
+      "source": { "source": "github", "repo": "laravel/claude-code" }
+    }
+  },
+  "enabledPlugins": {
+    "xco-common@xco-tools": true,
+    "xco-laravel@xco-tools": true,
+    "laravel@laravel": true,
+    "shopify-ai-toolkit@claude-plugins-official": true
+  }
+}
