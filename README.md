@@ -1,286 +1,116 @@
-# Laravel SAAS Starter
+# Laravel SaaS Starter
 
-> A production-ready Laravel SaaS starter kit with authentication, billing, teams, and everything you need to launch faster.
+Production starter for a multi-tenant SaaS product: workspace teams, Stripe billing, an admin panel, and a React UI served by Inertia. Built by [XCO Agency](https://xco.agency).
 
-**Built by [XCO Agency](https://xco.agency)**
-
-[![DigitalOcean Referral Badge](https://web-platforms.sfo2.cdn.digitaloceanspaces.com/WWW/Badge%201.svg)](https://www.digitalocean.com/?refcode=9d9a85ad18a3&utm_campaign=Referral_Invite&utm_medium=Referral_Program&utm_source=badge)
 [![Tests](https://github.com/XCO-Agency/Laravel-SAAS-Starter/actions/workflows/tests.yml/badge.svg)](https://github.com/XCO-Agency/Laravel-SAAS-Starter/actions/workflows/tests.yml)
 [![Lint](https://github.com/XCO-Agency/Laravel-SAAS-Starter/actions/workflows/lint.yml/badge.svg)](https://github.com/XCO-Agency/Laravel-SAAS-Starter/actions/workflows/lint.yml)
 [![CodeQL](https://github.com/XCO-Agency/Laravel-SAAS-Starter/actions/workflows/codeql.yml/badge.svg)](https://github.com/XCO-Agency/Laravel-SAAS-Starter/actions/workflows/codeql.yml)
 [![Dependency Audit](https://github.com/XCO-Agency/Laravel-SAAS-Starter/actions/workflows/dependency-audit.yml/badge.svg)](https://github.com/XCO-Agency/Laravel-SAAS-Starter/actions/workflows/dependency-audit.yml)
-[![engineering momentum](https://signals.gitdealflow.com/api/badge/xco-agency)](https://signals.gitdealflow.com/startup/xco-agency)
 
-## 🚀 Features
+## What you get
 
-- **🔐 Authentication & Security** - Complete system with standard login, 2FA, password resets, profile management, and verified domains.
-- **🏢 Multi-tenant Workspaces** - Seamless workspace management allowing users to operate within parallel organizational structures.
-- **👥 Team Management** - Robust invitation system with granular workspace-level roles (Owner, Admin, Member).
-- **💳 Stripe Billing** - Integrated Laravel Cashier handles subscription provisioning, secure customer portals, and dynamic pricing tiers per workspace.
-- **👑 Advanced Admin Panel** - Global super-admin dashboard for user impersonation, cross-workspace monitoring, and central operations.
-- **🎉 Announcements System** - Global notification broadcasts with colored typings, dynamic scheduling, and dismissible states.
-- **🚩 Feature Flags (Pennant)** - Database-driven feature flagging with targeted, workspace-specific rollout mechanisms.
-- **📜 System Audit Logs** - Complete change history and system-wide visibility via Spatie Activitylog tracking.
-- **🌙 Elegant UI Components** - Beautiful React 19 light/dark themes powered by Shadcn/UI and smooth Tailwind CSS v4 styling.
-- **🏷️ Custom Fields & Tags** - Extensible workspace metadata with custom field definitions, tagging system, and color-coded labels.
-- **📋 Workspace Templates** - Save and reuse workspace configurations for rapid setup of new workspaces.
-- **💬 Workspace Comments & Announcements** - Collaborative commenting on activities and internal workspace announcements.
-- **⚡ Modern Architecture** - Laravel 12 + Inertia.js v2, strictly typed via Pest tests (1,400+ tests out-of-the-box).
+- **Authentication (Fortify).** Registration, login, email verification, password reset, and confirmed TOTP two-factor authentication. Views are Inertia pages registered in `app/Providers/FortifyServiceProvider.php`. GitHub and Google login go through Socialite (`app/Http/Controllers/Auth/SocialiteController.php`).
+- **Workspaces.** Users belong to one or more workspaces. Roles on the pivot are owner, admin, and member, with optional extra permissions. Middleware in `bootstrap/app.php` scopes access (`workspace`, `workspace.admin`, `workspace.owner`).
+- **Billing (Cashier).** `Workspace` is the Cashier billable model (`Cashier::useCustomerModel(Workspace::class)`). Plans are `free`, `pro`, and `business` in `config/billing.php`. Checkout, the customer portal, and invoices live under `/billing`. Stripe posts to `POST /stripe/webhook` (`App\Http\Controllers\StripeWebhookController`, CSRF excluded for `stripe/*`).
+- **Laravel AI.** `laravel/ai` is installed. Providers are configured in `config/ai.php` (default text provider `openai`). The package migration `create_agent_conversations_table` is present. There is no application agent class under `app/`.
+- **Laravel MCP.** `laravel/mcp` is installed. `routes/ai.php` contains a commented `Mcp::web()` registration and there is no `app/Mcp` server. Nothing is exposed until you register one.
+- **Octane.** The Docker image runs FrankenPHP through `php artisan octane:frankenphp` (`OCTANE_SERVER` defaults to `frankenphp` in `config/octane.php`). Local `composer run dev` uses `php artisan serve`, not Octane.
+- **Inertia.** Server routes return `Inertia::render()`. The client is React 19 with Inertia React 3, Tailwind CSS 4, and Wayfinder-generated route helpers.
+- **Also included.** Pennant feature flags, Sanctum personal access tokens, workspace API keys, Scout search on `Workspace` (default driver `collection`), Reverb broadcasting, Spatie activity log, webhook delivery, database mail templates, Sentry, and a super-admin area.
 
-## 📋 Requirements
+Feature notes are indexed in [docs/README.md](docs/README.md).
 
-- PHP 8.4 or higher
-- Composer
-- Node.js 22+ and npm/pnpm
-- SQLite, MySQL, or PostgreSQL
-- Stripe account (for billing features)
+## Stack
 
-## 🛠️ Installation
+Versions below are the ones locked in `composer.lock` and `pnpm-lock.yaml` on this branch. Constraints live in `composer.json` and `package.json`.
 
-1. **Clone the repository**
+| Piece | Locked version |
+| --- | --- |
+| PHP | `^8.4` (CI uses 8.4) |
+| laravel/framework | 13.40.0 |
+| inertiajs/inertia-laravel | 3.1.1 |
+| @inertiajs/react | 3.7.0 |
+| react / react-dom | 19.2.7 |
+| tailwindcss | 4.3.2 |
+| vite | 8.1.3 |
+| typescript | 6.0.3 |
+| laravel/fortify | 1.37.2 |
+| laravel/cashier | 16.9.0 |
+| laravel/ai | 0.8.1 |
+| laravel/mcp | 0.8.2 |
+| laravel/octane | 2.22.0 |
+| laravel/pennant | 1.26.0 |
+| laravel/reverb | 1.10.2 |
+| laravel/sanctum | 4.3.2 |
+| laravel/scout | 11.9.0 |
+| laravel/socialite | 5.28.0 |
+| laravel/wayfinder | 0.1.20 |
+| sentry/sentry-laravel | 4.26.0 |
+| spatie/laravel-activitylog | 5.1.3 |
+| spatie/laravel-database-mail-templates | 3.7.2 |
+| spatie/laravel-webhook-server | 4.0.0 |
+| pestphp/pest | 4.7.4 |
+| phpunit/phpunit | 12.5.30 |
+| eslint | 9.39.4 |
+| prettier | 3.9.4 |
+| pnpm | 10.33.0 (`packageManager`) |
 
-   ```bash
-   git clone https://github.com/xco-agency/laravel-saas-starter.git
-   cd laravel-saas-starter
-   ```
+Node in GitHub Actions is 22. The Dockerfile installs Node from NodeSource’s current LTS setup script and does not pin a version.
 
-2. **Install PHP dependencies**
+## Start a new product
 
-   ```bash
-   composer install
-   ```
+1. Clone this repository (or create a new repo from it) and pick your own remote. The Composer package name is `xco-agency/laravel-saas-starter`.
+2. Set `APP_NAME` and `APP_URL`. Replace public copy, the landing page, and mail “from” identity with the product’s own.
+3. Put Stripe price ids in the billing env vars (see [docs/environment.md](docs/environment.md)) or edit the plan catalog in `config/billing.php`.
+4. Add OAuth client ids only if you ship GitHub or Google login.
+5. Add an AI provider key only if you build on `laravel/ai`. Register an MCP server in `routes/ai.php` only if you want one.
+6. Do not run `DatabaseSeeder` on a production database. It fills the app with demo users, workspaces, and related rows.
 
-3. **Install JavaScript dependencies**
+Local commands, queues, Docker, and Coolify are in `docs/`.
 
-   ```bash
-   npm install
-   # or
-   pnpm install
-   ```
+## Local setup
 
-4. **Set up environment**
-
-   ```bash
-   cp .env.example .env
-   php artisan key:generate
-   ```
-
-5. **Configure your `.env` file**
-
-   ```env
-   APP_NAME="Laravel SAAS Starter"
-   APP_URL=http://localhost:8000
-   
-   DB_CONNECTION=sqlite
-   # or use MySQL/PostgreSQL
-   # DB_CONNECTION=mysql
-   # DB_HOST=127.0.0.1
-   # DB_PORT=3306
-   # DB_DATABASE=your_database
-   # DB_USERNAME=your_username
-   # DB_PASSWORD=your_password
-   
-   # Stripe Configuration (required for billing)
-   STRIPE_KEY=your_stripe_key
-   STRIPE_SECRET=your_stripe_secret
-   STRIPE_WEBHOOK_SECRET=your_webhook_secret
-   ```
-
-6. **Run migrations**
-
-   ```bash
-   php artisan migrate
-   ```
-
-7. **Build frontend assets**
-
-   ```bash
-   npm run build
-   # or
-   pnpm build
-   ```
-
-8. **Start the development server**
-
-   ```bash
-   composer run dev
-   # or separately:
-   php artisan serve
-   npm run dev
-   ```
-
-## 🎯 Quick Start
-
-After installation, you can:
-
-1. Visit `http://localhost:8000` to see the landing page
-2. Register a new account
-3. Create your first workspace
-4. Invite team members
-5. Set up billing with Stripe
-
-## 🧪 Testing
-
-Run the test suite using Pest:
+Requirements: PHP 8.4, Composer 2, Node.js 22, pnpm 10.33, and a database. SQLite is the default. MySQL and PostgreSQL work if you set `DB_CONNECTION` and the matching host settings. Billing needs a Stripe account. Realtime needs Reverb’s app id, key, and secret.
 
 ```bash
-php artisan test
+git clone https://github.com/xco-agency/laravel-saas-starter.git
+cd laravel-saas-starter
+composer install
+pnpm install
+cp .env.example .env
+php artisan key:generate
+touch database/database.sqlite
+php artisan migrate
+pnpm run build
+composer run dev
 ```
 
-Run specific test files:
+`composer run dev` starts the HTTP server, a queue listener, Pail, Vite, and Reverb together. The app is served at the host and port in `APP_URL` (the example file uses localhost). `composer run setup` is similar but calls `npm install` and `npm run build` instead of pnpm.
+
+Optional demo data: `php artisan db:seed`. The seeder creates `admin@example.com`, `demo@example.com`, and a super-admin at `superadmin@example.com`. The password is the one written in `database/seeders/DatabaseSeeder.php`.
+
+Every variable is listed, by name only, in [docs/environment.md](docs/environment.md). Further detail: [docs/getting-started.md](docs/getting-started.md).
+
+## Operate it
+
+| Topic | Guide |
+| --- | --- |
+| Queues and the scheduler | [docs/queues-and-scheduler.md](docs/queues-and-scheduler.md) |
+| Docker image | [docs/docker.md](docs/docker.md) |
+| Coolify | [docs/deploy-coolify.md](docs/deploy-coolify.md) |
+| Tests | [docs/testing.md](docs/testing.md) |
+
+## Tests and CI
 
 ```bash
-php artisan test tests/Feature/Auth/LoginTest.php
+php artisan test --compact
+php artisan test --compact tests/Feature/Auth/AuthenticationTest.php
 ```
 
-## 📚 Tech Stack
+Pest feature tests use an in-memory SQLite database (`phpunit.xml`). The suite is about 1,470 cases under `tests/Feature` and `tests/Unit`. There is no `tests/Browser` directory.
 
-- **Backend**: Laravel 12
-- **Frontend**: React 19 with Inertia.js v2
-- **Styling**: Tailwind CSS v4
-- **Authentication**: Laravel Fortify
-- **Billing**: Laravel Cashier (Stripe)
-- **Testing**: Pest PHP v4
-- **Activity Tracking**: Spatie Activitylog
-- **Feature Flags**: Laravel Pennant
-- **Code Quality**: Laravel Pint, Prettier, ESLint
+Workflows in `.github/workflows/` (`tests.yml`, `lint.yml`, `dependency-audit.yml`, `codeql.yml`, `release.yml`, `stale.yml`) run only on `workflow_dispatch`. Tests and lint use PHP 8.4, pnpm, and Node 22. CodeQL’s matrix language is `javascript-typescript` only.
 
-## 📚 Deep Documentation
+## License
 
-For a comprehensive review of the project's internal architecture, component strategies, and feature usage instructions, **explore the dedicated [`/docs`](./docs/README.md) folder:**
-
-**Core**
-[Authentication](./docs/features/authentication.md) | [Workspaces](./docs/features/workspaces.md) | [Team Management](./docs/features/team-management.md) | [Session Management](./docs/features/session-management.md)
-
-**Billing & Usage**
-[Billing](./docs/features/billing.md) | [Seat-Based Billing](./docs/features/seat-billing.md) | [Usage Dashboard](./docs/features/usage-dashboard.md) | [Plan Comparison](./docs/features/plan-comparison.md) | [Billing History](./docs/features/billing-history.md) | [Cancellation Flow](./docs/features/cancellation-flow.md)
-
-**Admin**
-[Admin Panel](./docs/features/admin-panel.md) | [Impersonation](./docs/features/impersonation.md) | [System Health](./docs/features/system-health.md) | [Scheduled Tasks](./docs/features/scheduled-tasks.md) | [Data Retention](./docs/features/data-retention.md) | [SEO Management](./docs/features/seo-management.md)
-
-**Platform Features**
-[Global Announcements](./docs/features/global-announcements.md) | [Feature Flags](./docs/features/feature-flags.md) | [Audit Logs](./docs/features/audit-logs.md) | [Changelog](./docs/features/changelog.md) | [Email Templates](./docs/features/email-templates.md) | [Webhooks](./docs/features/webhooks.md) | [Real-time Notifications](./docs/features/real-time-notifications.md) | [Feedback](./docs/features/feedback.md) | [Onboarding Checklist](./docs/features/onboarding-checklist.md) | [Advanced Search](./docs/features/advanced-search.md) | [Custom Fields](./docs/features/custom-fields.md) | [Workspace Tags](./docs/features/workspace-tags.md) | [Workspace Templates](./docs/features/workspace-templates.md) | [Workspace Comments](./docs/features/workspace-comments.md) | [Workspace Announcements](./docs/features/workspace-announcements.md) | [Activity Reactions](./docs/features/activity-reactions.md) | [Public Status Page](./docs/features/public-status-page.md)
-
-**Security & Compliance**
-[2FA Enforcement](./docs/features/2fa-enforcement.md) | [GDPR Data Export](./docs/features/gdpr-data-export.md) | [Account Deletion](./docs/features/account-deletion.md) | [Security](./docs/features/security.md) | [Connected Accounts](./docs/features/connected-accounts.md)
-
-**API & Integrations**
-[Workspace API Keys](./docs/features/workspace-api-keys.md) | [API Authentication](./docs/features/api-authentication.md) | [API Documentation](./docs/features/api-documentation.md) | [API Usage Dashboard](./docs/features/api-usage-dashboard.md)
-
-**Frontend**
-[Internationalization](./docs/features/internationalization.md) | [UI & Theming](./docs/features/ui-and-theming.md)
-
-## 🏗️ Project Structure
-
-```text
-├── app/
-│   ├── Http/Controllers/  # Standard and Admin-specific controllers
-│   ├── Models/            # Global Eloquent structures
-│   └── Providers/         # Extensible application services (Pennant configs etc)
-├── database/              # Robust migrations, factories and hydration seeders
-├── docs/                  # In-depth architectural feature documentation!
-├── resources/
-│   ├── js/
-│   │   ├── components/    # Reusable shadcn/ui & generic ui components
-│   │   ├── layouts/       # Strict domain boundaries (admin vs customer ui)
-│   │   └── pages/         # Inertia frontend pages
-└── tests/                 # Standardized Pest tests (1,400+ available)
-```
-
-## 🔧 Configuration
-
-### Workspace Management
-
-Workspaces are multi-tenant organizations. Users can:
-
-- Create multiple workspaces
-- Switch between workspaces
-- Invite team members to workspaces
-- Assign roles (owner, admin, member)
-
-### Billing
-
-Configure Stripe in your `.env` file. The application supports:
-
-- Subscription management
-- Multiple pricing tiers
-- Billing portal access
-- Webhook handling
-
-#### Stripe Webhooks
-
-**Endpoint:** `/stripe/webhook`
-
-**Required Events:**
-
-- `customer.subscription.created`
-- `customer.subscription.updated`
-- `customer.subscription.deleted`
-- `invoice.payment_succeeded`
-- `invoice.payment_failed`
-- `invoice.payment_action_required`
-
-### Internationalization
-
-Add new languages by:
-
-1. Creating translation files in `resources/js/locales/`
-2. Adding the locale to your configuration
-3. Updating the language selector component
-
-## 🔄 CI/CD & Security
-
-### GitHub Actions Workflows
-
-- `tests.yml`: runs Pest test suite on PHP 8.2, 8.3, and 8.4
-- `lint.yml`: runs Laravel Pint, Prettier check, and ESLint
-- `dependency-audit.yml`: runs `composer audit` and `npm audit --audit-level=high`
-- `codeql.yml`: performs CodeQL static analysis for PHP and JavaScript/TypeScript
-- `release.yml`: runs release-please for automated releases
-- `stale.yml`: marks and closes inactive issues/PRs
-
-### Running Workflows Locally with act
-
-1. Install `act` and Docker.
-2. Create `.actrc` for Apple Silicon compatibility:
-
-```text
--P ubuntu-latest=catthehacker/ubuntu:act-latest
---container-architecture linux/amd64
---env PATH=/opt/acttoolcache/node/24.14.0/x64/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-```
-
-3. Run workflows:
-
-```bash
-act push -j quality -W .github/workflows/lint.yml
-act push -j audit -W .github/workflows/dependency-audit.yml
-act push -j ci -W .github/workflows/tests.yml --matrix php-version:8.4
-```
-
-### Notes for Local act Runs
-
-- `release.yml` and `stale.yml` require `GITHUB_TOKEN`.
-- `codeql.yml` should be validated on GitHub-hosted runners because it needs `security-events: write` permissions.
-- `dependency-audit.yml` currently fails because of npm advisories in the lockfile.
-- `tests.yml` may produce `419` CSRF responses under `act` despite passing on GitHub-hosted runners.
-
-## 🤝 Contributing
-
-We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
-
-## 📝 License
-
-This project is open-sourced software licensed under the [MIT license](LICENSE).
-
-## 🙏 Credits
-
-Built with ❤️ by [XCO Agency](https://xco.agency)
-
-## 📞 Support
-
-For support, please open an issue on GitHub or contact us at [support@xco.agency](mailto:support@xco.agency)
-
----
-
-**Ready to build your SaaS?** Get started today and launch 10x faster! 🚀
+MIT. See [LICENSE](LICENSE). Questions: open a GitHub issue or email [support@xco.agency](mailto:support@xco.agency).

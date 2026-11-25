@@ -8,31 +8,33 @@ The Laravel Boost guidelines are specifically curated by Laravel maintainers for
 ## Foundational Context
 This application is a Laravel application and its main Laravel ecosystems package & versions are below. You are an expert with them all. Ensure you abide by these specific packages & versions.
 
-- php - 8.4.1
-- inertiajs/inertia-laravel (INERTIA) - v2
+- php - 8.4 (`composer.json` constraint `^8.4`; patch is not pinned)
+- inertiajs/inertia-laravel (INERTIA) - v3
 - laravel/cashier (CASHIER) - v16
 - laravel/fortify (FORTIFY) - v1
-- laravel/framework (LARAVEL) - v12
+- laravel/framework (LARAVEL) - v13
 - laravel/mcp (MCP) - v0
 - laravel/octane (OCTANE) - v2
 - laravel/pennant (PENNANT) - v1
 - laravel/prompts (PROMPTS) - v0
 - laravel/reverb (REVERB) - v1
 - laravel/sanctum (SANCTUM) - v4
-- laravel/scout (SCOUT) - v10
+- laravel/scout (SCOUT) - v11
 - laravel/socialite (SOCIALITE) - v5
 - laravel/wayfinder (WAYFINDER) - v0
 - laravel/pint (PINT) - v1
 - laravel/sail (SAIL) - v1
 - pestphp/pest (PEST) - v4
 - phpunit/phpunit (PHPUNIT) - v12
-- @inertiajs/react (INERTIA) - v2
+- @inertiajs/react (INERTIA) - v3
 - react (REACT) - v19
 - tailwindcss (TAILWINDCSS) - v4
 - @laravel/vite-plugin-wayfinder (WAYFINDER) - v0
 - eslint (ESLINT) - v9
 - laravel-echo (ECHO) - v2
 - prettier (PRETTIER) - v3
+
+Locked package versions and the run/deploy guides are in `README.md` and `docs/`. Those files win when this guideline block still mentions an older major version.
 
 ## Conventions
 - You must follow all existing code conventions used in this application. When creating or editing a file, check sibling files for the correct structure, approach, and naming.
@@ -153,13 +155,13 @@ Route::get('/users', function () {
 });
 </code-snippet>
 
-=== inertia-laravel/v2 rules ===
+=== inertia-laravel/v3 rules ===
 
-## Inertia v2
+## Inertia v3
 
-- Make use of all Inertia features from v1 and v2. Check the documentation before making any changes to ensure we are taking the correct approach.
+- Make use of Inertia features from v1 through v3. Check the documentation before making any changes to ensure we are taking the correct approach. This application uses `inertiajs/inertia-laravel` v3 and `@inertiajs/react` v3.
 
-### Inertia v2 New Features
+### Inertia v3 features carried forward
 - Deferred props.
 - Infinite scrolling using merging props and `WhenVisible`.
 - Lazy loading data on scroll.
@@ -219,15 +221,15 @@ Route::get('/users', function () {
 ### Vite Error
 - If you receive an "Illuminate\Foundation\ViteException: Unable to locate file in Vite manifest" error, you can run `npm run build` or ask the user to run `npm run dev` or `composer run dev`.
 
-=== laravel/v12 rules ===
+=== laravel/v13 rules ===
 
-## Laravel 12
+## Laravel 13
 
 - Use the `search-docs` tool to get version-specific documentation.
-- Since Laravel 11, Laravel has a new streamlined file structure which this project uses.
+- Since Laravel 11, Laravel has a new streamlined file structure which this project uses. This application is Laravel 13.
 
-### Laravel 12 Structure
-- In Laravel 12, middleware are no longer registered in `app/Http/Kernel.php`.
+### Laravel 13 Structure
+- Middleware are no longer registered in `app/Http/Kernel.php`.
 - Middleware are configured declaratively in `bootstrap/app.php` using `Application::configure()->withMiddleware()`.
 - `bootstrap/app.php` is the file to register middleware, exceptions, and routing files.
 - `bootstrap/providers.php` contains application specific service providers.
@@ -236,7 +238,7 @@ Route::get('/users', function () {
 
 ### Database
 - When modifying a column, the migration must include all of the attributes that were previously defined on the column. Otherwise, they will be dropped and lost.
-- Laravel 12 allows limiting eagerly loaded records natively, without external packages: `$query->latest()->limit(10);`.
+- This Laravel version allows limiting eagerly loaded records natively, without external packages: `$query->latest()->limit(10);`.
 
 ### Models
 - Casts can and likely should be set in a `casts()` method on a model rather than the `$casts` property. Follow existing conventions from other models.
@@ -426,9 +428,9 @@ import { Link } from '@inertiajs/react'
 
 </code-snippet>
 
-=== inertia-react/v2/forms rules ===
+=== inertia-react/v3/forms rules ===
 
-## Inertia v2 + React Forms
+## Inertia v3 + React Forms
 
 <code-snippet name="`<Form>` Component Example" lang="react">
 
@@ -536,9 +538,9 @@ export default () => (
 - ALWAYS use `search-docs` tool for version-specific Inertia documentation and updated code examples.
 - IMPORTANT: Activate `inertia-react-development` when working with Inertia client-side patterns.
 
-# Inertia v2
+# Inertia v3
 
-- Use all Inertia features from v1 and v2. Check the documentation before making changes to ensure the correct approach.
+- Use Inertia features from v1 through v3. Check the documentation before making changes to ensure the correct approach. The installed packages are Inertia Laravel v3 and Inertia React v3.
 - New features: deferred props, infinite scroll, merging props, polling, prefetching, once props, flash data.
 - When using deferred props, add an empty state with a pulsing or animated skeleton.
 
